@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sportdings-frontend
+  namespace: sportdings
+  labels:
+    app: sportdings-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sportdings-frontend
+  template:
+    metadata:
+      labels:
+        app: sportdings-frontend
+    spec:
+      containers:
+      - name: sportdings
+        image: franzderpalme/sportdings_frontend:latest
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sportdings-frontend-service
+  namespace: sportdings
+spec:
+  selector:
+    app: sportdings-frontend
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 80

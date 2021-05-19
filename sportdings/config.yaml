@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+  namespace: sportdings
+data:
+  client: mysql
+  db-host: mysql-service
+  user: sportdings
+  database: sportdings
