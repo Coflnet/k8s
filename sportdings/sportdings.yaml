@@ -17,13 +17,13 @@ spec:
     spec:
       containers:
       - name: sportdings
-        image: flou21/sport-dings
+        image: flou21/sport-dings:latest
         ports:
         - containerPort: 80
         resources:
           limits:
-            memory: "256Mi"
-            cpu: "500m"
+            memory: "128Mi"
+            cpu: "100m"
 ---
 apiVersion: v1
 kind: Service
