@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: sportdings
-        image: franzderpalme/sportdings_frontend:latest
+        image: flou21/sport-dings-frontend:809ce89e-db3a-48b6-a319-8ad3b4492738
         ports:
         - containerPort: 80
         resources:
