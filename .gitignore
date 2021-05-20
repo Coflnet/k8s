@@ -6,5 +6,6 @@ github-credentials.yaml
 # temp
 argo
 argo-events
-argocd
 sportdings/config
+
+user

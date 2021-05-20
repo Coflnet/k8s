@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+  namespace: ghost
+data:
+  database__client: mysql
+  database__connection__host: mysql-service
+  database__connection__user: ghost
+  database__connection__database: ghost
+  url: https://ghost.flou21.de
