@@ -15,9 +15,11 @@ spec:
       labels:
         app: sportdings
     spec:
+      imagePullSecrets:
+        - name: regcred
       containers:
       - name: sportdings
-        image: flou21/sport-dings:016482c3-2c2c-4e2d-96db-e8c08e9505da
+        image: registry.flou21.de/sport-dings:016482c3-2c2c-4e2d-96db-e8c08e9505da
         ports:
         - containerPort: 80
         resources:
