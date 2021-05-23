@@ -41,7 +41,7 @@ spec:
               secretKeyRef:
                 name: secret
                 key: database__connection__password
-          - name: MYSQ_DATABASE
+          - name: MYSQL_DATABASE
             valueFrom:
               configMapKeyRef:
                 key: database__connection__database
