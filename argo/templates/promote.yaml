@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: promote
+  namespace: argo
+spec:
+  serviceAccountName: argo-events-sa
+  templates:
+  - name: promote
+    inputs:
+      parameters:
+      - name: tag
+      - name: git_user
+      - name: git_password
+      - name: image_name
+      - name: repo_url
+      - name: k8s_file
+      - name: message
+    script:
+      image: alpine
+      command: [sh]
+      source: |
+        apk add git
+        git clone https://{{inputs.parameters.git_user}}:{{inputs.parameters.git_password}}@{{inputs.parameters.repo_url}} /app
+        cd /app
+        sed -i -E "s/.*{{inputs.parameters.image_name}}.*/        image: {{inputs.parameters.image_name}}:{{inputs.parameters.tag}}/g" {{inputs.parameters.k8s_file}}
+        git config --global user.email "support@coflnet.com"
+        git config --global user.name "coflnet-bot"
+        git add .
+        git commit -m '{{inputs.parameters.message}}'
+        git push
