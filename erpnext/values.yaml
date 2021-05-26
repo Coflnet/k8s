@@ -1,0 +1,8 @@
+mariadbHost: mariadb-service
+persistence:
+  worker:
+    storageClass: longhorn
+    enabled: true
+  logs:
+    storageClass: longhorn
+    enabled: true

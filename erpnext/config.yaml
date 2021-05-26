@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+  namespace: erpnext
+data:
+  database__client: mariadb
+  database__connection__host: mariadb-service
+  database__connection__user: erpnext
+  database__connection__database: erpnext
