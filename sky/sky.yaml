@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sky-frontend
+  labels:
+    app: sky-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sky-frontend
+  template:
+    metadata:
+      labels:
+        app: sky-frontend
+    spec:
+      containers:
+      - name: sky-frontend
+        image: flou21/hypixel-react:latest
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            memory: "2Gi"
+            cpu: "1500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sky-frontend-service
+spec:
+  selector:
+    app: sky-frontend
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 3000
