@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sky-frontend
+  namespace: sky
   labels:
     app: sky-frontend
 spec:
@@ -28,6 +29,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sky-frontend-service
+  namespace: sky
 spec:
   selector:
     app: sky-frontend
