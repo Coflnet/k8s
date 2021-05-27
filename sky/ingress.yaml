@@ -13,5 +13,5 @@ spec:
       - path: /
         backend:
           serviceName: sky-frontend-service
-          servicePort: 8080
+          servicePort: 3000
 
