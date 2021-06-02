@@ -7,11 +7,11 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-  - host: sky.flou21.de
+  - host: adminer-sky.flou21.de
     http:
       paths:
       - path: /
         backend:
-          serviceName: sky-frontend-service
-          servicePort: 3000
+          serviceName: adminer-service
+          servicePort: 8080
 

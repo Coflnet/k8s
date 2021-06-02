@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+  namespace: sky
+  labels:
+    app: server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: server
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: server
+        image: registry.flou21.de/sky:963593a5-fb01-472d-a8d8-86d798928eff
+        env:
+          - name: DBConnection
+            valueFrom:
+              secretKeyRef:
+                key: connection
+                name: secret
+          - name: redisCon
+            value: redis-service
+          - name: modus
+            value: server
+        resources:
+          requests:
+            memory: "1000Mi"
+            cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server-service
+  namespace: sky
+spec:
+  selector:
+    app: server

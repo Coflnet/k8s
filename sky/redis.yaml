@@ -1,39 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sky-frontend
+  name: redis
   namespace: sky
   labels:
-    app: sky-frontend
+    app: redis
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sky-frontend
+      app: redis
   template:
     metadata:
       labels:
-        app: sky-frontend
+        app: redis
     spec:
       containers:
-      - name: sky-frontend
-        image: flou21/hypixel-react:latest
+      - name: redis
+        image: redis:6.2.4-alpine
         ports:
-        - containerPort: 3000
+        - containerPort: 6379
         resources:
-          limits:
-            memory: "1Gi"
+          requests:
+            memory: "200Mi"
             cpu: "500m"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: sky-frontend-service
+  name: redis-service
   namespace: sky
 spec:
   selector:
-    app: sky-frontend
+    app: sky
   ports:
     - protocol: TCP
-      port: 3000
-      targetPort: 3000
+      port: 6379
+      targetPort: 6379
