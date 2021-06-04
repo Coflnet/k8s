@@ -28,7 +28,7 @@ spec:
                 name: secret
           - name: redisCon
             value: redis-service
-          - name: modus
+          - name: MODE
             value: indexer
         resources:
           requests:

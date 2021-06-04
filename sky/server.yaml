@@ -28,8 +28,8 @@ spec:
                 name: secret
           - name: redisCon
             value: redis-service
-          - name: modus
-            value: server
+          - name: MODE
+            value: light
         resources:
           requests:
             memory: "1000Mi"
