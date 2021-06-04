@@ -1,0 +1,13 @@
+mariadbHost: mariadb
+dbRootPassword: super_secret_password
+persistence:
+  worker:
+    enabled: true
+    storageClass: longhorn
+  logs:
+    storageClass: longhorn
+    enabled: true
+pythonImage:
+  tag: version-13
+socketIOImage:
+  tag: version-13
