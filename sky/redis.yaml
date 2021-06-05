@@ -32,7 +32,7 @@ metadata:
   namespace: sky
 spec:
   selector:
-    app: sky
+    app: redis
   ports:
     - protocol: TCP
       port: 6379
