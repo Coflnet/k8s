@@ -26,6 +26,11 @@ spec:
               secretKeyRef:
                 key: connection
                 name: secret
+          - name: apiKey
+            valueFrom:
+              secretKeyRef:
+                key: api
+                name: secret
           - name: redisCon
             value: redis-service
           - name: MODE
