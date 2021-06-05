@@ -19,7 +19,7 @@ spec:
         - name: regcred
       containers:
       - name: server
-        image: registry.flou21.de/sky:9e677942-8c4e-40e1-9651-008464b5487c
+        image: registry.flou21.de/sky:2bb84ad9-08cf-4f0f-81a7-32febd1e2418
         env:
           - name: DBConnection
             valueFrom:
