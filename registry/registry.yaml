@@ -41,6 +41,8 @@ spec:
             value: /auth/passwd
           - name: REGISTRY_AUTH_HTPASSWD_REALM
             value: "Registry Realm"
+          - name: REGISTRY_STORAGE_DELETE_ENABLED
+            value: "true"
       volumes:
         - name: vol
           persistentVolumeClaim:
