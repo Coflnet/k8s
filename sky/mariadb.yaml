@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: mariadb
-        image: mariadb:10.3-debian-10
+        image: mariadb:10.3
         args:
           - "--default-authentication-plugin=mysql_native_password"
           - "--innodb-buffer-pool-size=8G"

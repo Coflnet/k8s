@@ -34,6 +34,16 @@ spec:
           requests:
             memory: "1000Mi"
             cpu: "1000m"
+      volumeMounts:
+        - name: keyfile
+          mountPath: "/app/"
+          readOnly: true
+    volumes:
+    - name: keyfile
+      secret:
+        secretName: secret
+        items:
+          - key: .keyfile.p12
 ---
 apiVersion: v1
 kind: Service
