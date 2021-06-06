@@ -20,6 +20,8 @@ spec:
       containers:
       - name: indexer
         image: registry.flou21.de/sky:f7f6580f-9483-4c86-a7a4-ecff55d553ee
+        ports:
+          - containerPort: 8008
         env:
           - name: DBConnection
             valueFrom:
@@ -48,3 +50,6 @@ metadata:
 spec:
   selector:
     app: indexer
+  ports:
+    - port: 8008
+      targetPort: 8008
