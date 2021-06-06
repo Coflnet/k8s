@@ -19,7 +19,7 @@ spec:
         - name: regcred
       containers:
       - name: indexer
-        image: registry.flou21.de/sky:773d00e5-0c5a-4f13-a4ba-822f07b0b92c
+        image: registry.flou21.de/sky:678086d0-6990-4dd6-8752-c78444dd0bcc
         env:
           - name: DBConnection
             valueFrom:
