@@ -39,8 +39,8 @@ spec:
             value: indexer
         resources:
           requests:
-            memory: "1000Mi"
-            cpu: "1000m"
+            memory: "3000Mi"
+            cpu: "3000m"
 ---
 apiVersion: v1
 kind: Service
