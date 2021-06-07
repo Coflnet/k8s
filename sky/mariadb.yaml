@@ -26,8 +26,8 @@ spec:
         - containerPort: 3306
         resources:
           requests:
-            memory: "4096Mi"
-            cpu: "1000m"
+            memory: "6Gi"
+            cpu: "500m"
         env:
           - name: MYSQL_ROOT_PASSWORD
             valueFrom:
