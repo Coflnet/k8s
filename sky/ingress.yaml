@@ -20,12 +20,12 @@ spec:
       - path: /
         backend:
           serviceName: light-client-service
-          servicePort: 3306
+          servicePort: 8008
   - host: skyblock.coflnet.com
     http:
       paths:
       - path: /
         backend:
           serviceName: light-client-service
-          servicePort: 3306
+          servicePort: 8008
 
