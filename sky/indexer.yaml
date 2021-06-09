@@ -45,7 +45,7 @@ spec:
           httpGet:
             path: /status
             port: 8008
-          initialDelaySeconds: 300
+          initialDelaySeconds: 1000
           periodSeconds: 5
 ---
 apiVersion: v1
