@@ -28,4 +28,11 @@ spec:
         backend:
           serviceName: light-client-service
           servicePort: 8008
+  - host: coflnet.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: light-client-service
+          servicePort: 8008
 
