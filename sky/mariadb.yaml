@@ -19,7 +19,7 @@ spec:
         image: mariadb:10.3
         args:
           - "--default-authentication-plugin=mysql_native_password"
-          - "--innodb-buffer-pool-size=8G"
+          - "--innodb-buffer-pool-size=6G"
           - "--key-buffer-size=4G"
           - "--connect-timeout=101"
         ports:
