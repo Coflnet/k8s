@@ -53,8 +53,8 @@ spec:
               name: secret
         resources:
           limits:
-            memory: "100Mi"
-            cpu: "100m"
+            memory: "800Mi"
+            cpu: "500m"
 ---
 apiVersion: v1
 kind: Service
