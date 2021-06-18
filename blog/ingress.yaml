@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: sky-ingress
+  namespace: sky
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: blog.flou21.de
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: blog-service
+          servicePort: 80
+  - host: blog.coflnet.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: blog-service
+          servicePort: 80
+
