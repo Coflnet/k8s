@@ -34,11 +34,11 @@ spec:
             value: light
         resources:
           requests:
-            memory: "3000Mi"
-            cpu: "1000m"
+            memory: "1000Mi"
+            cpu: "500m"
         livenessProbe:
           httpGet:
-            path: /item/ASPECT_OF_THE_END
+            path: /
             port: 8008
           initialDelaySeconds: 20
           periodSeconds: 5
