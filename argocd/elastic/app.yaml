@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: elastic
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Coflnet/k8s.git
+    targetRevision: HEAD
+    path: elastic
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: elastic
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
