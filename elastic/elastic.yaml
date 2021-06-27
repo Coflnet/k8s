@@ -28,14 +28,9 @@ spec:
           requests:
             memory: "1000Mi"
             cpu: "800m"
-        volumeMounts:
-          - mountPath: /usr/share/elasticsearch/data
-            name: elastic-data
-            subPath: data
-      volumes:
-        - name: elastic-data
-          persistentVolumeClaim:
-            claimName: elastic-data-claim
+        securityContext:
+            capabilities:
+              add: ["SYS_CHROOT"] 
 ---
 apiVersion: v1
 kind: Service
