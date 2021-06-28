@@ -81,7 +81,7 @@ spec:
   scaleTargetRef:
     apiVersion: argoproj.io/v1alpha1
     kind: Rollout
-    name: light-client-autoscaler
+    name: light-client
   minReplicas: 1
   maxReplicas: 20
   metrics:
