@@ -81,6 +81,7 @@ metadata:
 spec:
   targetCPUUtilizationPercentage: 80
   scaleTargetRef:
+    apiVersion: argoproj.io/v1alpha1
     kind: Rollout
     name: light-client
   minReplicas: 1
