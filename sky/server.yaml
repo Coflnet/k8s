@@ -1,12 +1,13 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: light-client
   namespace: sky
   labels:
     app: light-client
 spec:
-  replicas: 0
+  replicas: 1
+  revisionHistoryLimit: 5
   selector:
     matchLabels:
       app: light-client
@@ -43,11 +44,28 @@ spec:
           initialDelaySeconds: 20
           periodSeconds: 5
           timeoutSeconds: 5
+      strategy:
+        blueGreen:
+          activeService: light-client-service
+          previewService: light-client-preview-service
+          autoPromotionEnabled: false
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: light-client-service
+  namespace: sky
+spec:
+  selector:
+    app: light-client
+  ports:
+    - port: 8008
+      targetPort: 8008
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: light-client-preview-service
   namespace: sky
 spec:
   selector:
