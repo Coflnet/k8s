@@ -44,11 +44,11 @@ spec:
           initialDelaySeconds: 20
           periodSeconds: 5
           timeoutSeconds: 5
-      strategy:
-        blueGreen:
-          activeService: light-client-service
-          previewService: light-client-preview-service
-          autoPromotionEnabled: false
+  strategy:
+    blueGreen:
+      activeService: light-client-service
+      previewService: light-client-preview-service
+      autoPromotionEnabled: false
 ---
 apiVersion: v1
 kind: Service
