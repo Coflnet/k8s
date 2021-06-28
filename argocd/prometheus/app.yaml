@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus 
+  namespace: prom
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Coflnet/k8s.git
+    targetRevision: HEAD
+    path: prometheus
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prom
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
