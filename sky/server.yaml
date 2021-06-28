@@ -6,7 +6,6 @@ metadata:
   labels:
     app: light-client
 spec:
-  replicas: 1
   revisionHistoryLimit: 5
   selector:
     matchLabels:
@@ -73,3 +72,22 @@ spec:
   ports:
     - port: 8008
       targetPort: 8008
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: light-client-autoscaler
+spec:
+  scaleTargetRef:
+    apiVersion: argoproj.io/v1alpha1
+    kind: Rollout
+    name: light-client-autoscaler
+  minReplicas: 1
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60
