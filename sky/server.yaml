@@ -77,17 +77,12 @@ apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: light-client-autoscaler
+  namespace: sky
 spec:
+  targetCPUUtilizationPercentage: 80
   scaleTargetRef:
     apiVersion: argoproj.io/v1alpha1
     kind: Rollout
     name: light-client
   minReplicas: 1
   maxReplicas: 20
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 60
