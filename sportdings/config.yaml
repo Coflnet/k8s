@@ -5,6 +5,6 @@ metadata:
   namespace: sportdings
 data:
   client: mysql
-  db-host: mysql-service
+  db-host: 194.163.151.190
   user: sportdings
   database: sportdings
