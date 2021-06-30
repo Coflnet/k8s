@@ -17,10 +17,9 @@ spec:
       - name: k8s_file
       - name: message
     script:
-      image: alpine
+      image: registry.flou21.de/alpine-git:3.14.0
       command: [sh]
       source: |
-        apk add git
         git clone https://{{inputs.parameters.git_user}}:{{inputs.parameters.git_password}}@{{inputs.parameters.repo_url}} /app
         cd /app
         sed -i -E "s/.*{{inputs.parameters.image_name}}.*/        image: {{inputs.parameters.image_name}}:{{inputs.parameters.tag}}/g" {{inputs.parameters.k8s_file}}
