@@ -1,42 +1,42 @@
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: indexer
-#   namespace: sky
-#   labels:
-#     app: indexer
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: imgproxy
-#   template:
-#     metadata:
-#       labels:
-#         app: imgproxy
-#     spec:
-#       containers:
-#       - name: imgproxy
-#         image: willnorris/imageproxy
-#         args: ["-addr 0.0.0.0:80 -cache memory -allowHosts sky.coflnet.com,sky.lea.moe,mc-heads.net,crafatar.com"]
-#         ports:
-#           - containerPort: 80
-#         resources:
-#           limits:
-#             memory: "500Mi"
-#             cpu: "1"
-#           requests:
-#             memory: "250Mi"
-#             cpu: "100m"
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: imgproxy-service
-#   namespace: sky
-# spec:
-#   selector:
-#     app: imgproxy
-#   ports:
-#     - port: 80
-#       targetPort: 80
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imgproxy
+  namespace: sky
+  labels:
+    app: imgproxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: imgproxy
+  template:
+    metadata:
+      labels:
+        app: imgproxy
+    spec:
+      containers:
+      - name: imgproxy
+        image: willnorris/imageproxy:latest
+        args: ["-addr 0.0.0.0:80 -cache memory -allowHosts sky.coflnet.com,sky.lea.moe,mc-heads.net,crafatar.com"]
+        ports:
+          - containerPort: 80
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: "1"
+          requests:
+            memory: "250Mi"
+            cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: imgproxy-service
+  namespace: sky
+spec:
+  selector:
+    app: imgproxy
+  ports:
+    - port: 80
+      targetPort: 80
