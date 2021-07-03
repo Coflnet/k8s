@@ -7,10 +7,11 @@ metadata:
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    #If you encounter a redirect loop or are getting a 307 response code 
-    #then you need to force the nginx ingress to connect to the backend using HTTPS.
-    
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required '
+    nginx.ingress.kubernetes.io/auth-secret: basic-auth
+    nginx.ingress.kubernetes.io/auth-type: basic
+
 spec:
   rules:
   - host: argo.flou21.de
