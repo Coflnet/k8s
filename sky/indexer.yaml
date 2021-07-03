@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: indexer
   namespace: sky
@@ -7,7 +7,6 @@ metadata:
     app: indexer
 spec:
   replicas: 1
-  serviceName: indexer-service
   selector:
     matchLabels:
       app: indexer
