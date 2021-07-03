@@ -13,14 +13,14 @@ spec:
       - path: /
         backend:
           serviceName: light-client-service
-          servicePort: 8080
+          servicePort: 8008
   - host: sky-preview.flou21.de
     http:
       paths:
       - path: /
         backend:
           serviceName: light-client-preview-service
-          servicePort: 8080
+          servicePort: 8008
   - host: sky.coflnet.com
     http:
       paths:
