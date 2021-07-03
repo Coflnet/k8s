@@ -44,6 +44,7 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 10
+          failureThreshold: 5
   strategy:
     blueGreen:
       activeService: light-client-service
