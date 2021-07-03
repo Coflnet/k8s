@@ -35,8 +35,8 @@ spec:
             value: light
         resources:
           requests:
-            memory: "1000Mi"
-            cpu: "500m"
+            memory: "200Mi"
+            cpu: "300m"
         livenessProbe:
           httpGet:
             path: /
