@@ -50,6 +50,7 @@ spec:
       activeService: light-client-service
       previewService: light-client-preview-service
       autoPromotionEnabled: false
+      previewReplicaCount: 1
 ---
 apiVersion: v1
 kind: Service
