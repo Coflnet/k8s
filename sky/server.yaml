@@ -40,9 +40,9 @@ spec:
           httpGet:
             path: /
             port: 8008
-          initialDelaySeconds: 20
-          periodSeconds: 5
-          timeoutSeconds: 5
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 10
   strategy:
     blueGreen:
       activeService: light-client-service
