@@ -18,7 +18,7 @@ spec:
       containers:
       - name: imgproxy
         image: willnorris/imageproxy:latest
-        args: ["-addr 0.0.0.0:80 -cache memory -allowHosts sky.coflnet.com,sky.lea.moe,mc-heads.net,crafatar.com"]
+        args: ["-addr 0.0.0.0:80", "-cache memory", "-allowHosts", "sky.coflnet.com,sky.lea.moe,mc-heads.net,crafatar.com"]
         ports:
           - containerPort: 80
         resources:
