@@ -42,6 +42,13 @@ spec:
         backend:
           serviceName: light-client-service
           servicePort: 8008
+  - host: skyblock-backend.coflnet.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: indexer-service
+          servicePort: 8008
   - host: coflnet.com
     http:
       paths:
