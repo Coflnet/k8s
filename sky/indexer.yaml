@@ -112,6 +112,16 @@ spec:
               secretKeyRef:
                 key: stripe_secret
                 name: secret
+          - name: firebaseKey
+            valueFrom:
+              secretKeyRef:
+                key: firebase_key
+                name: secret
+          - name: firebaseSenderId
+            valueFrom:
+              secretKeyRef:
+                key: firebase_sender_id
+                name: secret
         resources:
           requests:
             memory: "3000Mi"
