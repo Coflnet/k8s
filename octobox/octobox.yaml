@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: octobox
+  namespace: octobox
+spec:
+  selector:
+    matchLabels:
+      app: octobox
+  template:
+    metadata:
+      labels:
+        app: octobox
+    spec:
+      containers:
+      - name: octobox
+        image: octoboxio/octobox:latest
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 3000
+        env:
+          - name: RAILS_ENV
+            value: development
+          - name: GITHUB_CLIENT_ID
+            value: 3aacdcfc2f3473402a5e
+          - name: GITHUB_CLIENT_SECRET
+            value: f51b06b0c26eaf40e5289f7d261271e5ad8e7cd3
+          - name: OCTOBOX_DATABASE_NAME
+            value: postgres
+          - name: OCTOBOX_DATABASE_USERNAME
+            value: postgres
+          - name: OCTOBOX_DATABASE_PASSWORD
+            value: development
+          - name: OCTOBOX_DATABASE_HOST
+            value: postgres-service
+          - name: REDIS_URL
+            value: redis://redis-service
+          - name: OCTOBOX_SIDEKIQ_SCHEDULE_ENABLED
+            value: "true"
+          - name: WEBSOCKET_ALLOWED_ORIGINS
+            value: https://octobox.flou21.de
+          - name: ALLOW_HOSTNAME
+            value: "octobox.flou21.de"
+          - name: MINIMUM_REFRESH_INTERVAL
+            value: "2"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: octobox-service
+  namespace: octobox
+spec:
+  selector:
+    app: octobox
+  ports:
+  - port: 3000
+    targetPort: 3000
