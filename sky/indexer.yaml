@@ -95,6 +95,11 @@ spec:
               secretKeyRef:
                 key: api
                 name: secret
+          - name: connection
+            valueFrom:
+              secretKeyRef:
+                key: connection_live
+                name: secret
           - name: MODE
             value: indexer
         resources:
