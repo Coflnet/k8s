@@ -102,6 +102,15 @@ spec:
                 name: secret
           - name: MODE
             value: indexer
+          - name: stripeKey
+            valueFrom:
+              secretKeyRef:
+                key: stripe_key
+          - name: stripeSecret
+            valueFrom:
+              secretKeyRef:
+                key: stripe_secret
+                name: secret
         resources:
           requests:
             memory: "3000Mi"
