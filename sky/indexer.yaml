@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: indexer-migration
+  name: indexer
   namespace: sky
   labels:
-    app: indexer-migration
+    app: indexer
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: indexer-migration
+      app: indexer
   template:
     metadata:
       labels:
-        app: indexer-migration
+        app: indexer
     spec:
       imagePullSecrets:
         - name: regcred
       containers:
-      - name: indexer-migration
+      - name: indexer
         image: registry.flou21.de/sky:af6a5953-16c6-4076-90c4-6aae3437d4cb
         ports:
           - containerPort: 8008
@@ -83,11 +83,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: indexer-migration-service
+  name: indexer-service
   namespace: sky
 spec:
   selector:
-    app: indexer-migration
+    app: indexer
   ports:
     - port: 8008
       targetPort: 8008

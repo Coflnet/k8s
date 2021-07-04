@@ -47,7 +47,7 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: indexer-migration-service
+          serviceName: indexer-service
           servicePort: 8008
   - host: coflnet.com
     http:
