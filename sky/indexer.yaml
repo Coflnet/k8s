@@ -95,7 +95,7 @@ spec:
               secretKeyRef:
                 key: api
                 name: secret
-          - name: connection
+          - name: DBConnection
             valueFrom:
               secretKeyRef:
                 key: connection_live
