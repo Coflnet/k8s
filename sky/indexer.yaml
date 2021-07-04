@@ -106,7 +106,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: stripe_key
-                name: sky
+                name: secret
           - name: stripeSecret
             valueFrom:
               secretKeyRef:
