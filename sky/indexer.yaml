@@ -122,6 +122,16 @@ spec:
               secretKeyRef:
                 key: firebase_sender_id
                 name: secret
+          - name: PAYPAL_ID
+            valueFrom:
+              secretKeyRef:
+                key: paypal_id
+                name: secret
+          - name: PAYPAL_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: paypal_secret
+                name: secret
         resources:
           requests:
             memory: "3000Mi"
