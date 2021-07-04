@@ -39,8 +39,8 @@ spec:
             value: indexer
         resources:
           requests:
-            memory: "3000Mi"
-            cpu: "2000m"
+            memory: "2000Mi"
+            cpu: "1000m"
         volumeMounts:
           - mountPath: /data
             name: indexer-mount
