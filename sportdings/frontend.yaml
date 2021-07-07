@@ -19,7 +19,7 @@ spec:
         - name: regcred
       containers:
       - name: sportdings
-        image: registry.flou21.de/sport-dings-frontend:bcbb9eba-cb31-40e7-8eb1-9f6061dd0cb9
+        image: registry.flou21.de/sport-dings-frontend:1c153014-ef25-495a-be5d-e64185b3ab44
         ports:
         - containerPort: 80
         resources:
