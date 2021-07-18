@@ -28,6 +28,11 @@ spec:
               secretKeyRef:
                 key: connection
                 name: secret
+          - name: db__authtoken
+            valueFrom:
+              secretKeyRef:
+                key: db_token
+                name: secret
         resources:
           requests:
             memory: "300Mi"
