@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: songvoter
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: backend
+        image: registry.flou21.de/songvoter-backend:latest
+        ports:
+          - containerPort: 4200
+        env:
+          - name: DefaultConnection
+            valueFrom:
+              secretKeyRef:
+                key: connection
+                name: secret
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "300m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: songvoter
+spec:
+  selector:
+    app: backend
+  ports:
+    - port: 4200
+      targetPort: 4200
