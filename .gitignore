@@ -3,16 +3,11 @@ regcred.yaml
 github-credentials.yaml
 
 
-
 # temp
 argo-events
 sportdings/config
-
 user
-
-
 auth/
-
-
 keyfile.p12
 argo/auth
+erpnext/
