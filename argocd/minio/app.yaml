@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    name: ''
+    namespace: minio
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: ''
+    repoURL: 'https://charts.bitnami.com/bitnami'
+    targetRevision: 7.1.3
+    chart: minio
+    helm:
+      valueFiles: []
+      values: |-
+        nameOverride: minio
+        global:
+          storageClass: longhorn
+        existingSecret: minio-secret
+        resources:
+          requests:
+            cpu: "300m"
+            memory: "500Mi"
+        ingress:
+          enabled: true
+          hostname: s3.coflnet.com
+          path: /
+        persistence:
+          enabled: true
+          storageClass: longhorn
+          size: 20Gi
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
