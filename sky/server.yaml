@@ -20,7 +20,7 @@ spec:
         - name: regcred
       containers:
       - name: light-client
-        image: registry.flou21.de/sky:c1e74ba3-4cc2-4702-848b-5bf45ee4e9c3
+        image: registry.flou21.de/sky:5d3b22d2-3f28-4c93-83ab-466f3d0758cb
         ports:
           - containerPort: 8008
         env:
