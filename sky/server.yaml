@@ -8,6 +8,7 @@ metadata:
 spec:
   revisionHistoryLimit: 5
   replicas: 5
+  progressDeadlineSeconds: 2592000
   selector:
     matchLabels:
       app: light-client
