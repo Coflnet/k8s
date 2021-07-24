@@ -19,7 +19,7 @@ spec:
         - name: regcred
       containers:
       - name: indexer
-        image: registry.flou21.de/sky:841aecd7-2d21-496e-9763-f2e4b11a7662
+        image: registry.flou21.de/sky:c3d3fe98-1157-4325-8e3e-a97f8b6c70c7
         ports:
           - containerPort: 8008
         env:
