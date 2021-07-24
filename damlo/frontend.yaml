@@ -19,7 +19,7 @@ spec:
         - name: regcred
       containers:
       - name: frontend
-        image: registry.flou21.de/damlo:1d38860d-d2f5-4ac7-8348-723a47af00ed
+        image: registry.flou21.de/damlo:262ca6bf-2d52-4f7d-9017-de498f8a8527
         ports:
           - containerPort: 80
         resources:
