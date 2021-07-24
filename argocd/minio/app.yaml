@@ -51,6 +51,8 @@ spec:
     repoURL: https://github.com/Coflnet/k8s.git
     targetRevision: HEAD
     path: minio
+    directory:
+      recurse: true
   destination:
     server: https://kubernetes.default.svc
     namespace: minio
