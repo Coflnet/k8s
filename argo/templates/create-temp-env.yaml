@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: create-temp-env
+  namespace: argo
+spec:
+  serviceAccountName: argo-events-sa
+  templates:
+  - name: create-temp-env
+    inputs:
+      parameters:
+        - name: app_repo
+    container:
+      image: registry.flou21.de/temp-env:latest
+      command: ["temp-env", "--app", "{{inputs.parameters.app_name}}"]

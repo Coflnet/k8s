@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: sky-webhook
+  namespace: argo-events
+spec:
+  template:
+    serviceAccountName: argo-events-sa
+  dependencies:
+  - name: sky-pull-request
+    eventSourceName: sky-eventsource
+    eventName: sky-pull-request
+  triggers:
+  - template:
+      name: trigger
+      argoWorkflow:
+        group: argoproj.io
+        version: v1alpha1
+        resource: workflows
+        operation: submit
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              namespace: argo
+              generateName: create-temp-env
+              labels:
+                workflows.argoproj.io/archive-strategy: "false"
+            spec:
+              entrypoint: create-temp-env
+              serviceAccountName: argo
+              imagePullSecrets:
+                - name: regcred
+              volumes:
+              - name: kaniko-secret
+                secret:
+                  secretName: regcred
+                  items:
+                    - key: .dockerconfigjson
+                      path: config.json
+              - name: sky-argo-secret
+                secret:
+                  secretName: sky-argo-secret
+              templates:
+              - name: create-temp-env
+                dag:
+                  tasks:
+                  - name: create-temp-env
+                    templateRef:
+                      name: create-temp-env
+                      template: create-temp-env
+                    arguments:
+                      parameters:
+                      - name: app_repo
+                        value: https://github.com/Coflnet/hypixel-react

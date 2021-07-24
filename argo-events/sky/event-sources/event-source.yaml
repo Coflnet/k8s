@@ -13,3 +13,7 @@ spec:
       port: "12000"
       endpoint: /sky
       method: POST
+    sky-pull-request:
+      port: "12000"
+      endpoint: /sky-pull-request
+      method: POST

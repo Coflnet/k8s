@@ -42,4 +42,12 @@ spec:
         backend:
           serviceName: damlo-eventsource-eventsource-svc
           servicePort: 12000
+  - host: argo-events.flou21.de
+    http:
+      paths:
+      - path: /sky-pull-request
+        backend:
+          serviceName: sky-eventsource-eventsource-svc
+          servicePort: 12000
+
 
