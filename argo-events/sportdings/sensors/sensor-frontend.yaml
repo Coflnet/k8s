@@ -1,0 +1,92 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: sportdings-webhook-frontend
+  namespace: argo-events
+spec:
+  template:
+    serviceAccountName: argo-events-sa
+  dependencies:
+  - name: webhook
+    eventSourceName: sportdings-frontend-eventsource
+    eventName: sportdings-frontend
+  triggers:
+  - template:
+      name: trigger
+      argoWorkflow:
+        group: argoproj.io
+        version: v1alpha1
+        resource: workflows
+        operation: submit
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              namespace: argo
+              generateName: build-container-image-sportdings-frontend-
+              labels:
+                workflows.argoproj.io/archive-strategy: "false"
+            spec:
+              imagePullSecrets:
+                - name: regcred
+              entrypoint: build
+              serviceAccountName: argo
+              volumes:
+              - name: kaniko-secret
+                secret:
+                  secretName: regcred
+                  items:
+                    - key: .dockerconfigjson
+                      path: config.json
+              - name: secret
+                secret:
+                  secretName: secret
+              templates:
+              - name: build
+                dag:
+                  tasks:
+                  - name: build
+                    templateRef:
+                      name: build-container-image
+                      template: build-kaniko-git
+                    arguments:
+                      parameters:
+                      - name: app_repo
+                        value: git://github.com/FranzDerPalme/SportDingsFrontend.git
+                      - name: container_image
+                        value: registry.flou21.de/sport-dings-frontend
+                      - name: container_tag
+                        value: "{{workflow.uid}}"
+                      - name: sub_path 
+                        value: ./frontend
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+
+                  - name: promote
+                    templateRef:
+                      name: promote
+                      template: promote
+                    arguments:
+                      parameters:
+                      - name: tag
+                        value: "{{workflow.uid}}"
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+                      - name: repo_url
+                        value: "github.com/Coflnet/k8s.git"
+                      - name: image_name
+                        value: registry.flou21.de\/sport-dings-frontend
+                      - name: k8s_file
+                        value: ./sportdings/frontend.yaml
+                      - name: message
+                        value: "sportdings frontend - version bump {{workflow.uid}}"
+                    dependencies: [build]

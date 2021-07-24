@@ -11,16 +11,17 @@ spec:
       parameters:
       - name: tag
       - name: git_user
-      - name: git_password
       - name: image_name
       - name: repo_url
       - name: k8s_file
       - name: message
+      - name: git_secret_name
+      - name: git_secret_key
     script:
       image: registry.flou21.de/alpine-git:3.14.0
       command: [sh]
       source: |
-        git clone https://{{inputs.parameters.git_user}}:{{inputs.parameters.git_password}}@{{inputs.parameters.repo_url}} /app
+        git clone "https://{{inputs.parameters.git_user}}:$GITHUB_SECRET@{{inputs.parameters.repo_url}}" /app
         cd /app
         sed -i -E "s/.*{{inputs.parameters.image_name}}.*/        image: {{inputs.parameters.image_name}}:{{inputs.parameters.tag}}/g" {{inputs.parameters.k8s_file}}
         git config --global user.email "support@coflnet.com"
@@ -28,3 +29,9 @@ spec:
         git add .
         git commit -m '{{inputs.parameters.message}}'
         git push
+      env:
+      - name: GITHUB_SECRET
+        valueFrom:
+          secretKeyRef:
+            name:  "{{inputs.parameters.git_secret_name}}"
+            key: "{{inputs.parameters.git_secret_key}}"

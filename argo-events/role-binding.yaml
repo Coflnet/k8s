@@ -1,0 +1,23 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: argo
+  name: argo-role-custom
+rules:
+  - apiGroups: ["argoproj.io"]
+    resources: ["workflowtemplates", "workflows"]
+    verbs: ["get", "watch", "list", "delete", "create"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: argo-events-sa-rolebinding
+  namespace: argo
+subjects:
+  - kind: ServiceAccount
+    name: argo-events-sa
+    namespace: argo-events
+roleRef:
+  kind: Role
+  name: argo-role-custom
+  apiGroup: rbac.authorization.k8s.io

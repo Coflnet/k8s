@@ -14,7 +14,8 @@ spec:
       - name: container_tag
       - name: sub_path
       - name: git_user
-      - name: git_password
+      - name: git_secret_name
+      - name: git_secret_key
     container:
       image: gcr.io/kaniko-project/executor:latest
       args:
@@ -29,7 +30,10 @@ spec:
         - name: GIT_USERNAME
           value: "{{inputs.parameters.git_user}}"
         - name: GIT_PASSWORD
-          value: "{{inputs.parameters.git_password}}"
+          valueFrom:
+            secretKeyRef:
+              name:  "{{inputs.parameters.git_secret_name}}"
+              key: "{{inputs.parameters.git_secret_key}}"
       volumeMounts:
         - name: kaniko-secret
           mountPath: /kaniko/.docker/

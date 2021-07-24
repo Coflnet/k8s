@@ -1,0 +1,175 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: sky-webhook
+  namespace: argo-events
+spec:
+  template:
+    serviceAccountName: argo-events-sa
+  dependencies:
+  - name: sky
+    eventSourceName: sky-eventsource
+    eventName: sky
+  triggers:
+  - template:
+      name: trigger
+      argoWorkflow:
+        group: argoproj.io
+        version: v1alpha1
+        resource: workflows
+        operation: submit
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              namespace: argo
+              generateName: build-container-image-sky-
+              labels:
+                workflows.argoproj.io/archive-strategy: "false"
+            spec:
+              entrypoint: build
+              serviceAccountName: argo
+              imagePullSecrets:
+                - name: regcred
+              volumes:
+              - name: kaniko-secret
+                secret:
+                  secretName: regcred
+                  items:
+                    - key: .dockerconfigjson
+                      path: config.json
+              - name: secret
+                secret:
+                  secretName: secret
+              - name: sky-argo-secret
+                secret:
+                  secretName: sky-argo-secret
+              templates:
+              - name: build
+                dag:
+                  tasks:
+                  - name: build
+                    templateRef:
+                      name: build-container-image
+                      template: build-kaniko-git
+                    arguments:
+                      parameters:
+                      - name: app_repo
+                        value: git://github.com/Ekwav/HypixelSkyblock.git
+                      - name: container_image
+                        value: registry.flou21.de/sky
+                      - name: container_tag
+                        value: "{{workflow.uid}}"
+                      - name: sub_path 
+                        value: .
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+
+                  - name: promote-server
+                    templateRef:
+                      name: promote
+                      template: promote
+                    arguments:
+                      parameters:
+                      - name: tag
+                        value: "{{workflow.uid}}"
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+                      - name: repo_url
+                        value: "github.com/Coflnet/k8s.git"
+                      - name: image_name
+                        value: registry.flou21.de\/sky
+                      - name: k8s_file
+                        value: ./sky/server.yaml
+                      - name: message
+                        value: "sky server - version bump {{workflow.uid}}"
+                    dependencies: [build]
+                  - name: promote-indexer
+                    templateRef:
+                      name: promote
+                      template: promote
+                    arguments:
+                      parameters:
+                      - name: tag
+                        value: "{{workflow.uid}}"
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+                      - name: repo_url
+                        value: "github.com/Coflnet/k8s.git"
+                      - name: image_name
+                        value: registry.flou21.de\/sky
+                      - name: k8s_file
+                        value: ./sky/indexer.yaml
+                      - name: message
+                        value: "sky indexer - version bump {{workflow.uid}}"
+                    dependencies: [promote-server]
+
+
+                  - name: argo-sync
+                    templateRef: 
+                      name: argo-sync
+                      template: argo-sync
+                    arguments:
+                      parameters:
+                        - name: app_name
+                          value: sky
+                        - name: argo_server_secret_name
+                          value : sky-argo-secret
+                        - name: argo_server_secret_key
+                          value: argo_server
+                        - name: argo_auth_token_secret_name
+                          value: sky-argo-secret
+                        - name: argo_auth_token_secret_key
+                          value: argo_auth_token
+                    dependencies: [promote-indexer]
+
+
+                  - name: cypress-tests-chrome91
+                    templateRef:
+                      name: cypress-tests-chrome91
+                      template: cypress-tests-chrome91
+                    arguments: 
+                      parameters:
+                        - name: git_repository
+                          value: "https://github.com/Coflnet/hypixel-react"
+                    dependencies: [argo-sync]
+                  - name: cypress-tests-chrome87
+                    templateRef:
+                      name: cypress-tests-chrome87
+                      template: cypress-tests-chrome87
+                    arguments: 
+                      parameters:
+                        - name: git_repository
+                          value: "https://github.com/Coflnet/hypixel-react"
+                    dependencies: [argo-sync]
+                  - name: cypress-tests-firefox86
+                    templateRef:
+                      name: cypress-tests-firefox86
+                      template: cypress-tests-firefox86
+                    arguments: 
+                      parameters:
+                        - name: git_repository
+                          value: "https://github.com/Coflnet/hypixel-react"
+                    dependencies: [argo-sync]
+                  - name: cypress-tests-edge88
+                    templateRef:
+                      name: cypress-tests-edge88
+                      template: cypress-tests-edge88
+                    arguments: 
+                      parameters:
+                        - name: git_repository
+                          value: "https://github.com/Coflnet/hypixel-react"
+                    dependencies: [argo-sync]

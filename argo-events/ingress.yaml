@@ -1,0 +1,45 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: argo-events-ingress
+  namespace: argo-events
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: argo-events.flou21.de
+    http:
+      paths:
+      - path: /sportdings
+        backend:
+          serviceName: sportdings-eventsource-eventsource-svc
+          servicePort: 12000
+  - host: argo-events.flou21.de
+    http:
+      paths:
+      - path: /sportdings-frontend
+        backend:
+          serviceName: sportdings-frontend-eventsource-eventsource-svc
+          servicePort: 12000
+  - host: argo-events.flou21.de
+    http:
+      paths:
+      - path: /sky
+        backend:
+          serviceName: sky-eventsource-eventsource-svc
+          servicePort: 12000
+  - host: argo-events.flou21.de
+    http:
+      paths:
+      - path: /blog
+        backend:
+          serviceName: blog-eventsource-eventsource-svc
+          servicePort: 12000
+  - host: argo-events.flou21.de
+    http:
+      paths:
+      - path: /damlo
+        backend:
+          serviceName: damlo-eventsource-eventsource-svc
+          servicePort: 12000
+
