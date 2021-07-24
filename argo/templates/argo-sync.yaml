@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: argo-sync
+  namespace: argo
+spec:
+  serviceAccountName: argo-events-sa
+  templates:
+  - name: argo-sync
+    inputs:
+      parameters:
+      - name: app_name
+      - name: argo_server_secret_name
+      - name: argo_server_secret_key
+      - name: argo_auth_token_secret_name
+      - name: argo_auth_token_secret_key
+    container:
+      image: registry.flou21.de/argocd-sync
+      command: ["argocd-sync", "--app", "{{inputs.parameters.app_name}}"]
+      env:
+        - name: ARGOCD_SERVER
+          valueFrom:
+            secretKeyRef:
+             name: "{{inputs.parameters.argo_server_secret_name}}"
+             key: "{{inputs.parameters.argo_server_secret_key}}"
+        - name: ARGOCD_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: "{{inputs.parameters.argo_auth_token_secret_name}}"
+              key: "{{inputs.parameters.argo_auth_token_secret_key}}"
+      volumeMounts:
+        - name: kaniko-secret
+          mountPath: /kaniko/.docker/

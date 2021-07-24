@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+    name: cypress-tests-edge88
+    namespace: argo
+spec:
+    serviceAccountName: argo-events-sa
+    templates:
+    - name: cypress-tests-edge88
+      inputs:
+        parameters:
+          - name: git_repository
+      container:
+        image: registry.flou21.de/cypress-runner:edge88
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: 1500Mi
+            cpu: 1000m
+        args:
+        - /app
+        - --repository="{{inputs.parameters.git_repository}}"
+        - --branch="master"
+        - --browser=edge
