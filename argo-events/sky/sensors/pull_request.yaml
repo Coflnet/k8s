@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
-  name: sky-webhook
+  name: sky-webhook-pull-request
   namespace: argo-events
 spec:
   template:
