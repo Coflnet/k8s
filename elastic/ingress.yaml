@@ -21,3 +21,10 @@ spec:
         backend:
           serviceName: elastic-service
           servicePort: 9300
+  - host: kibana.flou21.de
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: kibana-service
+          servicePort: 5601
