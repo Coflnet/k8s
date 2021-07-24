@@ -39,3 +39,23 @@ spec:
     automated:
       prune: true
       selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio-except-helm
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Coflnet/k8s.git
+    targetRevision: HEAD
+    path: minio
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: minio
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
