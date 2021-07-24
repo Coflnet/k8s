@@ -1,6 +1,0 @@
-ingress:
-  enabled: true
-  hostname: odoo.flou21.de
-odooUsername: flou
-odooPassword: password
-odooEmail: muehlhans.f@coflnet.com
