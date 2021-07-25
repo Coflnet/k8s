@@ -23,6 +23,10 @@ spec:
               dependencyName: payload
               dataKey: body.action
             dest: spec.templates.0.dag.tasks.0.arguments.parameters.0.value
+          - src: 
+              dependencyName: payload
+              dataKey: body.number
+            dest: spec.templates.0.dag.tasks.0.arguments.parameters.1.value
         source:
           resource:
             apiVersion: argoproj.io/v1alpha1
@@ -60,7 +64,7 @@ spec:
                         - name: pull_request_new_state
                           value: ""
                         - name: pull_request_number
-                          value: "300"
+                          value: ""
                         - name: git_repository
                           value: "github.com/Flou21/k8s"
                         - name: git_username
@@ -69,23 +73,15 @@ spec:
                           value: "secret"
                         - name: git_password_secret_key
                           value: "password"
-                        - name: template_data_deployment_name
-                          value: "sky-temp-env-300"
-                        - name: template_data_namespace
+                        - name: k8s_namespace
                           value: "sky"
-                        - name: template_data_app_label
-                          value: "sky-temp-env-300"
-                        - name: template_data_container_tag
-                          value: "1ae2c435-abdf-471b-8fff-b2dbe3794d96"
-                        - name: template_data_container_image
-                          value: "sky-temp-env-300"
-                        - name: template_data_container_name
-                          value: "sky-temp-env-300"
-                        - name: template_data_port
+                        - name: container_image
+                          value: "light-client"
+                        - name: "container_port"
                           value: "8008"
-                        - name: template_data_memory
+                        - name: request_memory
                           value: "100Mi"
-                        - name: template_data_cpu
+                        - name: request_cpu
                           value: "100m"
-                        - name: template_data_domain_name
-                          value: "sky-temp-env-300.flou21.de"
+                        - name: base_domain
+                          value: "flou21.de"

@@ -15,16 +15,13 @@ spec:
         - name: git_username
         - name: git_password_secret_name
         - name: git_password_secret_key
-        - name: template_data_deployment_name
-        - name: template_data_namespace
-        - name: template_data_app_label
-        - name: template_data_container_tag
-        - name: template_data_container_image
-        - name: template_data_container_name
-        - name: template_data_port
-        - name: template_data_memory
-        - name: template_data_cpu
-        - name: template_data_domain_name
+        - name: k8s_namespace
+        - name: container_image
+        - name: container_port
+        - name: request_memory
+        - name: request_cpu
+        - name: base_domain
+
     container:
       image: registry.flou21.de/temp-env:latest
       imagePullPolicy: Always
@@ -42,23 +39,16 @@ spec:
             secretKeyRef:
               name: "{{inputs.parameters.git_password_secret_name}}"
               key: "{{inputs.parameters.git_password_secret_key}}"
-        - name: TEMPLATE_DATA_DEPLOYMENT_NAME
-          value: "{{inputs.parameters.template_data_deployment_name}}"
-        - name: TEMPLATE_DATA_NAMESPACE
-          value: "{{inputs.parameters.template_data_namespace}}"
-        - name: TEMPLATE_DATA_APP_LABEL
-          value: "{{inputs.parameters.template_data_app_label}}"
-        - name: TEMPLATE_DATA_CONTAINER_TAG
-          value: "{{inputs.parameters.template_data_container_tag}}"
-        - name: TEMPLATE_DATA_CONTAINER_NAME
-          value: "{{inputs.parameters.template_data_container_name}}"
-        - name: TEMPLATE_DATA_CONTAINER_IMAGE
-          value: "{{inputs.parameters.template_data_container_image}}"
-        - name: TEMPLATE_DATA_PORT
-          value: "{{inputs.parameters.template_data_port}}"
-        - name: TEMPLATE_DATA_MEMORY
-          value: "{{inputs.parameters.template_data_memory}}"
-        - name: TEMPLATE_DATA_CPU
-          value: "{{inputs.parameters.template_data_cpu}}"
-        - name: TEMPLATE_DATA_DOMAIN_NAME
-          value: "{{inputs.parameters.template_data_domain_name}}"
+
+        - name: K8S_NAMESPACE
+          value: "{{inputs.parameters.k8s_namespace}}"
+        - name: CONTAINER_IMAGE
+          value: "{{inputs.parameters.container_image}}"
+        - name: CONTAINER_PORT
+          value: "{{inputs.parameters.container_port}}"
+        - name: REQUEST_MEMORY
+          value: "{{inputs.parameters.request_memory}}"
+        - name: REQUEST_CPU
+          value: "{{inputs.parameters.request_cpu}}"
+        - name: BASE_DOMAIN
+          value: "{{inputs.parameters.base_domain}}"
