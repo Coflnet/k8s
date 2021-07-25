@@ -52,5 +52,35 @@ spec:
                       template: create-temp-env
                     arguments:
                       parameters:
-                      - name: app_repo
-                        value: https://github.com/Coflnet/hypixel-react
+                        - name: pull_request_new_state
+                          value: "open"
+                        - name: pull_request_number
+                          value: "300"
+                        - name: git_repository
+                          value: "github.com/Flou21/k8s"
+                        - name: git_username
+                          value: "Flou21"
+                        - name: git_password_secret_name
+                          value: "secret"
+                        - name: git_password_secret_key
+                          value: "password"
+                        - name: template_data_deployment_name
+                          value: "sky-temp-env-300"
+                        - name: template_data_namespace
+                          value: "sky"
+                        - name: template_data_app_label
+                          value: "sky-temp-env-300"
+                        - name: template_data_container_tag
+                          value: "1ae2c435-abdf-471b-8fff-b2dbe3794d96"
+                        - name: template_data_container_image
+                          value: "sky-temp-env-300"
+                        - name: template_data_container_name
+                          value: "sky-temp-env-300"
+                        - name: template_data_port
+                          value: "8008"
+                        - name: template_data_memory
+                          value: "100Mi"
+                        - name: template_data_cpu
+                          value: "100m"
+                        - name: template_data_domain_name
+                          value: "sky-temp-env-300.flou21.de"
