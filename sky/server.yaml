@@ -25,6 +25,11 @@ spec:
         ports:
           - containerPort: 8008
         env:
+          - name: TOKEN_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: token_secret
+                name: secret
           - name: DBConnection
             valueFrom:
               secretKeyRef:
