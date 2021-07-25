@@ -53,7 +53,7 @@ spec:
                     arguments:
                       parameters:
                         - name: pull_request_new_state
-                          value: "{{parameters.action}}"
+                          value: "{{inputs.parameters.action}}"
                         - name: pull_request_number
                           value: "300"
                         - name: git_repository
