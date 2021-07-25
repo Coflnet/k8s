@@ -56,7 +56,7 @@ spec:
                     arguments:
                       parameters:
                       - name: app_repo
-                        value: git://github.com/Ekwav/HypixelSkyblock.git
+                        value: git://github.com/Coflnet/HypixelSkyblock.git
                       - name: container_image
                         value: registry.flou21.de/sky
                       - name: container_tag
