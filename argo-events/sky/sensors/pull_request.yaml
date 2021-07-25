@@ -27,6 +27,10 @@ spec:
               dependencyName: payload
               dataKey: body.number
             dest: spec.templates.0.dag.tasks.0.arguments.parameters.1.value
+          - src: 
+              dependencyName: payload
+              dataKey: body.number
+            dest: spec.templates.0.dag.tasks.1.arguments.parameters.2.value
         source:
           resource:
             apiVersion: argoproj.io/v1alpha1
@@ -66,7 +70,7 @@ spec:
                         - name: pull_request_number
                           value: ""
                         - name: git_repository
-                          value: "github.com/Flou21/k8s"
+                          value: "github.com/Coflnet/k8s"
                         - name: git_username
                           value: "Flou21"
                         - name: git_password_secret_name
@@ -76,7 +80,7 @@ spec:
                         - name: k8s_namespace
                           value: "sky"
                         - name: container_image
-                          value: "light-client"
+                          value: "sky"
                         - name: "container_port"
                           value: "8008"
                         - name: request_memory
@@ -85,3 +89,24 @@ spec:
                           value: "100m"
                         - name: base_domain
                           value: "flou21.de"
+
+                  - name: build
+                    templateRef:
+                      name: build-container-image
+                      template: build-kaniko-git
+                    arguments:
+                      parameters:
+                      - name: app_repo
+                        value: git://github.com/Ekwav/HypixelSkyblock.git
+                      - name: container_image
+                        value: registry.flou21.de/sky
+                      - name: container_tag
+                        value: ""
+                      - name: sub_path 
+                        value: .
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
