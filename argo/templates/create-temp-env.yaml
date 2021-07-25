@@ -27,6 +27,7 @@ spec:
         - name: template_data_domain_name
     container:
       image: registry.flou21.de/temp-env:latest
+      imagePullPolicy: Always
       env:
         - name: PULL_REQUEST_NEW_STATE
           value: "{{inputs.parameters.pull_request_new_state}}"
