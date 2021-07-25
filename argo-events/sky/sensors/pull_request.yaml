@@ -110,3 +110,21 @@ spec:
                         value: github-secret
                       - name: git_secret_key
                         value: password
+
+                  - name: argo-sync
+                    templateRef: 
+                      name: argo-sync
+                      template: argo-sync
+                    arguments:
+                      parameters:
+                        - name: app_name
+                          value: sky
+                        - name: argo_server_secret_name
+                          value : sky-argo-secret
+                        - name: argo_server_secret_key
+                          value: argo_server
+                        - name: argo_auth_token_secret_name
+                          value: sky-argo-secret
+                        - name: argo_auth_token_secret_key
+                          value: argo_auth_token
+                    dependencies: ["build", "create-temp-env"]
