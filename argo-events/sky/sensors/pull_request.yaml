@@ -136,7 +136,7 @@ spec:
                           value: sky-argo-secret
                         - name: argo_auth_token_secret_key
                           value: argo_auth_token
-                    dependencies: ["build", "create-temp-env"]
+                    dependencies: ["create-temp-env"]
 
                   - name: github-pull-request-message
                     templateRef:
@@ -162,4 +162,14 @@ spec:
                           value: ""
                         - name: message_4
                           value: ".flou21.de"
+                        - name: message_5
+                          value: ""
+                        - name: message_6
+                          value: ""
+                        - name: message_7
+                          value: ""
+                        - name: message_8
+                          value: ""
+                        - name: message_9
+                          value: ""
                     dependencies: ["argo-sync"]
