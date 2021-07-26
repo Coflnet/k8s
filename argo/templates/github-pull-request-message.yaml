@@ -1,0 +1,60 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: github-pull-request-message
+  namespace: argo
+spec:
+  serviceAccountName: argo-events-sa
+  templates:
+  - name: github-pull-request-message
+    inputs:
+      parameters:
+        - name: git_password_secret_name
+        - name: git_password_secret_key
+        - name: git_username
+        - name: pull_request_number
+        - name: git_repository
+        - name: message_1
+        - name: message_2
+        - name: message_3
+        - name: message_4
+        - name: message_5
+        - name: message_6
+        - name: message_7
+        - name: message_8
+        - name: message_9
+
+    container:
+      image: registry.flou21.de/github-message:latest
+      imagePullPolicy: Always
+      env:
+        - name: TOKEN
+          valueFrom: 
+            secretKeyRef:
+              name: "{{inputs.parameters.git_password_secret_name}}"
+              key: "{{inputs.parameters.git_password_secret_key}}"
+        - name: USERNAME
+          value: "{{inputs.parameters.git_username}}"
+        - name: REPOSITORY
+          value: "{{inputs.parameters.git_repository}}"
+        - name: PULL_REQUEST_NUMBER
+          value: "{{inputs.parameters.pull_request_number}}"
+        - name: MESSAGE_1
+          value: "{{inputs.parameters.message_1}}"
+        - name: MESSAGE_2
+          value: "{{inputs.parameters.message_2}}"
+        - name: MESSAGE_3
+          value: "{{inputs.parameters.message_3}}"
+        - name: MESSAGE_4
+          value: "{{inputs.parameters.message_4}}"
+        - name: MESSAGE_5
+          value: "{{inputs.parameters.message_5}}"
+        - name: MESSAGE_6
+          value: "{{inputs.parameters.message_6}}"
+        - name: MESSAGE_7
+          value: "{{inpu8s.parameters.message_7}}"
+        - name: MESSAGE_8
+          value: "{{inputs.parameters.message_8}}"
+        - name: MESSAGE_9
+          value: "{{inputs.parameters.message_9}}"
+        

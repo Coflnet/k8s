@@ -31,6 +31,14 @@ spec:
               dependencyName: payload
               dataKey: body.number
             dest: spec.templates.0.dag.tasks.1.arguments.parameters.2.value
+          - src: 
+              dependencyName: payload
+              dataKey: body.number
+            dest: spec.templates.0.dag.tasks.3.arguments.parameters.3.value
+          - src: 
+              dependencyName: payload
+              dataKey: body.number
+            dest: spec.templates.0.dag.tasks.3.arguments.parameters.7.value
         source:
           resource:
             apiVersion: argoproj.io/v1alpha1
@@ -129,3 +137,29 @@ spec:
                         - name: argo_auth_token_secret_key
                           value: argo_auth_token
                     dependencies: ["build", "create-temp-env"]
+
+                  - name: github-pull-request-message
+                    templateRef:
+                      name: github-pull-request-message
+                      template: github-pull-request-message
+                    arguments:
+                      parameters:
+                        - name: git_password_secret_name
+                          value: "secret"
+                        - name: git_password_secret_key
+                          value: "password"
+                        - name: git_username
+                          value: "Flou21"
+                        - name: pull_request_number
+                          value: ""
+                        - name: git_repository
+                          value: "k8s"
+                        - name: message_1
+                          value: "created temp environment: "
+                        - name: message_2
+                          value: "https://temp-env-sky-"
+                        - name: message_3
+                          value: ""
+                        - name: message_4
+                          value: ".flou21.de"
+                    dependencies: ["argo-sync"]

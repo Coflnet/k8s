@@ -117,7 +117,6 @@ spec:
                         value: "sky indexer - version bump {{workflow.uid}}"
                     dependencies: [promote-server]
 
-
                   - name: argo-sync
                     templateRef: 
                       name: argo-sync
