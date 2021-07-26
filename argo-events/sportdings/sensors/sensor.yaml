@@ -67,7 +67,7 @@ spec:
                       - name: git_secret_key
                         value: password
                       - name: branch
-                        value: master
+                        value: main
 
                   - name: promote
                     templateRef:
