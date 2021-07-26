@@ -42,7 +42,7 @@ spec:
           - src: 
               dependencyName: payload
               dataKey: body.pull_request.head.ref
-            dest: spec.templates.0.dag.tasks.3.arguments.parameters.7.value
+            dest: spec.templates.0.dag.tasks.1.arguments.parameters.7.value
         source:
           resource:
             apiVersion: argoproj.io/v1alpha1
