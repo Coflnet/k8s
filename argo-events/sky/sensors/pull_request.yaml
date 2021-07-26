@@ -68,15 +68,6 @@ spec:
                 secret:
                   secretName: sky-argo-secret
               templates:
-              - name: gen-random-int
-                script:
-                  image: python:alpine3.6
-                  command: [python]
-                  args: [""]
-                  source: |
-                    param = os.Args()[1]
-                    if param != "closed" or param != "opened":
-                      os.Exit(1)
               - name: create-temp-env
                 dag:
                   tasks:
