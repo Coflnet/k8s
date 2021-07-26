@@ -39,6 +39,10 @@ spec:
               dependencyName: payload
               dataKey: body.number
             dest: spec.templates.0.dag.tasks.3.arguments.parameters.7.value
+          - src: 
+              dependencyName: payload
+              dataKey: body.pull_request.head.ref
+            dest: spec.templates.0.dag.tasks.3.arguments.parameters.7.value
         source:
           resource:
             apiVersion: argoproj.io/v1alpha1
@@ -64,6 +68,15 @@ spec:
                 secret:
                   secretName: sky-argo-secret
               templates:
+              - name: gen-random-int
+                script:
+                  image: python:alpine3.6
+                  command: [python]
+                  args: [""]
+                  source: |
+                    param = os.Args()[1]
+                    if param != "closed" or param != "opened":
+                      os.Exit(1)
               - name: create-temp-env
                 dag:
                   tasks:
@@ -119,6 +132,8 @@ spec:
                         value: github-secret
                       - name: git_secret_key
                         value: password
+                      - name: branch
+                        value: ""
 
                   - name: argo-sync
                     templateRef: 

@@ -16,10 +16,11 @@ spec:
       - name: git_user
       - name: git_secret_name
       - name: git_secret_key
+      - name: branch
     container:
       image: gcr.io/kaniko-project/executor:latest
       args:
-      - --context={{inputs.parameters.app_repo}}
+      - --context={{inputs.parameters.app_repo}}#refs/heads/{{inputs.parameters.branch}}
       - --context-sub-path={{inputs.parameters.sub_path}}
       - --destination={{inputs.parameters.container_image}}:{{inputs.parameters.container_tag}}
       resources:
