@@ -41,6 +41,10 @@ spec:
             dest: spec.templates.0.dag.tasks.3.arguments.parameters.7.value
           - src: 
               dependencyName: payload
+              dataKey: body.action
+            dest: spec.templates.0.dag.tasks.3.arguments.parameters.14.value
+          - src: 
+              dependencyName: payload
               dataKey: body.pull_request.head.ref
             dest: spec.templates.0.dag.tasks.1.arguments.parameters.7.value
         source:
@@ -155,11 +159,11 @@ spec:
                         - name: git_password_secret_key
                           value: "password"
                         - name: git_username
-                          value: "Flou21"
+                          value: "Coflnet"
                         - name: pull_request_number
                           value: ""
                         - name: git_repository
-                          value: "k8s"
+                          value: "hypixel-react"
                         - name: message_1
                           value: "created temp environment: "
                         - name: message_2
@@ -177,5 +181,7 @@ spec:
                         - name: message_8
                           value: ""
                         - name: message_9
+                          value: ""
+                        - name: new_state
                           value: ""
                     dependencies: ["argo-sync"]

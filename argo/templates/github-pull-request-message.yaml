@@ -14,6 +14,7 @@ spec:
         - name: git_username
         - name: pull_request_number
         - name: git_repository
+        - name: new_state
         - name: message_1
         - name: message_2
         - name: message_3
@@ -39,6 +40,8 @@ spec:
           value: "{{inputs.parameters.git_repository}}"
         - name: PULL_REQUEST_NUMBER
           value: "{{inputs.parameters.pull_request_number}}"
+        - name: NEW_STATE
+          value: "{{inputs.parameters.new_state}}"
         - name: MESSAGE_1
           value: "{{inputs.parameters.message_1}}"
         - name: MESSAGE_2
