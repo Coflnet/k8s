@@ -96,3 +96,19 @@ spec:
   ports:
     - port: 8008
       targetPort: 8008
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: indexer-metrics-service
+  namespace: sky
+  labels:
+    app: indexer-metrics-service
+spec:
+  selector:
+    app: indexer
+  ports:
+  - port: 80
+    targetPort: 80
+    name: metrics
+    protocol: TCP
