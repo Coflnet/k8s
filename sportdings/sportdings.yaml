@@ -18,7 +18,7 @@ spec:
       imagePullSecrets:
         - name: regcred
       containers:
-      - name: sportdings
+      - name: sportdings-backend
         image: registry.flou21.de/sport-dings:85a7a216-10e4-47db-9c94-4884ffd645b0
         ports:
         - containerPort: 80
