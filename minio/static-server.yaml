@@ -12,6 +12,7 @@ spec:
       labels:
         app: static-server
     spec:
+      replicas: 0
       imagePullSecrets:
         - name: regcred
       containers:
