@@ -4,7 +4,7 @@ metadata:
   name: sky-light-client-metrics-servicemonitor
   namespace: sky 
   labels:
-    release: prometheus 
+    release: kube-prometheus-stack-1627574156 
 spec:
   selector:
     matchLabels:
@@ -20,7 +20,7 @@ metadata:
   name: sky-indexer-metrics-servicemonitor
   namespace: sky 
   labels:
-    release: prometheus 
+    release: kube-prometheus-stack-1627574156
 spec:
   selector:
     matchLabels:
