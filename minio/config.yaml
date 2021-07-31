@@ -4,5 +4,5 @@ metadata:
   name: minio-config
   namespace: minio
 data:
-  s3-host: minio
+  s3-host: minio:9000
   static-bucket-name: static
