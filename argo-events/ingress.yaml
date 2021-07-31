@@ -13,63 +13,80 @@ spec:
       - path: /sportdings
         pathType: ImplementationSpecific
         backend:
-          serviceName: sportdings-eventsource-eventsource-svc
-          servicePort: 12000
+          service:
+            name: sportdings-eventsource-eventsource-svc
+            port:
+              number: 12000
+
   - host: argo-events.flou21.de
     http:
       paths:
       - path: /sportdings-frontend
         pathType: ImplementationSpecific
         backend:
-          serviceName: sportdings-frontend-eventsource-eventsource-svc
-          servicePort: 12000
+          service:
+            name: sportdings-frontend-eventsource-eventsource-svc
+            port:
+              number: 12000
   - host: argo-events.flou21.de
     http:
       paths:
       - path: /sky
         pathType: ImplementationSpecific
         backend:
-          serviceName: sky-eventsource-eventsource-svc
-          servicePort: 12000
+          service:
+            name: sky-eventsource-eventsource-svc
+            port:
+              number: 12000
   - host: argo-events.flou21.de
     http:
       paths:
       - path: /blog
         pathType: ImplementationSpecific
         backend:
-          serviceName: blog-eventsource-eventsource-svc
-          servicePort: 12000
+          service:
+            name: blog-eventsource-eventsource-svc
+            port:
+              number: 12000
   - host: argo-events.flou21.de
     http:
       paths:
       - path: /damlo
         pathType: ImplementationSpecific
         backend:
-          serviceName: damlo-eventsource-eventsource-svc
-          servicePort: 12000
+          service:
+            name: damlo-eventsource-eventsource-svc
+            port:
+              number: 12000
   - host: argo-events.flou21.de
     http:
       paths:
       - path: /sky-pull-request
         pathType: ImplementationSpecific
         backend:
-          serviceName: sky-eventsource-eventsource-svc
-          servicePort: 12000
+          service:
+            name: sky-eventsource-eventsource-svc
+            port:
+              number: 12000
   - host: argo-events.flou21.de
     http:
       paths:
       - path: /sky-frontend
         pathType: ImplementationSpecific
         backend:
-          serviceName: sky-eventsource-eventsource-svc
-          servicePort: 12000
+          service:
+            name: sky-eventsource-eventsource-svc
+            port:
+              number: 12000
   - host: argo-events.flou21.de
     http:
       paths:
       - path: /static-server
         pathType: ImplementationSpecific
         backend:
-          serviceName: static-server-eventsource-eventsource-svc
-          servicePort: 12000
+          service:
+            name: static-server-eventsource-eventsource-svc
+            port:
+              number: 12000
 
 
