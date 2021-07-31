@@ -1,12 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: create-temp-env
+  name: create-pr-env
   namespace: argo
 spec:
   serviceAccountName: argo-events-sa
   templates:
-  - name: create-temp-env
+  - name: create-pr-env
     inputs:
       parameters:
         - name: pull_request_new_state
@@ -23,7 +23,7 @@ spec:
         - name: base_domain
 
     container:
-      image: registry.flou21.de/temp-env:latest
+      image: registry.flou21.de/pr-env:latest
       imagePullPolicy: Always
       env:
         - name: PULL_REQUEST_NEW_STATE
