@@ -21,6 +21,7 @@ spec:
         - name: request_memory
         - name: request_cpu
         - name: base_domain
+        - name: workflow_uid
 
     container:
       image: registry.flou21.de/pr-env:latest
@@ -52,3 +53,5 @@ spec:
           value: "{{inputs.parameters.request_cpu}}"
         - name: BASE_DOMAIN
           value: "{{inputs.parameters.base_domain}}"
+        - name: WORKFLOW_UID
+          value: "{{inputs.parameters.workflow_uid}}"

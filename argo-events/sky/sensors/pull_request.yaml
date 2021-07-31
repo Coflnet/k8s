@@ -105,6 +105,8 @@ spec:
                           value: "100m"
                         - name: base_domain
                           value: "flou21.de"
+                        - name: workflow_uid
+                          value: "{{workflow.uid}}"
                     dependencies: ["build"]
 
                   - name: build
