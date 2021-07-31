@@ -19,5 +19,5 @@ spec:
       method: POST
     frontend:
       port: "12000"
-      endpoint: /frontend
+      endpoint: /sky-frontend
       method: POST
