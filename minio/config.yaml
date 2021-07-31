@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minio-config
+  namespace: minio
+data:
+  s3-host: minio
+  static-bucket-name: static

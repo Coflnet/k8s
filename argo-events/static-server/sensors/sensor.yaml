@@ -1,0 +1,110 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: static-server-webhook
+  namespace: argo-events
+spec:
+  template:
+    serviceAccountName: argo-events-sa
+  dependencies:
+  - name: static-server
+    eventSourceName: static-server-eventsource
+    eventName: static-server
+  triggers:
+  - template:
+      name: trigger
+      argoWorkflow:
+        group: argoproj.io
+        version: v1alpha1
+        resource: workflows
+        operation: submit
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              namespace: argo
+              generateName: build-static-server-
+              labels:
+                workflows.argoproj.io/archive-strategy: "false"
+            spec:
+              imagePullSecrets:
+                - name: regcred
+              entrypoint: build
+              serviceAccountName: argo
+              volumes:
+              - name: kaniko-secret
+                secret:
+                  secretName: regcred
+                  items:
+                    - key: .dockerconfigjson
+                      path: config.json
+              - name: secret
+                secret:
+                  secretName: secret
+              templates:
+              - name: build
+                dag:
+                  tasks:
+                  - name: build
+                    templateRef:
+                      name: build-container-image
+                      template: build-kaniko-git
+                    arguments:
+                      parameters:
+                      - name: app_repo
+                        value: git://github.com/Ekwav/static-server
+                      - name: container_image
+                        value: registry.flou21.de/static-server
+                      - name: container_tag
+                        value: "{{workflow.uid}}"
+                      - name: sub_path 
+                        value: .
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+                      - name: branch
+                        value: main
+                  - name: promote
+                    templateRef:
+                      name: promote
+                      template: promote
+                    arguments:
+                      parameters:
+                      - name: tag
+                        value: "{{workflow.uid}}"
+                      - name: git_user
+                        value: "Flou21"
+                      - name: repo_url
+                        value: "github.com/Coflnet/k8s.git"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+                      - name: image_name
+                        value: registry.flou21.de\/static-server
+                      - name: k8s_file
+                        value: ./minio/static-server.yaml
+                      - name: message
+                        value: "static-server - version bump {{workflow.uid}}"
+                    dependencies: [build]
+                  - name: argo-sync
+                    templateRef: 
+                      name: argo-sync
+                      template: argo-sync
+                    arguments:
+                      parameters:
+                        - name: app_name
+                          value: minio-except-helm
+                        - name: argo_server_secret_name
+                          value : sky-argo-secret
+                        - name: argo_server_secret_key
+                          value: argo_server
+                        - name: argo_auth_token_secret_name
+                          value: sky-argo-secret
+                        - name: argo_auth_token_secret_key
+                          value: argo_auth_token
+                    dependencies: [promote]

@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: static-server
+  namespace: minio
+spec:
+  selector:
+    matchLabels:
+      app: static-server
+  template:
+    metadata:
+      labels:
+        app: static-server
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: static-server
+        image: registry.flou21.de/static-server:latest
+        env: 
+          - name: ACCESS_KEY
+            valueFrom: 
+              secretKeyRef:
+                name: minio-secret
+                key: access-key
+          - name: SECRET_KEY
+            valueFrom: 
+              secretKeyRef:
+                name: minio-secret
+                key: secret-key
+          - name: S3_HOST
+            valueFrom: 
+              configMapKeyRef:
+                name: minio-config
+                key: s3-host
+          - name: BUCKET_NAME
+            valueFrom: 
+              configMapKeyRef:
+                name: minio-config
+                key: static-bucket-name
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: static-server
+spec:
+  selector:
+    app: static-server
+  ports:
+  - port: 5000
+    targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minio-custom-ingress
+  namespace: minio
+  labels:
+    name: minio-custom-ingress
+spec:
+  rules:
+  - host: static.coflnet.com
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        path: "/"
+        backend:
+          service:
+            name: static-server
+            port: 
+              number: 5000
