@@ -8,7 +8,7 @@ spec:
     serviceAccountName: argo-events-sa
   dependencies:
   - name: frontend
-    eventSourceName: frontend-eventsource
+    eventSourceName: sky-eventsource
     eventName: frontend
   triggers:
   - template:
