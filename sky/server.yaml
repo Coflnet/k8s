@@ -39,6 +39,10 @@ spec:
             value: redis-service
           - name: MODE
             value: light
+          - name: FRONTEND_PROD
+            value: frontend
+          - name: FRONTEND_STAGING
+            value: frontend-preview
         resources:
           requests:
             memory: "300Mi"
