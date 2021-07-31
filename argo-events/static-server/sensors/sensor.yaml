@@ -53,7 +53,7 @@ spec:
                     arguments:
                       parameters:
                       - name: app_repo
-                        value: git://github.com/Ekwav/static-server
+                        value: git://github.com/Coflnet/StaticS3
                       - name: container_image
                         value: registry.flou21.de/static-server
                       - name: container_tag
