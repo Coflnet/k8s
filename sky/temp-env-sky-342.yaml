@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: temp-env-sky-342
+  namespace: sky
+  labels:
+    app: temp-env-sky-342
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: temp-env-sky-342
+  template:
+    metadata:
+      labels:
+        app: temp-env-sky-342
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: temp-env-sky-342
+        image: registry.flou21.de/sky:342
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 80
+        resources:
+          requests:
+            memory: 100Mi
+            cpu: 100m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: temp-env-sky-342-service
+  namespace: sky
+spec:
+  selector:
+    app: temp-env-sky-342
+  ports:
+    - port: 8008
+      targetPort: 80
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: temp-env-sky-342-ingress
+  namespace: sky
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: temp-env-sky-342.flou21.de
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: temp-env-sky-342-service
+          servicePort: 8008
