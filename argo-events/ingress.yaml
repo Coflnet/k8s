@@ -52,7 +52,7 @@ spec:
   - host: argo-events.flou21.de
     http:
       paths:
-      - path: /frontend
+      - path: /sky-frontend
         backend:
           serviceName: frontend-eventsource-eventsource-svc
           servicePort: 12000
