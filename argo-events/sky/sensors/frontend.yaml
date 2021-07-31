@@ -1,0 +1,115 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: frontend-webhook
+  namespace: argo-events
+spec:
+  template:
+    serviceAccountName: argo-events-sa
+  dependencies:
+  - name: frontend
+    eventSourceName: frontend-eventsource
+    eventName: frontend
+  triggers:
+  - template:
+      name: trigger
+      argoWorkflow:
+        group: argoproj.io
+        version: v1alpha1
+        resource: workflows
+        operation: submit
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              namespace: argo
+              generateName: build-container-image-frontend-sky-
+              labels:
+                workflows.argoproj.io/archive-strategy: "false"
+            spec:
+              entrypoint: build
+              serviceAccountName: argo
+              imagePullSecrets:
+                - name: regcred
+              volumes:
+              - name: kaniko-secret
+                secret:
+                  secretName: regcred
+                  items:
+                    - key: .dockerconfigjson
+                      path: config.json
+              - name: secret
+                secret:
+                  secretName: secret
+              - name: sky-argo-secret
+                secret:
+                  secretName: sky-argo-secret
+              templates:
+              - name: build
+                dag:
+                  tasks:
+                  - name: build
+                    templateRef:
+                      name: build-container-image
+                      template: build-kaniko-git
+                    arguments:
+                      parameters:
+                      - name: app_repo
+                        value: git://github.com/Coflnet/hypixel-react.git
+                      - name: branch
+                        value: master
+                      - name: container_image
+                        value: registry.flou21.de/sky-frontend
+                      - name: container_tag
+                        value: "{{workflow.uid}}"
+                      - name: sub_path 
+                        value: .
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+
+                  - name: promote-frontend
+                    templateRef:
+                      name: promote
+                      template: promote
+                    arguments:
+                      parameters:
+                      - name: tag
+                        value: "{{workflow.uid}}"
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+                      - name: repo_url
+                        value: "github.com/Coflnet/k8s.git"
+                      - name: image_name
+                        value: registry.flou21.de\/sky-frontend
+                      - name: k8s_file
+                        value: ./sky/frontend.yaml
+                      - name: message
+                        value: "[CI] sky server - version bump {{workflow.uid}}"
+                    dependencies: [build]
+
+                  - name: argo-sync
+                    templateRef: 
+                      name: argo-sync
+                      template: argo-sync
+                    arguments:
+                      parameters:
+                        - name: app_name
+                          value: sky
+                        - name: argo_server_secret_name
+                          value : sky-argo-secret
+                        - name: argo_server_secret_key
+                          value: argo_server
+                        - name: argo_auth_token_secret_name
+                          value: sky-argo-secret
+                        - name: argo_auth_token_secret_key
+                          value: argo_auth_token
+                    dependencies: [promote-frontend]
