@@ -27,7 +27,7 @@ spec:
         git config --global user.email "support@coflnet.com"
         git config --global user.name "coflnet-bot"
         git add .
-        git commit -m '{{inputs.parameters.message}}'
+        git commit -m '[CI] {{inputs.parameters.message}}'
         git push
       env:
       - name: GITHUB_SECRET

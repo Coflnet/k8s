@@ -53,11 +53,11 @@ spec:
             kind: Workflow
             metadata:
               namespace: argo
-              generateName: create-temp-env
+              generateName: create-pr-env
               labels:
                 workflows.argoproj.io/archive-strategy: "false"
             spec:
-              entrypoint: create-temp-env
+              entrypoint: create-pr-env
               serviceAccountName: argo
               imagePullSecrets:
                 - name: regcred
@@ -72,13 +72,13 @@ spec:
                 secret:
                   secretName: sky-argo-secret
               templates:
-              - name: create-temp-env
+              - name: create-pr-env
                 dag:
                   tasks:
-                  - name: create-temp-env
+                  - name: create-pr-env
                     templateRef:
-                      name: create-temp-env
-                      template: create-temp-env
+                      name: create-pr-env
+                      template: create-pr-env
                     arguments:
                       parameters:
                         - name: pull_request_new_state
@@ -146,7 +146,7 @@ spec:
                           value: sky-argo-secret
                         - name: argo_auth_token_secret_key
                           value: argo_auth_token
-                    dependencies: ["create-temp-env"]
+                    dependencies: ["create-pr-env"]
 
                   - name: github-pull-request-message
                     templateRef:
@@ -165,9 +165,9 @@ spec:
                         - name: git_repository
                           value: "hypixel-react"
                         - name: message_1
-                          value: "created temp environment: "
+                          value: "[CI] created a pr environment: "
                         - name: message_2
-                          value: "https://temp-env-sky-"
+                          value: "https://pr-env-sky-"
                         - name: message_3
                           value: ""
                         - name: message_4
