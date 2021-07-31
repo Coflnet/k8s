@@ -54,7 +54,7 @@ spec:
       paths:
       - path: /sky-frontend
         backend:
-          serviceName: sky-frontend-eventsource-eventsource-svc
+          serviceName: sky-eventsource-eventsource-svc
           servicePort: 12000
   - host: argo-events.flou21.de
     http:
