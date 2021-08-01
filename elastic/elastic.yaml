@@ -26,12 +26,12 @@ spec:
             value: single-node
           - name: ES_JAVA_OPTS
             value: "-Xms1g -Xmx1g"
-          - name: ELASTICSEARCH_USERNAME
+          - name: ELASTIC_USERNAME
             valueFrom:
               configMapKeyRef:
                 key: username
                 name: elastic-config
-          - name: ELASTICSEARCH_PASSWORD
+          - name: ELASTIC_PASSWORD
             valueFrom:
               secretKeyRef:
                 key: password
@@ -43,6 +43,16 @@ spec:
         securityContext:
             capabilities:
               add: ["SYS_CHROOT"] 
+        volumeMounts:
+          - mountPath: /bitnami/elasticsearch/data
+            name: elastic-volume
+            subPath: data
+      volumes:
+        - name: elastic-volume
+          persistentVolumeClaim: 
+            claimName: elastic-claim
+
+
 ---
 apiVersion: v1
 kind: Service
