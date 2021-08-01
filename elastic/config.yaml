@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: elastic-config
+  namespace: elastic
+data:
+  username: elastic-user
+

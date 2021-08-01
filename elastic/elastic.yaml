@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elastic
+  namespace: elastic
+  labels:
+    app: elastic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elastic
+  template:
+    metadata:
+      labels:
+        app: elastic
+    spec:
+      initContainers:
+        - name: sysctl
+          securityContext:
+            privileged: true
+          command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+      containers:
+      - name: elastic
+        image: bitnami/elasticsearch:7.13.4
+        ports:
+          - containerPort: 9300
+          - containerPort: 9200
+        env:
+          - name: discovery.type
+            value: single-node
+          - name: ES_JAVA_OPTS
+            value: "-Xms1g -Xmx1g"
+          - name: ELASTIC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: elastic-secret
+        resources:
+          requests:
+            memory: "4000Mi"
+            cpu: "300m"
+        securityContext:
+            capabilities:
+              add: ["SYS_CHROOT"] 
+        volumeMounts:
+          - mountPath: /bitnami/elasticsearch/data
+            name: elastic-volume
+            subPath: data
+      volumes:
+        - name: elastic-volume
+          persistentVolumeClaim: 
+            claimName: elastic-claim
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elastic-service
+  namespace: elastic
+spec:
+  selector:
+    app: elastic
+  ports:
+    - port: 9300
+      targetPort: 9300 
+      name: '9300'
+    - port: 9200
+      targetPort: 9200
+      name: '9200'
