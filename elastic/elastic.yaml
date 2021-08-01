@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: elastic
-        image: docker.elastic.co/elasticsearch/elasticsearch:7.13.2
+        image: bitnami/elasticsearch:6.8.17-debian-10-r22
         ports:
           - containerPort: 9300
           - containerPort: 9200
