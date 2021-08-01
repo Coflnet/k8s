@@ -26,11 +26,6 @@ spec:
             value: single-node
           - name: ES_JAVA_OPTS
             value: "-Xms1g -Xmx1g"
-          - name: ELASTIC_USERNAME
-            valueFrom:
-              configMapKeyRef:
-                key: username
-                name: elastic-config
           - name: ELASTIC_PASSWORD
             valueFrom:
               secretKeyRef:
