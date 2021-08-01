@@ -25,6 +25,10 @@ spec:
             value: http://kibana.flou21.de
           - name: ELASTICSEARCH_HOSTS
             value: https://elastic.flou21.de
+        resources:
+          requests:
+            memory: "1000Mi"
+            cpu: "150m"
 ---
 apiVersion: v1
 kind: Service

@@ -26,10 +26,20 @@ spec:
             value: single-node
           - name: ES_JAVA_OPTS
             value: "-Xms1g -Xmx1g"
+          - name: ELASTICSEARCH_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                key: username
+                name: elastic-config
+          - name: ELASTICSEARCH_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: elastic-secret
         resources:
           requests:
-            memory: "1000Mi"
-            cpu: "800m"
+            memory: "4000Mi"
+            cpu: "300m"
         securityContext:
             capabilities:
               add: ["SYS_CHROOT"] 
