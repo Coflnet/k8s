@@ -19,7 +19,7 @@ spec:
         - name: regcred
       containers:
       - name: blog
-        image: registry.flou21.de/coflnet-blog:d9d9e6e4-e16a-461a-858a-34f2b843335f
+        image: registry.flou21.de/coflnet-blog:76ff64be-70f5-43cc-9312-de9901fb27b5
         ports:
           - containerPort: 80
         resources:
