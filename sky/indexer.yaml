@@ -26,9 +26,9 @@ spec:
           httpGet:
             path: /status
             port: 8008
-            initialDelaySeconds: 30
-            periodSeconds: 15 
-            failureThreshold: 2
+          initialDelaySeconds: 30
+          periodSeconds: 15 
+          failureThreshold: 2
         env:
           - name: TOKEN_SECRET
             valueFrom:
