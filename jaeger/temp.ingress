@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  creationTimestamp: "2021-08-04T18:31:50Z"
+  generation: 1
+  labels:
+    app: jaeger
+    app.kubernetes.io/component: query-ingress
+    app.kubernetes.io/instance: simplest
+    app.kubernetes.io/managed-by: jaeger-operator
+    app.kubernetes.io/name: simplest-query
+    app.kubernetes.io/part-of: jaeger
+  name: simplest-query
+  namespace: observability
+  ownerReferences:
+  - apiVersion: jaegertracing.io/v1
+    controller: true
+    kind: Jaeger
+    name: simplest
+    uid: afbfbf14-37bd-4657-9f59-2232fb602e2b
+  resourceVersion: "15813175"
+  uid: 1ca5b0a4-b1ce-4fe9-b392-09c7ca7bd379
+spec:
+  defaultBackend:
+    service:
+      name: simplest-query
+      port:
+        number: 16686
+status:
+  loadBalancer:
+    ingress:
+    - ip: 161.97.156.128
+    - ip: 194.163.154.104
+    - ip: 207.180.224.6
+    - ip: 75.119.156.152

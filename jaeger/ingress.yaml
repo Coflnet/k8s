@@ -3,10 +3,10 @@ kind: Ingress
 metadata:
   name: jaeger-ingress
   namespace: observability
-#  annotations: 
-#    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - foo'
-#    nginx.ingress.kubernetes.io/auth-secret: basic-auth
-#    nginx.ingress.kubernetes.io/auth-type: basic
+  annotations: 
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - foo'
+    nginx.ingress.kubernetes.io/auth-secret: basic-auth
+    nginx.ingress.kubernetes.io/auth-type: basic
   labels:
     name: jaeger-ingress
 spec:
