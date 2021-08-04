@@ -4,4 +4,4 @@ metadata:
   name: elastic-config
   namespace: kube-system
 data:
-  username: elastic-user
+  username: elastic
