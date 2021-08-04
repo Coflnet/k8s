@@ -16,4 +16,4 @@ spec:
           service:
             name: simplest-query
             port:
-              number: 16886
+              number: 16686
