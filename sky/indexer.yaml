@@ -22,13 +22,13 @@ spec:
         image: registry.flou21.de/sky:a77ebf92-76be-4274-8e15-b848950fee55
         ports:
           - containerPort: 8008
-        livenessProbe:
-          httpGet:
-            path: /status
-            port: 8008
-          initialDelaySeconds: 30
-          periodSeconds: 15 
-          failureThreshold: 2
+#        livenessProbe:
+#          httpGet:
+#            path: /status
+#            port: 8008
+#          initialDelaySeconds: 30
+#          periodSeconds: 15 
+#          failureThreshold: 2
         env:
           - name: TOKEN_SECRET
             valueFrom:
