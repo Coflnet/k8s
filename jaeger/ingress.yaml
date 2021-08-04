@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jaeger-ingress
+  namespace: observability
+  annotations: 
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - foo'
+    nginx.ingress.kubernetes.io/auth-secret: basic-auth
+    nginx.ingress.kubernetes.io/auth-type: basic
+  labels:
+    name: jaeger-ingress
+spec:
+  rules:
+  - host: jaeger.flou21.de
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        path: "/"
+        backend:
+          service:
+            name: simplest-query
+            port: 
+              number: 16686
