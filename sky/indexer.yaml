@@ -29,6 +29,7 @@ spec:
           initialDelaySeconds: 300
           periodSeconds: 15 
           failureThreshold: 2
+          timeoutSeconds: 15
         env:
           - name: TOKEN_SECRET
             valueFrom:
