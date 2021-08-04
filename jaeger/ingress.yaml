@@ -5,6 +5,9 @@ metadata:
   namespace: observability
   annotations:
     kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required '
+    nginx.ingress.kubernetes.io/auth-secret: auth
+    nginx.ingress.kubernetes.io/auth-type: basic
 spec:
   rules:
   - host: jaeger.flou21.de
