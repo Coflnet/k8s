@@ -23,6 +23,7 @@ spec:
       - --context={{inputs.parameters.app_repo}}#refs/heads/{{inputs.parameters.branch}}
       - --context-sub-path={{inputs.parameters.sub_path}}
       - --destination={{inputs.parameters.container_image}}:{{inputs.parameters.container_tag}}
+      - --cache=true
       resources:
         requests:
           memory: 3000Mi
