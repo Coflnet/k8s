@@ -17,10 +17,6 @@ spec:
           securityContext:
             capabilities:
               add: ["SYS_CHROOT"]
-          resources:
-            requests:
-              cpu: 200m
-              memory: 4Gi
     volumeClaimTemplates:
     - metadata:
         name: elasticsearch-data
