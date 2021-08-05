@@ -6,12 +6,14 @@ metadata:
 spec:
   version: 7.14.0
   count: 1
-  containers: 
-  - name: kibana
-    resources: 
-      requets: 
-        cpu: 50m
-        memory: 1000Mi
+  podTemplate:
+    spec:
+      containers: 
+      - name: kibana
+        resources: 
+          requets: 
+            cpu: 50m
+            memory: 1000Mi
 
   elasticsearchRef:
     name: quickstart
