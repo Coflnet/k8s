@@ -20,7 +20,7 @@ spec:
           resources:
             requests:
               cpu: 200m
-              memory: 4500Mi
+              memory: 4Gi
     volumeClaimTemplates:
     - metadata:
         name: elasticsearch-data
