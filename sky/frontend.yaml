@@ -20,7 +20,7 @@ spec:
         - name: regcred
       containers:
       - name: frontend
-        image: registry.flou21.de/sky-frontend:d7f0296a-c3f4-460e-9197-7730d9eeb6dc
+        image: registry.flou21.de/sky-frontend:806fd017-8772-434c-a531-06d173845050
         ports:
           - containerPort: 80
         resources:
