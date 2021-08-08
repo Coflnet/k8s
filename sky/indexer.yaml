@@ -43,11 +43,11 @@ spec:
               secretKeyRef:
                 key: api
                 name: secret
-          - name: DBConnection
-            valueFrom:
-              secretKeyRef:
-                key: connection_live
-                name: secret
+                  # - name: DBConnection
+                  #   valueFrom:
+                  #     secretKeyRef:
+                  #       key: connection_live
+                  #       name: secret
           - name: MODE
             value: indexer
           - name: stripeKey
