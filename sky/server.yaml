@@ -33,7 +33,7 @@ spec:
           - name: DBConnection
             valueFrom:
               secretKeyRef:
-                key: connection_live
+                key: connection_secondary
                 name: secret
           - name: redisCon
             value: redis-service
