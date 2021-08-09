@@ -47,7 +47,7 @@ spec:
                 dag:
                   tasks:
 
-                  - name: build
+                  - name: build-firefox-base
                     templateRef:
                       name: build-container-image
                       template: build-kaniko-git
@@ -61,6 +61,99 @@ spec:
                         value: firefox86
                       - name: sub_path 
                         value: firefox86/base
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+                      - name: branch
+                        value: main
+                        
+                  - name: build-firefox
+                    templateRef:
+                      name: build-container-image
+                      template: build-kaniko-git
+                    arguments:
+                      parameters:
+                      - name: app_repo
+                        value: git://github.com/Flou21/cypress-executor
+                      - name: container_image
+                        value: registry.flou21.de/firefox-cypress-runner
+                      - name: container_tag
+                        value: firefox86
+                      - name: sub_path 
+                        value: firefox86
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+                      - name: branch
+                        value: main
+                    dependencies: ["build-firefox-base"]
+
+                  - name: build-chrome91
+                    templateRef:
+                      name: build-container-image
+                      template: build-kaniko-git
+                    arguments:
+                      parameters:
+                      - name: app_repo
+                        value: git://github.com/Flou21/cypress-executor
+                      - name: container_image
+                        value: registry.flou21.de/firefox-cypress-runner
+                      - name: container_tag
+                        value: chrome91
+                      - name: sub_path 
+                        value: chrome91
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+                      - name: branch
+                        value: main
+
+                  - name: build-chrome87
+                    templateRef:
+                      name: build-container-image
+                      template: build-kaniko-git
+                    arguments:
+                      parameters:
+                      - name: app_repo
+                        value: git://github.com/Flou21/cypress-executor
+                      - name: container_image
+                        value: registry.flou21.de/firefox-cypress-runner
+                      - name: container_tag
+                        value: chrome87
+                      - name: sub_path 
+                        value: chrome87
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+                      - name: branch
+                        value: main
+
+                  - name: build-edge88
+                    templateRef:
+                      name: build-container-image
+                      template: build-kaniko-git
+                    arguments:
+                      parameters:
+                      - name: app_repo
+                        value: git://github.com/Flou21/cypress-executor
+                      - name: container_image
+                        value: registry.flou21.de/firefox-cypress-runner
+                      - name: container_tag
+                        value: edge88
+                      - name: sub_path 
+                        value: edge88
                       - name: git_user
                         value: "Flou21"
                       - name: git_secret_name
