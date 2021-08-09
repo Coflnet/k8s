@@ -1,0 +1,73 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: cypress-executor-webhook
+  namespace: argo-events
+spec:
+  template:
+    serviceAccountName: argo-events-sa
+  dependencies:
+  - name: cypress-executor
+    eventSourceName: cypress-executor-eventsource
+    eventName: cypress-executor
+  triggers:
+  - template:
+      name: trigger
+      argoWorkflow:
+        group: argoproj.io
+        version: v1alpha1
+        resource: workflows
+        operation: submit
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              namespace: argo
+              generateName: build-cypress-executor-
+              labels:
+                workflows.argoproj.io/archive-strategy: "false"
+            spec:
+              imagePullSecrets:
+                - name: regcred
+              entrypoint: build
+              serviceAccountName: argo
+              volumes:
+              - name: kaniko-secret
+                secret:
+                  secretName: regcred
+                  items:
+                    - key: .dockerconfigjson
+                      path: config.json
+              - name: secret
+                secret:
+                  secretName: secret
+              templates:
+              - name: build
+                dag:
+                  tasks:
+
+
+
+                  - name: build
+                    templateRef:
+                      name: build-firefox-base
+                      template: build-kaniko-git
+                    arguments:
+                      parameters:
+                      - name: app_repo
+                        value: git://github.com/Flou21/cypress-executor
+                      - name: container_image
+                        value: registry.flou21.de/firefox-cypress-browser
+                      - name: container_tag
+                        value: firefox86
+                      - name: sub_path 
+                        value: firefox86/base/Dockerfile
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+                      - name: branch
+                        value: main
