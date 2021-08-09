@@ -1,0 +1,94 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: base-images-webhook
+  namespace: argo-events
+spec:
+  template:
+    serviceAccountName: argo-events-sa
+  dependencies:
+  - name: base-images
+    eventSourceName: base-images-eventsource
+    eventName: base-images
+  triggers:
+  - template:
+      name: trigger
+      argoWorkflow:
+        group: argoproj.io
+        version: v1alpha1
+        resource: workflows
+        operation: submit
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              namespace: argo
+              generateName: build-base-images-
+              labels:
+                workflows.argoproj.io/archive-strategy: "false"
+            spec:
+              imagePullSecrets:
+                - name: regcred
+              entrypoint: build
+              serviceAccountName: argo
+              volumes:
+              - name: kaniko-secret
+                secret:
+                  secretName: regcred
+                  items:
+                    - key: .dockerconfigjson
+                      path: config.json
+              - name: secret
+                secret:
+                  secretName: secret
+              templates:
+              - name: build
+                dag:
+                  tasks:
+
+                  - name: build-alpine-git
+                    templateRef:
+                      name: build-container-image
+                      template: build-kaniko-git
+                    arguments:
+                      parameters:
+                      - name: app_repo
+                        value: git://github.com/Coflnet/k8s
+                      - name: container_image
+                        value: registry.flou21.de/alpine-git
+                      - name: container_tag
+                        value: latest
+                      - name: sub_path 
+                        value: images/alpine-git
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+                      - name: branch
+                        value: main
+                        
+                  - name: build-golang-node-cypress
+                    templateRef:
+                      name: build-container-image
+                      template: build-kaniko-git
+                    arguments:
+                      parameters:
+                      - name: app_repo
+                        value: git://github.com/Coflnet/k8s
+                      - name: container_image
+                        value: registry.flou21.de/golang-node-cypress
+                      - name: container_tag
+                        value: "1.16"
+                      - name: sub_path 
+                        value: images/golang-node-cypress
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+                      - name: branch
+                        value: main
