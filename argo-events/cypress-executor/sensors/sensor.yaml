@@ -60,7 +60,7 @@ spec:
                       - name: container_tag
                         value: firefox86
                       - name: sub_path 
-                        value: firefox86/base/Dockerfile
+                        value: firefox86/base
                       - name: git_user
                         value: "Flou21"
                       - name: git_secret_name
