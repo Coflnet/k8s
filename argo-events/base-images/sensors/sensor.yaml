@@ -60,7 +60,7 @@ spec:
                       - name: container_tag
                         value: latest
                       - name: sub_path 
-                        value: images/alpine-git
+                        value: ./images/alpine-git
                       - name: git_user
                         value: "Flou21"
                       - name: git_secret_name
@@ -83,7 +83,7 @@ spec:
                       - name: container_tag
                         value: "1.16"
                       - name: sub_path 
-                        value: images/golang-node-cypress
+                        value: ./images/golang-node-cypress
                       - name: git_user
                         value: "Flou21"
                       - name: git_secret_name
