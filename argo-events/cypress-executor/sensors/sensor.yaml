@@ -47,11 +47,9 @@ spec:
                 dag:
                   tasks:
 
-
-
                   - name: build
                     templateRef:
-                      name: build-firefox-base
+                      name: build-container-image
                       template: build-kaniko-git
                     arguments:
                       parameters:
