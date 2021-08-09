@@ -88,5 +88,15 @@ spec:
             name: static-server-eventsource-eventsource-svc
             port:
               number: 12000
+  - host: argo-events.flou21.de
+    http:
+      paths:
+      - path: /cypress-executor
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: cypress-executor-eventsource-eventsource-svc
+            port:
+              number: 12000
 
 
