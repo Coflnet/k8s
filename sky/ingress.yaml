@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: sky-ingress
@@ -11,49 +11,90 @@ spec:
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: light-client-service
-          servicePort: 8008
+          service:
+            name: light-client-service
+            port:
+              number: 8008
   - host: sky-preview.flou21.de
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: light-client-preview-service
-          servicePort: 8008
+          service: 
+            name: light-client-preview-service
+            port:
+              number: 8008
   - host: sky.coflnet.com
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: light-client-service
-          servicePort: 8008
+          service:
+            name: light-client-service
+            port:
+              number: 8008
   - host: sky-preview.coflnet.com
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: light-client-preview-service
-          servicePort: 8008
+          service:
+            name: light-client-preview-service
+            port:
+              number: 8008
+  - host: sky.coflnet.com
+    http:
+      paths:
+      - path: /api
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: light-client-service
+            port:
+              number: 80
+  - host: sky-preview.coflnet.com
+    http:
+      paths:
+      - path: /api
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: light-client-preview-service
+            port:
+              number: 8008
   - host: skyblock.coflnet.com
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: light-client-service
-          servicePort: 8008
+          service:
+            name: light-client-service
+            port:
+              number: 8008
   - host: skyblock-backend.coflnet.com
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: indexer-service
-          servicePort: 8008
+          service:
+            name: indexer-service
+            port:
+              number: 8008
   - host: coflnet.com
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: light-client-service
-          servicePort: 8008
+          service:
+            name: light-client-service
+            port:
+              number: 8008
 
