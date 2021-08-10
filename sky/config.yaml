@@ -6,5 +6,5 @@ metadata:
 data:
   user: sky 
   database: sky
-  jaeger_agent_host: hypixel-skyblock-core
-  jaeger_service_name: jaeger-agent.observability.svc.cluster.local
+  jaeger_service_name: hypixel-skyblock-core
+  jaeger_agent_host: jaeger-agent.observability.svc.cluster.local
