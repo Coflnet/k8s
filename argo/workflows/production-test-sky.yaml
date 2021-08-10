@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: production-test-sky-cron-wf
+  namesapce: argo
+spec:
+  schedule: "0 * * * *"
+  concurrencyPolicy: "Replace"
+  startingDeadlineSeconds: 0
+  workflowSpec:
+    entrypoint: production-tests
+    templates:
+    - name: production-tests
+      dag:
+        tasks:
+        - name: production-cypress
+          templateRef:
+            name: cypress-tests-chrome91
+            template: cypress-tests-chrome91
+          arguments: 
+            parameters:
+              - name: git_repository
+                value: "https://github.com/Coflnet/hypixel-react"
+              - name: spec 
+                value: "cypress/integration/production.spec.ts"

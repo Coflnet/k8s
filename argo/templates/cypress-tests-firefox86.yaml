@@ -10,6 +10,7 @@ spec:
       inputs:
         parameters:
           - name: git_repository
+          - name: spec
       container:
         image: registry.flou21.de/cypress-runner:firefox86
         imagePullPolicy: Always
@@ -22,3 +23,4 @@ spec:
         - --repository="{{inputs.parameters.git_repository}}"
         - --branch="master"
         - --browser=firefox
+        - --spec="{{inputs.parameters.spec}}"

@@ -146,6 +146,8 @@ spec:
                       parameters:
                         - name: git_repository
                           value: "https://github.com/Coflnet/hypixel-react"
+                        - name: spec
+                          value: "all"
                     dependencies: [argo-sync]
                   - name: cypress-tests-chrome87
                     templateRef:
@@ -155,6 +157,8 @@ spec:
                       parameters:
                         - name: git_repository
                           value: "https://github.com/Coflnet/hypixel-react"
+                        - name: spec
+                          value: "all"
                     dependencies: [argo-sync]
                   - name: cypress-tests-firefox86
                     templateRef:
@@ -164,6 +168,8 @@ spec:
                       parameters:
                         - name: git_repository
                           value: "https://github.com/Coflnet/hypixel-react"
+                        - name: spec
+                          value: "all"
                     dependencies: [argo-sync]
                   - name: cypress-tests-edge88
                     templateRef:
@@ -173,4 +179,6 @@ spec:
                       parameters:
                         - name: git_repository
                           value: "https://github.com/Coflnet/hypixel-react"
+                        - name: spec
+                          value: "all"
                     dependencies: [argo-sync]
