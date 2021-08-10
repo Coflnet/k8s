@@ -66,7 +66,7 @@ spec:
           service:
             name: light-client-preview-service
             port:
-              number: 8008
+              number: 80
   - host: skyblock.coflnet.com
     http:
       paths:
