@@ -9,6 +9,13 @@ spec:
   startingDeadlineSeconds: 0
   imagePullSecrets:
     - name: regcred
+  volumes:
+  - name: kaniko-secret
+    secret:
+      secretName: regcred
+      items:
+        - key: .dockerconfigjson
+          path: config.json
   workflowSpec:
     entrypoint: production-tests
     templates:
