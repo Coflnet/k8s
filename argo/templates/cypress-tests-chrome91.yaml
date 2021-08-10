@@ -10,6 +10,7 @@ spec:
       inputs:
         parameters:
           - name: git_repository
+          - name: cypress_base_url
           - name: spec
       container:
         image: registry.flou21.de/cypress-runner:chrome91

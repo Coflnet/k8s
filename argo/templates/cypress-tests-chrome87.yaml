@@ -11,6 +11,7 @@ spec:
         parameters:
           - name: git_repository
           - name: spec
+          - name: cypress_base_url
       container:
         image: registry.flou21.de/cypress-runner:chrome87
         imagePullPolicy: Always
