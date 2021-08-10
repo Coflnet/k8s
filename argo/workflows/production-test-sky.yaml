@@ -7,6 +7,7 @@ spec:
   schedule: "0 * * * *"
   concurrencyPolicy: "Replace"
   startingDeadlineSeconds: 0
+  serviceAccountName: argo
   imagePullSecrets:
     - name: regcred
   volumes:
@@ -16,6 +17,12 @@ spec:
       items:
         - key: .dockerconfigjson
           path: config.json
+  - name: secret
+    secret:
+      secretName: secret
+  - name: sky-argo-secret
+    secret:
+      secretName: sky-argo-secret
   workflowSpec:
     entrypoint: production-tests
     templates:
