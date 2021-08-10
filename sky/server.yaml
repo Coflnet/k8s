@@ -44,6 +44,16 @@ spec:
             value: frontend
           - name: FRONTEND_STAGING
             value: frontend-preview
+          - name: JAEGER_SERVICE_NAME
+            valueFrom: 
+              configMapKeyRef:
+                name: config
+                key: jaeger_service_name
+          - name: JAEGER_AGENT_HOST
+            valueFrom: 
+              configMapKeyRef:
+                name: config
+                key: jaeger_agent_host
         resources:
           requests:
             memory: "500Mi"
