@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: CronWorkflow
 metadata:
   name: production-test-sky-cron-wf
-  namesapce: argo
+  namespace: argo
 spec:
   schedule: "0 * * * *"
   concurrencyPolicy: "Replace"
