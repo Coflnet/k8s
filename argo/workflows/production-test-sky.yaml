@@ -8,23 +8,17 @@ spec:
   concurrencyPolicy: "Replace"
   startingDeadlineSeconds: 0
   serviceAccountName: argo
-  imagePullSecrets:
-    - name: regcred
-  volumes:
-  - name: kaniko-secret
-    secret:
-      secretName: regcred
-      items:
-        - key: .dockerconfigjson
-          path: config.json
-  - name: secret
-    secret:
-      secretName: secret
-  - name: sky-argo-secret
-    secret:
-      secretName: sky-argo-secret
   workflowSpec:
     entrypoint: production-tests
+    imagePullSecrets:
+      - name: regcred
+    volumes:
+    - name: kaniko-secret
+      secret:
+        secretName: regcred
+        items:
+          - key: .dockerconfigjson
+            path: config.json
     templates:
     - name: production-tests
       dag:
