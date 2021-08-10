@@ -33,3 +33,5 @@ spec:
                 value: "https://github.com/Coflnet/hypixel-react"
               - name: spec 
                 value: "cypress/integration/production.spec.ts"
+              - name: cypress_base_url
+                value: "https://sky-preview.coflnet.com"

@@ -11,9 +11,13 @@ spec:
         parameters:
           - name: git_repository
           - name: spec
+          - name: cypress_base_url
       container:
         image: registry.flou21.de/cypress-runner:firefox86
         imagePullPolicy: Always
+        env:
+        - name: CYPRESS_BASE_URL
+          value: "{{inputs.parameters.cypress_base_url}}"
         resources:
           requests:
             memory: 1500Mi

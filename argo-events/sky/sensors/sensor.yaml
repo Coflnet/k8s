@@ -148,6 +148,8 @@ spec:
                           value: "https://github.com/Coflnet/hypixel-react"
                         - name: spec
                           value: "all"
+                        - name: cypress_base_url
+                          value: "https://sky-preview.coflnet.com"
                     dependencies: [argo-sync]
                   - name: cypress-tests-chrome87
                     templateRef:
@@ -159,6 +161,8 @@ spec:
                           value: "https://github.com/Coflnet/hypixel-react"
                         - name: spec
                           value: "all"
+                        - name: cypress_base_url
+                          value: "https://sky-preview.coflnet.com"
                     dependencies: [argo-sync]
                   - name: cypress-tests-firefox86
                     templateRef:
@@ -170,6 +174,8 @@ spec:
                           value: "https://github.com/Coflnet/hypixel-react"
                         - name: spec
                           value: "all"
+                        - name: cypress_base_url
+                          value: "https://sky-preview.coflnet.com"
                     dependencies: [argo-sync]
                   - name: cypress-tests-edge88
                     templateRef:
@@ -181,4 +187,6 @@ spec:
                           value: "https://github.com/Coflnet/hypixel-react"
                         - name: spec
                           value: "all"
+                        - name: cypress_base_url
+                          value: "https://sky-preview.coflnet.com"
                     dependencies: [argo-sync]
