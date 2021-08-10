@@ -7,6 +7,8 @@ spec:
   schedule: "0 * * * *"
   concurrencyPolicy: "Replace"
   startingDeadlineSeconds: 0
+  imagePullSecrets:
+    - name: regcred
   workflowSpec:
     entrypoint: production-tests
     templates:
