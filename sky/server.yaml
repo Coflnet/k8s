@@ -94,6 +94,10 @@ spec:
   ports:
     - port: 8008
       targetPort: 8008
+      name: "websocket"
+    - port: 8008
+      targetPort: 8008
+      name: "asp"
 ---
 apiVersion: v1
 kind: Service
