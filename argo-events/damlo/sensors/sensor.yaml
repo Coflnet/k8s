@@ -90,13 +90,6 @@ spec:
                         value: ./damlo/frontend.yaml
                       - name: message
                         value: "damlo - version bump {{workflow.uid}}"
-                    retryStrategy:
-                          limit: 10
-                          retryPolicy: "Always"
-                          backoff:
-                            duration: "1"
-                            factor: 2
-                            maxDuration: "1m"
                     dependencies: [build]
                   - name: argo-sync
                     templateRef: 

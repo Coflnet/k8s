@@ -90,11 +90,4 @@ spec:
                         value: ./blog/blog.yaml
                       - name: message
                         value: "blog - version bump {{workflow.uid}}"
-                    retryStrategy:
-                          limit: 10
-                          retryPolicy: "Always"
-                          backoff:
-                            duration: "1"
-                            factor: 2
-                            maxDuration: "1m"
                     dependencies: [build]
