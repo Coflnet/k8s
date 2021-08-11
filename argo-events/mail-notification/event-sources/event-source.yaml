@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: EventSource
 metadata:
-  name: mail-notifcation-eventsource
+  name: mail-notification-eventsource
   namespace: argo-events
 spec:
   service:
@@ -11,5 +11,5 @@ spec:
   webhook:
     mail-notifcation:
       port: "12000"
-      endpoint: /mail-notifcation
+      endpoint: /mail-notification
       method: POST
