@@ -9,7 +9,7 @@ spec:
       - port: 12000
         targetPort: 12000
   webhook:
-    mail-notifcation:
+    mail-notification:
       port: "12000"
       endpoint: /mail-notification
       method: POST
