@@ -108,4 +108,14 @@ spec:
             name: base-images-eventsource-eventsource-svc
             port:
               number: 12000
+  - host: argo-events.flou21.de
+    http:
+      paths:
+      - path: /mail-notification
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: mail-notification-eventsource-eventsource-svc
+            port:
+              number: 12000
 
