@@ -94,6 +94,13 @@ spec:
                         value: ./sky/server.yaml
                       - name: message
                         value: "sky server - version bump {{workflow.uid}}"
+                    retryStrategy:
+                          limit: 10
+                          retryPolicy: "Always"
+                          backoff:
+                            duration: "1"
+                            factor: 2
+                            maxDuration: "1m"
                     dependencies: [build]
                   - name: promote-indexer
                     templateRef:
@@ -117,6 +124,13 @@ spec:
                         value: ./sky/indexer.yaml
                       - name: message
                         value: "sky indexer - version bump {{workflow.uid}}"
+                    retryStrategy:
+                          limit: 10
+                          retryPolicy: "Always"
+                          backoff:
+                            duration: "1"
+                            factor: 2
+                            maxDuration: "1m"
                     dependencies: [promote-server]
 
                   - name: argo-sync
