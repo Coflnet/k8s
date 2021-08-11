@@ -59,7 +59,7 @@ spec:
                         value: git://github.com/Coflnet/hypixel-react.git
                       - name: branch
                         value: google-play-payments
-                      - name: container_image
+                      - name: master
                         value: registry.flou21.de/sky-frontend
                       - name: container_tag
                         value: "{{workflow.uid}}"
