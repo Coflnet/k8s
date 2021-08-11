@@ -53,7 +53,7 @@ spec:
                     arguments:
                       parameters:
                       - name: app_repo
-                        value: git://github.com/Coflnet/Blog.git
+                        value: git://github.com/Flou21/mail-notification.git
                       - name: container_image
                         value: registry.flou21.de/mail-notification
                       - name: container_tag
