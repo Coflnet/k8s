@@ -59,6 +59,13 @@ spec:
             spec:
               entrypoint: create-pr-env
               serviceAccountName: argo
+              retryStrategy:
+                    limit: 10
+                    retryPolicy: "Always"
+                    backoff:
+                      duration: "1"
+                      factor: 2
+                      maxDuration: "1m"
               imagePullSecrets:
                 - name: regcred
               volumes:
