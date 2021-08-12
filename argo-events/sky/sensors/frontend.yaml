@@ -36,7 +36,7 @@ spec:
                     backoff:
                       duration: "1"
                       factor: 2
-                      maxDuration: "1m"
+                      maxDuration: "30m"
               imagePullSecrets:
                 - name: regcred
               volumes:
