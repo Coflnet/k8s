@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: send-mail
+  namespace: argo
+spec:
+  serviceAccountName: argo-events-sa
+  templates:
+  - name: send-mail
+    inputs:
+      parameters:
+        - name: message
+    container:
+      image: registry.flou21.de/github-message:latest
+      imagePullPolicy: Always
+      env:
+        - name: SMTP_HOST
+          value: "mail.coflnet.com"
+        - name: SMTP_PORT
+          value: "587"
+        - name: SENDER_NAME
+          value: "ci@coflnet.com"
+        - name: SENDER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name:  "mail-secret"
+                key: "password"
+        - name: RECIPIENTS
+          value: "muehlhans.f@coflnet.com"
+        - name: MESSAGE
+          value: "{{inputs.parameters.message}}"

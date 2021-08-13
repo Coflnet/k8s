@@ -35,3 +35,16 @@ spec:
                 value: "cypress/integration/production.spec.ts"
               - name: cypress_base_url
                 value: "https://sky-preview.coflnet.com"
+
+        - name: send-mail
+          templateRef:
+            name: cypress-tests-chrome91
+            template: cypress-tests-chrome91
+          arguments: 
+            parameters:
+              - name: git_repository
+                value: "https://github.com/Coflnet/hypixel-react"
+              - name: spec 
+                value: "cypress/integration/production.spec.ts"
+              - name: cypress_base_url
+                value: "https://sky-preview.coflnet.com"
