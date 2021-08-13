@@ -35,8 +35,8 @@ spec:
                 name: secret
         resources:
           requests:
-            memory: "300Mi"
-            cpu: "300m"
+            memory: "100Mi"
+            cpu: "20m"
 ---
 apiVersion: v1
 kind: Service
