@@ -20,7 +20,7 @@ spec:
           value: "{{inputs.parameters.cypress_base_url}}"
         resources:
           requests:
-            memory: 3500Mi
+            memory: 2500Mi
             cpu: 4000m
         args:
         - /app
