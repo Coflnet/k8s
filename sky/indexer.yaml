@@ -24,12 +24,12 @@ spec:
           - containerPort: 8008
         livenessProbe:
           httpGet:
-            path: /status
-            port: 8008
+            path: /metrics
+            port: 80
           initialDelaySeconds: 300
-          periodSeconds: 15 
-          failureThreshold: 2
-          timeoutSeconds: 15
+          periodSeconds: 10
+          failureThreshold: 3
+          timeoutSeconds: 10
         env:
           - name: TOKEN_SECRET
             valueFrom:
