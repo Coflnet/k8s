@@ -21,10 +21,10 @@ spec:
         - name: SENDER_NAME
           value: "ci@coflnet.com"
         - name: SENDER_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name:  "mail-secret"
-                key: "password"
+          valueFrom:
+            secretKeyRef:
+              name:  "mail-secret"
+              key: "password"
         - name: RECIPIENTS
           value: "muehlhans.f@coflnet.com"
         - name: MESSAGE
