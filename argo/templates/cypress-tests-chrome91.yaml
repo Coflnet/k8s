@@ -20,8 +20,8 @@ spec:
           value: "{{inputs.parameters.cypress_base_url}}"
         resources:
           requests:
-            memory: 1500Mi
-            cpu: 1000m
+            memory: 3500Mi
+            cpu: 4000m
         args:
         - /app
         - --repository="{{inputs.parameters.git_repository}}"
