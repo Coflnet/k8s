@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: indexer
   namespace: sky
@@ -7,7 +7,6 @@ metadata:
     app: indexer
 spec:
   replicas: 1
-  serviceName: "indexer-service"
   selector:
     matchLabels:
       app: indexer
@@ -85,8 +84,8 @@ spec:
                 key: jaeger_agent_host
         resources:
           requests:
-            memory: "2000Mi"
-            cpu: "3000m"
+            memory: "1000Mi"
+            cpu: "2000m"
         volumeMounts:
           - mountPath: /data
             name: indexer-mount-migration
