@@ -92,8 +92,8 @@ spec:
                 key: jaeger_agent_host
         resources:
           requests:
-            memory: "2000Mi"
-            cpu: "3000m"
+            memory: "4000Mi"
+            cpu: "5000m"
         volumeMounts:
           - mountPath: /data
             name: indexer-mount-migration
