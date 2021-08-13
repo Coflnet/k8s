@@ -92,7 +92,7 @@ spec:
                 key: jaeger_agent_host
         resources:
           requests:
-            memory: "4000Mi"
+            memory: "3000Mi"
             cpu: "5000m"
         volumeMounts:
           - mountPath: /data
