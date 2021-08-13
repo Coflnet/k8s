@@ -11,7 +11,7 @@ spec:
       parameters:
         - name: message
     container:
-      image: registry.flou21.de/github-message:latest
+      image: registry.flou21.de/mail-notification:latest
       imagePullPolicy: Always
       env:
         - name: SMTP_HOST
