@@ -1,19 +1,19 @@
-# apiVersion: kibana.k8s.elastic.co/v1
-# kind: Kibana
-# metadata:
-#   name: quickstart
-#   namespace: elastic-system
-# spec:
-#   version: 7.14.0
-#   count: 1
-#   podTemplate:
-#     spec:
-#       containers: 
-#       - name: kibana
-#         resources: 
-#           requests: 
-#             cpu: 50m
-#             memory: 1000Mi
-# 
-#   elasticsearchRef:
-#     name: quickstart
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: quickstart
+  namespace: elastic-system
+spec:
+  version: 7.14.0
+  count: 1
+  podTemplate:
+    spec:
+      containers: 
+      - name: kibana
+        resources: 
+          requests: 
+            cpu: 50m
+            memory: 1000Mi
+
+  elasticsearchRef:
+    name: quickstart
