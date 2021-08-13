@@ -19,7 +19,7 @@ spec:
         - name: regcred
       containers:
       - name: backend
-        image: registry.flou21.de/songvoter-backend:latest
+        image: registry.flou21.de/songvoter-backend:80b58cbe-46bd-4a03-af6a-d2e1dd4c8f40
         ports:
           - containerPort: 4200
         env:
