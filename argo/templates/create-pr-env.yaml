@@ -25,6 +25,10 @@ spec:
     container:
       image: registry.flou21.de/pr-env:latest
       imagePullPolicy: Always
+      resources:
+        requests:
+          cpu: "2000m"
+          memory: "3000Mi"
       env:
         - name: PULL_REQUEST_NEW_STATE
           value: "{{inputs.parameters.pull_request_new_state}}"
