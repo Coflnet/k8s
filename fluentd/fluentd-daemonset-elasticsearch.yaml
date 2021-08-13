@@ -90,8 +90,8 @@ spec:
           limits:
             memory: 500Mi
           requests:
-            cpu: 200m
-            memory: 340Mi
+            cpu: 10m
+            memory: 85Mi
         volumeMounts:
         - name: dockercontainerlogdirectory
           mountPath: /var/lib/docker/containers
