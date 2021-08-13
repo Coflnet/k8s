@@ -118,4 +118,14 @@ spec:
             name: mail-notification-eventsource-eventsource-svc
             port:
               number: 12000
+  - host: argo-events.flou21.de
+    http:
+      paths:
+      - path: /songvoter
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: songvoter-eventsource-eventsource-svc
+            port:
+              number: 12000
 
