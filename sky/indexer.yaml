@@ -90,6 +90,16 @@ spec:
               configMapKeyRef:
                 name: config
                 key: jaeger_agent_host
+          - name: JAEGER_SAMPLING_ENDPOINT
+            valueFrom: 
+              configMapKeyRef:
+                name: config
+                key: jaeger_sampling_host
+          - name: DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: reload_config_on_change
         resources:
           requests:
             memory: "3000Mi"

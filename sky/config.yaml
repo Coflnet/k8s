@@ -8,3 +8,5 @@ data:
   database: sky
   jaeger_service_name: hypixel-skyblock-core
   jaeger_agent_host: jaeger-agent.observability.svc.cluster.local
+  jaeger_sampling_host: http://jaeger-agent.observability.svc.cluster.local:5778/sampling
+  reload_config_on_change: "false"
