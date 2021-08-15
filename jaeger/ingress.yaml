@@ -21,3 +21,13 @@ spec:
             name: jaeger-query
             port: 
               number: 16686
+  - host: jaeger.coflnet.com
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        path: "/"
+        backend:
+          service:
+            name: jaeger-query
+            port: 
+              number: 16686
