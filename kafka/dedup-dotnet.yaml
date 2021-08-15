@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-dedup-dotnet
+  namespace: kafka
+  labels:
+    app: kafka-dedup-dotnet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-dedup-dotnet
+  template:
+    metadata:
+      labels:
+        app: kafka-dedup-dotnet
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: kafka-dedup-dotnet
+        image: registry.flou21.de/kafka-dedup-dotnet:d6f93773-6d2e-4b2e-9017-9c794316a65e
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "200m"

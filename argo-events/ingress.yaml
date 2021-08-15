@@ -128,4 +128,14 @@ spec:
             name: songvoter-eventsource-eventsource-svc
             port:
               number: 12000
+  - host: argo-events.flou21.de
+    http:
+      paths:
+      - path: /kafka-dedup-dotnet
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: kafka-dedup-dotnet-eventsource-eventsource-svc
+            port:
+              number: 12000
 

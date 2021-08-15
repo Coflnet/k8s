@@ -1,0 +1,94 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: kafka-dedup-dotnet-webhook
+  namespace: argo-events
+spec:
+  template:
+    serviceAccountName: argo-events-sa
+  dependencies:
+  - name: kafka-dedup-dotnet
+    eventSourceName: kafka-dedup-dotnet-eventsource
+    eventName: kafka-dedup-dotnet
+  triggers:
+  - template:
+      name: trigger
+      argoWorkflow:
+        group: argoproj.io
+        version: v1alpha1
+        resource: workflows
+        operation: submit
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              namespace: argo
+              generateName: build-kafka-dedup-dotnet-
+              labels:
+                workflows.argoproj.io/archive-strategy: "false"
+            spec:
+              imagePullSecrets:
+                - name: regcred
+              entrypoint: build
+              serviceAccountName: argo
+              volumes:
+              - name: kaniko-secret
+                secret:
+                  secretName: regcred
+                  items:
+                    - key: .dockerconfigjson
+                      path: config.json
+              - name: secret
+                secret:
+                  secretName: secret
+              templates:
+              - name: build
+                dag:
+                  tasks:
+                  - name: build
+                    templateRef:
+                      name: build-container-image
+                      template: build-kaniko-git
+                    arguments:
+                      parameters:
+                      - name: app_repo
+                        value: git://github.com/Coflnet/kafka-dedup-dotnet.git
+                      - name: container_image
+                        value: registry.flou21.de/kafka-dedup-dotnet
+                      - name: container_tag
+                        value: "{{workflow.uid}}"
+                      - name: sub_path 
+                        value: .
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+                      - name: branch
+                        value: main
+
+                  - name: promote-kafka-dedup-dotnet
+                    templateRef:
+                      name: promote
+                      template: promote
+                    arguments:
+                      parameters:
+                      - name: tag
+                        value: "{{workflow.uid}}"
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
+                      - name: repo_url
+                        value: "github.com/Coflnet/k8s.git"
+                      - name: image_name
+                        value: registry.flou21.de\/kafka-dedup-dotnet
+                      - name: k8s_file
+                        value: ./kafka/dedup-dotnet.yaml
+                      - name: message
+                        value: "kafka-dedup-dotnet - version bump {{workflow.uid}}"
+                    dependencies: [build]
