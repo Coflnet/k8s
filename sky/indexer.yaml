@@ -90,11 +90,6 @@ spec:
               configMapKeyRef:
                 name: config
                 key: jaeger_agent_host
-          - name: JAEGER_SAMPLING_ENDPOINT
-            valueFrom: 
-              configMapKeyRef:
-                name: config
-                key: jaeger_sampling_host
           - name: DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE
             valueFrom:
               configMapKeyRef:
