@@ -1322,7 +1322,7 @@ spec:
     path: ''
     repoURL: 'https://provectus.github.io/kafka-ui'
     targetRevision: 0.0.1
-    chart: kafka-ui/kafka-ui
+    chart: kafka-ui
     helm:
       valueFiles: []
       values: |-
