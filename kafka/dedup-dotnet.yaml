@@ -20,6 +20,42 @@ spec:
       containers:
       - name: kafka-dedup-dotnet
         image: registry.flou21.de/kafka-dedup-dotnet:d6f93773-6d2e-4b2e-9017-9c794316a65e
+        env:
+        - name: KAFKA_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: kafka_host
+              name: config
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: redis_host
+              name: config
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: redis_password
+              name: secret
+        - name: SOURCE_TOPIC
+          valueFrom:
+            configMapKeyRef:
+              key: source_topic
+              name: config
+        - name: TARGET_TOPIC
+          valueFrom:
+            configMapKeyRef:
+              key: target_topic
+              name: config
+        - name: BATCH_SIZE
+          valueFrom:
+            configMapKeyRef:
+              key: batch_size
+              name: config
+        - name: BATCH_WAIT_TIME
+          valueFrom:
+            configMapKeyRef:
+              key: batch_wait_time
+              name: config
         resources:
           requests:
             memory: "100Mi"
