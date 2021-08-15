@@ -44,3 +44,7 @@ spec:
             parameters:
               - name: message
                 value: "[CI] sky routine production tests failed"
+          continueOn:
+            error: true
+            failed: true
+          dependencies: ["production-tests"]
