@@ -47,4 +47,4 @@ spec:
           continueOn:
             error: true
             failed: true
-          dependencies: ["production-tests"]
+          depends: "production-tests.Failed || production-tests.Errored"
