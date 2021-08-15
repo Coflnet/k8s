@@ -23,7 +23,7 @@ spec:
     - name: production-tests
       dag:
         tasks:
-        - name: production-cypress
+        - name: production-tests
           templateRef:
             name: cypress-tests-chrome91
             template: cypress-tests-chrome91
