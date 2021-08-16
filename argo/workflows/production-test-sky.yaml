@@ -4,7 +4,7 @@ metadata:
   name: production-test-sky-cron-wf
   namespace: argo
 spec:
-  schedule: "0 * * * *"
+  schedule: "*/5 * * * *"
   concurrencyPolicy: "Replace"
   startingDeadlineSeconds: 0
   serviceAccountName: argo
