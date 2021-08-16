@@ -3,3 +3,11 @@ kind: Jaeger
 metadata:
   name: jaeger
   namespace: observability
+spec:
+  strategy: streaming
+  collector:
+    options:
+      kafka: 
+        producer:
+          topic: jaeger-spans
+          brokers: kafka-cluster.kafka.svc.cluster.local:9092
