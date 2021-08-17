@@ -98,7 +98,7 @@ spec:
         resources:
           requests:
             memory: "3000Mi"
-            cpu: "4000m"
+            cpu: "3000m"
         volumeMounts:
           - mountPath: /data
             name: indexer-mount-migration
