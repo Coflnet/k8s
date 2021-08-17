@@ -21,3 +21,7 @@ spec:
       port: "12000"
       endpoint: /sky-frontend
       method: POST
+    sky-core: 
+      port: "12000"
+      endpoint: /sky-core
+      method: POST

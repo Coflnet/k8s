@@ -138,4 +138,14 @@ spec:
             name: kafka-dedup-dotnet-eventsource-eventsource-svc
             port:
               number: 12000
+  - host: argo-events.flou21.de
+    http:
+      paths:
+      - path: /sky-core
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-eventsource-eventsource-svc
+            port:
+              number: 12000
 
