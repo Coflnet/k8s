@@ -96,7 +96,7 @@ spec:
                       - name: repo_url
                         value: "github.com/Coflnet/k8s.git"
                       - name: image_name
-                        value: registry.flou21.de\/sky-updater
+                        value: registry.flou21.de\/sky-core
                       - name: k8s_file
                         value: ./sky/updater.yaml
                       - name: message

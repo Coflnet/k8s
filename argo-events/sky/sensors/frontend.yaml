@@ -26,7 +26,7 @@ spec:
               namespace: argo
               generateName: build-container-image-frontend-sky-
               labels:
-                workflows.argoproj.io/archive-strategy: "false"
+                workflows.argoproj.io/archive-strategy: "true"
             spec:
               entrypoint: build
               serviceAccountName: argo
