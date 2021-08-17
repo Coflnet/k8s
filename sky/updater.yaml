@@ -22,7 +22,7 @@ spec:
         image: registry.flou21.de/sky-core:1595b081-b7e0-4a03-95bf-c8d3f13ec624
         env:
         - name: MODE
-          value: indexer
+          value: updater
         - name: TOKEN_SECRET
           valueFrom:
             secretKeyRef:
