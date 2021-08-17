@@ -11,7 +11,7 @@ spec:
       app: light-client-metrics-service
   endpoints:
   - port: metrics
-    interval: 15s
+    interval: 25s
     path: /metrics
 ---
 apiVersion: monitoring.coreos.com/v1
@@ -27,5 +27,5 @@ spec:
       app: indexer-metrics-service
   endpoints:
   - port: metrics
-    interval: 15s
+    interval: 25s
     path: /metrics
