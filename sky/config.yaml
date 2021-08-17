@@ -14,6 +14,13 @@ data:
   redis_host: redis-service
 
   # kafka topics
+  topic_missing_auction-raw: sky-canceledauction-raw
+  topic_sold_auction-raw: sky-soldauction-raw
+  topic_new_auction-raw: sky-newauction-raw
+  topic_auction_ended-raw: sky-endedauction-raw
+  topic_new_bid-raw: sky-newbid-raw
+  topic_bazaar-raw: sky-bazaar-raw
+
   topic_missing_auction: sky-canceledauction
   topic_sold_auction: sky-soldauction
   topic_new_auction: sky-newauction

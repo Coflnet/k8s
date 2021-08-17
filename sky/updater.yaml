@@ -21,7 +21,7 @@ spec:
       - name: updater
         image: registry.flou21.de/sky-core:1595b081-b7e0-4a03-95bf-c8d3f13ec624
         env:
-        - name: MODE
+        - name: MODES
           value: updater
         - name: TOKEN_SECRET
           valueFrom:
@@ -57,32 +57,32 @@ spec:
           valueFrom: 
             configMapKeyRef:
               name: config
-              key: topic_missing_auction
+              key: topic_missing_auction-raw
         - name: TOPIC_SOLD_AUCTION
           valueFrom: 
             configMapKeyRef:
               name: config
-              key: topic_sold_auction
+              key: topic_sold_auction-raw
         - name: TOPIC_NEW_AUCTION
           valueFrom: 
             configMapKeyRef:
               name: config
-              key: topic_new_auction
+              key: topic_new_auction-raw
         - name: TOPIC_AUCTION_ENDED
           valueFrom: 
             configMapKeyRef:
               name: config
-              key: topic_auction_ended
+              key: topic_auction_ended-raw
         - name: TOPIC_NEW_BID
           valueFrom: 
             configMapKeyRef:
               name: config
-              key: topic_new_bid
+              key: topic_new_bid-raw
         - name: TOPIC_BAZAAR
           valueFrom: 
             configMapKeyRef:
               name: config
-              key: topic_bazaar
+              key: topic_bazaar-raw
         - name: KAFKA_HOST
           valueFrom:
             configMapKeyRef:
