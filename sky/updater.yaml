@@ -53,32 +53,32 @@ spec:
             configMapKeyRef:
               name: config
               key: reload_config_on_change
-        - name: TOPIC_MISSING_AUCTION
+        - name: TOPICS__MISSING_AUCTION
           valueFrom: 
             configMapKeyRef:
               name: config
               key: topic_missing_auction-raw
-        - name: TOPIC_SOLD_AUCTION
+        - name: TOPICS__SOLD_AUCTION
           valueFrom: 
             configMapKeyRef:
               name: config
               key: topic_sold_auction-raw
-        - name: TOPIC_NEW_AUCTION
+        - name: TOPICS__NEW_AUCTION
           valueFrom: 
             configMapKeyRef:
               name: config
               key: topic_new_auction-raw
-        - name: TOPIC_AUCTION_ENDED
+        - name: TOPICS__AUCTION_ENDED
           valueFrom: 
             configMapKeyRef:
               name: config
               key: topic_auction_ended-raw
-        - name: TOPIC_NEW_BID
+        - name: TOPICS__NEW_BID
           valueFrom: 
             configMapKeyRef:
               name: config
               key: topic_new_bid-raw
-        - name: TOPIC_BAZAAR
+        - name: TOPICS__BAZAAR
           valueFrom: 
             configMapKeyRef:
               name: config
