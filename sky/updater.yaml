@@ -19,7 +19,7 @@ spec:
         - name: regcred
       containers:
       - name: updater
-        image: registry.flou21.de/sky-core:1595b081-b7e0-4a03-95bf-c8d3f13ec624
+        image: registry.flou21.de/sky-core:5ef7cb41-290b-49fa-beb0-17c397f4940d
         env:
         - name: MODE
           value: updater
