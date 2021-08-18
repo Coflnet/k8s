@@ -1,4 +1,2 @@
 resources:
-- config.yaml
-- redis.yaml
 - dedup-dotnet.yaml
