@@ -1,0 +1,94 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sky-bazaar-dedup
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Coflnet/k8s.git
+    targetRevision: HEAD
+    path: kafka/overlays/dedup/sky-bazaar
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kafka
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sky-missing-auction-dedup
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Coflnet/k8s.git
+    targetRevision: HEAD
+    path: kafka/overlays/dedup/sky-missing-auction
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kafka
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sky-new-auction-dedup
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Coflnet/k8s.git
+    targetRevision: HEAD
+    path: kafka/overlays/dedup/sky-new-auction
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kafka
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sky-new-bid-dedup
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Coflnet/k8s.git
+    targetRevision: HEAD
+    path: kafka/overlays/dedup/sky-new-bid
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kafka
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sky-sold-auction-dedup
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Coflnet/k8s.git
+    targetRevision: HEAD
+    path: kafka/overlays/dedup/sky-sold-auction
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kafka
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
