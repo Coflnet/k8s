@@ -65,7 +65,7 @@ spec:
                       - name: app_repo
                         value: git://github.com/Coflnet/HypixelSkyblock.git
                       - name: branch
-                        value: master
+                        value: legacy
                       - name: container_image
                         value: registry.flou21.de/sky
                       - name: container_tag
