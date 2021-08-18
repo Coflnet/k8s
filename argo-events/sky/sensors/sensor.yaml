@@ -30,13 +30,6 @@ spec:
             spec:
               entrypoint: build
               serviceAccountName: argo
-              retryStrategy:
-                    limit: 10
-                    retryPolicy: "Always"
-                    backoff:
-                      duration: "1"
-                      factor: 2
-                      maxDuration: "30m"
               imagePullSecrets:
                 - name: regcred
               volumes:
@@ -158,6 +151,7 @@ spec:
                         - name: cypress_base_url
                           value: "https://sky-preview.coflnet.com"
                     dependencies: [argo-sync]
+
                   - name: cypress-tests-chrome87
                     templateRef:
                       name: cypress-tests-chrome87
