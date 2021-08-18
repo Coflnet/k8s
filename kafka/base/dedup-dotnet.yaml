@@ -19,7 +19,7 @@ spec:
         - name: regcred
       containers:
       - name: kafka-dedup-dotnet
-        image: registry.flou21.de/kafka-dedup-dotnet:ce84fd70-054f-48a5-9ec5-bdc8401f4b2a
+        image: registry.flou21.de/kafka-dedup-dotnet:2edb6199-6f32-4f6a-acba-7a4245c3ee0f
         env:
         - name: KAFKA_HOST
           valueFrom:
