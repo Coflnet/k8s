@@ -88,7 +88,7 @@ spec:
                       - name: image_name
                         value: registry.flou21.de\/kafka-dedup-dotnet
                       - name: k8s_file
-                        value: ./kafka/dedup-dotnet.yaml
+                        value: ./kafka/base/dedup-dotnet.yaml
                       - name: message
                         value: "kafka-dedup-dotnet - version bump {{workflow.uid}}"
                     dependencies: [build]
