@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+  namespace: kafka
+data:
+  kafka_host: kafka-cluster.kafka.svc.cluster.local
+  redis_host: redis-service
+  source_topic: sky-raw-flips
+  target_topic: sky-flips
+  batch_size: "50"
+  batch_wait_time: "10"
+
+
+
+  # cp from sky/config.yaml
+  topic_missing_auction-raw: sky-canceledauction-raw
+  topic_sold_auction-raw: sky-soldauction-raw
+  topic_new_auction-raw: sky-newauction-raw
+  topic_auction_ended-raw: sky-endedauction-raw
+  topic_new_bid-raw: sky-newbid-raw
+  topic_bazaar-raw: sky-bazaar-raw
+
+  topic_missing_auction: sky-canceledauction
+  topic_sold_auction: sky-soldauction
+  topic_new_auction: sky-newauction
+  topic_auction_ended: sky-endedauction
+  topic_new_bid: sky-newbid
+  topic_bazaar: sky-bazaar
