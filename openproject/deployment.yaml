@@ -42,7 +42,7 @@ spec:
             configMapKeyRef:
               name: openproject-cm
               key: smtp_address
-        - name: SMTP_PORT="587"
+        - name: SMTP_PORT
           valueFrom:
             configMapKeyRef:
               name: openproject-cm
