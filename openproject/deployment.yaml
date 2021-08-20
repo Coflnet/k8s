@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openproject
+  namespace: openproject
+spec:
+  selector:
+    matchLabels:
+      app: openproject
+  template:
+    metadata:
+      labels:
+        app: openproject
+    spec:
+      containers:
+      - name: openproject
+        image: openproject/community:11.3
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+        env: 
+        - name: SERVER_HOSTNAME
+          valueFrom:
+            configMapKeyRef:
+              name: openproject-cm
+              key: server_host_name
+        - name: SECRET_KEY_BASE
+          valueFrom:
+            secretKeyRef:
+              name: openproject-secret
+              key: secret_key_base
+        volumeMounts:
+        - mountPath: "/var/lib/openproject/assets"
+          name: assets
+        - mountPath: "/var/lib/openproject/pgdata"
+          name: pgdata
+      volumes:
+      - name: assets
+        persistentVolumeClaim:
+          claimName: assets
+      - name: pgdata
+        persistentVolumeClaim:
+          claimName: pgdata
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: openproject
+  namespace: openproject
+spec:
+  selector:
+    app: openproject
+  ports:
+  - port: 8080
+    targetPort: 80

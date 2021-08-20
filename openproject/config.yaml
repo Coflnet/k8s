@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openproject-cm
+  namespace: openproject
+data:
+  server_host_name: projects.flou21.de
