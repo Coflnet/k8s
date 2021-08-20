@@ -8,6 +8,7 @@ data:
   email_delivery_method: "smtp"
   smtp_port: "587"
   smtp_address: "mail.coflnet.com"
+  smtp_domain: "mail.coflnet.com"
   smtp_authentication: "plain"
   smtp_user_name: "ci@coflnet.com"
   smtp_enable_starttls_auto: "true"
