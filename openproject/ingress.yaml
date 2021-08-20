@@ -17,7 +17,7 @@ spec:
             name: openproject
             port:
               number: 8080
-  - host: project.flou21.de
+  - host: projects.flou21.de
     http:
       paths:
       - path: /
