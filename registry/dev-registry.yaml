@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev-registry
+  namespace: registry
+spec:
+  selector:
+    matchLabels:
+      app: dev-registry
+  template:
+    metadata:
+      labels:
+        app: dev-registry
+    spec:
+      containers:
+      - name: registry
+        image: registry:2.7.1
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "50m"
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+          - mountPath: /var/lib/registry
+            name: vol
+            subPath: data
+          - name: auth-secret-volume
+            readOnly: true
+            mountPath: "/auth"
+        env:
+          - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Origin
+            value: "['https://registry-ui.flou.dev']"
+          - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Credentials
+            value: "[true]"
+          - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Headers
+            value: "['Authorization', 'Accept']"
+          - name: REGISTRY_AUTH
+            value: htpasswd
+          - name: REGISTRY_AUTH_HTPASSWD_PATH
+            value: /auth/passwd
+          - name: REGISTRY_AUTH_HTPASSWD_REALM
+            value: "Registry Realm"
+          - name: REGISTRY_STORAGE_DELETE_ENABLED
+            value: "true"
+      volumes:
+        - name: vol
+          persistentVolumeClaim:
+            claimName: dev-registry-claim
+        - name: auth-secret-volume
+          secret:
+            secretName: auth-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-registry-service
+  namespace: registry
+spec:
+  selector:
+    app: dev-registry
+  ports:
+  - port: 5000
+    targetPort: 5000
+

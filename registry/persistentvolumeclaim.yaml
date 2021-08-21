@@ -10,3 +10,16 @@ spec:
   resources:
     requests:
       storage: 80Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dev-registry-claim
+  namespace: registry
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 80Gi

@@ -37,7 +37,7 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service: 
-            name: registry-service
+            name: dev-registry-service
             port:
               number: 5000
   - host: registry-ui.flou.dev
@@ -47,7 +47,7 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service: 
-            name: registry-ui-service
+            name: dev-registry-ui-service
             port:
               number: 80
 
