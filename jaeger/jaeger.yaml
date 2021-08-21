@@ -4,7 +4,7 @@ metadata:
   namespace: observability
   name: jaeger
 spec:
-  strategy: streaming # <1>
+  strategy: allInOne # <1>
   storage:
     type: cassandra
     options: # <2>
