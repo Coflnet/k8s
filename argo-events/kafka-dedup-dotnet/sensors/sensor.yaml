@@ -55,7 +55,7 @@ spec:
                       - name: app_repo
                         value: git://github.com/Coflnet/kafka-dedup-dotnet.git
                       - name: container_image
-                        value: registry.flou21.de/kafka-dedup-dotnet
+                        value: registry.flou.dev/kafka-dedup-dotnet
                       - name: container_tag
                         value: "{{workflow.uid}}"
                       - name: sub_path 
@@ -86,7 +86,7 @@ spec:
                       - name: repo_url
                         value: "github.com/Coflnet/k8s.git"
                       - name: image_name
-                        value: registry.flou21.de\/kafka-dedup-dotnet
+                        value: registry.flou.dev\/kafka-dedup-dotnet
                       - name: k8s_file
                         value: ./kafka/base/dedup-dotnet.yaml
                       - name: message
