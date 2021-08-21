@@ -27,3 +27,14 @@ spec:
             name: openproject
             port:
               number: 8080
+
+  - host: projects.flou.dev
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: openproject
+            port:
+              number: 8080

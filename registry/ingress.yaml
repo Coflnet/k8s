@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: registry-ingress
@@ -12,14 +12,42 @@ spec:
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: registry-service
-          servicePort: 5000
+          service: 
+            name: registry-service
+            port:
+              number: 5000
   - host: registry-ui.flou21.de
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: registry-ui-service
-          servicePort: 80
+          service: 
+            name: registry-ui-service
+            port:
+              number: 80
+
+
+  - host: registry.flou.dev
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service: 
+            name: registry-service
+            port:
+              number: 5000
+  - host: registry-ui.flou.dev
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service: 
+            name: registry-ui-service
+            port:
+              number: 80
 

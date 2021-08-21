@@ -683,6 +683,7 @@ grafana:
     #   - grafana.domain.com
     hosts: 
       - grafana.flou21.de
+      - grafana.flou.dev
 
     ## Path for grafana ingress
     path: /
