@@ -111,7 +111,7 @@ spec:
                         - name: request_cpu
                           value: "100m"
                         - name: base_domain
-                          value: "flou21.de"
+                          value: "flou.dev"
                     dependencies: ["build"]
 
                   - name: build
@@ -174,12 +174,12 @@ spec:
                         - name: message_1
                           value: "[CI] created a pr environment: "
                         - name: message_2
-                          value: "https://pr-env-sky-"
+                          value: "https://pr-env.flou.dev/"
                         - name: message_3
                           value: ""
-                        - name: message_4
-                          value: ".flou21.de"
                         - name: message_5
+                          value: ""
+                        - name: message_4
                           value: ""
                         - name: message_6
                           value: ""
