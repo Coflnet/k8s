@@ -30,7 +30,7 @@ spec:
             mountPath: "/auth"
         env:
           - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Origin
-            value: "['https://registry-ui.flou21.de']"
+            value: "['https://registry-ui.flou.dev']"
           - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Credentials
             value: "[true]"
           - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Headers
