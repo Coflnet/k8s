@@ -21,7 +21,7 @@ spec:
             cpu: "10m"
         env:
           - name: REGISTRY_URL
-            value: https://registry.flou21.de
+            value: https://registry.flou.dev
           - name: SINGLE_REGISTRY
             value: "true"
         ports:
