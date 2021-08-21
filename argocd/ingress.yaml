@@ -23,3 +23,13 @@ spec:
             name: argocd-server
             port:
               name: https
+  - host: argocd.flou.dev
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: argocd-server
+            port:
+              name: https

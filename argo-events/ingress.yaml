@@ -149,3 +149,104 @@ spec:
             port:
               number: 12000
 
+  - host: argo-events.flou.dev
+    http:
+      paths:
+      - path: /sportdings
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sportdings-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /sportdings-frontend
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sportdings-frontend-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /sky
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /blog
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: blog-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /damlo
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: damlo-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /sky-pull-request
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /sky-frontend
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /static-server
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: static-server-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /cypress-executor
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: cypress-executor-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /base-images
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: base-images-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /mail-notification
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: mail-notification-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /songvoter
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: songvoter-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /kafka-dedup-dotnet
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: kafka-dedup-dotnet-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /sky-core
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-eventsource-eventsource-svc
+            port:
+              number: 12000

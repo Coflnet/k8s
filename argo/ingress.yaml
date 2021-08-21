@@ -24,4 +24,14 @@ spec:
             name: argo-server
             port:
               number: 2746
+  - host: argo.flou.dev
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service: 
+            name: argo-server
+            port:
+              number: 2746
 
