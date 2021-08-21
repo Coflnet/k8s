@@ -49,7 +49,7 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-  - host: pr-env-sky-412.flou21.de
+  - host: pr-env.flou.dev/sky/412
     http:
       paths:
       - path: /
