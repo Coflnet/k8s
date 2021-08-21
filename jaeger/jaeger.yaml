@@ -1,13 +1,18 @@
 apiVersion: jaegertracing.io/v1
 kind: Jaeger
 metadata:
-  name: jaeger
   namespace: observability
+  name: jaeger
 spec:
-  strategy: streaming
-  collector:
-    options:
-      kafka: 
-        producer:
-          topic: jaeger-spans
-          brokers: kafka-cluster.kafka.svc.cluster.local:9092
+  strategy: streaming # <1>
+  storage:
+    type: cassandra
+    options: # <2>
+      cassandra:
+        servers: cassandra.cassandra.svc.cluster.local
+        keyspace: jaeger_v1
+        username: "cassandra"
+        password: "Ds28melByL"
+    cassandraCreateSchema: # <3>
+      datacenter: "datacenter1"
+      mode: "test"
