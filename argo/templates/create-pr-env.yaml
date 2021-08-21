@@ -23,7 +23,7 @@ spec:
         - name: base_domain
 
     container:
-      image: registry.flou.dev/pr-env:latest
+      image: registry.flou21.de/pr-env:latest
       imagePullPolicy: Always
       resources:
         requests:
