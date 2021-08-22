@@ -26,7 +26,7 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: argo-events-sa-rolebinding
-  namespace: argo-events
+  namespace: argo
 subjects:
   - kind: ServiceAccount
     name: argo-events
