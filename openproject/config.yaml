@@ -4,7 +4,7 @@ metadata:
   name: openproject-cm
   namespace: openproject
 data:
-  server_host_name: projects.flou21.de
+  server_host_name: projects.flou.dev
   email_delivery_method: "smtp"
   smtp_port: "587"
   smtp_address: "mail.coflnet.com"
