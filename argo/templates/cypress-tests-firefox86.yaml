@@ -21,7 +21,7 @@ spec:
         resources:
           requests:
             memory: 2500Mi
-            cpu: 4000m
+            cpu: 3000m
         args:
         - /app
         - --repository="{{inputs.parameters.git_repository}}"
