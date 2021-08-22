@@ -29,9 +29,19 @@ metadata:
   namespace: argo-events
 subjects:
   - kind: ServiceAccount
-    name: argo-events
+    name: argo-events-sa
     namespace: argo-events
 roleRef:
   kind: Role
-  name: argo-role-custom
+  name: argo-events-role-custom
   apiGroup: rbac.authorization.k8s.io
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: argo-events
+  name: argo-events-role-custom
+rules:
+  - apiGroups: ["argoproj.io", ""]
+    resources: ["workflowtemplates", "workflows", "pods/log"]
+    verbs: ["get", "watch", "list", "delete", "create", "logs"]
