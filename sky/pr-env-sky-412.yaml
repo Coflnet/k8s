@@ -49,10 +49,10 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-  - host: pr-env.flou.dev/sky/412
+  - host: pr-env.flou.dev
     http:
       paths:
-      - path: /
+      - path: /sky/412
         backend:
           serviceName: pr-env-sky-412-service
           servicePort: 8008
