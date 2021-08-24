@@ -741,7 +741,7 @@ externalAccess:
 persistence:
   ## @param persistence.enabled Enable Kafka data persistence using PVC, note that Zookeeper persistence is unaffected
   ##
-  enabled: false
+  enabled: true
   ## @param persistence.existingClaim Provide an existing `PersistentVolumeClaim`, the value is evaluated as a template
   ## If defined, PVC must be created manually before volume will be bound
   ## The value is evaluated as a template
@@ -753,7 +753,7 @@ persistence:
   ## If undefined (the default) or set to null, no storageClassName spec is
   ## set, choosing the default provisioner.
   ##
-  storageClass: ""
+  storageClass: "longhorn"
   ## @param persistence.accessModes PV Access Mode
   ##
   accessModes:
@@ -903,7 +903,7 @@ metrics:
   kafka:
     ## @param metrics.kafka.enabled Whether or not to create a standalone Kafka exporter to expose Kafka metrics
     ##
-    enabled: false 
+    enabled: true
     ## Bitnami Kafka exporter image
     ## ref: https://hub.docker.com/r/bitnami/kafka-exporter/tags/
     ## @param metrics.kafka.image.registry Kafka exporter image registry
@@ -1152,18 +1152,18 @@ metrics:
   serviceMonitor:
     ## @param metrics.serviceMonitor.enabled if `true`, creates a Prometheus Operator ServiceMonitor (requires `metrics.kafka.enabled` or `metrics.jmx.enabled` to be `true`)
     ##
-    enabled: false
+    enabled: true
     ## @param metrics.serviceMonitor.namespace Namespace in which Prometheus is running
     ##
-    namespace: ""
+    namespace: "prometheus"
     ## @param metrics.serviceMonitor.interval Interval at which metrics should be scraped
     ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint
     ##
-    interval: ""
+    interval: "30"
     ## @param metrics.serviceMonitor.scrapeTimeout Timeout after which the scrape is ended
     ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint
     ##
-    scrapeTimeout: ""
+    scrapeTimeout: "24"
     ## @param metrics.serviceMonitor.selector ServiceMonitor selector labels
     ## ref: https://github.com/bitnami/charts/tree/master/bitnami/prometheus-operator#prometheus-configuration
     ## e.g:
