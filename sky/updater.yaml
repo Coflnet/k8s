@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: updater
+  namespace: sky
+  labels:
+    app: updater
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: updater
+  template:
+    metadata:
+      labels:
+        app: updater
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: updater
+        image: registry.flou21.de/sky-core:164cd32d-1a35-44e2-86fd-a05e275d8a61
+        env:
+        - name: MODES
+          value: updater
+        - name: TOKEN_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: token_secret
+              name: secret
+        - name: redisCon
+          valueFrom:
+            configMapKeyRef: 
+              name: config
+              key: redis_host
+        - name: apiKey
+          valueFrom:
+            secretKeyRef:
+              key: api
+              name: secret
+        - name: JAEGER_SERVICE_NAME
+          valueFrom: 
+            configMapKeyRef:
+              name: config
+              key: jaeger_service_name
+        - name: JAEGER_AGENT_HOST
+          valueFrom: 
+            configMapKeyRef:
+              name: config
+              key: jaeger_agent_host
+        - name: DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: reload_config_on_change
+        - name: TOPICS__MISSING_AUCTION
+          valueFrom: 
+            configMapKeyRef:
+              name: config
+              key: topic_missing_auction-raw
+        - name: TOPICS__SOLD_AUCTION
+          valueFrom: 
+            configMapKeyRef:
+              name: config
+              key: topic_sold_auction-raw
+        - name: TOPICS__NEW_AUCTION
+          valueFrom: 
+            configMapKeyRef:
+              name: config
+              key: topic_new_auction-raw
+        - name: TOPICS__AUCTION_ENDED
+          valueFrom: 
+            configMapKeyRef:
+              name: config
+              key: topic_auction_ended-raw
+        - name: TOPICS__NEW_BID
+          valueFrom: 
+            configMapKeyRef:
+              name: config
+              key: topic_new_bid-raw
+        - name: TOPICS__BAZAAR
+          valueFrom: 
+            configMapKeyRef:
+              name: config
+              key: topic_bazaar-raw
+        - name: KAFKA_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: kafka_host
+        resources:
+          requests:
+            memory: "400Mi"
+            cpu: "750m"
