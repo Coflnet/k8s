@@ -84,8 +84,9 @@ spec:
           failureThreshold: 5
   strategy:
     canary: #Indicates that the rollout should use the Canary strategy
-      maxSurge: "25%"
-      maxUnavailable: 0
+      maxUnavailable: 1
+      canaryService: sky-commands-canary-service
+      stableService: sky-commands-main-service
       steps:
       - setWeight: 5
       - pause:
