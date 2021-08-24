@@ -86,7 +86,7 @@ spec:
                       - name: repo_url
                         value: "github.com/Coflnet/k8s.git"
                       - name: image_name
-                        value: registry.flou.dev\/kafka-dedup-dotnet
+                        value: registry.flou21.de\/kafka-dedup-dotnet
                       - name: k8s_file
                         value: ./kafka/base/dedup-dotnet.yaml
                       - name: message
