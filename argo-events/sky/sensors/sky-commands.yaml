@@ -117,4 +117,4 @@ spec:
                           value: sky-argo-secret
                         - name: argo_auth_token_secret_key
                           value: argo_auth_token
-                    dependencies: [promote-updater]
+                    dependencies: [promote]
