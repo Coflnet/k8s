@@ -83,9 +83,34 @@ spec:
           timeoutSeconds: 10
           failureThreshold: 5
   strategy:
-    blueGreen:
-      activeService: light-client-service
-      previewService: light-client-preview-service
-      autoPromotionEnabled: false
-      previewReplicaCount: 1
-      maxUnavailable: 2
+    canary: #Indicates that the rollout should use the Canary strategy
+      maxSurge: "25%"
+      maxUnavailable: 0
+      steps:
+      - setWeight: 5
+      - pause:
+          duration: 10m
+      - setWeight: 20
+      - pause: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sky-commands-main-service
+spec:
+  selector:
+    app: commands
+  ports:
+  - port: 80
+    targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sky-commands-canary-service
+spec:
+  selector:
+    app: commands
+  ports:
+  - port: 80
+    targetPort: 80
