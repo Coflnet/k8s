@@ -30,6 +30,8 @@ spec:
               secretKeyRef:
                 key: connection_live
                 name: secret
+          - name: MODES
+            value: commands
           - name: JAEGER_SERVICE_NAME
             valueFrom: 
               configMapKeyRef:
