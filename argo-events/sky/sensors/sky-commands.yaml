@@ -1,15 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
-  name: sky-core-webhook
+  name: sky-commands-webhook
   namespace: argo-events
 spec:
   template:
     serviceAccountName: argo-events-sa
   dependencies:
-  - name: sky-core
+  - name: sky-commands
     eventSourceName: sky-eventsource
-    eventName: sky-core
+    eventName: sky-commands
   triggers:
   - template:
       name: trigger
@@ -24,7 +24,7 @@ spec:
             kind: Workflow
             metadata:
               namespace: argo
-              generateName: build-sky-core-
+              generateName: build-sky-commands-
             spec:
               entrypoint: build
               serviceAccountName: argo
@@ -65,7 +65,7 @@ spec:
                       - name: branch
                         value: microservice
                       - name: container_image
-                        value: registry.flou21.de/sky-core
+                        value: registry.flou21.de/sky-commands
                       - name: container_tag
                         value: "{{workflow.uid}}"
                       - name: sub_path 
@@ -77,7 +77,7 @@ spec:
                       - name: git_secret_key
                         value: password
 
-                  - name: promote-updater
+                  - name: promote
                     templateRef:
                       name: promote
                       template: promote
@@ -94,7 +94,7 @@ spec:
                       - name: repo_url
                         value: "github.com/Coflnet/k8s.git"
                       - name: image_name
-                        value: registry.flou21.de\/sky-core
+                        value: registry.flou21.de\/sky-commands
                       - name: k8s_file
                         value: ./sky/updater.yaml
                       - name: message

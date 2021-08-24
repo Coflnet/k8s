@@ -1,0 +1,137 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: commands
+  namespace: sky
+  labels:
+    app: commands
+spec:
+  replicas: 1
+  progressDeadlineSeconds: 2592000
+  selector:
+    matchLabels:
+      app: commands
+  template:
+    metadata:
+      labels:
+        app: commands
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: commands
+        image: registry.flou21.de/sky-commands:0e7c93d2-b65f-47e6-aad8-afabe62de391
+        ports:
+          - containerPort: 8008
+          - containerPort: 80
+        env:
+          - name: DBConnection
+            valueFrom:
+              secretKeyRef:
+                key: connection_live
+                name: secret
+          - name: JAEGER_SERVICE_NAME
+            valueFrom: 
+              configMapKeyRef:
+                name: config
+                key: jaeger_service_name
+          - name: JAEGER_AGENT_HOST
+            valueFrom: 
+              configMapKeyRef:
+                name: config
+                key: jaeger_agent_host
+          - name: TOPICS__MISSING_AUCTION
+            valueFrom: 
+              configMapKeyRef:
+                name: config
+                key: topic_missing_auction
+          - name: TOPICS__SOLD_AUCTION
+            valueFrom: 
+              configMapKeyRef:
+                name: config
+                key: topic_sold_auction
+          - name: TOPICS__AUCTION_ENDED
+            valueFrom: 
+              configMapKeyRef:
+                name: config
+                key: topic_auction_ended
+          - name: TOPICS__FLIPS
+            valueFrom: 
+              configMapKeyRef:
+                name: config
+                key: topic_flip
+          - name: KAFKA_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: kafka_host
+        resources:
+          requests:
+            memory: "500Mi"
+            cpu: "50m"
+          limits:
+            memory: "700Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: 8008
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 10
+          failureThreshold: 5
+  strategy:
+    blueGreen:
+      activeService: light-client-service
+      previewService: light-client-preview-service
+      autoPromotionEnabled: false
+      previewReplicaCount: 1
+      maxUnavailable: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: light-client-service
+  namespace: sky
+spec:
+  selector:
+    app: light-client
+  ports:
+    - port: 8008
+      targetPort: 8008
+      name: "websocket"
+    - port: 80
+      targetPort: 80
+      name: "asp"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: light-client-preview-service
+  namespace: sky
+spec:
+  selector:
+    app: light-client
+  ports:
+    - port: 8008
+      targetPort: 8008
+      name: "websocket"
+    - port: 80
+      targetPort: 80
+      name: "asp"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: light-client-metrics-service
+  namespace: sky
+  labels:
+    app: light-client-metrics-service
+spec:
+  selector:
+    app: light-client
+  ports:
+  - port: 80
+    targetPort: 80
+    name: metrics
+    protocol: TCP

@@ -27,3 +27,4 @@ data:
   topic_auction_ended: sky-endedauction
   topic_new_bid: sky-newbid
   topic_bazaar: sky-bazaar
+  topic_flip: sky-topic-flip
