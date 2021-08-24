@@ -96,9 +96,9 @@ spec:
                       - name: image_name
                         value: registry.flou21.de\/sky-commands
                       - name: k8s_file
-                        value: ./sky/updater.yaml
+                        value: ./sky/commands.yaml
                       - name: message
-                        value: "[CI] sky updater - version bump {{workflow.uid}}"
+                        value: "[CI] sky commands - version bump {{workflow.uid}}"
                     dependencies: [build]
 
                   - name: argo-sync
