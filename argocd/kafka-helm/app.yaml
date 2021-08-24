@@ -11,8 +11,6 @@ spec:
     path: kafka-helm
     helm:
       version: v3
-    directory:
-      recurse: true
   destination:
     server: https://kubernetes.default.svc
     namespace: kafka
