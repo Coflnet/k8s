@@ -33,7 +33,7 @@ spec:
           - name: DBConnection
             valueFrom:
               secretKeyRef:
-                key: connection_live
+                key: connection_read
                 name: secret
           - name: MODES
             value: commands
@@ -88,7 +88,7 @@ spec:
           timeoutSeconds: 10
           failureThreshold: 5
   strategy:
-    canary: #Indicates that the rollout should use the Canary strategy
+    canary: 
       maxUnavailable: 1
       canaryService: sky-commands-canary-service
       stableService: sky-commands-main-service
