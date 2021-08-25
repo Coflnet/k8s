@@ -25,6 +25,11 @@ spec:
           - containerPort: 8008
           - containerPort: 80
         env:
+          - name: redisCon
+            valueFrom: 
+              configMapKeyRef:
+                key: redis_host
+                name: config
           - name: DBConnection
             valueFrom:
               secretKeyRef:
