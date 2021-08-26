@@ -10,7 +10,7 @@ data:
   jaeger_agent_host: jaeger-agent.observability.svc.cluster.local
   jaeger_sampling_host: http://jaeger-agent.observability.svc.cluster.local:5778/sampling
   reload_config_on_change: "false"
-  kafka_host: kafka-cluster.kafka.svc.cluster.local
+  kafka_host: kafka-helm.kafka.svc.cluster.local
   redis_host: redis-service
 
   # kafka topics
