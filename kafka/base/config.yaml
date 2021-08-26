@@ -4,7 +4,7 @@ metadata:
   name: config
   namespace: kafka
 data:
-  kafka_host: kafka-cluster.kafka.svc.cluster.local
+  kafka_host: kafka-helm.kafka.svc.cluster.local
   redis_host: redis-service
   source_topic: sky-raw-flips
   target_topic: sky-flips
