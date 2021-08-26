@@ -528,7 +528,7 @@ resources:
   ##    cpu: 250m
   ##    memory: 256Mi
   requests: 
-    cpu: 250m
+    cpu: 300m
     memory: 6Gi
 ## Kafka containers' liveness probe. Evaluated as a template.
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
