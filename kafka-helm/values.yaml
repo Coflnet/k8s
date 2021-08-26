@@ -20,10 +20,10 @@ global:
 
 ## @param nameOverride String to partially override kafka.fullname
 ##
-nameOverride: "kafka"
+nameOverride: ""
 ## @param fullnameOverride String to fully override kafka.fullname
 ##
-fullnameOverride: "kafka-cluster"
+fullnameOverride: ""
 ## @param clusterDomain Default Kubernetes cluster domain
 ##
 clusterDomain: cluster.local
