@@ -79,14 +79,6 @@ spec:
           limits:
             memory: "700Mi"
             cpu: "500m"
-        livenessProbe:
-          httpGet:
-            path: /status
-            port: 8008
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 10
-          failureThreshold: 5
   strategy:
     canary: 
       maxUnavailable: 1
