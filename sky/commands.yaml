@@ -101,8 +101,10 @@ spec:
   ports:
   - port: 80
     targetPort: 80
+    name: api
   - port: 8008
     targetPort: 8008
+    name: websocket
 ---
 apiVersion: v1
 kind: Service
@@ -114,5 +116,7 @@ spec:
   ports:
   - port: 80
     targetPort: 80
+    name: api
   - port: 8008
     targetPort: 8008
+    name: websocket
