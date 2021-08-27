@@ -25,6 +25,10 @@ spec:
           - containerPort: 8008
           - containerPort: 80
         env:
+          - name: FRONTEND_PROD
+            value: frontend
+          - name: FRONTEND_STAGING
+            value: frontend-preview
           - name: redisCon
             valueFrom: 
               configMapKeyRef:
