@@ -57,6 +57,23 @@ spec:
             name: light-client-service
             port:
               number: 80
+  - host: sky-commands.coflnet.com
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands-main-service
+            port:
+              number: 8008
+      - path: /api
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands-main-service
+            port:
+              number: 80
   - host: sky-preview.coflnet.com
     http:
       paths:
