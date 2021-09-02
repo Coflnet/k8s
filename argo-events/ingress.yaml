@@ -257,3 +257,10 @@ spec:
             name: sky-eventsource-eventsource-svc
             port:
               number: 12000
+      - path: /sky-subscriptions
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-eventsource-eventsource-svc
+            port:
+              number: 12000
