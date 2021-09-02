@@ -10,12 +10,6 @@ spec:
   - name: sky-subscriptions
     eventSourceName: sky-eventsource
     eventName: sky-subscription
-    filters: 
-      data:
-      - path: body.ref
-        type: string
-        value:
-          - refs/heads/main
   triggers:
   - template:
       name: trigger
