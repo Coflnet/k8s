@@ -12,10 +12,10 @@ spec:
     eventName: sky
     filters: 
       data:
-      - path: body.pull_request.base.ref
+      - path: body.ref
         type: string
         value:
-          - legacy
+          - refs/heads/legacy
   triggers:
   - template:
       name: trigger
