@@ -16,6 +16,8 @@ spec:
       labels:
         app: subscriptions
     spec:
+      imagePullSecrets:
+        - name: regcred
       containers:
       - name: subscriptions
         image: registry.flou21.de/sky-subscriptions:latest
