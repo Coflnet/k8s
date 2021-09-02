@@ -9,7 +9,7 @@ spec:
   dependencies:
   - name: sky-subscriptions
     eventSourceName: sky-eventsource
-    eventName: sky-subscription
+    eventName: sky-subscriptions
   triggers:
   - template:
       name: trigger
