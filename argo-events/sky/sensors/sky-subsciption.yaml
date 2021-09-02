@@ -12,7 +12,7 @@ spec:
     eventName: sky-subscription
     filters: 
       data:
-      - path: body.pull_request.base.ref
+      - path: body.ref
         type: string
         value:
           - refs/heads/main
