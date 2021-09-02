@@ -15,7 +15,7 @@ spec:
       - path: body.pull_request.base.ref
         type: string
         value:
-          - main
+          - refs/heads/main
   triggers:
   - template:
       name: trigger
