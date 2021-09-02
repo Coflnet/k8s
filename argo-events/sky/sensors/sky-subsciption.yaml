@@ -102,7 +102,7 @@ spec:
                       - name: image_name
                         value: registry.flou21.de\/sky-subscriptions
                       - name: k8s_file
-                        value: ./sky/updater.yaml
+                        value: ./sky/subscriptions.yaml
                       - name: message
                         value: "[CI] sky subscriptions - version bump {{workflow.uid}}"
                     dependencies: [build]
