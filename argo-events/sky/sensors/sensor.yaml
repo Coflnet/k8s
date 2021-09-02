@@ -10,6 +10,12 @@ spec:
   - name: sky
     eventSourceName: sky-eventsource
     eventName: sky
+    filters: 
+      data:
+      - path: body.pull_request.base.ref
+        type: string
+        value:
+          - legacy
   triggers:
   - template:
       name: trigger
@@ -71,6 +77,7 @@ spec:
                         value: github-secret
                       - name: git_secret_key
                         value: password
+                    when: 
 
                   - name: promote-server
                     templateRef:
@@ -95,6 +102,7 @@ spec:
                       - name: message
                         value: "sky server - version bump {{workflow.uid}}"
                     dependencies: [build]
+
                   - name: promote-indexer
                     templateRef:
                       name: promote
