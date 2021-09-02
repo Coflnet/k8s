@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: subscriptions
+  namespace: sky
+  labels:
+    app: subscriptions
+spec:
+  selector:
+    matchLabels:
+      app: subscriptions
+  serviceName: subscriptions
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: subscriptions
+    spec:
+      containers:
+      - name: subscriptions
+        image: registry.flou21.de/sky-subscriptions
+        ports:
+        - containerPort: 80
+          name: web
+        env: 
+        - name: DB_CONNECTION
+          valueFrom:
+            secretKeyRef:
+              name: secret 
+              key: connection_micro
+        - name: MARIADB_VERSION
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: mariadb_version
+        - name: JAEGER_AGENT_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: jaeger_agent_host
+        - name: KAFKA_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: kafka_host
+        - name: FIREBASE_SENDER_ID
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: firebase_sender_id
+        - name: FIREBASE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: firebase_key
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: subscriptions
+  namespace: sky
+spec:
+  selector:
+    app: subscriptions
+  ports:
+  - port: 80
+    targetPort: 80
+
+
