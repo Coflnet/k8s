@@ -66,7 +66,7 @@ spec:
               configMapKeyRef:
                 name: config
                 key: topic_auction_ended
-          - name: TOPICS__FLIPS
+          - name: TOPICS__FLIP_CONSUME
             valueFrom: 
               configMapKeyRef:
                 name: config
