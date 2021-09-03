@@ -63,7 +63,7 @@ spec:
                       - name: app_repo
                         value: git://github.com/Coflnet/SkyCommands
                       - name: branch
-                        value: microservice
+                        value: main
                       - name: container_image
                         value: registry.flou21.de/sky-commands
                       - name: container_tag
