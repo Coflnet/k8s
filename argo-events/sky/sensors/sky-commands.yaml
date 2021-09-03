@@ -61,7 +61,7 @@ spec:
                     arguments:
                       parameters:
                       - name: app_repo
-                        value: git://github.com/Coflnet/HypixelSkyblock
+                        value: git://github.com/Coflnet/SkyCommands
                       - name: branch
                         value: microservice
                       - name: container_image
