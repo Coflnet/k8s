@@ -33,3 +33,7 @@ spec:
       port: "12000"
       endpoint: /sky-subscriptions
       method: POST
+    sky-flipper: 
+      port: "12000"
+      endpoint: /sky-flipper
+      method: POST

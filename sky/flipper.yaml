@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: flipper
+  namespace: sky
+  labels:
+    app: flipper
+spec:
+  selector:
+    matchLabels:
+      app: flipper
+  serviceName: flipper
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: flipper
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: subscriptions
+        image: registry.flou21.de/sky-flipper:12a0565a-89f7-4dd5-99fe-1a23252625af
+        ports:
+        - containerPort: 80
+          name: web
+        env: 
+        - name: DB_CONNECTION
+          valueFrom:
+            secretKeyRef:
+              name: secret 
+              key: connection_read
+        - name: SKYCOMMANDS_HOST
+          value: sky-commands-main-service
+        - name: JAEGER_AGENT_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: jaeger_agent_host
+        - name: KAFKA_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: kafka_host
+        - name: redisCon
+          valueFrom: 
+            configMapKeyRef:
+              name: config
+              key: redis_host
+        - name: TOPICS__FLIP
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: topic_flip
+        - name: TOPICS__NEW_AUCTION
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: topic_new_auction
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: subscriptions
+  namespace: sky
+spec:
+  selector:
+    app: subscriptions
+  ports:
+  - port: 80
+    targetPort: 80
+
+
