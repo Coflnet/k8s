@@ -31,7 +31,7 @@ spec:
               name: secret 
               key: connection_read
         - name: SKYCOMMANDS_HOST
-          value: sky-commands-main-service
+          value: "sky-commands-main-service:8008"
         - name: JAEGER_AGENT_HOST
           valueFrom:
             configMapKeyRef:
