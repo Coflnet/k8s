@@ -61,11 +61,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: subscriptions
+  name: flipper
   namespace: sky
 spec:
   selector:
-    app: subscriptions
+    app: flipper
   ports:
   - port: 80
     targetPort: 80
