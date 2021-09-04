@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: feedback-ingress
+  namespace: feedback
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: feedback.coflnet.com
+    http:
+      paths:
+      - path: /api
+        pathType: ImplementationSpecific
+        backend:
+          service: 
+            name: feedback-backend
+            port:
+              number: 3000

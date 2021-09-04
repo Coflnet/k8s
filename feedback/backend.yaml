@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feedback-backend
+  namespace: feedback
+  labels:
+    app: feedback-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: feedback-backend
+  template:
+    metadata:
+      labels:
+        app: feedback-backend
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: feedback-backend
+        image: registry.flou21.de/feedback-backend:6a27ace8-cf91-46ec-9646-b695eee6c954
+        ports:
+          - containerPort: 3000
+        env: 
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: db_host
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: db_port
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: db_user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: db_password
+              name: secret
+        - name: DB_NAME
+          valueFrom:
+        resources:
+          requests:
+            memory: "50Mi"
+            cpu: "30m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: feedback-backend
+  namespace: feedback
+spec:
+  selector:
+    app: feedback-backend
+  ports:
+    - port: 3000
+      targetPort: 3000

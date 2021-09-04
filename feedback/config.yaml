@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+  namespace: feedback
+data:
+  db_user: feedback
+  db_database: feedback
+  db_port: "3310"

@@ -271,3 +271,10 @@ spec:
             name: sky-eventsource-eventsource-svc
             port:
               number: 12000
+      - path: /feedback-backend
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: feedback-eventsource-eventsource-svc
+            port:
+              number: 12000
