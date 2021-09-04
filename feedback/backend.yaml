@@ -45,6 +45,9 @@ spec:
               name: secret
         - name: DB_NAME
           valueFrom:
+            configMapKeyRef:
+              name: config
+              key: db_name
         resources:
           requests:
             memory: "50Mi"

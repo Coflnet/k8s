@@ -5,6 +5,6 @@ metadata:
   namespace: feedback
 data:
   db_user: feedback
-  db_database: feedback
+  db_name: feedback
   db_port: "3310"
   db_host: "194.163.151.190"
