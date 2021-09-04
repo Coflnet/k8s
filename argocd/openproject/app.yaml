@@ -9,12 +9,12 @@ spec:
     repoURL: https://github.com/Coflnet/k8s.git
     targetRevision: HEAD
     path: openproject
-    directory:
-      recurse: true
+    helm:
+      version: v3
   destination:
     server: https://kubernetes.default.svc
     namespace: openproject
-  syncPolicy: {}
-    # automated:
-    #   prune: true
-    #   selfHeal: true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
