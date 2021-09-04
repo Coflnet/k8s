@@ -7,3 +7,4 @@ data:
   db_user: feedback
   db_database: feedback
   db_port: "3310"
+  db_host: "194.163.151.190"
