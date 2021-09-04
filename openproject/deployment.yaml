@@ -75,8 +75,6 @@ spec:
               key: smtp_enable_starttls_auto
         - name: OPENPROJECT_RAILS__RELATIVE__URL__ROOT
           value: /
-        - name: OPENPROJECT_RAILS__FORCE__SSL
-          value: "true"
         volumeMounts:
         - mountPath: "/var/lib/openproject/assets"
           name: assets
