@@ -20,7 +20,7 @@ spec:
         - name: regcred
       containers:
       - name: subscriptions
-        image: registry.flou21.de/sky-flipper:0b800a69-5a6d-4704-a731-93b683a5ec67
+        image: registry.flou21.de/sky-flipper:00f8f5f4-bee2-488d-8dcc-e5127a2e4637
         ports:
         - containerPort: 80
           name: web
