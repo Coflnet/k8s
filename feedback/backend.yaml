@@ -19,7 +19,7 @@ spec:
         - name: regcred
       containers:
       - name: feedback-backend
-        image: registry.flou21.de/feedback-backend:4c41627f-102c-412d-936d-b3a554fc99c1
+        image: registry.flou21.de/feedback-backend:ca7e70db-d5e7-4215-a4eb-aa3f8da96333
         ports:
           - containerPort: 3000
           - containerPort: 2112
