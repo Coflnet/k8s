@@ -37,3 +37,7 @@ spec:
       port: "12000"
       endpoint: /sky-flipper
       method: POST
+    sky-mc-connect: 
+      port: "12000"
+      endpoint: /sky-mc-connect
+      method: POST
