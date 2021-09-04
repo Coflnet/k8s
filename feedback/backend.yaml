@@ -66,6 +66,19 @@ spec:
     - port: 3000
       targetPort: 3000
       name: api
-    - port: 2112
-      targetPort: 2112
-      name: metrics
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: feedback-metrics-service
+  namespace: feedback
+  labels:
+    app: feedback-metrics-service
+spec:
+  selector:
+    app: feedback-backend
+  ports:
+  - port: 2112
+    targetPort: 2112
+    name: metrics
+    protocol: TCP

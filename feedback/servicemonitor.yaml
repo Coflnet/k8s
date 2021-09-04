@@ -1,7 +1,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: servicemonitor
+  name: feedback-metrics-service
   namespace: feedback
   labels:
     release: kube-prometheus-stack-1627574156 
