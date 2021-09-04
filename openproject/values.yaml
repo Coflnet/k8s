@@ -88,5 +88,6 @@ postgresql:
   persistence:
     enabled: true
     size: 15G
+    storageClass: longhorn
   postgresqlPassword: superSecrectPassword
   postgresqlDatabase: openproject
