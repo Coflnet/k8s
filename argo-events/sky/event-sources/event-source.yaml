@@ -41,3 +41,7 @@ spec:
       port: "12000"
       endpoint: /sky-mc-connect
       method: POST
+    sky-filter: 
+      port: "12000"
+      endpoint: /sky-filter
+      method: POST

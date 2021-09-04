@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filter
+  namespace: sky
+  labels:
+    app: filter
+spec:
+  selector:
+    matchLabels:
+      app: filter
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: filter
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: filter
+        image: registry.flou21.de/sky-filter:f588a9f2-9d43-4e41-a4de-9058486dab13
+        ports:
+        - containerPort: 80
+          name: web
+        env: 
+          - name: JAEGER_SERVICE_NAME
+            valueFrom: 
+              configMapKeyRef:
+                name: config
+                key: jaeger_service_name
+          - name: JAEGER_AGENT_HOST
+            valueFrom: 
+              configMapKeyRef:
+                name: config
+                key: jaeger_agent_host
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: filter
+  namespace: sky
+spec:
+  selector:
+    app: filter
+  ports:
+  - port: 80
+    targetPort: 80
