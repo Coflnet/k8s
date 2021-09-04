@@ -22,6 +22,7 @@ spec:
         image: registry.flou21.de/feedback-backend:4c41627f-102c-412d-936d-b3a554fc99c1
         ports:
           - containerPort: 3000
+          - containerPort: 2112
         env: 
         - name: DB_HOST
           valueFrom:
@@ -64,3 +65,7 @@ spec:
   ports:
     - port: 3000
       targetPort: 3000
+      name: api
+    - port: 2112
+      targetPort: 2112
+      name: metrics
