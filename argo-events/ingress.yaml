@@ -271,6 +271,13 @@ spec:
             name: sky-eventsource-eventsource-svc
             port:
               number: 12000
+      - path: /sky-mc-connect
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-eventsource-eventsource-svc
+            port:
+              number: 12000
       - path: /feedback-backend
         pathType: ImplementationSpecific
         backend:

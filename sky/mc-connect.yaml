@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mc-connect
+  namespace: sky
+  labels:
+    app: mc-connect
+spec:
+  selector:
+    matchLabels:
+      app: mc-connect
+  serviceName: mc-connect
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mc-connect
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: mc-connect
+        image: registry.flou21.de/sky-mc-connect:0b800a69-5a6d-4704-a731-93b683a5ec67
+        ports:
+        - containerPort: 80
+          name: web
+        env: 
+        - name: DBConnection
+          valueFrom:
+            secretKeyRef:
+              name: secret 
+              key: connection_read
+        - name: KAFKA_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: kafka_host
+        - name: TOPICS__NEW_AUCTION
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: topic_new_auction
+        - name: TOPICS__NEW_BID
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: topic_new_bid
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mc-connect
+  namespace: sky
+spec:
+  selector:
+    app: mc-connect
+  ports:
+  - port: 80
+    targetPort: 80
