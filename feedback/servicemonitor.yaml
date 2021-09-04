@@ -8,7 +8,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: feedback-backend
+      app: feedback-metrics-service
   endpoints:
   - port: metrics
     interval: 25s
