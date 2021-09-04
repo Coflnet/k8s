@@ -10,6 +10,12 @@ spec:
   - name: frontend
     eventSourceName: sky-eventsource
     eventName: frontend
+    filters: 
+      data:
+      - path: body.ref
+        type: string
+        value:
+          - refs/heads/master
   triggers:
   - template:
       name: trigger
