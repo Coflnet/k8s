@@ -76,6 +76,8 @@ spec:
               configMapKeyRef:
                 name: config
                 key: kafka_host
+          - name: SUBSCRIPTION_HOST
+            value: subscriptions
         resources:
           requests:
             memory: "500Mi"
