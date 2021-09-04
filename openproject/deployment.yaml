@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: openproject
   namespace: openproject
@@ -7,6 +7,7 @@ spec:
   selector:
     matchLabels:
       app: openproject
+  serviceName: openproject
   template:
     metadata:
       labels:
