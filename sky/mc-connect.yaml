@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: mc-connect
   namespace: sky
@@ -9,7 +9,6 @@ spec:
   selector:
     matchLabels:
       app: mc-connect
-  serviceName: mc-connect
   replicas: 1
   template:
     metadata:
