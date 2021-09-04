@@ -21,7 +21,7 @@ spec:
             memory: "512Mi"
             cpu: "500m"
         ports:
-        - containerPort: 80
+        - containerPort: 8080
         env: 
         - name: SERVER_HOSTNAME
           valueFrom:
@@ -100,4 +100,4 @@ spec:
     app: openproject
   ports:
   - port: 8080
-    targetPort: 80
+    targetPort: 8080
