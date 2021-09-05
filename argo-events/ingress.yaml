@@ -285,10 +285,24 @@ spec:
             name: sky-eventsource-eventsource-svc
             port:
               number: 12000
+      - path: /sky-filter
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-eventsource-eventsource-svc
+            port:
+              number: 12000
       - path: /feedback-backend
         pathType: ImplementationSpecific
         backend:
           service:
             name: feedback-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /payment
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: payment-eventsource-eventsource-svc
             port:
               number: 12000

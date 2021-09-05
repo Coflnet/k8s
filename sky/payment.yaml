@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment
+  namespace: sky
+  labels:
+    app: payment
+spec:
+  selector:
+    matchLabels:
+      app: payment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: payment
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: payment
+        image: registry.flou21.de/sky-payment:6fdbcb06-0c85-4a63-aa00-6ddfd45fd8cf
+        ports:
+        - containerPort: 80
+          name: web
+        env: 
+          - name: DB_CONNECTION
+            valueFrom:
+              secretKeyRef:
+                name: secret
+                key: connection_micro
+          - name: JAEGER_SERVICE_NAME
+            valueFrom: 
+              configMapKeyRef:
+                name: config
+                key: jaeger_service_name
+          - name: JAEGER_AGENT_HOST
+            valueFrom: 
+              configMapKeyRef:
+                name: config
+                key: jaeger_agent_host
+      
+          - name: STRIPE__ID
+            valueFrom:
+              secretKeyRef: 
+                name: secret
+                key: stripe_key
+          - name: STRIPE__SECRET
+            valueFrom:
+              secretKeyRef: 
+                name: secret
+                key: stripe_secret
+          - name: PAYPAL__ID
+            valueFrom:
+              secretKeyRef: 
+                name: secret
+                key: paypal_id
+          - name: PAYPAL__SECRET
+            valueFrom:
+              secretKeyRef: 
+                name: secret
+                key: paypal_secret
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 4000Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment
+  namespace: sky
+spec:
+  selector:
+    app: payment
+  ports:
+  - port: 80
+    targetPort: 80
