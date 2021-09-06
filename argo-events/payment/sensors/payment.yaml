@@ -8,7 +8,7 @@ spec:
     serviceAccountName: argo-events-sa
   dependencies:
   - name: payment 
-    eventSourceName: payment
+    eventSourceName: payment-eventsource
     eventName: payment
     filters: 
       data:
@@ -74,6 +74,7 @@ spec:
                         value: password
                       - name: branch
                         value: main
+
                   - name: promote
                     templateRef:
                       name: promote
