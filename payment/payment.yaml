@@ -39,7 +39,7 @@ spec:
               configMapKeyRef:
                 name: config
                 key: jaeger_agent_host
-      
+
           - name: STRIPE__ID
             valueFrom:
               secretKeyRef: 
@@ -61,9 +61,9 @@ spec:
                 name: secret
                 key: paypal_secret
         resources:
-          limits:
-            cpu: 1000m
-            memory: 4000Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
 ---
 apiVersion: v1
 kind: Service
@@ -75,4 +75,4 @@ spec:
     app: payment
   ports:
   - port: 80
-    targetPort: 80
+    targetPort: 80 
