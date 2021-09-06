@@ -59,7 +59,7 @@ spec:
                     arguments:
                       parameters:
                       - name: app_repo
-                        value: git://github.com/Coflnet/Payment.git
+                        value: git://github.com/Coflnet/Payments.git
                       - name: container_image
                         value: registry.flou21.de/payment
                       - name: container_tag
