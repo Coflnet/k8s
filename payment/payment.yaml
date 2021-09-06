@@ -19,7 +19,7 @@ spec:
         - name: regcred
       containers:
       - name: payment
-        image: registry.flou21.de/payment:173e3bee-c967-4297-96a0-6c9ac43d7cc2
+        image: registry.flou21.de/payment:40ec2b96-ae47-434d-a39f-79187742fae1
         ports:
         - containerPort: 80
           name: web
