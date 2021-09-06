@@ -28,7 +28,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: secret 
-              key: connection_micro
+              key: connection_micro_mc_connect
         - name: KAFKA_HOST
           valueFrom:
             configMapKeyRef:

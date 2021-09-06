@@ -29,7 +29,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: secret 
-              key: connection_micro
+              key: connection_micro_subscriptions
         - name: MARIADB_VERSION
           valueFrom:
             configMapKeyRef:
