@@ -28,7 +28,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: secret
-                key: connection_micro
+                key: connection_micro_payments
           - name: JAEGER_SERVICE_NAME
             valueFrom: 
               configMapKeyRef:
