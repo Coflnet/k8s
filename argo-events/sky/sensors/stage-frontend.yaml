@@ -7,9 +7,9 @@ spec:
   template:
     serviceAccountName: argo-events-sa
   dependencies:
-  - name: stage-frontend
+  - name: sky-stage-frontend
     eventSourceName: sky-eventsource
-    eventName: stage-frontend
+    eventName: sky-stage-frontend
     filters: 
       data:
       - path: body.ref
