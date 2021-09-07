@@ -26,9 +26,9 @@ spec:
           - containerPort: 80
         env:
           - name: FRONTEND_PROD
-            value: frontend
+            value: stage-frontend
           - name: FRONTEND_STAGING
-            value: frontend-preview
+            value: stage-frontend 
           - name: redisCon
             valueFrom: 
               configMapKeyRef:

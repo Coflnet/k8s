@@ -45,3 +45,6 @@ spec:
       port: "12000"
       endpoint: /sky-filter
       method: POST
+    sky-stage-frontend: 
+      port: "12000"
+      endpoint: /sky-stage-frontend

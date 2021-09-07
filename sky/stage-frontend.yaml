@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stage-frontend
+  namespace: sky
+  labels:
+    app: stage-frontend
+spec:
+  selector:
+    matchLabels:
+      app: stage-frontend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: stage-frontend
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: stage-frontend
+        image: registry.flou21.de/sky-stage-frontend:6fdbcb06-0c85-4a63-aa00-6ddfd45fd8cf
+        ports:
+        - containerPort: 80
+          name: web
+        env: 
+          - name: JAEGER_SERVICE_NAME
+            valueFrom: 
+              configMapKeyRef:
+                name: config
+                key: jaeger_service_name
+          - name: JAEGER_AGENT_HOST
+            valueFrom: 
+              configMapKeyRef:
+                name: config
+                key: jaeger_agent_host
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stage-frontend
+  namespace: sky
+spec:
+  selector:
+    app: stage-frontend
+  ports:
+  - port: 80
+    targetPort: 80

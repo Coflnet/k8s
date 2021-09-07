@@ -306,3 +306,10 @@ spec:
             name: payment-eventsource-eventsource-svc
             port:
               number: 12000
+      - path: /sky-stage-frontend
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-eventsource-eventsource-svc
+            port:
+              number: 12000
