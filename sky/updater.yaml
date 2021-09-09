@@ -19,10 +19,8 @@ spec:
         - name: regcred
       containers:
       - name: updater
-        image: registry.flou21.de/sky-core:164cd32d-1a35-44e2-86fd-a05e275d8a61
+        image: registry.flou21.de/sky-updater:164cd32d-1a35-44e2-86fd-a05e275d8a61
         env:
-        - name: MODES
-          value: updater
         - name: TOKEN_SECRET
           valueFrom:
             secretKeyRef:
