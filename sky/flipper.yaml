@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: flipper
   namespace: sky
@@ -9,7 +9,6 @@ spec:
   selector:
     matchLabels:
       app: flipper
-  serviceName: flipper
   replicas: 3
   template:
     metadata:
