@@ -1,12 +1,13 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: updater
   namespace: sky
   labels:
     app: updater
 spec:
-  replicas: 1
+  replicas: 3
+  serviceName: updater
   selector:
     matchLabels:
       app: updater
@@ -90,3 +91,14 @@ spec:
           requests:
             memory: "400Mi"
             cpu: "750m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: updater
+spec:
+  selector:
+    app: updater
+  ports:
+  - port: 80
+    targetPort: 80
