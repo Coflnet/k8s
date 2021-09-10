@@ -8,6 +8,7 @@ metadata:
 spec:
   replicas: 3
   serviceName: updater
+  updateStrategy: RollingUpdate
   selector:
     matchLabels:
       app: updater
@@ -18,7 +19,6 @@ spec:
     spec:
       imagePullSecrets:
         - name: regcred
-      updateStrategy: RollingUpdate
       containers:
       - name: updater
         image: registry.flou21.de/sky-updater:0cdeb612-29db-42d9-bebd-3604ba1ad752
