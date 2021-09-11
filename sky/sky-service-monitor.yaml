@@ -29,3 +29,51 @@ spec:
   - port: metrics
     interval: 25s
     path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: commands-metrics-servicemonitor
+  namespace: sky 
+  labels:
+    release: kube-prometheus-stack-1627574156
+spec:
+  selector:
+    matchLabels:
+      app: commands-metrics-service
+  endpoints:
+  - port: metrics
+    interval: 25s
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: updater-metrics-servicemonitor
+  namespace: sky 
+  labels:
+    release: kube-prometheus-stack-1627574156
+spec:
+  selector:
+    matchLabels:
+      app:  updater-metrics-service
+  endpoints:
+  - port: metrics
+    interval: 25s
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: flipper-metrics-servicemonitor
+  namespace: sky 
+  labels:
+    release: kube-prometheus-stack-1627574156
+spec:
+  selector:
+    matchLabels:
+      app: flipper-metrics-service
+  endpoints:
+  - port: metrics
+    interval: 25s
+    path: /metrics
