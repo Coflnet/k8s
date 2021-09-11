@@ -529,7 +529,7 @@ resources:
   ##    memory: 256Mi
   requests: 
     cpu: 300m
-    memory: 6Gi
+    memory: 4Gi
 ## Kafka containers' liveness probe. Evaluated as a template.
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
 ## @param livenessProbe.enabled Enable livenessProbe
@@ -741,7 +741,7 @@ externalAccess:
 persistence:
   ## @param persistence.enabled Enable Kafka data persistence using PVC, note that Zookeeper persistence is unaffected
   ##
-  enabled: true
+  enabled: false
   ## @param persistence.existingClaim Provide an existing `PersistentVolumeClaim`, the value is evaluated as a template
   ## If defined, PVC must be created manually before volume will be bound
   ## The value is evaluated as a template
@@ -1155,11 +1155,11 @@ metrics:
     enabled: true
     ## @param metrics.serviceMonitor.namespace Namespace in which Prometheus is running
     ##
-    namespace: "prometheus"
+    namespace: "kafka"
     ## @param metrics.serviceMonitor.interval Interval at which metrics should be scraped
     ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint
     ##
-    interval: ""
+    interval: "25s"
     ## @param metrics.serviceMonitor.scrapeTimeout Timeout after which the scrape is ended
     ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint
     ##
@@ -1170,7 +1170,8 @@ metrics:
     ## selector:
     ##   prometheus: my-prometheus
     ##
-    selector: {}
+    selector: 
+      release: kube-prometheus-stack-1627574156
     ## @param metrics.serviceMonitor.relabelings Relabel configuration for the metrics
     ##
     relabelings: []
@@ -1230,7 +1231,111 @@ provisioning:
   ##     max.message.bytes: 64000
   ##     flush.messages: 1
   ##
-  topics: []
+  topics: 
+  - name: sky-canceledauction-raw
+    partitions: 1
+    replicationFactor: 3
+    config:
+      max.message.bytes: 64000
+      flush.messages: 1
+      compression.type: "uncompressed"
+      batch.size: 8
+  - name: sky-soldauction-raw
+    partitions: 1
+    replicationFactor: 3
+    config:
+      max.message.bytes: 64000
+      flush.messages: 1
+      compression.type: "uncompressed"
+      batch.size: 8
+  - name: sky-newauction-raw
+    partitions: 1
+    replicationFactor: 3
+    config:
+      max.message.bytes: 64000
+      flush.messages: 1
+      compression.type: "uncompressed"
+      batch.size: 8
+  - name: sky-endedauction-raw
+    partitions: 1
+    replicationFactor: 3
+    config:
+      max.message.bytes: 64000
+      flush.messages: 1
+      compression.type: "uncompressed"
+      batch.size: 8
+  - name: sky-newbid-raw
+    partitions: 1
+    replicationFactor: 3
+    config:
+      max.message.bytes: 64000
+      flush.messages: 1
+      compression.type: "uncompressed"
+      batch.size: 8
+  - name: sky-bazaar-raw
+    partitions: 1
+    replicationFactor: 3
+    config:
+      max.message.bytes: 64000
+      flush.messages: 1
+      compression.type: "uncompressed"
+      batch.size: 8
+  - name: sky-canceledauction
+    partitions: 1
+    replicationFactor: 3
+    config:
+      max.message.bytes: 64000
+      flush.messages: 1
+      compression.type: "uncompressed"
+      batch.size: 8
+  - name: sky-soldauction
+    partitions: 1
+    replicationFactor: 3
+    config:
+      max.message.bytes: 64000
+      flush.messages: 1
+      compression.type: "uncompressed"
+      batch.size: 8
+  - name: sky-newauction
+    partitions: 1
+    replicationFactor: 3
+    config:
+      max.message.bytes: 64000
+      flush.messages: 1
+      compression.type: "uncompressed"
+      batch.size: 8
+  - name: sky-endedauction
+    partitions: 1
+    replicationFactor: 3
+    config:
+      max.message.bytes: 64000
+      flush.messages: 1
+      compression.type: "uncompressed"
+      batch.size: 8
+  - name: sky-newbid
+    partitions: 1
+    replicationFactor: 3
+    config:
+      max.message.bytes: 64000
+      flush.messages: 1
+      compression.type: "uncompressed"
+      batch.size: 8
+  - name: sky-bazaar
+    partitions: 1
+    replicationFactor: 3
+    config:
+      max.message.bytes: 64000
+      flush.messages: 1
+      compression.type: "uncompressed"
+      batch.size: 8
+  - name: sky-topic-flip
+    partitions: 1
+    replicationFactor: 3
+    config:
+      max.message.bytes: 64000
+      flush.messages: 1
+      compression.type: "uncompressed"
+      batch.size: 8
 
 ## @section Zookeeper chart parameters
 
