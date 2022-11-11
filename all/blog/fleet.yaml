@@ -1,0 +1,3 @@
+defaultNamespace: blog
+helm:
+  chart: ./chart
