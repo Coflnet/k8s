@@ -565,7 +565,7 @@ registry:
     #  requests:
     #    memory: 256Mi
     #    cpu: 100m
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 10
   nodeSelector: 
     storage: "true"
