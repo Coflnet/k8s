@@ -1,3 +1,4 @@
 defaultNamespace: harbor
+pause: true
 helm:
   chart: ./chart
