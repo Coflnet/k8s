@@ -1,3 +1,4 @@
 defaultNamespace: longhorn
+paused: true
 helm:
   chart: ./chart
