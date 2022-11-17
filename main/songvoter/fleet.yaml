@@ -1,0 +1,3 @@
+defaultNamespace: songvoter
+helm:
+  chart: ./chart
