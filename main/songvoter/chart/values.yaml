@@ -11,7 +11,7 @@ image:
   tag: "15874eb5-902d-4f74-9d35-1d0f2c684d61"
 
 imagePullSecrets: 
-  - harbor
+  - name: harbor
 nameOverride: ""
 fullnameOverride: ""
 
