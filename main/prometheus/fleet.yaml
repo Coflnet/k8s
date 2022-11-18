@@ -1,4 +1,4 @@
 defaultNamespace: prometheus
-paused: true
+paused: false
 helm:
   chart: ./chart
