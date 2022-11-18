@@ -216,14 +216,14 @@ persistence:
       # Specify the "storageClass" used to provision the volume. Or the default
       # StorageClass will be used (the default).
       # Set it to "-" to disable dynamic provisioning
-      storageClass: ""
+      storageClass: "eu-longhorn"
       subPath: "data"
       accessMode: ReadWriteOnce
       size: 50Gi
       annotations: {}
     chartmuseum:
       existingClaim: ""
-      storageClass: ""
+      storageClass: "eu-longhorn"
       subPath: ""
       accessMode: ReadWriteOnce
       size: 5Gi
@@ -231,14 +231,14 @@ persistence:
     jobservice:
       jobLog:
         existingClaim: ""
-        storageClass: ""
+        storageClass: "eu-longhorn"
         subPath: "data"
         accessMode: ReadWriteOnce
         size: 1Gi
         annotations: {}
       scanDataExports:
         existingClaim: ""
-        storageClass: ""
+        storageClass: "eu-longhorn"
         subPath: "data"
         accessMode: ReadWriteOnce
         size: 1Gi
@@ -247,7 +247,7 @@ persistence:
     # be ignored
     database:
       existingClaim: ""
-      storageClass: ""
+      storageClass: "eu-longhorn"
       subPath: "data"
       accessMode: ReadWriteOnce
       size: 5Gi
@@ -256,14 +256,14 @@ persistence:
     # be ignored
     redis:
       existingClaim: ""
-      storageClass: ""
+      storageClass: "eu-longhorn"
       subPath: "data"
       accessMode: ReadWriteOnce
       size: 3Gi
       annotations: {}
     trivy:
       existingClaim: ""
-      storageClass: ""
+      storageClass: "eu-longhorn"
       subPath: "data"
       accessMode: ReadWriteOnce
       size: 5Gi
