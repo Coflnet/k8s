@@ -1,0 +1,6 @@
+dependencies:
+- name: api
+  repository: ""
+  version: 0.1.0
+digest: sha256:a7b041ffbb943c3b7671e54e14964a371597ea50ae72ca7c298535d9a58405e8
+generated: "2022-11-19T18:59:05.332301+01:00"

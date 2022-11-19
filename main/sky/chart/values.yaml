@@ -1,0 +1,8 @@
+global:
+  imagePullSecrets: 
+    - harbor
+
+ski-api:
+  image:
+    tag: umbrealla-tag
+

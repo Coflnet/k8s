@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  progressDeadlineSeconds: 2592000
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      imagePullSecrets:
+      {{- range .Values.global.imagePullSecrets }}
+        name: {{ . }}
+      {{- end }}
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
+        ports:
+           {{ toYaml .Values.ports | nindent 10 }}
+        env:
+          {{ toYaml .Values.env | nindent 10 }}
+        readinessProbe:
+         {{ toYaml .Values.readinessProbe | nindent 10 }}
+        resources:
+         {{ toYaml .Values.resources | nindent 10 }}
+  strategy:
+   {{ toYaml .Values.canary | nindent 6 }}
+---

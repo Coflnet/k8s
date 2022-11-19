@@ -1,0 +1,257 @@
+replicaCount: 5
+
+image:
+  repository: harbor.flou.dev/coflnet/skyapi
+  tag:  UMBRELLA_TAG
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+ports:
+  - name: api
+    port: 8000
+    targetPort: 8000
+  - name: websocket
+    port: 8000
+    targetPort: 8000
+
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+resources: 
+  requests:
+    cpu: 500m
+    memory: 500Mi
+  limits: {}
+
+
+services:
+  - sky-api
+  - sky-api-canary-service
+  - sky-api-stable-service
+template: &canaryTemplate sky-api
+canaryService: &canaryService sky-api-canary-service
+stableService: &stableService sky-api-stable-service
+mainService: &mainService sky-api
+trafficSplit: &trafficSplit sky-api
+canary: 
+  steps:
+  - setWeight: 10
+  - pause: 
+      duration: 3m
+  - analysis:
+      templates:
+      - templateName: *canaryTemplate
+      args:
+      - name: service-name
+        value: *canaryService
+  - setWeight: 50
+  - pause:
+      duration: 5m
+  - analysis:
+      templates:
+      - templateName: *canaryTemplate
+      args:
+      - name: service-name
+        value: *canaryService
+  - setWeight: 100
+  - pause:
+      duration: 5m
+  - analysis:
+      templates:
+      - templateName: *canaryTemplate
+      args:
+      - name: service-name
+        value: *canaryService
+  maxUnavailable: 1
+  canaryService: *canaryService
+  stableService: *stableService
+  trafficRouting:
+    smi:
+      rootService: *mainService
+      trafficSplitName: *trafficSplit
+
+readinessProbe:
+  httpGet:
+    path: /metrics
+    port: 8000
+  initialDelaySeconds: 20
+  periodSeconds: 3
+
+env:
+  - name: API_BASE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: http_api_host
+  - name: PAYMENTS_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: payment_host
+  - name: SETTINGS_REDIS_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: redis_settings_host
+  - name: SETTINGS_BASE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: settings_base_url
+  - name: FRONTEND_PROD
+    value: stage-frontend
+  - name: FRONTEND_STAGING
+    value: stage-frontend 
+  - name: UPDATER_HOST
+    value: updater
+  - name: MCCONNECT_HOST
+    value: mc-connect
+  - name: FLIPTRACKER_HOST
+    value: tracker
+  - name: CRAFTS_HOST
+    value: sky-craft-service
+  - name: PROFILE_HOST
+    value: player
+  - name: TOPICS__LOW_PRICED
+    value: sky-low-priced
+  - name: COMPlus_ThreadPool_ForceMinWorkerThreads
+    value: "450"
+  - name: REDIS_HOST
+    valueFrom: 
+      configMapKeyRef:
+        key: redis_api_host
+        name: config
+  - name: PAYMENTS_HOST
+    valueFrom: 
+      configMapKeyRef:
+        key: payment_host
+        name: config
+  - name: DBConnection
+    valueFrom:
+      secretKeyRef:
+        key: connection_read_api
+        name: secret
+  - name: MODES
+    value: api
+  - name: JAEGER_AGENT_HOST
+    valueFrom: 
+      configMapKeyRef:
+        name: config
+        key: jaeger_agent_host
+  - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+    valueFrom: 
+      configMapKeyRef:
+        name: config
+        key: jaeger_agent_host
+ 
+  - name: TOPICS__MISSING_AUCTION
+    valueFrom: 
+      configMapKeyRef:
+        name: config
+        key: topic_missing_auction
+  - name: TOPICS__SOLD_AUCTION
+    valueFrom: 
+      configMapKeyRef:
+        name: config
+        key: topic_sold_auction
+  - name: TOPICS__AUCTION_ENDED
+    valueFrom: 
+      configMapKeyRef:
+        name: config
+        key: topic_auction_ended
+  - name: TOPICS__FLIP
+    valueFrom: 
+      configMapKeyRef:
+        name: config
+        key: topic_flip
+  - name: TOPICS__FLIP_EVENT
+    value: sky-flip-event
+  - name: KAFKA_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: kafka_host
+  - name: RATE_LIMITER_REDIS_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: redis_host_sky
+  - name: SUBSCRIPTION_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: subscriptions_host
+  - name: INDEXER_HOST
+    value: sky-indexer-service
+  - name: PLAYERNAME_URL
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: sky_player_name_url
+  - name: SKYCOMMANDS_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: commands_host
+  - name: SKYFLIPPER_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: flipper_host
+  - name: BAZAAR_BASE_URL
+    valueFrom:
+      configMapKeyRef:
+        key: bazaar_base_url
+        name: config
+  - name: ITEMS_BASE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: items_base_url
+  - name: SNIPER_BASE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: sniper_base_url
+  - name: REFERRAL_BASE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: referral_base_url
+  - name: MAYOR_BASE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: mayor_base_url
