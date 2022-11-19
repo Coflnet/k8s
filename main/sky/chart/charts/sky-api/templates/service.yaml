@@ -9,6 +9,6 @@ spec:
   selector:
     app: {{ . }}
   ports:
-    {{ toYaml $.Values.ports | nindent 6 }}
+    {{ toYaml $.Values.ports | nindent 4 }}
 ---
 {{- end }}
