@@ -1,6 +1,6 @@
 dependencies:
-- name: api
+- name: skyapi
   repository: ""
   version: 0.1.0
-digest: sha256:a7b041ffbb943c3b7671e54e14964a371597ea50ae72ca7c298535d9a58405e8
-generated: "2022-11-19T18:59:05.332301+01:00"
+digest: sha256:865112673049cdab361864d06aa23b2026a3645150c51ab1e33449715bdf3fa0
+generated: "2022-11-19T22:56:40.123136+01:00"

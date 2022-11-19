@@ -2,7 +2,7 @@ global:
   imagePullSecrets: 
   - name: harbor
 
-ski-api:
+sky-api:
   image:
-    tag: umbrealla-tag
+    tag: 3c08235a-c972-476f-aba2-dc35a947d6f3
 
