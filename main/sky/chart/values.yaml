@@ -1,6 +1,6 @@
 global:
   imagePullSecrets: 
-    - harbor
+  - name: harbor
 
 ski-api:
   image:

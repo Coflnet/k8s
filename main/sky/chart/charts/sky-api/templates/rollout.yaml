@@ -16,9 +16,7 @@ spec:
         app: {{ .Chart.Name }}
     spec:
       imagePullSecrets:
-      {{- range .Values.global.imagePullSecrets }}
-        name: {{ . }}
-      {{- end }}
+      {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       containers:
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}

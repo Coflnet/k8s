@@ -30,12 +30,10 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 ports:
-  - name: api
-    port: 8000
-    targetPort: 8000
   - name: websocket
-    port: 8000
-    targetPort: 8000
+    containerPort: 8000
+  - name: api
+    containerPort: 8008
 
 
 ingress:
@@ -60,6 +58,14 @@ services:
   - sky-api
   - sky-api-canary-service
   - sky-api-stable-service
+serivcePorts:
+  - name: api
+    port: 8000
+    targetPort: 8000
+  - name: websocket
+    port: 8008
+    port: 8008
+
 template: &canaryTemplate sky-api
 canaryService: &canaryService sky-api-canary-service
 stableService: &stableService sky-api-stable-service
