@@ -1,4 +1,4 @@
 defaultNamespace: longhorn-system
-paused: false
+paused: true
 helm:
   chart: ./chart
