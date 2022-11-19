@@ -7,7 +7,7 @@ metadata:
     app: {{ . }}
 spec:
   selector:
-    app: {{ .Chart.Name }}
+    app: {{ $.Chart.Name }}
   ports:
     {{ toYaml $.Values.serivcePorts | nindent 4 }}
 ---
