@@ -16,7 +16,7 @@ global:
       # Select Linux nodes
       nodeSelector:
         kubernetes.io/os: "linux"
-        storage: "true"
+        storage: "longhorn"
       # Recognize toleration and node selector for Longhorn run-time created components
       defaultSetting:
         taintToleration: cattle.io/os=linux:NoSchedule
@@ -155,7 +155,7 @@ longhornManager:
   #   value: "value"
   #   effect: "NoSchedule"
   nodeSelector: 
-    storage: "true"
+    storage: "longhorn"
   ## If you want to set node selector for Longhorn Manager DaemonSet, delete the `{}` in the line above
   ## and uncomment this example block
   #  label-key1: "label-value1"
@@ -176,7 +176,7 @@ longhornDriver:
   #   value: "value"
   #   effect: "NoSchedule"
   nodeSelector: 
-    storage: "true"
+    storage: "longhorn"
   ## If you want to set node selector for Longhorn Driver Deployer Deployment, delete the `{}` in the line above
   ## and uncomment this example block
   #  label-key1: "label-value1"
@@ -193,7 +193,7 @@ longhornUI:
   #   value: "value"
   #   effect: "NoSchedule"
   nodeSelector: 
-    storage: "true"
+    storage: "longhorn"
   ## If you want to set node selector for Longhorn UI Deployment, delete the `{}` in the line above
   ## and uncomment this example block
   #  label-key1: "label-value1"
