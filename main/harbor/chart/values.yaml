@@ -479,8 +479,7 @@ core:
   #  requests:
   #    memory: 256Mi
   #    cpu: 100m
-  nodeSelector: 
-    storage: "true"
+  nodeSelector: {}
   tolerations: []
   affinity: {}
   ## Additional deployment annotations
@@ -530,8 +529,7 @@ jobservice:
   #   requests:
   #     memory: 256Mi
   #     cpu: 100m
-  nodeSelector: 
-    storage: "true"
+  nodeSelector: {}
   tolerations: []
   affinity: {}
   ## Additional deployment annotations
@@ -567,8 +565,7 @@ registry:
     #    cpu: 100m
   replicas: 1
   revisionHistoryLimit: 10
-  nodeSelector: 
-    storage: "true"
+  nodeSelector: {}
   tolerations: []
   affinity: {}
   ## Additional deployment annotations
@@ -702,8 +699,7 @@ trivy:
     limits:
       cpu: 1
       memory: 1Gi
-  nodeSelector: 
-    storage: "true"
+  nodeSelector: {}
   tolerations: []
   affinity: {}
   ## Additional deployment annotations
@@ -783,8 +779,7 @@ database:
     #  requests:
     #    memory: 256Mi
     #    cpu: 100m
-    nodeSelector: 
-      storage: "true"
+    nodeSelector: {}
     tolerations: []
     affinity: {}
     ## The priority class to run the pod as
@@ -844,8 +839,7 @@ redis:
     #  requests:
     #    memory: 256Mi
     #    cpu: 100m
-    nodeSelector: 
-      storage: "true"
+    nodeSelector: {}
     tolerations: []
     affinity: {}
     ## The priority class to run the pod as
