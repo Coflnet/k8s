@@ -4,5 +4,5 @@ global:
 
 sky-api:
   image:
-    tag: 3c08235a-c972-476f-aba2-dc35a947d6f3
+    tag: cf22a4f6-b911-43de-b464-570ff4ddf516
 
