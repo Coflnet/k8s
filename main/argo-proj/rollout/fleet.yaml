@@ -1,0 +1,3 @@
+defaultNamespace: argo-rollouts
+helm:
+  chart: ./chart
