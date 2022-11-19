@@ -1,0 +1,3 @@
+defaultNamespace: sky
+helm:
+  chart: ./chart
