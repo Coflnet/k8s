@@ -31,5 +31,6 @@ spec:
         resources:
          {{ toYaml .Values.resources | nindent 10 }}
   strategy:
-   {{ toYaml .Values.canary | nindent 4 }}
+    canary:
+    {{ toYaml .Values.canary | nindent 6 }}
 ---
