@@ -1704,6 +1704,11 @@ zookeeper:
   ## @param zookeeper.replicaCount Number of ZooKeeper nodes
   ##
   replicaCount: 3
+
+  ## œparam zookeeper.nodeSelctor Node Selector for Zookeeper
+  nodeSelector:
+    storage: "longhorn"
+
   ## ZooKeeper authenticaiton
   ##
   auth:
