@@ -8,7 +8,7 @@ image:
   repository: harbor.flou.dev/coflnet/songvoter
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "15874eb5-902d-4f74-9d35-1d0f2c684d61"
+  tag: "2e1eba78-db07-4055-990c-6fce315cd21d"
 
 imagePullSecrets: 
   - name: harbor
