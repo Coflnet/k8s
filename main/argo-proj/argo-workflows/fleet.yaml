@@ -1,0 +1,3 @@
+defaultNamespace: argo
+helm:
+  chart: ./chart
