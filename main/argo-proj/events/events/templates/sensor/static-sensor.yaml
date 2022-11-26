@@ -36,12 +36,12 @@ spec:
           - src: 
               dependencyName: static-update
               dataKey: body.repository.default_branch
-              dataTemplate: "{{ .Input.body.repository.full_name | nospace | lower }}"
+              dataTemplate: "{{"{{"}} .Input.body.repository.full_name | nospace | lower {{"}}"}}"
             dest: spec.templates.0.dag.tasks.0.arguments.parameters.2.value
             operation: append
           - src:
               dependencyName: static-update
-              dataTemplate: "{{ .Input.body.repository.name | nospace | lower }}-"
+              dataTemplate: "{{"{{"}} .Input.body.repository.name | nospace | lower {{"}}"}}"
             dest: metadata.generateName
             operation: append
         source:
