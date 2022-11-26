@@ -1,0 +1,120 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: ci-eventsource
+  namespace: argo-events
+spec:
+  template:
+    affinity:
+  service:
+    ports:
+      - port: 12000
+        targetPort: 12000
+
+  webhook:
+    ci:
+      port: "12000"
+      endpoint: /ci
+      method: POST
+
+    ci-update:
+      port: "12000"
+      endpoint: /ci-update
+      method: POST
+
+    static-update:
+      port: "12000"
+      endpoint: /static-update
+      method: POST
+
+    # discord
+    discord-bot-node:
+      port: "12000"
+      endpoint: /discord-bot-node
+      method: POST
+    coflnet-bot:
+      port: "12000"
+      endpoint: /coflnet-bot
+      method: POST
+
+    # feedback
+    feedback-backend:
+      port: "12000"
+      endpoint: /feedback-backend
+      method: POST
+
+    # kafka-dedup
+    kafka-dedup-dotnet:
+      port: "12000"
+      endpoint: /kafka-dedup-dotnet
+      method: POST
+
+    # kafka-sim
+    kafka-sim:
+      port: "12000"
+      endpoint: /kafka-sim
+      method: POST
+
+    sensor:
+      port: "12000"
+      endpoint: /cassandra-housekeeping
+      method: POST
+
+    # pr-env
+    pr-env:
+      port: "12000"
+      endpoint: /pr-env
+      method: POST
+
+    # sky
+    sky:
+      port: "12000"
+      endpoint: /sky
+      method: POST
+    sky-pull-request:
+      port: "12000"
+      endpoint: /sky-pull-request
+      method: POST
+    frontend:
+      port: "12000"
+      endpoint: /sky-frontend
+      method: POST
+    sky-core: 
+      port: "12000"
+      endpoint: /sky-core
+      method: POST
+    sky-commands: 
+      port: "12000"
+      endpoint: /sky-commands
+      method: POST
+    sky-mod: 
+      port: "12000"
+      endpoint: /sky-mod
+      method: POST
+    sky-subscriptions: 
+      port: "12000"
+      endpoint: /sky-subscriptions
+      method: POST
+    sky-flipper: 
+      port: "12000"
+      endpoint: /sky-flipper
+      method: POST
+    sky-mc-connect: 
+      port: "12000"
+      endpoint: /sky-mc-connect
+      method: POST
+    sky-filter: 
+      port: "12000"
+      endpoint: /sky-filter
+      method: POST
+
+    songvoter:
+      port: "12000"
+      endpoint: /songvoter
+      method: POST
+
+    # static-server
+    static-server:
+      port: "12000"
+      endpoint: /static-server
+      method: POST

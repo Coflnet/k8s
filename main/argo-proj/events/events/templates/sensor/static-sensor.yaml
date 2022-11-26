@@ -1,0 +1,96 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: ci-update-static-webhook
+  namespace: argo-events
+spec:
+  template:
+    serviceAccountName: argo-events-sa
+  dependencies:
+  - name: static-update
+    eventSourceName: ci-eventsource
+    eventName: static-update
+    filters: 
+      data:
+      - path: body.ref
+        type: string
+        value:
+          - refs/heads/main
+  triggers:
+  - template:
+      name: trigger
+      argoWorkflow:
+        group: argoproj.io
+        version: v1alpha1
+        resource: workflows
+        operation: submit
+        parameters:
+          - src: 
+              dependencyName: static-update
+              dataKey: body.repository.git_url
+            dest: spec.templates.0.dag.tasks.0.arguments.parameters.0.value
+          - src: 
+              dependencyName: static-update
+              dataKey: body.repository.default_branch
+            dest: spec.templates.0.dag.tasks.0.arguments.parameters.1.value
+          - src: 
+              dependencyName: static-update
+              dataKey: body.repository.default_branch
+              dataTemplate: "{{ .Input.body.repository.full_name | nospace | lower }}"
+            dest: spec.templates.0.dag.tasks.0.arguments.parameters.2.value
+            operation: append
+          - src:
+              dependencyName: static-update
+              dataTemplate: "{{ .Input.body.repository.name | nospace | lower }}-"
+            dest: metadata.generateName
+            operation: append
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              namespace: argo
+              generateName: ci-update-
+            spec:
+              entrypoint: build
+              serviceAccountName: argo
+              retryStrategy:
+                    limit: 10
+                    retryPolicy: "Always"
+                    backoff:
+                      duration: "1"
+                      factor: 2
+                      maxDuration: "30m"
+              volumes:
+              - name: harbor
+                secret:
+                  secretName: harbor
+                  items:
+                    - key: .dockerconfigjson
+                      path: config.json
+              templates:
+              - name: build
+                dag:
+                  tasks:
+                  - name: build
+                    templateRef:
+                      name: build-harbor-image
+                      template: build-harbor-image
+                    arguments:
+                      parameters:
+                      - name: app_repo
+                        value: ""
+                      - name: branch
+                        value: ""
+                      - name: container_image
+                        value: ""
+                      - name: container_tag
+                        value: "latest"
+                      - name: sub_path 
+                        value: .
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password

@@ -1,0 +1,58 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argo-events-ingress
+  namespace: argo-events
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: argo-events.flou.dev
+    http:
+      paths:
+      - path: /ci
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ci-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /ci-update
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ci-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /static-update
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ci-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /build-container
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: build-container-eventsource-svc
+            port:
+              number: 12000
+
+  - host: argo-events.flou.dev
+    http:
+      paths:
+      - path: /discord-bot-node
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: discord-bot-node-eventsource-eventsource-svc
+            port:
+              number: 12000
+      - path: /coflnet-bot
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: discord-bot-node-eventsource-eventsource-svc
+            port:
+              number: 12000

@@ -1,0 +1,19 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: build-container
+  namespace: argo-events
+spec:
+  template:
+    affinity:
+  service:
+    ports:
+      - port: 12000
+        targetPort: 12000
+
+  webhook:
+    build-container:
+      port: "12000"
+      endpoint: /build-container
+      method: POST

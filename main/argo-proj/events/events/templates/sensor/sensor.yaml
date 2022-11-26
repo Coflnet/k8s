@@ -1,0 +1,103 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: build-container-webhook
+  namespace: argo-events
+spec:
+  template:
+    serviceAccountName: argo-events-sa
+  dependencies:
+  - name: build-container
+    eventSourceName: build-container
+    eventName: build-container
+  triggers:
+  - template:
+      name: trigger
+      argoWorkflow:
+        group: argoproj.io
+        version: v1alpha1
+        resource: workflows
+        operation: submit
+        parameters:
+          - src:
+              dependencyName: build-container
+              dataKey: body.git_url
+            dest: spec.templates.0.dag.tasks.0.arguments.parameters.0.value
+          - src:
+              dependencyName: build-container
+              dataKey: body.branch
+            dest: spec.templates.0.dag.tasks.0.arguments.parameters.1.value
+          - src:
+              dependencyName: build-container
+              dataKey: body.image
+            dest: spec.templates.0.dag.tasks.0.arguments.parameters.2.value
+          - src:
+              dependencyName: build-container
+              dataKey: body.tag
+            dest: spec.templates.0.dag.tasks.0.arguments.parameters.3.value
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              namespace: argo
+              generateName: build-container-
+              labels:
+                workflows.argoproj.io/archive-strategy: "true"
+            spec:
+              entrypoint: build
+              serviceAccountName: argo
+              retryStrategy:
+                    limit: 3
+                    retryPolicy: "Always"
+                    backoff:
+                      duration: "1"
+                      factor: 2
+                      maxDuration: "30m"
+              ttlStrategy:
+                secondsAfterFailure: 21600
+                secondsAfterSuccess: 7200
+              imagePullSecrets:
+                - name: harbor
+              volumes:
+              - name: harbor
+                secret:
+                  secretName: harbor
+                  items:
+                    - key: .dockerconfigjson
+                      path: config.json
+              templates:
+              - name: build
+                affinity:
+                  nodeAffinity:
+                    requiredDuringSchedulingIgnoredDuringExecution:
+                      nodeSelectorTerms:
+                      - matchExpressions:
+                        - key: hetzner
+                          operator: NotIn
+                          values:
+                          - "true"
+                dag:
+                  tasks:
+                  - name: build
+                    templateRef:
+                      name: build-harbor-image
+                      template: build-harbor-image
+                    arguments:
+                      parameters:
+                      - name: app_repo
+                        value: ""
+                      - name: branch
+                        value: ""
+                      - name: container_image
+                        value: ""
+                      - name: container_tag
+                        value: ""
+                      - name: sub_path 
+                        value: .
+                      - name: git_user
+                        value: "Flou21"
+                      - name: git_secret_name
+                        value: github-secret
+                      - name: git_secret_key
+                        value: password
