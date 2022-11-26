@@ -192,6 +192,7 @@ controller:
   # be created. Only valid when singleNamespace is false.
   workflowNamespaces:
     - argo
+    - argo-events
 
   instanceID:
     # -- Configures the controller to filter workflow submissions
