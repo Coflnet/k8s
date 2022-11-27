@@ -907,7 +907,8 @@ metrics:
   ##
   serviceMonitor:
     enabled: true
-    additionalLabels: {}
+    additionalLabels: 
+      release: k8s-main-prometheus
     # Scrape interval. If not set, the Prometheus default scrape interval is used.
     interval: ""
     # Metric relabel configs to apply to samples before ingestion.
