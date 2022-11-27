@@ -780,7 +780,8 @@ database:
     #  requests:
     #    memory: 256Mi
     #    cpu: 100m
-    nodeSelector: {}
+    nodeSelector: 
+      storage: "longhorn"
     tolerations: []
     affinity: {}
     ## The priority class to run the pod as
