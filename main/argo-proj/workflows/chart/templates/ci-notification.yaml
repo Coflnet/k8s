@@ -20,6 +20,7 @@ spec:
       - name: success
     container:
       image: harbor.flou.dev/coflnet/ci-notifications:latest
+      command: ["/app"]
       resources:
         requests:
           memory: 50Mi
