@@ -46,7 +46,7 @@ spec:
                 workflows.argoproj.io/archive-strategy: "true"
             spec:
               entrypoint: build
-              serviceAccountName: argo
+              serviceAccountName: argo-events-sa
               retryStrategy:
                     limit: 3
                     retryPolicy: "Always"

@@ -53,7 +53,7 @@ spec:
               generateName: ci-update-
             spec:
               entrypoint: build
-              serviceAccountName: argo
+              serviceAccountName: argo-events-sa
               retryStrategy:
                     limit: 10
                     retryPolicy: "Always"
