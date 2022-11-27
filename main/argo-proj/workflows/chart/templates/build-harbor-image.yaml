@@ -26,10 +26,10 @@ spec:
     container:
       image: gcr.io/kaniko-project/executor:v1.8.0-debug
       args:
-      - --context={{inputs.parameters.app_repo}}#refs/heads/{{inputs.parameters.branch}}
-      - --context-sub-path={{inputs.parameters.sub_path}}
-      - --destination=harbor.flou.dev/{{inputs.parameters.container_image}}:{{inputs.parameters.container_tag}}
-      - --destination=harbor.flou.dev/{{inputs.parameters.container_image}}:latest
+      - --context={{"{{"}}inputs.parameters.app_repo{{"}}"}}#refs/heads/{{"{{"}}inputs.parameters.branch{{"}}"}}
+      - --context-sub-path={{"{{"}}inputs.parameters.sub_path{{"}}"}}
+      - --destination=harbor.flou.dev/{{"{{"}}inputs.parameters.container_image}}:{{"{{"}}inputs.parameters.container_tag{{"}}"}}
+      - --destination=harbor.flou.dev/{{"{{"}}inputs.parameters.container_image{{"}}"}}:latest
       command: ["/kaniko/executor"]
       resources:
         limits:
