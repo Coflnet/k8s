@@ -20,11 +20,11 @@ spec:
           cpu: 10m
       env:
         - name: PROJECT
-          value: "{{inputs.parameters.project}}"
+          value: "{{"{{"}}inputs.parameters.project{{"}}"}}"
         - name: ORGANIZATION
-          value: "{{inputs.parameters.organization}}"
+          value: "{{"{{"}}inputs.parameters.organization{{"}}"}}"
         - name: SUCCESS
-          value: "{{inputs.parameters.success}}"
+          value: "{{"{{"}}inputs.parameters.success{{"}}"}}"
         - name: KAFKA_HOST
           value: kafka-3.kafka.svc.cluster.local
         - name: TOPIC_DEV_CHAT
