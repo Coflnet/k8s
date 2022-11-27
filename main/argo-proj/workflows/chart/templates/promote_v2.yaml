@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: promote-v2
+  namespace: argo
+spec:
+  serviceAccountName: argo-events-sa
+  templates:
+  - name: promote-v2
+    inputs:
+      parameters:
+      - name: tag
+      - name: git_user
+      - name: repo_url
+      - name: k8s_file
+      - name: git_secret_name
+      - name: git_secret_key
+    container:
+      image: harbor.flou.dev/coflnet/promoter:latest
+      command: ["/bin/sh", "-c", "promoter"]
+      resources:
+        requests:
+          memory: 50Mi
+          cpu: 10m
+      env:
+        - name: GIT_USERNAME
+          value: "{{inputs.parameters.git_user}}"
+        - name: GIT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name:  "{{inputs.parameters.git_secret_name}}"
+              key: "{{inputs.parameters.git_secret_key}}"
+        - name: GIT_REPOSITORY
+          value: "{{inputs.parameters.repo_url}}"
+        - name: FILENAME
+          value: "{{inputs.parameters.k8s_file}}"
+        - name: NEW_TAG
+          value: "{{inputs.parameters.tag}}"
+        - name: IMAGE_NAME
+          value: "{{inputs.parameters.k8s_file}}"
+

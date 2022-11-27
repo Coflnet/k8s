@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: build-container-image
+  namespace: argo
+spec:
+  serviceAccountName: argo-events-sa
+  templates:
+  - name: build-kaniko-git
+    inputs:
+      parameters:
+      - name: app_repo
+      - name: container_image
+      - name: container_tag
+      - name: sub_path
+      - name: git_user
+      - name: git_secret_name
+      - name: git_secret_key
+      - name: branch
+    container:
+      image: gcr.io/kaniko-project/executor:debug
+      args:
+      - --context={{inputs.parameters.app_repo}}#refs/heads/{{inputs.parameters.branch}}
+      - --context-sub-path={{inputs.parameters.sub_path}}
+      - --destination={{inputs.parameters.container_image}}:{{inputs.parameters.container_tag}}
+      - --destination={{inputs.parameters.container_image}}:latest
+      resources:
+        limits:
+          memory: 1500Mi
+          cpu: 3000m
+      env:
+        - name: GIT_USERNAME
+          value: "{{inputs.parameters.git_user}}"
+        - name: GIT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name:  "{{inputs.parameters.git_secret_name}}"
+              key: "{{inputs.parameters.git_secret_key}}"
+      volumeMounts:
+        - name: kaniko-secret
+          mountPath: /kaniko/.docker/

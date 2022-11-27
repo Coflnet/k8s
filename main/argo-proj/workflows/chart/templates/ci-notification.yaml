@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: ci-notification
+  namespace: argo
+spec:
+  serviceAccountName: argo-events-sa
+  templates:
+  - name: ci-notification
+    inputs:
+      parameters:
+      - name: project
+      - name: organization
+      - name: success
+    container:
+      image: harbor.flou.dev/coflnet/ci-notifications:latest
+      resources:
+        requests:
+          memory: 50Mi
+          cpu: 10m
+      env:
+        - name: PROJECT
+          value: "{{inputs.parameters.project}}"
+        - name: ORGANIZATION
+          value: "{{inputs.parameters.organization}}"
+        - name: SUCCESS
+          value: "{{inputs.parameters.success}}"
+        - name: KAFKA_HOST
+          value: kafka-3.kafka.svc.cluster.local
+        - name: TOPIC_DEV_CHAT
+          value: discord-messages
+        - name: TOPIC_DEV_SPAM_CHAT
+          value: discord-spam-messages
+
