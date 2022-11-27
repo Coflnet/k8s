@@ -178,24 +178,6 @@ spec:
                               value: "https://github.com/Coflnet/kube"
                         depends: "build"
 
-                      - name: argo-sync
-                        templateRef:
-                          name: argo-sync
-                          template: argo-sync
-                        arguments:
-                          parameters:
-                            - name: app_name
-                              value: sky
-                            - name: argo_server_secret_name
-                              value: sky-argo-secret
-                            - name: argo_server_secret_key
-                              value: argo_server
-                            - name: argo_auth_token_secret_name
-                              value: sky-argo-secret
-                            - name: argo_auth_token_secret_key
-                              value: argo_auth_token
-                        depends: "promote-v2"
-
                       - name: ci-notification-success
                         templateRef:
                           name: ci-notification
@@ -208,7 +190,7 @@ spec:
                               value: ""
                             - name: success
                               value: "true"
-                        depends: "argo-sync.Succeeded"
+                        depends: "promote-v2.Succeeded"
 
                       - name: ci-notification-fail
                         templateRef:
