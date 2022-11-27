@@ -243,8 +243,7 @@ controller:
     #   value: "bar"
 
   # -- Extra arguments to be added to the controller
-  extraArgs: 
-    - "--auth-mode=server"
+  extraArgs: []
   # -- Additional volume mounts to the controller main container
   volumeMounts: []
   # -- Additional volumes to the controller pod
@@ -422,7 +421,9 @@ server:
     #   value: "bar"
 
   # -- Extra arguments to provide to the Argo server binary, such as for disabling authentication.
-  extraArgs: []
+  extraArgs: 
+    - "--auth-mode=server"
+
   # If you want to disable authentication for purposes such as:
   #   - local dev-mode without authentication
   #   - gateway authentication through some other service such as KeyCloak
