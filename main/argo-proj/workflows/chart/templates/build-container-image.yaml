@@ -22,7 +22,7 @@ spec:
       args:
       - --context={{"{{"}}inputs.parameters.app_repo{{"}}"}}#refs/heads/{{"{{"}}inputs.parameters.branch{{"}}"}}
       - --context-sub-path={{"{{"}}inputs.parameters.sub_path{{"}}"}}
-      - --destination={{"{{"}}inputs.parameters.container_image{{"}}"}}:{{inputs.parameters.container_tag{{"}}"}}
+      - --destination={{"{{"}}inputs.parameters.container_image{{"}}"}}:{{"{{"}}inputs.parameters.container_tag{{"}}"}}
       - --destination={{"{{"}}inputs.parameters.container_image{{"}}"}}:latest
       resources:
         limits:
