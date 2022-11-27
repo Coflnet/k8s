@@ -171,9 +171,11 @@ controller:
     servicePortName: telemetry
   serviceMonitor:
     # -- Enable a prometheus ServiceMonitor
-    enabled: false
+    enabled: true
     # -- Prometheus ServiceMonitor labels
-    additionalLabels: {}
+    additionalLabels: 
+      release: k8s-main-prometheus
+
     # -- Prometheus ServiceMonitor namespace
     namespace: "" # "monitoring"
   serviceAccount:
