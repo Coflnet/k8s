@@ -565,7 +565,8 @@ registry:
     #    cpu: 100m
   replicas: 1
   revisionHistoryLimit: 10
-  nodeSelector: {}
+  nodeSelector: 
+    storage: "longhorn"
   tolerations: []
   affinity: {}
   ## Additional deployment annotations
