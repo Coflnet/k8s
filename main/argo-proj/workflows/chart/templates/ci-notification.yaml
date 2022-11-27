@@ -3,7 +3,13 @@ kind: WorkflowTemplate
 metadata:
   name: ci-notification
   namespace: argo
+  labels:
+    workflows.argoproj.io/container-runtime-executor: emissary
 spec:
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 2000
   serviceAccountName: argo-events-sa
   templates:
   - name: ci-notification
