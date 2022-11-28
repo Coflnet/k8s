@@ -2,7 +2,7 @@ replicaCount: 5
 
 image:
   repository: harbor.flou.dev/coflnet/skyapi
-  tag:  UMBRELLA_TAG
+  tag: abf60a5b-8d87-472c-9ffd-673736b6d731
   pullPolicy: IfNotPresent
 
 nameOverride: ""
