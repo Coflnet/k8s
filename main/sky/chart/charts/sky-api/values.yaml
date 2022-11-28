@@ -114,17 +114,13 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-env:
+envVars:
+  # TODO check if they are necessary with ekwav
   - name: API_BASE_URL
     valueFrom:
       configMapKeyRef:
         name: config
         key: http_api_host
-  - name: PAYMENTS_HOST
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: payment_host
   - name: SETTINGS_REDIS_HOST
     valueFrom:
       configMapKeyRef:
@@ -139,25 +135,8 @@ env:
     value: stage-frontend
   - name: FRONTEND_STAGING
     value: stage-frontend 
-  - name: UPDATER_HOST
-    value: updater
-  - name: MCCONNECT_HOST
-    value: mc-connect
-  - name: FLIPTRACKER_HOST
-    value: tracker
-  - name: CRAFTS_HOST
-    value: sky-craft-service
-  - name: PROFILE_HOST
-    value: player
-  - name: TOPICS__LOW_PRICED
-    value: sky-low-priced
   - name: COMPlus_ThreadPool_ForceMinWorkerThreads
     value: "450"
-  - name: PAYMENTS_HOST
-    valueFrom: 
-      configMapKeyRef:
-        key: payment_host
-        name: config
   - name: DBConnection
     valueFrom:
       secretKeyRef:
@@ -165,93 +144,4 @@ env:
         name: secret
   - name: MODES
     value: api
-  - name: JAEGER_AGENT_HOST
-    valueFrom: 
-      configMapKeyRef:
-        name: config
-        key: jaeger_agent_host
-  - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
-    valueFrom: 
-      configMapKeyRef:
-        name: config
-        key: jaeger_agent_host
  
-  - name: TOPICS__MISSING_AUCTION
-    valueFrom: 
-      configMapKeyRef:
-        name: config
-        key: topic_missing_auction
-  - name: TOPICS__SOLD_AUCTION
-    valueFrom: 
-      configMapKeyRef:
-        name: config
-        key: topic_sold_auction
-  - name: TOPICS__AUCTION_ENDED
-    valueFrom: 
-      configMapKeyRef:
-        name: config
-        key: topic_auction_ended
-  - name: TOPICS__FLIP
-    valueFrom: 
-      configMapKeyRef:
-        name: config
-        key: topic_flip
-  - name: TOPICS__FLIP_EVENT
-    value: sky-flip-event
-  - name: KAFKA_HOST
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: kafka_host
-  - name: RATE_LIMITER_REDIS_HOST
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: redis_host_sky
-  - name: SUBSCRIPTION_HOST
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: subscriptions_host
-  - name: INDEXER_HOST
-    value: sky-indexer-service
-  - name: PLAYERNAME_URL
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: sky_player_name_url
-  - name: SKYCOMMANDS_HOST
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: commands_host
-  - name: SKYFLIPPER_HOST
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: flipper_host
-  - name: BAZAAR_BASE_URL
-    valueFrom:
-      configMapKeyRef:
-        key: bazaar_base_url
-        name: config
-  - name: ITEMS_BASE_URL
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: items_base_url
-  - name: SNIPER_BASE_URL
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: sniper_base_url
-  - name: REFERRAL_BASE_URL
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: referral_base_url
-  - name: MAYOR_BASE_URL
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: mayor_base_url

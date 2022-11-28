@@ -1,6 +1,78 @@
 global:
   imagePullSecrets: 
   - name: harbor
+  envVars:
+
+    ## common jaeger env vars ##
+    # TODO check this with ekwav
+  - name: RATE_LIMITER_REDIS_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: redis_host_sky
+
+    ## common services ##
+    ### kafka ###
+  - name: KAFKA_HOST
+    value: k8s-main-kafka-kafka.kafka.svc.cluster.local
+
+    ### jaeger ###
+  - name: JAEGER_AGENT_HOST
+    value: jaeger-collector.observability.svc.cluster.local
+  - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+    value: jaeger-collector.observability.svc.cluster.local
+
+    ## kafka topics ##
+  - name: TOPICS__AUCTION_ENDED
+    value: sky-endedauction
+  - name: TOPICS__FLIP
+    value: sky-topic-flip
+  - name: TOPICS__FLIP_EVENT
+    value: sky-flip-event
+  - name: TOPICS__LOW_PRICED
+    value: sky-low-priced
+  - name: TOPICS__MISSING_AUCTION
+    value: sky-canceledauction
+  - name: TOPICS__SOLD_AUCTION
+    value: sky-soldauction
+
+  ## base urls ##
+  - name: BAZAAR_BASE_URL
+    value: http://bazaar:8000
+  - name: ITEMS_BASE_URL
+    value: http://items:8000
+  - name: MAYOR_BASE_URL
+    value: http://mayor:8080
+  - name: REFERRAL_BASE_URL
+    value: http://referral:8000
+  - name: SNIPER_BASE_URL
+    value: http://sniper:8000
+  - name: PLAYERNAME_URL
+    value: http://player-name:8000
+
+  ## hosts ## 
+  - name: INDEXER_HOST
+    value: sky-indexer-service
+  - name: SUBSCRIPTION_HOST
+    value: subscriptions
+  - name: SKYFLIPPER_HOST
+    value: flipper
+  - name: SKYCOMMANDS_HOST
+    value: sky-commands.sky.svc.cluster.local
+  - name: PAYMENTS_HOST
+    value: payment.payment.svc.cluster.local
+  - name: PROFILE_HOST
+    value: player
+  - name: CRAFTS_HOST
+    value: sky-craft-service
+  - name: UPDATER_HOST
+    value: updater
+  - name: MCCONNECT_HOST
+    value: mc-connect
+  - name: FLIPTRACKER_HOST
+    value: tracker
+
+
 
 sky-api:
   image:
