@@ -144,6 +144,4 @@ envVars:
         name: secret
   - name: MODES
     value: api
-  - name: REDIS_HOST
-    value: "{{ .Chart.Name }}-redis,syncTimeout=200"
  
