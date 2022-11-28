@@ -66,21 +66,21 @@ spec:
           - src:
               dependencyName: ci-update
               dataKey: body.repository.name
-            dest: spec.templates.0.dag.tasks.3.arguments.parameters.0.value
+            dest: spec.templates.0.dag.tasks.2.arguments.parameters.0.value
           - src:
               dependencyName: ci-update
               dataKey: body.repository.owner.name
-            dest: spec.templates.0.dag.tasks.3.arguments.parameters.1.value
+            dest: spec.templates.0.dag.tasks.2.arguments.parameters.1.value
 
           # ci notification fail
           - src:
               dependencyName: ci-update
               dataKey: body.repository.name
-            dest: spec.templates.0.dag.tasks.4.arguments.parameters.0.value
+            dest: spec.templates.0.dag.tasks.3.arguments.parameters.0.value
           - src:
               dependencyName: ci-update
               dataKey: body.repository.owner.name
-            dest: spec.templates.0.dag.tasks.4.arguments.parameters.1.value
+            dest: spec.templates.0.dag.tasks.3.arguments.parameters.1.value
 
         source:
           resource:
@@ -178,23 +178,6 @@ spec:
                               value: "https://github.com/Coflnet/k8s"
                         depends: "build"
 
-                      - name: argo-sync
-                        templateRef:
-                          name: argo-sync
-                          template: argo-sync
-                        arguments:
-                          parameters:
-                            - name: app_name
-                              value: sky
-                            - name: argo_server_secret_name
-                              value: sky-argo-secret
-                            - name: argo_server_secret_key
-                              value: argo_server
-                            - name: argo_auth_token_secret_name
-                              value: sky-argo-secret
-                            - name: argo_auth_token_secret_key
-                              value: argo_auth_token
-                        depends: "promote-v2"
 
                       - name: ci-notification-success
                         templateRef:
@@ -208,7 +191,7 @@ spec:
                               value: ""
                             - name: success
                               value: "true"
-                        depends: "argo-sync.Succeeded"
+                        depends: "promote-v2.Succeeded"
 
                       - name: ci-notification-fail
                         templateRef:
