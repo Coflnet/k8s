@@ -66,11 +66,11 @@ serivcePorts:
   - name: websocket
     port: 8008
 
-template: &canaryTemplate sky-mod
-canaryService: &canaryService sky-mod-canary-service
-stableService: &stableService sky-mod-stable-service
-mainService: &mainService sky-mod
-trafficSplit: &trafficSplit sky-mod
+template: &canaryTemplate sky-mod-commands
+canaryService: &canaryService sky-mod-commands-canary-service
+stableService: &stableService sky-mod-commands-stable-service
+mainService: &mainService sky-mod-commands
+trafficSplit: &trafficSplit sky-mod-commands
 canary: 
   steps:
   - setWeight: 10
