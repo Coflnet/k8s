@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: {{ .Chart.Name }}
+spec:
+  args:
+  - name: service-name
+  metrics:
+  - name: sky-api-error
+    interval: 1m
+    successCondition: result[0] < 1
+    failureLimit: 1
+    count: 3
+    provider:
+      prometheus:
+        address: http://prometheus-operated.prometheus.svc.cluster.local:9090
+        query: |
+          sum(rate(sky_api_error{service="{{"{{"}}args.service-name{{"}}"}}"}[5m]))

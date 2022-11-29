@@ -1,8 +1,8 @@
 replicaCount: 5
 
 image:
-  repository: harbor.flou.dev/coflnet/skyapi
-  tag: 572536e9-9be8-435d-93be-08bfd2219b07
+  repository: harbor.flou.dev/coflnet/skymodcommands
+  tag: 73cf1c2b-78fc-4dab-a9e3-ccdd3b98521a
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -22,13 +22,13 @@ podAnnotations: {}
 podSecurityContext: {}
   # fsGroup: 2000
 
-securityContext: 
-  capabilities:
-    drop:
-    - ALL
-  readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 1000
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
 ports:
   - name: websocket
     containerPort: 8000
@@ -49,27 +49,28 @@ ingress:
 resources: 
   requests:
     cpu: 500m
-    memory: 500Mi
-  limits: {}
+    memory: 600Mi
+  limits: 
+    cpu: 1500m
+    memory: 1Gi
 
 
 services:
-  - sky-api
-  - sky-api-canary-service
-  - sky-api-stable-service
+  - sky-mod
+  - sky-mod-canary-service
+  - sky-mod-stable-service
 serivcePorts:
   - name: api
     port: 8000
     targetPort: 8000
   - name: websocket
     port: 8008
-    port: 8008
 
-template: &canaryTemplate sky-api
-canaryService: &canaryService sky-api-canary-service
-stableService: &stableService sky-api-stable-service
-mainService: &mainService sky-api
-trafficSplit: &trafficSplit sky-api
+template: &canaryTemplate sky-mod
+canaryService: &canaryService sky-mod-canary-service
+stableService: &stableService sky-mod-stable-service
+mainService: &mainService sky-mod
+trafficSplit: &trafficSplit sky-mod
 canary: 
   steps:
   - setWeight: 10
@@ -115,3 +116,4 @@ readinessProbe:
   periodSeconds: 3
 
 envVars: []
+ 

@@ -1,22 +1,31 @@
 global:
   imagePullSecrets: 
   - name: harbor
-  envVars:
 
-    ## common jaeger env vars ##
-    # TODO check this with ekwav
+  frontendEnvVars:
+    ## database connection to the secondary servers as readonly ##
+    - name: DBConnection
+      valueFrom:
+        secretKeyRef:
+          key: connection_read_api
+          name: secret
+    
+
+  envVars:
+    ## check this with ekwav ##
   - name: RATE_LIMITER_REDIS_HOST
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: redis_host_sky
+    value: redis-service
+
+  ## shared redis instance to sync settings between frontends ##
+  - name: SETTINGS_REDIS_HOST
+    value: setttings-redis-service
 
     ## common services ##
     ### kafka ###
   - name: KAFKA_HOST
     value: k8s-main-kafka-kafka.kafka.svc.cluster.local
 
-    ### jaeger ###
+    ## common jaeger env vars ##
   - name: JAEGER_AGENT_HOST
     value: jaeger-collector.observability.svc.cluster.local
   - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
@@ -37,40 +46,42 @@ global:
     value: sky-soldauction
 
   ## base urls ##
+  - name: API_BASE_URL
+    value: http://api-service:8000
   - name: BAZAAR_BASE_URL
     value: http://bazaar:8000
   - name: ITEMS_BASE_URL
     value: http://items:8000
   - name: MAYOR_BASE_URL
     value: http://mayor:8080
-  - name: REFERRAL_BASE_URL
-    value: http://referral:8000
-  - name: SNIPER_BASE_URL
-    value: http://sniper:8000
   - name: PLAYERNAME_URL
     value: http://player-name:8000
-
-  ## hosts ## 
-  - name: INDEXER_HOST
-    value: sky-indexer-service
-  - name: SUBSCRIPTION_HOST
-    value: subscriptions
-  - name: SKYFLIPPER_HOST
-    value: flipper
-  - name: SKYCOMMANDS_HOST
-    value: sky-commands.sky.svc.cluster.local
-  - name: PAYMENTS_HOST
-    value: payment.payment.svc.cluster.local
-  - name: PROFILE_HOST
-    value: player
-  - name: CRAFTS_HOST
-    value: sky-craft-service
-  - name: UPDATER_HOST
-    value: updater
-  - name: MCCONNECT_HOST
-    value: mc-connect
-  - name: FLIPTRACKER_HOST
-    value: tracker
+  - name: REFERRAL_BASE_URL
+    value: http://referral:8000
+  - name: SETTINGS_BASE_URL
+    value: http://settings:8000
+  - name: SNIPER_BASE_URL
+    value: http://sniper:8000
+  - name: INDEXER_BASE_URL
+    value: http://sky-indexer-service:8000
+  - name: SUBSCRIPTION_BASE_URL
+    value: http://subscriptions:8000
+  - name: SKYFLIPPER_BASE_URL
+    value: http://flipper:8000
+  - name: SKYCOMMANDS_BASE_URL
+    value: http://sky-commands:8000
+  - name: PAYMENTS_BASE_URL
+    value: http://payment:8000
+  - name: PROFILE_BASE_URL
+    value: http://player:8000
+  - name: CRAFTS_BASE_URL
+    value: http://sky-craft-service:8000
+  - name: UPDATER_BASE_URL
+    value: http://updater:8000
+  - name: MCCONNECT_BASE_URL
+    value: http://mc-connect:8000
+  - name: FLIPTRACKER_BASE_URL
+    value: http://tracker:8000
 
 
 
