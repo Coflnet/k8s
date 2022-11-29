@@ -1,0 +1,3 @@
+defaultNamespace: proxy
+helm:
+  chart: ./chart
