@@ -56,9 +56,9 @@ resources:
 
 
 services:
-  - sky-mod
-  - sky-mod-canary-service
-  - sky-mod-stable-service
+  - sky-mod-commands
+  - sky-mod-commands-canary-service
+  - sky-mod-commands-stable-service
 serivcePorts:
   - name: api
     port: 8000
