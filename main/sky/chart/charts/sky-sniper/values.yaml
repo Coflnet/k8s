@@ -1,0 +1,46 @@
+replicaCount: 1
+
+strategy: Recreate
+
+image:
+  repository: harbor.flou.dev/coflnet/skysniper
+  tag: c5e1c894-9aef-4cae-b8d0-b7b5710b66e7
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: api
+    containerPort: 8000
+
+resources: 
+  requests:
+    cpu: 1500m
+    memory: 3Gi
+  limits: 
+    cpu: 2500m
+    memory: 5Gi
+
+
+serivcePorts:
+  - name: api
+    port: 8000
+    targetPort: 8000
+
+readinessProbe:
+  httpGet:
+    path: /api/index.html
+    port: api
+  initialDelaySeconds: 20
+  periodSeconds: 3
+
+envVars: 
+  - name: DBConnection
+    valueFrom:
+      secretKeyRef:
+        key: connection_read_secondary
+        name: secret
+
+  - name: DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE
+    valueFrom:
+      configMapKeyRef:
+        key: reload_config_on_change
+        name: config

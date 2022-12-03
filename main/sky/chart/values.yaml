@@ -9,6 +9,26 @@ global:
         secretKeyRef:
           key: connection_read_api
           name: secret
+
+
+  minioEnvVars:
+
+  ## minio connection ##
+  - name: MINIO_HOST
+    valueFrom:
+      configMapKeyRef:
+        key: host
+        name: minio
+  - name: MINIO_SECRET
+    valueFrom:
+      secretKeyRef:
+        key: secret_key
+        name: minio
+  - name: MINIO_KEY
+    valueFrom:
+      secretKeyRef:
+        key: access_key
+        name: minio
     
 
   envVars:
@@ -25,6 +45,7 @@ global:
   - name: KAFKA_HOST
     value: k8s-main-kafka-kafka.kafka.svc.cluster.local
 
+
     ## common jaeger env vars ##
   - name: JAEGER_AGENT_HOST
     value: jaeger-collector.observability.svc.cluster.local
@@ -32,6 +53,8 @@ global:
     value: jaeger-collector.observability.svc.cluster.local
 
     ## kafka topics ##
+  - name: TOPICS__AH_SUMARY
+    value: sky-ah-summary
   - name: TOPICS__AUCTION_ENDED
     value: sky-endedauction
   - name: TOPICS__FLIP
@@ -42,6 +65,8 @@ global:
     value: sky-low-priced
   - name: TOPICS__MISSING_AUCTION
     value: sky-canceledauction
+  - name: TOPICS__NEW_AUCTION
+    value: sky-newauction
   - name: TOPICS__SOLD_AUCTION
     value: sky-soldauction
 
@@ -82,10 +107,3 @@ global:
     value: http://mc-connect:8000
   - name: FLIPTRACKER_BASE_URL
     value: http://tracker:8000
-
-
-
-sky-api:
-  image:
-    tag: cf22a4f6-b911-43de-b464-570ff4ddf516
-
