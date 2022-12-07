@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 
+  labels:
+    app: {{ .Values.global.redis.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.global.redis.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.redis.name }}
+    spec:
+      containers:
+      - name: {{ .Values.global.redis.name }}
+        image: redis:7.0.5
+        ports:
+        - containerPort: 6379
+        resources:
+          {{ toYaml .Values.resources | nindent 10 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.global.redis.name }}
+spec:
+  selector:
+    app: {{ .Values.global.redis.name }}
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379

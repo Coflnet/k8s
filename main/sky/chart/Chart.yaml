@@ -33,3 +33,6 @@ dependencies:
   - name: sky-sniper
     charts: sky-sniper
     version: "0.1.0" 
+  - name: sky-updater
+    charts: sky-updater
+    version: "0.1.0" 
