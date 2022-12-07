@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
-    endpoints:
-    - port: api
-      interval: 25s
-      path: /metrics
+  endpoints:
+  - port: api
+    interval: 25s
+    path: /metrics
