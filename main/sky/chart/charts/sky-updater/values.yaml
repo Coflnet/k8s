@@ -34,7 +34,7 @@ readinessProbe:
 
 envVars: 
   - name: SLOWDOWN_MS
-    value: 100
+    value: "100"
   - name: apiKey
     valueFrom:
       secretKeyRef:
