@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 
+  name: {{ .Values.global.redis.name }}
   labels:
     app: {{ .Values.global.redis.name }}
 spec:
