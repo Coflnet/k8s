@@ -2,6 +2,20 @@ global:
   imagePullSecrets: 
   - name: harbor
 
+
+  ## Configuration of the global Redis instance ##
+  redis: 
+    name: sky-global-redis
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits: 
+        cpu: 300m
+        memory: 1Gi
+
+
+  ## The Services Api, Command and Mod are the frontend Services, they share some env vars ##
   frontendEnvVars:
     ## database connection to the secondary servers as readonly ##
     - name: DBConnection
@@ -11,9 +25,8 @@ global:
           name: secret
 
 
-  minioEnvVars:
-
   ## minio connection ##
+  minioEnvVars:
   - name: MINIO_HOST
     valueFrom:
       configMapKeyRef:
@@ -30,8 +43,29 @@ global:
         key: access_key
         name: minio
     
+  ### standard kafka topics ###
+  kafkaTopics:
+  - name: TOPICS__AH_SUMARY
+    value: sky-ah-summary
+  - name: TOPICS__AUCTION_ENDED
+    value: sky-endedauction
+  - name: TOPICS__FLIP
+    value: sky-topic-flip
+  - name: TOPICS__FLIP_EVENT
+    value: sky-flip-event
+  - name: TOPICS__LOW_PRICED
+    value: sky-low-priced
+  - name: TOPICS__MISSING_AUCTION
+    value: sky-canceledauction
+  - name: TOPICS__NEW_AUCTION
+    value: sky-newauction
+  - name: TOPICS__SOLD_AUCTION
+    value: sky-soldauction
+  
 
+  ## a bunch of env vars every pod can have ##
   envVars:
+
     ## check this with ekwav ##
   - name: RATE_LIMITER_REDIS_HOST
     value: redis-service
@@ -52,23 +86,6 @@ global:
   - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
     value: jaeger-collector.observability.svc.cluster.local
 
-    ## kafka topics ##
-  - name: TOPICS__AH_SUMARY
-    value: sky-ah-summary
-  - name: TOPICS__AUCTION_ENDED
-    value: sky-endedauction
-  - name: TOPICS__FLIP
-    value: sky-topic-flip
-  - name: TOPICS__FLIP_EVENT
-    value: sky-flip-event
-  - name: TOPICS__LOW_PRICED
-    value: sky-low-priced
-  - name: TOPICS__MISSING_AUCTION
-    value: sky-canceledauction
-  - name: TOPICS__NEW_AUCTION
-    value: sky-newauction
-  - name: TOPICS__SOLD_AUCTION
-    value: sky-soldauction
 
   ## base urls ##
   - name: API_BASE_URL
