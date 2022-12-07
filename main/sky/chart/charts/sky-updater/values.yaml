@@ -3,7 +3,7 @@ replicaCount: 6
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skysniper
+  repository: harbor.flou.dev/coflnet/skyupdater
   tag: 27cf10f3-57d8-4cfc-aba5-fd80c6541536
   pullPolicy: IfNotPresent
 
