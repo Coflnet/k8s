@@ -9,7 +9,6 @@ spec:
   serviceName: {{ .Chart.Name }}
   updateStrategy:
     type: {{ .Values.strategy }}
-  progressDeadlineSeconds: 2592000
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
