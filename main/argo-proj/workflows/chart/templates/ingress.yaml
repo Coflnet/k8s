@@ -19,6 +19,6 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service: 
-            name: k8s-main-argo-proj-argo-workflows-server
+            name: k8-main-argo-proj-argo-workflows-server
             port:
               number: 2746
