@@ -98,7 +98,7 @@ defaultSettings:
   backupTarget: ~
   backupTargetCredentialSecret: ~
   allowRecurringJobWhileVolumeDetached: ~
-  createDefaultDiskLabeledNodes: true
+  createDefaultDiskLabeledNodes: ~
   defaultDataPath: ~
   defaultDataLocality: ~
   replicaSoftAntiAffinity: ~
@@ -192,8 +192,7 @@ longhornUI:
   #   operator: "Equal"
   #   value: "value"
   #   effect: "NoSchedule"
-  nodeSelector: 
-    storage: "longhorn"
+  nodeSelector: {}
   ## If you want to set node selector for Longhorn UI Deployment, delete the `{}` in the line above
   ## and uncomment this example block
   #  label-key1: "label-value1"
