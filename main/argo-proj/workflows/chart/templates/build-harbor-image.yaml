@@ -24,7 +24,7 @@ spec:
       - name: git_secret_key
       - name: branch
     container:
-      image: gcr.io/kaniko-project/executor:v1.8.0-debug
+      image: gcr.io/kaniko-project/executor:v1.9.1-debug
       args:
       - --context={{"{{"}}inputs.parameters.app_repo{{"}}"}}#refs/heads/{{"{{"}}inputs.parameters.branch{{"}}"}}
       - --context-sub-path={{"{{"}}inputs.parameters.sub_path{{"}}"}}
