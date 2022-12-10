@@ -24,7 +24,7 @@ envs:
   secret: {}
   config: 
     KAFKA_CLUSTERS_0_NAME: cluster
-    KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: k8s-main-kafka-kafka:9092
+    KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: k8-main-kafka-kafka:9092
 podAnnotations: {}
 podSecurityContext: {}
   # fsGroup: 2000
