@@ -51,6 +51,8 @@ spec:
               containerPort: 8080
               protocol: TCP
           livenessProbe:
+            failureThreshold: 5
+            initialDelaySeconds: 90
             httpGet:
               path: /
               port: http
