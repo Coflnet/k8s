@@ -33,7 +33,7 @@ spec:
         - name: SUCCESS
           value: "{{"{{"}}inputs.parameters.success{{"}}"}}"
         - name: KAFKA_HOST
-          value: k8s-main-kafka-kafka.kafka.svc.cluster.local
+          value: k8-main-kafka-kafka.kafka.svc.cluster.local
         - name: TOPIC_DEV_CHAT
           value: discord-messages
         - name: TOPIC_DEV_SPAM_CHAT
