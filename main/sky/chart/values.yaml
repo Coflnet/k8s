@@ -82,9 +82,13 @@ global:
 
     ## common jaeger env vars ##
   - name: JAEGER_AGENT_HOST
-    value: jaeger-collector.observability.svc.cluster.local
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
   - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
-    value: jaeger-collector.observability.svc.cluster.local
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
 
 
   ## base urls ##
