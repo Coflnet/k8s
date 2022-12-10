@@ -77,7 +77,7 @@ global:
     ## common services ##
     ### kafka ###
   - name: KAFKA_HOST
-    value: k8s-main-kafka-kafka.kafka.svc.cluster.local
+    value: k8-main-kafka-kafka.kafka.svc.cluster.local
 
 
     ## common jaeger env vars ##
