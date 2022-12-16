@@ -1,0 +1,44 @@
+replicaCount: 4
+revisionHistoryLimit: 5
+
+image:
+  repository: harbor.flou.dev/coflnet/hypixel-react
+  tag: f268daf6-92fa-42c2-9381-9d7cbd7e43f5
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: web
+    containerPort: 3000
+
+resources: 
+  requests:
+    cpu: 200m
+    memory: 400Mi
+  limits: 
+    cpu: 600m
+    memory: 600Mi
+
+
+serivcePorts:
+  - name: web
+    port: 3000
+    targetPort: 3000
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: web
+  initialDelaySeconds: 10
+  periodSeconds: 3
+
+envVars: 
+  - name: COMMAND_ENDPOINT
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: frontend_command_endpoint
+  - name: API_ENDPOINT
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: frontend_api_endpoint
