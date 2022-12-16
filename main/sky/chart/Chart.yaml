@@ -36,3 +36,6 @@ dependencies:
   - name: sky-updater
     charts: sky-updater
     version: "0.1.0" 
+  - name: deprecated
+    charts: deprecated
+    version: "0.1.0" 
