@@ -1,4 +1,4 @@
 defaultNamespace: harbor
-paused: false
+paused: true
 helm:
   chart: ./chart
