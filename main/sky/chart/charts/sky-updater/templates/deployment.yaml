@@ -17,7 +17,6 @@ spec:
       labels:
         app: {{ .Chart.Name }}
     spec:
-      affinity:
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       containers:
