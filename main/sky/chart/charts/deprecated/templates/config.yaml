@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+  namespace: sky
+data:
+
+  # general
+  reload_config_on_change: "false"
+  sniper_data_username: sniper-data
+
+  # services
+  api_host: api-service.sky.svc.cluster.local
+  craft_host: sky-craft-service.sky.svc.cluster.local
+  commands_host: sky-commands.sky.svc.cluster.local
+  flipper_host: flipper
+  mc_connect_host: mc-connect.sky.svc.cluster.local
+  payment_host: payment.payment.svc.cluster.local
+  profile_host: player.sky.svc.cluster.local
+  subscriptions_host: subscriptions
+  tracker_host: tracker.sky.svc.cluster.local
+  updater_host: updater.sky.svc.cluster.local
+
+  # base urls
+  bazaar_base_url: http://bazaar:8000
+  chat_base_url: http://chat-service.sky:8000/
+  events_base_url: http://event-broker:8000
+  frontend_api_endpoint: http://api-service/api
+  frontend_command_endpoint: http://sky-commands:8008/command
+  http_api_host: http://api-service.sky.svc.cluster.local:8000
+  imgproxy_base_url: http://imgproxy:8080
+  items_base_url: http://items:8000
+  mayor_base_url: http://mayor:8080
+  payment_base_url: http://payment.payment
+  referral_base_url: http://referral:8000
+  skycrypt_base_url: https://sky.shiiyu.moe
+  sky_player_name_url: http://player-name:8000/
+  settings_base_url: http://settings:8000/
+  sniper_base_url: http://sniper:8000/
+
+  # minio
+  minio_host: s3-minio.s3.svc.cluster.local:9000
+  minio_key: 82nq6rUqwtWutpTzSZVMiu4R
+
+  # mysql
+  user: sky
+  database: sky
+  mariadb_version: "10.5.5"
+
+  # cassandra
+  cassandra_host: cassandra-proxy-haproxy.proxy
+  cassandra_user: cassandra
+
+  # redis connections
+  redis_api_host: api-redis-service,syncTimeout=200
+  redis_command_host: commands-redis-service,syncTimeout=200
+  redis_host: redis-service,syncTimeout=200
+  redis_host_sky: redis-service
+  redis_event_broker: event-broker-redis,syncTimeout=200
+  redis_settings_host: settings-redis-service
+  redis-us: redis-us,syncTimeout=200
+  sky_bfcs_redis: redis-bfcs
+
+  # jaeger
+  jaeger_agent_host: jaeger-agent.observability.svc.cluster.local
+  jaeger_agent_url: jaeger-collector.observability:4317
+  jaeger_service_name: hypixel-skyblock-core
+  jaeger_sampling_host: http://jaeger-agent.observability.svc.cluster.local:5778/sampling
+
+  # kafka
+  kafka_host: kafka-3.kafka.svc.cluster.local
+
+  # kafka topics
+  topic_ah_summary: sky-ah-summary
+  topic_auction_checked: sky-auction-checked
+  topic_auction_ended: sky-endedauction
+  topic_auction_ended-raw: sky-endedauction-raw
+  topic_bazaar: sky-bazaar
+  topic_bazaar-raw: sky-bazaar-raw
+  topic_flip: sky-topic-flip
+  topic_flip_event: sky-flip-event
+  topic_low_priced: sky-low-priced
+  topic_missing_auction-raw: sky-canceledauction-raw
+  topic_new_auction: sky-newauction
+  topic_new_auction-raw: sky-newauction-raw
+  topic_new_bid: sky-newbid
+  topic_new_bid-raw: sky-newbid-raw
+  topic_missing_auction: sky-canceledauction
+  topic_sold_auction: sky-soldauction
+  topic_sold_auction-raw: sky-soldauction-raw
+  topic_server_state: server-states
+  topic_state_update: sky-state-update
+  topic_transaction: transactions
+  topic_update_settings: sky-update-settings
+  topic_verified: sky-verified

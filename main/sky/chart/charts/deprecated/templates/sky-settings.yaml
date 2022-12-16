@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: settings
+  namespace: sky
+  labels:
+    app: settings
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: settings
+  template:
+    metadata:
+      labels:
+        app: settings
+    spec:
+      imagePullSecrets:
+        - name: harbor
+      containers:
+      - name: settings
+        image: harbor.flou.dev/coflnet/skysettings:12056541-978b-4d72-ba46-8bd963b1405b
+        ports:
+          - containerPort: 8000
+        env:
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef: 
+              name: config
+              key: redis_settings_host
+        - name: JAEGER_AGENT_HOST
+          valueFrom: 
+            configMapKeyRef:
+              name: config
+              key: jaeger_agent_host
+        - name: KAFKA_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: kafka_host
+        - name: TOPICS__SETTINGS
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: topic_update_settings
+        - name: DB_CONNECTION
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: sky_settings_database
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: settings
+spec:
+  selector:
+    app: settings
+  ports:
+  - port: 8000
+    targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: settings-metrics-service
+  namespace: sky
+  labels:
+    app: settings-metrics-service
+spec:
+  selector:
+    app: settings
+  ports:
+  - port: 8000
+    targetPort: 8000
+    name: metrics
+    protocol: TCP

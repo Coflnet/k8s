@@ -1,0 +1,166 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-manager
+  namespace: sky
+  annotations:
+    linkerd.io/inject: disabled
+  labels:
+    app: server-manager
+spec:
+  selector:
+    matchLabels:
+      app: server-manager
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: disabled
+      labels:
+        app: server-manager
+    spec:
+      imagePullSecrets:
+        - name: harbor
+      containers:
+      - name: server-manager
+        image: harbor.flou.dev/coflnet/server-manager:c75ae75c-552f-4394-97db-888d9a666a88
+        ports:
+        - containerPort: 8080
+          name: api
+        - containerPort: 3001
+          name: metrics
+        env:
+          - name: GIN_MODE
+            value: release
+          - name: MONGO_HOST
+            valueFrom:
+              secretKeyRef:
+                name: secret
+                key: mongo_url
+          - name: KAFKA_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: kafka_host
+          - name: PAYMENT_TOPIC
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: topic_transaction
+          - name: SERVER_STATE_TOPIC
+            valueFrom:
+              configMapKeyRef:
+                key: topic_server_state
+                name: config
+
+          - name: PULUMI_ACCESS_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: secret
+                key: pulumi_access_token
+          - name: GOOGLE_CREDENTIALS
+            valueFrom:
+              secretKeyRef:
+                name: secret
+                key: google_credentials
+
+          - name: PULUMI_GOOGLE_STACK_NAME
+            value: "bfcs-gcp"
+          - name: PULUMI_GOOGLE_ZONE
+            valueFrom:
+              secretKeyRef:
+                  name: secret
+                  key: pulumi_google_zone
+          - name: PULUMI_GOOGLE_PROJECT_NAME
+            valueFrom:
+              secretKeyRef:
+                  name: secret
+                  key: pulumi_google_project_name
+
+          - name: PULUMI_HETZNER_PROJECT
+            value: "bfcs-gcp"
+          - name: PULUMI_HETZNER_STACK_NAME
+            value: "bfcs-hetzner"
+          - name: HCLOUD_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: secret
+                key: hcloud_token
+          - name: HETZNER_PRIVATE_KEY_PATH
+            value: "/hetzner/hetzner_ssh"
+
+          - name: SNIPER_DATA_DOWNLOAD_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: sniper_data_username
+          - name: SNIPER_DATA_DOWNLOAD_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: secret
+                key: sniper_data_password
+          - name: SNIPER_BASE_URL
+            valueFrom:
+              configMapKeyRef:
+                key: sniper_base_url
+                name: config
+
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 15
+          failureThreshold: 3
+          timeoutSeconds: 5
+
+        resources:
+          requests:
+            cpu: 20m
+            memory: 50Mi
+        volumeMounts:
+          - mountPath: /hetzner
+            name: hetzner-private-key
+      volumes:
+        - name: hetzner-private-key
+          secret:
+            secretName: secret
+            items:
+              - key: hetzner_ssh_key
+                path: hetzner_ssh
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server-manager
+  namespace: sky
+  labels:
+    app: server-manager
+spec:
+  selector:
+    app: server-manager
+  ports:
+    - port: 3001
+      targetPort: 3001
+      name: metrics
+      protocol: TCP
+    - name: api
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: server-manager-servicemonitor
+  namespace: sky
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: server-manager
+  endpoints:
+    - port: metrics
+      interval: 25s
+      path: /metrics

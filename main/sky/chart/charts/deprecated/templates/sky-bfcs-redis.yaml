@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sky-bfcs-redis
+  namespace: sky
+  labels:
+    app: sky-bfcs-redis
+  annotations:
+    config.linkerd.io/skip-outbound-ports: "6379"
+    config.linkerd.io/skip-inbound-ports: "6379"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sky-bfcs-redis
+  template:
+    metadata:
+      annotations:
+        config.linkerd.io/skip-outbound-ports: "6379"
+        config.linkerd.io/skip-inbound-ports: "6379"
+      labels:
+        app: sky-bfcs-redis
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: hetzner
+                operator: In
+                values:
+                - "true"
+      containers:
+      - name: sky-bfcs-redis
+        image: redis:6.2.6-alpine
+        ports:
+        - containerPort: 6379
+        resources:
+          limits:
+            memory: "100Mi"
+            cpu: "20m"
+          requests:
+            memory: "50Mi"
+            cpu: "10m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-bfcs
+  namespace: sky
+spec:
+  selector:
+    app: sky-bfcs-redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379

@@ -1,0 +1,95 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: sky-light-client-metrics-servicemonitor
+  namespace: sky 
+  labels:
+    release: prometheus 
+spec:
+  selector:
+    matchLabels:
+      app: light-client-metrics-service
+  endpoints:
+  - port: metrics
+    interval: 25s
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: updater-metrics-servicemonitor
+  namespace: sky 
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app:  updater-metrics-service
+  endpoints:
+  - port: metrics
+    interval: 2s
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: flipper-metrics-servicemonitor
+  namespace: sky 
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: flipper-metrics-service
+  endpoints:
+  - port: metrics
+    interval: 25s
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: tracker-metrics-servicemonitor
+  namespace: sky 
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: tracker-metrics-service
+  endpoints:
+  - port: metrics
+    interval: 25s
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: mod-metrics-servicemonitor
+  namespace: sky 
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: mod-metrics-service
+  endpoints:
+  - port: metrics
+    interval: 25s
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: bazaar-metrics-servicemonitor
+  namespace: sky 
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: bazaar-metrics-service
+  endpoints:
+  - port: metrics
+    interval: 25s
+    path: /metrics

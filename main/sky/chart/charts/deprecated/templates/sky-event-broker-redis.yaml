@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-broker-redis
+  namespace: sky
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-broker-redis
+  template:
+    metadata:
+      labels:
+        app: event-broker-redis
+    spec:
+      containers:
+      - name: event-broker-redis
+        image: redis:7.0.0
+        ports:
+          - containerPort: 6379
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "50m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-broker-redis
+spec:
+  selector:
+    app: event-broker-redis
+  ports:
+  - port: 6379
+    targetPort: 6379

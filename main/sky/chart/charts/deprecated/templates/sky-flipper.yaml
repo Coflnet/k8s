@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flipper
+  namespace: sky
+  annotations:
+    config.linkerd.io/skip-outbound-ports: "3307"
+  labels:
+    app: flipper
+spec:
+  selector:
+    matchLabels:
+      app: flipper
+  replicas: 3
+  template:
+    metadata:
+      annotations:
+        config.linkerd.io/skip-outbound-ports: "3307"
+      labels:
+        app: flipper
+    spec:
+      affinity: 
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: hetzner
+                operator: NotIn
+                values:
+                - "true"
+      imagePullSecrets:
+        - name: harbor
+      containers:
+      - name: flipper
+        image: harbor.flou.dev/coflnet/skyflipper:333b7b46-f246-4966-adc9-c11b2c297bbc
+        ports:
+        - containerPort: 8000
+          name: web
+        env: 
+        - name: DBConnection
+          valueFrom:
+            secretKeyRef:
+              name: secret 
+              key: connection_read_secondary
+        - name: SKYCOMMANDS_HOST
+          value: "sky-commands:8008"
+        - name: API_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: http_api_host
+        - name: JAEGER_AGENT_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: jaeger_agent_host
+        - name: KAFKA_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: kafka_host
+        - name: REDIS_HOST
+          valueFrom: 
+            configMapKeyRef:
+              name: config
+              key: redis_host
+        - name: TOPICS__FLIP
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: topic_flip
+        - name: TOPICS__NEW_AUCTION
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: topic_new_auction
+        - name: TOPICS__LOW_PRICED
+          value: sky-low-priced
+        - name: ITEMS_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: items_base_url
+        resources:
+          requests:
+            cpu: 200m
+            memory: 100Mi
+          limits:
+            cpu: 500m
+            memory: 500Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flipper
+  namespace: sky
+spec:
+  selector:
+    app: flipper
+  ports:
+  - port: 80
+    targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flipper-metrics-service
+  namespace: sky
+  labels:
+    app: flipper-metrics-service
+spec:
+  selector:
+    app: flipper
+  ports:
+  - port: 80
+    targetPort: 8000
+    name: metrics
+    protocol: TCP

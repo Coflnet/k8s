@@ -1,0 +1,195 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: player-state
+  namespace: sky
+  labels:
+    app: player-state
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: player-state
+  template:
+    metadata:
+      annotations:
+        config.linkerd.io/skip-outbound-ports: "3307"
+      labels:
+        app: player-state
+    spec:
+      imagePullSecrets:
+        - name: harbor
+      containers:
+      - name: player-state
+        image: harbor.flou.dev/coflnet/skyplayerstate:37f40423-f22b-475d-828c-d7c6cfbec232
+        ports:
+          - containerPort: 8000
+            name: metrics
+        env:
+          # base urls
+          - name: EVENTS_BASE_URL
+            valueFrom:
+              configMapKeyRef:
+                  name: config
+                  key: events_base_url
+          - name: PLAYERNAME_BASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: sky_player_name_url
+
+          # mongo
+          - name: Mongo__ConnectionString
+            valueFrom:
+              secretKeyRef:
+                name: secret
+                key: mongo_url
+
+          # cassandra
+          - name: CASSANDRA__HOSTS
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: cassandra_host
+          - name: CASSANDRA__USER
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: cassandra_user
+          - name: CASSANDRA__PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: secret
+                key: cassandra_password
+          - name: CASSANDRA__KEYSPACE
+            value: sky_item_movement
+          - name: CASSANDRA__REPLICATION_FACTOR
+            value: NetworkTopologyStrategy
+          - name: CASSANDRA__REPLICATION_FACTOR
+            value: "3"
+          - name: CASSANDRA__SSL_ENABLED
+            value: "true"
+          - name: X509Certificate_PATHS
+            value: /tmp/cassandra/certs/duke.cer
+
+          # jaeger
+          - name: JAEGER_AGENT_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: jaeger_agent_host
+
+          # kafka
+          - name: KAFKA_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: kafka_host
+
+          # topics
+          - name: TOPICS__STATE_UPDATE
+            valueFrom:
+              configMapKeyRef:
+                  name: config
+                  key: topic_state_update
+          - name: TOPICS__FLIP_EVENT
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: topic_flip_event
+
+
+
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 8000
+          initialDelaySeconds: 20
+          periodSeconds: 3
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 8000
+          initialDelaySeconds: 20
+          periodSeconds: 3
+        volumeMounts:
+          - mountPath: /tmp/cassandra/certs
+            name: cassandra-cert
+      volumes:
+        - name: cassandra-cert
+          secret:
+            secretName: cassandra-cert
+  strategy:
+    canary: 
+      steps:
+      - setWeight: 50
+      - pause:
+          duration: 5m
+      maxUnavailable: 1
+      canaryService: player-state-canary
+      stableService: player-state-stable
+      trafficRouting:
+        smi:
+          rootService: player-state
+          trafficSplitName: player-state-traffic-split
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: player-state
+  namespace: sky
+  labels:
+    app: player-state
+spec:
+  selector:
+    app: player-state
+  ports:
+  - port: 8000
+    targetPort: 8000
+    name: metrics
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: player-state-stable
+  namespace: sky
+  labels:
+    app: player-state
+spec:
+  selector:
+    app: player-state
+  ports:
+  - port: 8000
+    targetPort: 8000
+    name: metrics
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: player-state-canary
+  namespace: sky
+  labels:
+    app: player-state
+spec:
+  selector:
+    app: player-state
+  ports:
+  - port: 8000
+    targetPort: 8000
+    name: metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: player-state
+  namespace: sky 
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: player-state
+  endpoints:
+  - port: metrics
+    interval: 60s
+    path: /metrics

@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imgproxy
+  namespace: sky
+  labels:
+    app: imgproxy
+  annotations:
+    linkerd.io/inject: disabled
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: imgproxy
+  template:
+    metadata:
+      labels:
+        app: imgproxy
+    spec:
+      containers:
+      - name: imgproxy
+        image: darthsim/imgproxy:latest
+        ports:
+          - containerPort: 8080
+            name: http
+          - containerPort: 9000
+            name: metrics
+        env:
+          - name: IMGPROXY_ALLOWED_SOURCES
+            value: "https://sky.shiiyu.moe/,https://skycrypt.coflnet.com,https://mc-heads.net/,https://crafatar.com/,https://static.coflnet.com/"
+          - name: IMGPROXY_MAX_ANIMATION_FRAMES
+            value: "140"
+          - name: IMGPROXY_PROMETHEUS_BIND
+            value: ":9000"
+        resources:
+          limits:
+            memory: "300Mi"
+            cpu: "50m"
+          requests:
+            memory: "140Mi"
+            cpu: "10m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: imgproxy
+  namespace: sky
+  labels:
+    app: imgproxy
+spec:
+  selector:
+    app: imgproxy
+  ports:
+    - port: 80
+      targetPort: 8080
+      name: http
+    - port: 9000
+      targetPort: 9000
+      name: metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: imgproxy-servicemonitor
+  namespace: sky
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: imgproxy
+  endpoints:
+    - port: metrics
+      interval: 60s
+      path: /

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: player-redis
+  namespace: sky
+spec:
+  selector:
+    matchLabels:
+      app: player-redis
+  template:
+    metadata:
+      labels:
+        app: player-redis
+    spec:
+      containers:
+      - name: player-redis
+        image: redis
+        ports:
+          - containerPort: 6379
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: player-redis
+spec:
+  selector:
+    app: player-redis
+  ports:
+  - port: 6379
+    targetPort: 6379

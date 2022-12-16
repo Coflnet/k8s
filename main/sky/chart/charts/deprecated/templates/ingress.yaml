@@ -1,0 +1,257 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sky-ingress
+  namespace: sky
+  annotations:
+      kubernetes.io/ingress.class: "nginx"
+      nginx.ingress.kubernetes.io/service-upstream: "true"
+      nginx.ingress.kubernetes.io/client-body-buffer-size: 1M
+spec:
+  defaultBackend:
+    service: 
+      name: frontend
+      port:
+        number: 80
+  rules:
+
+  - host: sky.coflnet.com
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80
+
+
+  - host: sky.coflnet.com
+    http:
+      paths:
+      - path: /api/tem
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: tem-backend
+            port:
+              number: 8080
+      # sniper state transfer
+      - path: /api/Sniper/lookup
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sniper
+            port:
+              number: 8000
+      - path: /api/profile
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: player
+            port:
+              number: 8000
+      - path: /api/chat/send
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: chat-service
+            port:
+              number: 8000
+      - path: /api/chat/mute
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: chat-service
+            port:
+              number: 8000
+      - path: /api
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: api-service
+            port:
+              number: 8000
+      - path: /command
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands
+            port:
+              number: 8008
+      - path: /skyblock
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands
+            port:
+              number: 8008
+      - path: /static
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands
+            port:
+              number: 8008
+      - path: /swagger
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands
+            port:
+              number: 80
+      - path: /modsocket
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-mod
+            port:
+              number: 8008
+
+  - host: sky-commands.coflnet.com
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: frontend-preview
+            port:
+              number: 80
+      - path: /api
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: api-service
+            port:
+              number: 8000
+      - path: /command
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands
+            port:
+              number: 8008
+      - path: /skyblock
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands
+            port:
+              number: 8008
+      - path: /static
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands
+            port:
+              number: 8008
+      - path: /swagger
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands
+            port:
+              number: 8008
+      - path: /modsocket
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-mod
+            port:
+              number: 8008
+
+  - host: sky-preview.coflnet.com
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands
+            port:
+              number: 8008
+  - host: sky-preview.coflnet.com
+    http:
+      paths:
+      - path: /api
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands
+            port:
+              number: 80
+  - host: skyblock.coflnet.com
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands
+            port:
+              number: 8008
+  - host: skyblock-backend.coflnet.com
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80
+  - host: coflnet.com
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands
+            port:
+              number: 8008
+
+  - host: sky-mod.flou.dev
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands
+            port:
+              number: 8008
+      - path: /api
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands
+            port:
+              number: 80
+  - host: sky-mod.coflnet.com
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands
+            port:
+              number: 8008
+      - path: /api
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-commands
+            port:
+              number: 80
+      - path: /modsocket
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-mod
+            port:
+              number: 8008
+

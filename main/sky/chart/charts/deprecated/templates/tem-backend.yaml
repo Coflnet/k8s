@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tem-backend
+  namespace: sky
+  labels:
+    app: tem-backend
+spec:
+  selector:
+    matchLabels:
+      app: tem-backend
+  template:
+    metadata:
+      labels:
+        app: tem-backend
+    spec:
+      imagePullSecrets:
+        - name: harbor
+      containers:
+      - name: tem-backend
+        image: harbor.flou.dev/coflnet/tem-backend:8eddcd2c-dc5b-44ab-b2ba-ef2383f18f88
+        ports:
+        - name: api
+          containerPort: 8080
+        env:
+        - name: GIN_MODE
+          value: release
+        - name: MONGO_URL
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: mongo_url
+        - name: JAEGER_AGENT_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: jaeger_agent_url
+              name: config
+        resources:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+          limits:
+            cpu: 200m
+            memory: 200Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tem-backend
+  namespace: sky
+  labels:
+    app: tem-backend
+spec:
+  selector:
+    app: tem-backend
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: api

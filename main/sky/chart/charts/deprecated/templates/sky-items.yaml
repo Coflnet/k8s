@@ -1,0 +1,168 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: items
+  namespace: sky
+  labels:
+    app: items
+  annotations:
+    notifications.argoproj.io/subscribe.on-rollout-updated.telegram: "-647662841"
+spec:
+  replicas: 3
+  progressDeadlineSeconds: 2592000
+  selector:
+    matchLabels:
+      app: items
+  template:
+    metadata:
+      labels:
+        app: items
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - items
+              topologyKey: kubernetes.io/hostname
+      imagePullSecrets:
+        - name: harbor
+      containers:
+      - name: items
+        image: harbor.flou.dev/coflnet/skyitems:a147251c-48ef-4ef3-8484-46ecbb2e10f5
+        ports:
+          - containerPort: 8000
+        env:
+          - name: KAFKA_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: kafka_host
+          - name: JAEGER_AGENT_HOST
+            valueFrom: 
+              configMapKeyRef:
+                name: config
+                key: jaeger_agent_host
+          - name: TOPICS__NEW_AUCTION
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: topic_new_auction
+          - name: DBCONNECTION
+            valueFrom:
+              secretKeyRef:
+                name: secret
+                key: connection_read_secondary
+          - name: DB_CONNECTION
+            valueFrom:
+              secretKeyRef:
+                name: secret
+                key: connection_items_database
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 8000
+          initialDelaySeconds: 20
+          periodSeconds: 3
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "600m"
+          requests:
+            memory: "128Mi"
+            cpu: "50m"
+  strategy:
+    canary: 
+      steps:
+      - setWeight: 10
+      - pause: 
+          duration: 5m
+      - setWeight: 50
+      - pause:
+          duration: 2m
+      - setWeight: 100
+      - pause:
+          duration: 2m
+      maxUnavailable: 2
+      canaryService: items-canary
+      stableService: items-main
+      trafficRouting:
+        smi:
+          rootService: items
+          trafficSplitName: items-traffic-split
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: items
+  namespace: sky
+  labels:
+    app: items
+spec:
+  selector:
+    app: items
+  ports:
+  - port: 8000
+    targetPort: 8000
+    name: api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: items-main
+spec:
+  selector:
+    app: items
+  ports:
+  - port: 8000
+    targetPort: 8000
+    name: api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: items-canary
+spec:
+  selector:
+    app: items
+  ports:
+  - port: 8000
+    targetPort: 8000
+    name: items
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: main-items
+  namespace: sky 
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: items
+  endpoints:
+  - port: api
+    interval: 60s
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: items-main
+  namespace: sky 
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: items-canary
+  endpoints:
+  - port: api
+    interval: 60s
+    path: /metrics

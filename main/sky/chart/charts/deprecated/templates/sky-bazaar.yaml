@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bazaar
+  namespace: sky
+  labels:
+    app: bazaar
+spec:
+  selector:
+    matchLabels:
+      app: bazaar
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bazaar
+    spec:
+      imagePullSecrets:
+        - name: harbor
+      containers:
+      - name: bazaar
+        image: harbor.flou.dev/coflnet/skybazaar:b1c04c90-eaab-4060-a263-59fef7f88513
+        ports:
+        - containerPort: 8000
+          name: metrics
+        env: 
+        - name: DBConnection
+          valueFrom:
+            secretKeyRef:
+              name: secret 
+              key: connection_read_secondary
+        - name: JAEGER_AGENT_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: jaeger_agent_host
+        - name: KAFKA_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: kafka_host
+        - name: REDIS_HOST
+          valueFrom: 
+            configMapKeyRef:
+              name: config
+              key: redis_host
+        - name: TOPICS__BAZAAR
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: topic_bazaar
+        - name: CASSANDRA__HOSTS
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: cassandra_host
+        - name: CASSANDRA__USER
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: cassandra_user
+        - name: CASSANDRA__PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: cassandra_password
+        - name: ITEMS_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: items_base_url
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 15
+          failureThreshold: 3
+          timeoutSeconds: 5
+        resources:
+          requests:
+            cpu: 400m
+            memory: 200Mi
+          limits:
+            cpu: 700m
+            memory: 1000Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bazaar
+  namespace: sky
+spec:
+  selector:
+    app: bazaar
+  ports:
+  - port: 8000
+    targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bazaar-metrics-service
+  namespace: sky
+  labels:
+    app: bazaar-metrics-service
+spec:
+  selector:
+    app: bazaar
+  ports:
+  - port: 8000
+    targetPort: 8000
+    name: metrics
+    protocol: TCP

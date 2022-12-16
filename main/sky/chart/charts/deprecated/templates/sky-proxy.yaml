@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: sky-proxy
+  namespace: sky
+  labels:
+    app: sky-proxy
+spec:
+  selector:
+    matchLabels:
+      name: sky-proxy
+  template:
+    metadata:
+      labels:
+        name: sky-proxy
+    spec:
+      nodeSelector:
+        sky-proxy: "true"
+      imagePullSecrets:
+        - name: harbor
+      containers:
+        - name: sky-proxy
+          image: harbor.flou.dev/coflnet/skyproxy:5dd04082-59e6-4de7-a8e8-c5e5a77071c4
+          env:
+            - name: DB_CONNECTION
+              valueFrom:
+                secretKeyRef:
+                  key: connection_cockroach_proxy_database
+                  name: secret
+            - name: JAEGER_AGENT_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: jaeger_agent_host
+            - name: KAFKA_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: kafka_host
+            - name: REDIS_HOST
+              value: sky-proxy-redis-service
+          resources:
+            limits:
+              memory: 300Mi
+              cpu: 200m
+            requests:
+              cpu: 100m
+              memory: 200Mi
