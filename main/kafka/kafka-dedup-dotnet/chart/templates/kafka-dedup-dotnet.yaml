@@ -63,6 +63,9 @@ spec:
       containers:
       - name: dedup-{{ .name }}-redis
         image: bitnami/redis:6.2-debian-10
+        env:
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "yes"
         ports:
         - containerPort: 6379
         resources:
