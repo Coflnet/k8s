@@ -61,6 +61,8 @@ global:
     value: sky-newauction
   - name: TOPICS__SOLD_AUCTION
     value: sky-soldauction
+  - name: TOPICS__SETTINGS
+    value: sky-update-settings
   
 
   ## a bunch of env vars every pod can have ##
