@@ -1,0 +1,3 @@
+defaultNamespace: kafka
+helm:
+  chart: ./chart

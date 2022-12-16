@@ -1,0 +1,84 @@
+{{- range .Values.dedups }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dedup-{{ .name }}
+  labels:
+    app: dedup-{{ .name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dedup-{{ .name }}
+  template:
+    metadata:
+      labels:
+        app: dedup-{{ .name }}
+    spec:
+      imagePullSecrets:
+      {{ toYaml $.Values.imagePullSecrets | nindent 8 }}
+      containers:
+      - name: dedup-{{ .name }}
+        image: {{ $.Values.image.repository }}:{{ $.Values.image.tag  }}
+        env:
+        - name: KAFKA_HOST
+          value: {{ $.Values.kafka.host }}
+        - name: REDIS_HOST
+          value: dedup-{{ .name }}-redis
+        - name: SOURCE_TOPIC
+          value: {{ .sourceTopic }}
+        - name: TARGET_TOPIC
+          value: {{ .targetTopic }}
+        - name: BATCH_SIZE
+          valueFrom:
+            configMapKeyRef:
+              key: batch_size
+              name: config
+        - name: BATCH_WAIT_TIME
+          valueFrom:
+            configMapKeyRef:
+              key: batch_wait_time
+              name: config
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "200m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dedup-{{ .name }}-redis
+  labels:
+    app: dedup-{{ .name }}-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dedup-{{ .name }}-redis
+  template:
+    metadata:
+      labels:
+        app: dedup-{{ .name }}-redis
+    spec:
+      containers:
+      - name: dedup-{{ .name }}-redis
+        image: bitnami/redis:6.2-debian-10
+        ports:
+        - containerPort: 6379
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "50m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dedup-{{ .name }}-redis
+spec:
+  selector:
+    app: dedup-{{ .name }}-redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+{{- end }}
