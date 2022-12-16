@@ -95,7 +95,7 @@ global:
 
   ## base urls ##
   - name: API_BASE_URL
-    value: http://api-service:8000
+    value: http://sky-api:8000
   - name: BAZAAR_BASE_URL
     value: http://bazaar:8000
   - name: ITEMS_BASE_URL
