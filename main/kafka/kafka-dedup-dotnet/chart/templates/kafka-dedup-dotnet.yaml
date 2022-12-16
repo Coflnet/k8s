@@ -29,16 +29,6 @@ spec:
           value: {{ .sourceTopic }}
         - name: TARGET_TOPIC
           value: {{ .targetTopic }}
-        - name: BATCH_SIZE
-          valueFrom:
-            configMapKeyRef:
-              key: batch_size
-              name: config
-        - name: BATCH_WAIT_TIME
-          valueFrom:
-            configMapKeyRef:
-              key: batch_wait_time
-              name: config
         resources:
           requests:
             memory: "100Mi"
