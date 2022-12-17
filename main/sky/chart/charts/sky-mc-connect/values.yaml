@@ -1,0 +1,40 @@
+replicaCount: 1
+
+strategy: RollingUpdate
+
+image:
+  repository: harbor.flou.dev/coflnet/skymcconnect
+  tag: f2ee9b71-11a6-4462-89f0-810ca2c87b17
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: api
+    containerPort: 8000
+
+resources: 
+  requests:
+    cpu: 10m
+    memory: 200Mi
+  limits: 
+    cpu: 500m
+    memory: 512Mi
+
+
+serivcePorts:
+  - name: api
+    port: 8000
+    targetPort: 8000
+
+readinessProbe:
+  httpGet:
+    path: /api/index.html
+    port: api
+  initialDelaySeconds: 20
+  periodSeconds: 3
+
+envVars: 
+  - name: DB_CONNECTION
+    valueFrom:
+      secretKeyRef:
+        name: secret 
+        key: connection_micro_mc_connect
