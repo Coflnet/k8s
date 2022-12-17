@@ -33,15 +33,14 @@ payments:
       memory: 2Gi
 
   envVars:
-    jaeger:
-      - name: JAEGER_AGENT_HOST
-        valueFrom:
-          fieldRef:
-            fieldPath: status.hostIP
-      - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
-        valueFrom:
-          fieldRef:
-            fieldPath: status.hostIP
+    - name: JAEGER_AGENT_HOST
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
+    - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
     - name: JAEGER_SERVICE_NAME
       valueFrom: 
         configMapKeyRef:
