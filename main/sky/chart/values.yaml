@@ -74,7 +74,7 @@ global:
 
   ## shared redis instance to sync settings between frontends ##
   - name: SETTINGS_REDIS_HOST
-    value: setttings-redis-service
+    value: settings-redis
 
     ## common services ##
     ### kafka ###
