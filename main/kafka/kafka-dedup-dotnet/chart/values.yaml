@@ -31,11 +31,11 @@ securityContext: {}
 
 resources: 
   limits:
-    cpu: 100m
-    memory: 128Mi
-  requests:
     cpu: 300m
     memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 
 kafka:
   host: k8-main-kafka-kafka
