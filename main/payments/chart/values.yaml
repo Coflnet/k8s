@@ -41,16 +41,6 @@ payments:
       valueFrom:
         fieldRef:
           fieldPath: status.hostIP
-    - name: JAEGER_SERVICE_NAME
-      valueFrom: 
-        configMapKeyRef:
-          name: config
-          key: jaeger_service_name
-    - name: JAEGER_AGENT_HOST
-      valueFrom: 
-        configMapKeyRef:
-          name: config
-          key: jaeger_agent_host
   
     - name: STRIPE__ID
       valueFrom:
@@ -80,16 +70,10 @@ payments:
           name: secret
           key: paypal_secret
     - name: PAYPAL__IS_SANDBOX
-      valueFrom:
-        configMapKeyRef: 
-          name: config
-          key: paypal_is_sandbox
+      value: "false"
   
     - name: KAFKA_HOST
-      valueFrom:
-        configMapKeyRef:
-          name: config
-          key: kafka_host
+      value: k8-main-kafka-kafka.kafka.svc.cluster.local
     - name: DB_CONNECTION
       valueFrom:
         secretKeyRef:

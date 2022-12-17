@@ -36,7 +36,7 @@ spec:
   selector:
     app: {{ .Values.payments.name }}
   ports:
-    {{ toYaml .Values.serivcePorts | nindent 4 }}
+    {{ toYaml .Values.payments.serivcePorts | nindent 4 }}
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
