@@ -90,7 +90,7 @@ kind: ServiceMonitor
 metadata:
   name: dedup{{ .name }}-servicemonitor
   labels:
-    release: prometheus
+    release: k8-main-prometheus
 spec:
   selector:
     matchLabels:
