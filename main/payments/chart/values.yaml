@@ -37,6 +37,7 @@ payments:
       valueFrom:
         fieldRef:
           fieldPath: status.hostIP
+
     - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
       valueFrom:
         fieldRef:
@@ -47,6 +48,7 @@ payments:
         secretKeyRef: 
           name: secret
           key: stripe_secret
+
     - name: STRIPE__KEY
       valueFrom:
         secretKeyRef:
@@ -64,16 +66,19 @@ payments:
         secretKeyRef: 
           name: secret
           key: paypal_id
+
     - name: PAYPAL__SECRET
       valueFrom:
         secretKeyRef: 
           name: secret
           key: paypal_secret
+
     - name: PAYPAL__IS_SANDBOX
       value: "false"
   
     - name: KAFKA_HOST
       value: k8-main-kafka-kafka.kafka.svc.cluster.local
+
     - name: DB_CONNECTION
       valueFrom:
         secretKeyRef:
@@ -118,8 +123,6 @@ ingress:
               number: 80
 
 
-kafka_host: k8-main-kafka-kafka.kafka.svc.cluster.local
-paypal_is_sandbox: "false"
 
 products: |
   {
