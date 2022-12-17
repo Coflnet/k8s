@@ -1,14 +1,12 @@
-{{- range .Values.services }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ . }}
+  name: {{ .Chart.Name }}
   labels:
-    app: {{ . }}
+    app: {{ .Chart.Name }}
 spec:
   selector:
-    app: {{ $.Chart.Name }}
+    app: {{ .Chart.Name }}
   ports:
-    {{ toYaml $.Values.serivcePorts | nindent 4 }}
+    {{ toYaml .Values.serivcePorts | nindent 4 }}
 ---
-{{- end }}
