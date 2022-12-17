@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/skycrafts
-  tag: f0ca3b47-e60a-4909-b2d0-143fbb5462cd
+  tag: d422338e-bc72-4ed5-93e9-1f5ce3043c7f
   pullPolicy: IfNotPresent
 
 ports:
