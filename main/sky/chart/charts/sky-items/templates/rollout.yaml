@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  progressDeadlineSeconds: 2592000
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      imagePullSecrets:
+      {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
+        ports:
+           {{ toYaml .Values.ports | nindent 10 }}
+        env:
+          {{ if .Values.envVars }}
+          {{ toYaml .Values.envVars | nindent 10 }}
+          {{ end }}
+          {{ toYaml .Values.global.envVars | nindent 10 }}
+          {{ toYaml .Values.global.frontendEnvVars | nindent 10 }}
+        readinessProbe:
+          {{ toYaml .Values.readinessProbe | nindent 10 }}
+        resources:
+          {{ toYaml .Values.resources | nindent 10 }}
+  strategy:
+    canary:
+      steps:
+      - setWeight: 10
+      - pause: 
+          duration: 5m
+      - setWeight: 50
+      - pause:
+          duration: 2m
+      - setWeight: 100
+      - pause:
+          duration: 2m
+      maxUnavailable: 2
+      canaryService: {{ .Chart.Name }}-preview
+      stableService: {{ .Chart.Name }}-stable
+      trafficRouting:
+        smi:
+          rootService: {{ .Chart.Name }}
+          trafficSplitName: {{ .Chart.Name }}-traffic-split

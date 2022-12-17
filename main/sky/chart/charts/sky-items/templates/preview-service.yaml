@@ -1,0 +1,13 @@
+# stable service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}-preview
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  selector:
+    app: {{ .Chart.Name }}
+  ports:
+    {{ toYaml .Values.serivcePorts | nindent 4 }}
+---
