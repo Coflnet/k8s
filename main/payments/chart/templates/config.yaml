@@ -3,4 +3,5 @@ kind: ConfigMap
 metadata:
   name: {{ .Chart.Name }}
 data:
-  products.json: {{ .Values.products }}
+  products.json: |
+    {{ .Values.products | toJson | indent 4 }}
