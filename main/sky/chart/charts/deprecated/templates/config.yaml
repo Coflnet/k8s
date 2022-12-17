@@ -48,7 +48,7 @@ data:
   mariadb_version: "10.5.5"
 
   # cassandra
-  cassandra_host: cassandra-proxy-haproxy.proxy
+  cassandra_host: k8-main-proxy-cassandra-haproxy.proxy
   cassandra_user: cassandra
 
   # redis connections
