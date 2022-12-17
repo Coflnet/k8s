@@ -27,6 +27,6 @@ serivcePorts:
 
 readinessProbe:
   httpGet:
-    path: /api/index.html
+    path: /api/profile/index.html
     port: api
   initialDelaySeconds: 20
