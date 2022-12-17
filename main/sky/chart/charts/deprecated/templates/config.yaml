@@ -25,7 +25,7 @@ data:
   bazaar_base_url: http://bazaar:8000
   chat_base_url: http://chat-service.sky:8000/
   events_base_url: http://event-broker:8000
-  frontend_api_endpoint: http://api-service/api
+  frontend_api_endpoint: http://sky-api:8000/api
   frontend_command_endpoint: http://sky-commands:8008/command
   http_api_host: http://api-service.sky.svc.cluster.local:8000
   imgproxy_base_url: http://imgproxy:8080
