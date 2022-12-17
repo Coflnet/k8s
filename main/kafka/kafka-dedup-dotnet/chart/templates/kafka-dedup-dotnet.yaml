@@ -20,6 +20,8 @@ spec:
       containers:
       - name: dedup-{{ .name }}
         image: {{ $.Values.image.repository }}:{{ $.Values.image.tag  }}
+        ports:
+           {{ toYaml $.Values.ports | nindent 10 }}
         env:
         - name: KAFKA_HOST
           value: {{ $.Values.kafka.host }}
@@ -30,9 +32,17 @@ spec:
         - name: TARGET_TOPIC
           value: {{ .targetTopic }}
         resources:
-          requests:
-            memory: "100Mi"
-            cpu: "200m"
+          {{ toYaml $.Values.resources | nindent 10 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dedup-{{ .name }}
+spec:
+  selector:
+    app: dedup-{{ .name }}
+  ports:
+    {{ toYaml .Values.serivcePorts | nindent 4 }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -75,4 +85,18 @@ spec:
       port: 6379
       targetPort: 6379
 ---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: dedup{{ .name }}-servicemonitor
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: dedup-{{ .name }}
+  endpoints:
+  - port: api
+    interval: 25s
+    path: /metrics
 {{- end }}

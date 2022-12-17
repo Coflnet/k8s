@@ -47,6 +47,14 @@ resources:
 kafka:
   host: k8-main-kafka-kafka
 
+ports:
+  - name: api
+    containerPort: 8000
+serivcePorts:
+  - name: api
+    port: 8000
+    targetPort: 8000
+
 ## list of all deduplicaters ##
 dedups:
   - name: sky-bazaar
