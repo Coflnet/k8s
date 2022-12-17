@@ -1,0 +1,40 @@
+replicaCount: 1
+
+strategy: RollingUpdate
+
+image:
+  repository: harbor.flou.dev/coflnet/skyeventbroker
+  tag: 38fb7934-bcca-487f-8145-5bb95bc0d1b2
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: api
+    containerPort: 8000
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 100Mi
+  limits:
+    cpu: 500m
+    memory: 500Mi
+
+
+serivcePorts:
+  - name: api
+    port: 8000
+    targetPort: 8000
+
+readinessProbe:
+  httpGet:
+    path: /api/index.html
+    port: api
+  initialDelaySeconds: 20
+  periodSeconds: 3
+
+envVars: 
+  - name: DB_CONNECTION
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: connection_eventmessages_database
