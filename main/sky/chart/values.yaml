@@ -107,26 +107,26 @@ global:
   - name: REFERRAL_BASE_URL
     value: http://referral:8000
   - name: SETTINGS_BASE_URL
-    value: http://settings:8000
+    value: http://sky-settings:8000
   - name: SNIPER_BASE_URL
-    value: http://sniper:8000
+    value: http://sky-sniper:8000
   - name: INDEXER_BASE_URL
     value: http://sky-indexer-service:8000
   - name: SUBSCRIPTION_BASE_URL
     value: http://subscriptions:8000
   - name: SKYFLIPPER_BASE_URL
-    value: http://flipper:8000
+    value: http://sky-flipper:8000
   - name: SKYCOMMANDS_BASE_URL
     value: http://sky-commands:8000
   - name: PAYMENTS_BASE_URL
-    value: http://payment:8000
+    value: http://payments.payment:8000
   - name: PROFILE_BASE_URL
-    value: http://player:8000
+    value: http://sky-profiles:8000
   - name: CRAFTS_BASE_URL
-    value: http://sky-craft-service:8000
+    value: http://sky-crafts:8000
   - name: UPDATER_BASE_URL
-    value: http://updater:8000
+    value: http://sky-updater:8000
   - name: MCCONNECT_BASE_URL
-    value: http://mc-connect:8000
+    value: http://sky-mc-connect:8000
   - name: FLIPTRACKER_BASE_URL
     value: http://tracker:8000
