@@ -99,7 +99,7 @@ global:
   - name: BAZAAR_BASE_URL
     value: http://bazaar:8000
   - name: ITEMS_BASE_URL
-    value: http://items:8000
+    value: http://sky-items:8000
   - name: MAYOR_BASE_URL
     value: http://mayor:8080
   - name: PLAYERNAME_URL
