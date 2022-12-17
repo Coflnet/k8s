@@ -137,7 +137,7 @@ ingress:
 kafka_host: k8-main-kafka-kafka.kafka.svc.cluster.local
 paypal_is_sandbox: "false"
 
-products.json: |
+products: |
     {
     "products": [
         {
