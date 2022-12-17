@@ -23,6 +23,8 @@ global:
         secretKeyRef:
           key: connection_read_api
           name: secret
+    - name: EVENTS_REDIS_HOST
+      value: sky-event-broker-redis
 
 
   ## minio connection ##
