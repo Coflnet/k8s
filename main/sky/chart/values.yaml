@@ -27,7 +27,7 @@ global:
 
   ## minio connection ##
   minioEnvVars:
-  - name: MtINIO_HOST
+  - name: MINIO_HOST
     valueFrom:
       configMapKeyRef:
         key: host
