@@ -99,4 +99,5 @@ spec:
   - port: api
     interval: 25s
     path: /metrics
+---
 {{- end }}
