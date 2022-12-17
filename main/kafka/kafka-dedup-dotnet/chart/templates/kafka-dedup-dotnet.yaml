@@ -42,7 +42,7 @@ spec:
   selector:
     app: dedup-{{ .name }}
   ports:
-    {{ toYaml .Values.serivcePorts | nindent 4 }}
+    {{ toYaml $.Values.serivcePorts | nindent 4 }}
 ---
 apiVersion: apps/v1
 kind: Deployment
