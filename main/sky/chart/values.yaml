@@ -27,7 +27,7 @@ global:
 
   ## minio connection ##
   minioEnvVars:
-  - name: MINIO_HOST
+  - name: MtINIO_HOST
     valueFrom:
       configMapKeyRef:
         key: host
@@ -97,7 +97,7 @@ global:
   - name: API_BASE_URL
     value: http://sky-api:8000
   - name: BAZAAR_BASE_URL
-    value: http://bazaar:8000
+    value: http://sky-bazaar:8000
   - name: ITEMS_BASE_URL
     value: http://sky-items:8000
   - name: MAYOR_BASE_URL
