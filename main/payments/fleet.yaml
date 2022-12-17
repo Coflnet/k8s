@@ -1,0 +1,3 @@
+defaultNamespace: payments
+helm:
+  chart: ./chart

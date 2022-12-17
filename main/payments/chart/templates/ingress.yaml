@@ -1,0 +1,9 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Chart.name }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    {{ toYaml .Values.ingress.hosts | nindent 4 }}
