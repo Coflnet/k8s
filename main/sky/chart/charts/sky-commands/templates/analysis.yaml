@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: {{ .Chart.Name }}
+spec:
+  args:
+  - name: service-name
+  metrics:
+  - name: sky-commands-flips-sent
+    interval: 1m
+    successCondition: result[0] >= 20
+    failureLimit: 1
+    count: 3
+    provider:
+      prometheus:
+        address: http://prometheus-prometheus.prometheus.svc.cluster.local:9090
+        query: |
+          sum(increase(sky_commands_flip_send{service="{{args.service-name}}"}[2m]))
