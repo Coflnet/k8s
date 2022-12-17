@@ -20,7 +20,7 @@ spec:
       - name: {{ .Values.payments.name }}
         image: {{ .Values.payments.image.repository }}:{{ .Values.payments.image.tag }}
         ports:
-           {{ toYaml .Values.ports | nindent 10 }}
+           {{ toYaml .Values.payments.ports | nindent 10 }}
         env:
           {{ toYaml .Values.payments.envVars | nindent 10 }}
         readinessProbe:
