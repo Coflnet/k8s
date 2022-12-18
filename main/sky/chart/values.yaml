@@ -119,7 +119,7 @@ global:
   - name: SKYFLIPPER_BASE_URL
     value: http://sky-flipper:8000
   - name: SKYCOMMANDS_BASE_URL
-    value: http://sky-commands:8000
+    value: http://sky-commands:8008
   - name: PAYMENTS_BASE_URL
     value: http://payments.payment:8000
   - name: PROFILE_BASE_URL
