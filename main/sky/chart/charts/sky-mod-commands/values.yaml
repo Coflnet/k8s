@@ -116,12 +116,7 @@ readinessProbe:
   periodSeconds: 3
 
 envVars: 
-  - name: CHAT__BASE_URL
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: chat_base_url
-  - name: CHAT__BASE_URL
+  - name: CHAT_API_KEY
     valueFrom:
       secretKeyRef:
         name: secret
