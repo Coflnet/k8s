@@ -1,0 +1,40 @@
+replicaCount: 2
+
+strategy: RollingUpdate
+
+image:
+  repository: harbor.flou.dev/coflnet/skyplayername
+  tag: 97c1e8f5-bba0-4076-b296-6deb00e0c56e
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: api
+    containerPort: 8000
+
+resources: 
+  requests:
+    cpu: 80m
+    memory: 128Mi
+  limits: 
+    cpu: 200m
+    memory: 256Mi
+
+
+serivcePorts:
+  - name: api
+    port: 8000
+    targetPort: 8000
+
+readinessProbe:
+  httpGet:
+    path: /api/index.html
+    port: api
+  initialDelaySeconds: 20
+  periodSeconds: 3
+
+envVars: 
+  - name: DBConnection
+    valueFrom:
+      secretKeyRef:
+        name: secret 
+        key: connection_read_secondary

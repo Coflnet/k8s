@@ -1,7 +1,7 @@
 apiVersion: v2
-name: sky
-description: Helm Chart for the sky.coflnet.com project
- 
+name: sky-player-name
+description: A Helm chart for Kubernetes
+
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
@@ -22,43 +22,3 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "1.16.0"
-
-dependencies:
-  - name: sky-api
-    version: "0.1.0" 
-  - name: sky-bazaar
-    version: "0.1.0" 
-  - name: sky-bfcs
-    version: "0.1.0" 
-  - name: sky-chat
-    version: "0.1.0" 
-  - name: sky-commands
-    version: "0.1.0" 
-  - name: sky-crafts
-    version: "0.1.0" 
-  - name: sky-event-broker
-    version: "0.1.0" 
-  - name: sky-filter
-    version: "0.1.0" 
-  - name: sky-flipper
-    version: "0.1.0" 
-  - name: sky-items
-    version: "0.1.0" 
-  - name: sky-mc-connect
-    version: "0.1.0" 
-  - name: sky-mod-commands
-    version: "0.1.0" 
-  - name: sky-profiles
-    version: "0.1.0" 
-  - name: sky-sniper
-    version: "0.1.0" 
-  - name: sky-updater
-    version: "0.1.0" 
-  - name: sky-player-name
-    version: "0.1.0" 
-  - name: sky-settings
-    version: "0.1.0" 
-  - name: hypixel-react
-    version: "0.1.0" 
-  - name: deprecated
-    version: "0.1.0" 
