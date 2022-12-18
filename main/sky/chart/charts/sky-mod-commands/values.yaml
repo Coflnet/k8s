@@ -115,5 +115,16 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: []
+envVars: 
+  - name: CHAT__BASE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: chat_base_url
+  - name: CHAT__BASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: mod_chat_api_key
+
  

@@ -104,11 +104,6 @@ spec:
               ttlStrategy:
                 secondsAfterFailure: 21600
                 secondsAfterSuccess: 7200
-              tolerations:
-                - key: "us"
-                  operator: "Equal"
-                  value: "true"
-                  effect: "NoSchedule"
               imagePullSecrets:
                 - name: harbor
               volumes:
