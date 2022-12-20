@@ -4,7 +4,8 @@ metadata:
   name: {{ .Chart.Name }}
   labels:
     app: {{ .Chart.Name }}
-spec: replicas: {{ .Values.replicaCount }}
+spec: 
+  replicas: {{ .Values.replicaCount }}
   strategy:
     type: {{ .Values.strategy }}
   progressDeadlineSeconds: 2592000
