@@ -105,7 +105,7 @@ global:
   - name: MAYOR_BASE_URL
     value: http://mayor:8080
   - name: PLAYERNAME_URL
-    value: http://player-name:8000
+    value: http://sky-player-name:8000
   - name: REFERRAL_BASE_URL
     value: http://referral:8000
   - name: SETTINGS_BASE_URL
