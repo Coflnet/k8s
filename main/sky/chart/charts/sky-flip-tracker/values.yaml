@@ -1,0 +1,40 @@
+replicaCount: 3
+
+strategy: RollingUpdate
+
+image:
+  repository: harbor.flou.dev/coflnet/skyfliptracker
+  tag: ef1e31e0-2bdf-48c3-99d9-2d43451d7fb7
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: api
+    containerPort: 8000
+
+resources: 
+  requests:
+    cpu: 200m
+    memory: 200Mi
+  limits: 
+    cpu: 500m
+    memory: 512Mi
+
+
+serivcePorts:
+  - name: api
+    port: 8000
+    targetPort: 8000
+
+readinessProbe:
+  httpGet:
+    path: /api/index.html
+    port: api
+  initialDelaySeconds: 20
+  periodSeconds: 3
+
+envVars: 
+  - name: DB_CONNECTION
+    valueFrom:
+      secretKeyRef:
+        name: secret 
+        key: connection_tracker_database
