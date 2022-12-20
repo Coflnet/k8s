@@ -96,14 +96,14 @@ ingress:
           service: 
             name: payments
             port:
-              number: 80
+              number: 8000
       - path: /callback/paypal
         pathType: ImplementationSpecific
         backend:
           service: 
             name: payments
             port:
-              number: 80
+              number: 8000
   - host: skyblock-backend.coflnet.com
     http:
       paths:
@@ -113,14 +113,14 @@ ingress:
           service:
             name: payments
             port:
-              number: 80
+              number: 8000
       - path: /callback/paypal
         pathType: ImplementationSpecific
         backend:
           service: 
             name: payments
             port:
-              number: 80
+              number: 8000
 
 
 
