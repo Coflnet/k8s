@@ -39,4 +39,4 @@ envVars:
         name: secret 
         key: connection_read_secondary
   - name: REDIS_HOST
-    value: {{ .Values.global.redis.name }}
+    value: sky-global-redis
