@@ -24,8 +24,6 @@ spec: replicas: {{ .Values.replicaCount }}
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
-          - name: REDIS_HOST
-            value: {{ .Values.global.redis.name }}
           {{ if .Values.envVars }}
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}
