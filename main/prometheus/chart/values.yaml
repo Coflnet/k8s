@@ -761,7 +761,7 @@ grafana:
     ##
     # hosts:
     hosts: 
-    - grafana.domain.com
+    - grafana.flou.dev
 
     ## Path for grafana ingress
     path: /
