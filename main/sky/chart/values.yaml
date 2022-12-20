@@ -133,6 +133,6 @@ global:
   - name: MCCONNECT_BASE_URL
     value: http://sky-mc-connect:8000
   - name: FLIPTRACKER_BASE_URL
-    value: http://tracker:8000
+    value: http://sky-flip-tracker:8000
   - name: CHAT_BASE_URL
     value: http://sky-chat:8000
