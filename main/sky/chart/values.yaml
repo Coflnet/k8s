@@ -113,7 +113,7 @@ global:
   - name: SNIPER_BASE_URL
     value: http://sky-sniper:8000
   - name: INDEXER_BASE_URL
-    value: http://sky-indexer-service:8000
+    value: http://sky-indexer:8000
   - name: SUBSCRIPTION_BASE_URL
     value: http://subscriptions:8000
   - name: SKYFLIPPER_BASE_URL
