@@ -1,0 +1,64 @@
+replicaCount: 1
+
+strategy: RollingUpdate
+
+image:
+  repository: harbor.flou.dev/coflnet/discord-bot-node
+  tag: 2d95e450-6aa5-4711-ad6c-64ea3eb0edc3
+  pullPolicy: IfNotPresent
+
+resources: 
+  requests:
+    cpu: 40m
+    memory: 50Mi
+  limits: 
+    cpu: 150m
+    memory: 256Mi
+
+
+envVars: 
+  - name: TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: token
+  - name: CHANNEL_ID_BUGREPORT
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: live_channel_id_bugreport
+  - name: CHANNEL_ID_SUGGESTIONS
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: live_channel_id_suggestion
+  - name: CHANNEL_ID_SUPPORT
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: live_channel_id_support
+  - name: CLIENT_ID
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: client_id
+  - name: GUILD_ID
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: discord_guild
+  - name: CHANNEL_ID_BOT_COMMANDS
+    valueFrom:
+      configMapKeyRef:
+        key: channel_id_bot_commands
+        name: config
+  - name: API_ENDPOINT
+    valueFrom:
+      configMapKeyRef:
+        key: api_endpoint
+        name: config
+  - name: API_KEY
+    valueFrom:
+      secretKeyRef:
+        key: hypixel_api_key
+        name: secret
