@@ -148,7 +148,7 @@ envVars:
   - name: TOPIC_MC_VERIFY
     value: sky-verified
   - name: KAFKA_HOST
-    value: k8s-main-kafka-kafka.kafka:9092
+    value: k8-main-kafka-kafka.kafka:9092
 
 
   # webhooks
