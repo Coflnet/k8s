@@ -1,0 +1,181 @@
+replicaCount: 1
+
+strategy: Recreate
+
+image:
+  repository: harbor.flou.dev/coflnet/coflnet-bot
+  tag: 3b8ba216-0451-4f8a-a672-09014620baa4
+  pullPolicy: IfNotPresent
+
+ports:
+  - containerPort: 8080
+    name: api
+  - containerPort: 2112
+    name: metrics
+
+resources: 
+  requests:
+    cpu: 100m
+    memory: 200Mi
+  limits: 
+    cpu: 300m
+    memory: 512Mi
+
+
+serivcePorts:
+  - name: api
+    port: 8000
+    targetPort: 8000
+
+readinessProbe:
+  httpGet:
+    path: /api/swagger/doc.json
+    port: api
+  initialDelaySeconds: 1
+  periodSeconds: 3
+
+envVars: 
+  - name: DISCORD_BOT_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: coflnet_token
+
+  - name: MONGO_HOST
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: mongo_host
+
+  - name: DISCORD_COFLCHAT_ID
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: cofl_chat_id
+  
+  - name: REDIS_CHAT_CHANNEL
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: redis_channel
+  
+  - name: COFL_CHAT_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: chat_api_key
+
+  - name: COFL_CHAT_BASE_URL
+    value: http://sky-chat.sky:8000
+  - name: COFL_API_BASE_URL
+    value: http://sky-api.sky:8000
+  - name: MC_CONNECT_URL
+    value: http://sky-mc-connect.sky:8000
+  - name: PLAYER_NAME_HOST
+    value: http://player-name.sky:8000
+  - name: PAYMENT_URL
+    value: http://payments.payment:8000
+  
+  - name: HYPIXEL_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: hypixel_api_key
+      
+
+  
+  - name: CHAT_WEBHOOK
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: cofl_chat_discord_webhook
+
+  - name: GIN_MODE
+    value: release
+
+  - name: DEV_WEBHOOK
+    valueFrom:
+      secretKeyRef:
+        key: dev_chat_discord_webhook
+        name: secret
+  - name: DEV_SPAM_WEBHOOK
+    valueFrom:
+      secretKeyRef:
+        key: dev_spam_chat_discord_webhook
+        name: secret
+  - name: AUCTION_STATS_URL
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: auction_stats_url
+
+  - name: DISCORD_FLIPPER_ROLE
+    valueFrom:
+      configMapKeyRef:
+        key: flipper_role
+        name: config
+  - name: DISCORD_GUILD
+    valueFrom:
+      configMapKeyRef:
+        key: discord_guild
+        name: config
+
+  - name: DISCORD_MUTE_ROLE
+    value: "869942341442600990,933807456151285770"
+
+  - name: FLIPS_CHANNEL
+    value: "1002876203717369937"
+  - name: TOPIC_FLIPSUMMARY
+    value: "flip-summary-processed"
+  - name: HELPER_ROLE
+    value: "933807456151285770"
+  - name: MOD_ROLE
+    value: "869942341442600990"
+  - name: DEV_ROLE
+    value: "669258959495888907"
+  - name: WARNED_ROLE
+    value: "936726999106478160"
+
+  - name: TOPIC_TRANSACTION
+    value: transactions
+  - name: TOPIC_VERIFICATION
+    value: sky-verified
+  - name: TOPIC_DEV_CHAT
+    value: discord-messages
+  - name: TOPIC_MC_VERIFY
+    value: sky-verified
+  - name: KAFKA_HOST
+    value: k8s-main-kafka-kafka.kafka:9092
+
+
+  # webhooks
+  - name: DISCORD_MUTES_WEBHOOK
+    valueFrom:
+      secretKeyRef:
+        key: discord_mutes_webhook
+        name: secret
+  - name: DISCORD_WARNINGS_WEBHOOK
+    valueFrom:
+      secretKeyRef:
+        key: discord_warnings_webhook
+        name: secret
+  - name: DISCORD_CI_SUCCESS_WEBHOOK
+    valueFrom:
+      secretKeyRef:
+        key: discord_ci_success_webhook
+        name: secret
+  - name: DISCORD_CI_FAILURE_WEBHOOK
+    valueFrom:
+      secretKeyRef:
+        key: discord_ci_failure_webhook
+        name: secret
+  - name: DISCORD_FLIPPER_ROLE_WEBHOOK
+    valueFrom:
+      secretKeyRef:
+        key: discord_flipper_role_webhook
+        name: secret
+  - name: DISCORD_FEEDBACK_WEBHOOK
+    valueFrom:
+      secretKeyRef:
+        key: discord_feedback_webhook
+        name: secret

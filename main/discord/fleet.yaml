@@ -1,0 +1,3 @@
+defaultNamespace: discord
+helm:
+  chart: ./chart
