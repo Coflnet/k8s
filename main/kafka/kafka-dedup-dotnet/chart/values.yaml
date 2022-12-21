@@ -53,16 +53,21 @@ dedups:
   - name: sky-bazaar
     sourceTopic: sky-bazaar-raw
     targetTopic: sky-bazaar
+    batchSize: 50    
   - name: sky-missing-auction
     sourceTopic: sky-missingauction-raw
     targetTopic: sky-missingauction
+    batchSize: 200   
   - name: sky-new-auction
     sourceTopic: sky-newauction-raw
     targetTopic: sky-newauction
+    batchSize: 200   
   - name: sky-new-bid
     sourceTopic: sky-newbid-raw
     targetTopic: sky-newbid
+    batchSize: 200   
   - name: sky-sold-auction
     sourceTopic: sky-soldauction-raw
     targetTopic: sky-soldauction
+    batchSize: 200   
 

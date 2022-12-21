@@ -31,6 +31,8 @@ spec:
           value: {{ .sourceTopic }}
         - name: TARGET_TOPIC
           value: {{ .targetTopic }}
+        - name: BATCH_SIZE
+          value: {{ .batchSize }}
         resources:
           {{ toYaml $.Values.resources | nindent 10 }}
 ---
