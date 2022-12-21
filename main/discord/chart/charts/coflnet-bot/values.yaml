@@ -48,7 +48,7 @@ envVars:
         key: mongo_host
 
   - name: REDIS_HOST
-    value: sky-global-redis.sky
+    value: sky-global-redis.sky:6379
 
   - name: DISCORD_COFLCHAT_ID
     valueFrom:
