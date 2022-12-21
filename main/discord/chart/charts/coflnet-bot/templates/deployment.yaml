@@ -28,7 +28,9 @@ spec:
           {{ if .Values.envVars }}
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}
+          {{ if .Values.global.envVars }}
           {{ toYaml .Values.global.envVars | nindent 10 }}
+          {{ end }}
         readinessProbe:
           {{ toYaml .Values.readinessProbe | nindent 10 }}
         resources:
