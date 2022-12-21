@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/discord-bot-node
-  tag: d7b19a45-64b9-4737-bb27-07693ba74516
+  tag: 2dfdf077-79ff-4c7f-b52b-c9fbe03cf7c5
   pullPolicy: IfNotPresent
 
 resources: 
