@@ -47,6 +47,9 @@ envVars:
         name: secret
         key: mongo_host
 
+  - name: REDIS_HOST
+    value: sky-global-redis.sky
+
   - name: DISCORD_COFLCHAT_ID
     valueFrom:
       configMapKeyRef:
