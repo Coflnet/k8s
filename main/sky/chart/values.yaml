@@ -120,7 +120,7 @@ global:
   - name: INDEXER_BASE_URL
     value: http://sky-indexer:8000
   - name: SUBSCRIPTION_BASE_URL
-    value: http://subscriptions:8000
+    value: http://sky-subscriptions:8000
   - name: SKYFLIPPER_BASE_URL
     value: http://sky-flipper:8000
   - name: SKYCOMMANDS_BASE_URL
