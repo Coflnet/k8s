@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/skyeventbroker
-  tag: 38fb7934-bcca-487f-8145-5bb95bc0d1b2
+  tag: 4454a1c3-0e5c-4482-9516-1459bf488ab9
   pullPolicy: IfNotPresent
 
 ports:
