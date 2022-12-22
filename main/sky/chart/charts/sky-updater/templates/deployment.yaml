@@ -7,7 +7,6 @@ metadata:
 spec:
   replicas: {{ .Values.replicaCount }}
   serviceName: {{ .Chart.Name }}
-  replicaCount: {{ .Values.replicaCount }}
   updateStrategy:
     type: {{ .Values.strategy }}
   selector:
