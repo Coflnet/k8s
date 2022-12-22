@@ -38,3 +38,14 @@ envVars:
       secretKeyRef:
         name: secret
         key: connection_eventmessages_database
+  - name: TOPICS__VERIFIED
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: topic_verified
+
+  - name: TOPICS__TRANSACTIONS
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: topic_transaction
