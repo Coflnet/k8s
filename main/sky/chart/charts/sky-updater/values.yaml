@@ -45,7 +45,6 @@ envVars:
       secretKeyRef:
         name: secret
         key: flou_api_key
-
   ## TODO split into global env vars ##
   - name: TOPICS__MISSING_AUCTION 
     valueFrom: 
@@ -87,13 +86,6 @@ envVars:
       configMapKeyRef:
         name: config
         key: topic_auction_checked
-  - name: ITEMS_BASE_URL
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: items_base_url
-
-
   - name: DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE
     valueFrom:
       configMapKeyRef:
