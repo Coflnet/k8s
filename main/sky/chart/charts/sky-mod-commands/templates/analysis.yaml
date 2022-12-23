@@ -13,6 +13,6 @@ spec:
     count: 3
     provider:
       prometheus:
-        address: http://prometheus-operated.prometheus.svc.cluster.local:9090
+        address: http://k8-main-prometheus-kube-pr-prometheus.prometheus.svc.cluster.local:9090
         query: |
           sum(rate(sky_api_error{service="{{"{{"}}args.service-name{{"}}"}}"}[5m]))
