@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: {{ .Chart.Name }}-imgproxy
-        image: {{ .Values.imgproxy.image.repo }}:{{ .Values.imgproxy.image.tag }}
+        image: darthsim/imgproxy:v3.12
         ports:
           - containerPort: 8080
             name: http
