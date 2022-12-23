@@ -18,7 +18,7 @@ spec:
           subPath: products.json
         env:
           - name: "payment_host"
-            value: "payment"
+            value: "payments"
       restartPolicy: Never
       terminationGracePeriodSeconds: 30
       volumes:
@@ -26,5 +26,5 @@ spec:
           items:
           - key: products.json
             path: products.json
-          name: config
+          name: payments
         name: config-volume
