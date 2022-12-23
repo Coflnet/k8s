@@ -19,9 +19,8 @@ spec:
       {{ toYaml $.Values.imagePullSecrets | nindent 8 }}
       affinity:
         podAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 1
-            preference:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
               matchExpressions:
               - key: app
                 operator: In
@@ -77,9 +76,8 @@ spec:
     spec:
       affinity:
         podAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 1
-            preference:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
               matchExpressions:
               - key: app
                 operator: In
