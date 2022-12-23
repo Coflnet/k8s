@@ -6,7 +6,7 @@ imagePullSecrets:
   - name: harbor
 
 image:
-  repository: harbor.flou.dev/coflnet/skychat
+  repository: harbor.flou.dev/coflnet/songvoter
   tag: 2e1eba78-db07-4055-990c-6fce315cd21d
   pullPolicy: IfNotPresent
 
