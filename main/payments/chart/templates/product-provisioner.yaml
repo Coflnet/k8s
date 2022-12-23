@@ -5,9 +5,9 @@ metadata:
     app: provisioner
   name: provisioner
 spec:
+  backoffLimit: 1
   template:
     spec:
-      backoffLimit: 1
       imagePullSecrets:
         - name: harbor
       containers:
