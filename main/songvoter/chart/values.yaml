@@ -2,6 +2,9 @@ replicaCount: 1
 
 strategy: Recreate
 
+imagePullSecrets: 
+  - name: harbor
+
 image:
   repository: harbor.flou.dev/coflnet/skychat
   tag: 2e1eba78-db07-4055-990c-6fce315cd21d
@@ -38,3 +41,4 @@ envVars:
       secretKeyRef:
         name: secret
         key: DB_CONNECTION
+
