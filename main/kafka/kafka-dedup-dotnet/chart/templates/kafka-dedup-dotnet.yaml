@@ -41,7 +41,7 @@ kind: Service
 metadata:
   name: dedup-{{ .name }}
   labels:
-    app: {{ .Chart.Name }}
+    app: dedup-{{ .name }}
 spec:
   selector:
     app: dedup-{{ .name }}
