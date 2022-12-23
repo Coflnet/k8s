@@ -173,7 +173,7 @@ loki:
     {{- end }}
 
   # Should authentication be enabled
-  auth_enabled: true
+  auth_enabled: false
 
   # -- Check https://grafana.com/docs/loki/latest/configuration/#server for more info on the server configuration.
   server:
