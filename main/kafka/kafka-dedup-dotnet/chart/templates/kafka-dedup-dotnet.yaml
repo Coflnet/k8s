@@ -93,6 +93,7 @@ metadata:
   name: dedup{{ .name }}-servicemonitor
   labels:
     release: k8-main-prometheus
+    app: dedup-{{ .name }}
 spec:
   selector:
     matchLabels:
