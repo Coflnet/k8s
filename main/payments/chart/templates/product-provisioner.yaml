@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app: provisioner
+  name: provisioner
+spec:
+  template:
+    spec:
+      imagePullSecrets:
+        - name: harbor
+      containers:
+      - name: product-provisioner
+        image: harbor.flou.dev/coflnet/productprovisioner:86f52eac-dfdf-4620-b116-9d242cf7a31f
+        volumeMounts:
+        - mountPath: /app/products.json
+          name: config-volume
+          subPath: products.json
+        env:
+          - name: "payment_host"
+            value: "payment"
+      restartPolicy: Never
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          items:
+          - key: products.json
+            path: products.json
+          name: config
+        name: config-volume
