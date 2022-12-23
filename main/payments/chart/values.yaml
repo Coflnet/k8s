@@ -221,7 +221,7 @@ products: |
         "slug": "s_cc_5400",
         "title": "5.400 CoflCoins",
         "cost": 5400,
-        "price": 19.69,
+        "price": 17.72,
         "currencyCode": "eur",
         "ProviderSlug": "stripe",
         "type": 4
@@ -230,7 +230,7 @@ products: |
         "slug": "s_cc_10800",
         "title": "10.800 CoflCoins",
         "cost": 10800,
-        "price": 38.99,
+        "price": 31.19,
         "currencyCode": "eur",
         "ProviderSlug": "stripe",
         "type": 4
@@ -239,7 +239,7 @@ products: |
         "slug": "s_cc_21600",
         "title": "21.600 CoflCoins",
         "cost": 21600,
-        "price": 74.99,
+        "price": 59.99,
         "currencyCode": "eur",
         "ProviderSlug": "stripe",
         "type": 4
@@ -257,7 +257,7 @@ products: |
         "slug": "p_cc_5400",
         "title": "5.400 CoflCoins",
         "cost": 5400,
-        "price": 19.99,
+        "price": 17.99,
         "currencyCode": "eur",
         "ProviderSlug": "paypal",
         "type": 4
@@ -266,7 +266,7 @@ products: |
         "slug": "p_cc_10800",
         "title": "10.800 CoflCoins",
         "cost": 10800,
-        "price": 39.69,
+        "price": 31.75,
         "currencyCode": "eur",
         "ProviderSlug": "paypal",
         "type": 4
@@ -275,7 +275,7 @@ products: |
         "slug": "p_cc_21600",
         "title": "21.600 CoflCoins",
         "cost": 21600,
-        "price": 78.69,
+        "price": 62.69,
         "currencyCode": "eur",
         "ProviderSlug": "paypal",
         "type": 4
