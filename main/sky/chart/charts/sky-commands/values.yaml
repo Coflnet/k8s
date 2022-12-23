@@ -2,7 +2,7 @@ replicaCount: 4
 
 image:
   repository: harbor.flou.dev/coflnet/skycommands
-  tag: d928bd9a-3627-46a8-9d9e-9d40117c0171
+  tag: 00f0c695-510c-4435-8102-9c0d1ca367d3
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -12,7 +12,7 @@ imgproxy:
   replicaCount: 1
   image:
     repo: darthsim/imgproxy
-    tag: v3.12
+  tag: 00f0c695-510c-4435-8102-9c0d1ca367d3
 
 ports:
   - name: websocket
