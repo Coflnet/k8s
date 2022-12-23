@@ -19,7 +19,7 @@ spec:
           subPath: products.json
         env:
           - name: "payment_host"
-            value: "payments"
+            value: "payments:8000"
       restartPolicy: Never
       terminationGracePeriodSeconds: 30
       volumes:
