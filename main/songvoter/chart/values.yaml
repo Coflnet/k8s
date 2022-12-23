@@ -7,7 +7,7 @@ imagePullSecrets:
 
 image:
   repository: harbor.flou.dev/coflnet/skychat
-  tag: 2e1eba78-db07-4055-990c-6fce315cd21d
+  tag: f06606bf-5f91-4ef4-b27c-f3dbaf1c648f
   pullPolicy: IfNotPresent
 
 ports:
