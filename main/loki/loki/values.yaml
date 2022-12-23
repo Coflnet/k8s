@@ -1262,7 +1262,7 @@ tracing:
 # Configuration for `minio` child chart
 # -------------------------------------
 minio:
-  enabled: false
+  enabled: true
   replicas: 1
   # Minio requires 2 to 16 drives for erasure code (drivesPerNode * replicas)
   # https://docs.min.io/docs/minio-erasure-code-quickstart-guide
@@ -1281,7 +1281,7 @@ minio:
       policy: none
       purge: false
   persistence:
-    size: 5Gi
+    size: 10Gi
   resources:
     requests:
       cpu: 100m
