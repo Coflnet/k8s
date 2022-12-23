@@ -25,6 +25,8 @@ spec:
         env:
           - name: REDIS_HOST
             value: "{{ .Chart.Name }}-redis,syncTimeout=200"
+          - name: IMGPROXY_BASE_URL
+            value: "http://{{ .Chart.Name }}-imgproxy:8080"
           {{ if .Values.envVars }}
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}

@@ -1,25 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: imgproxy
-  namespace: sky
+  name: {{ .Chart.Name }}-imgproxy
   labels:
-    app: imgproxy
-  annotations:
-    linkerd.io/inject: disabled
+    app: {{ .Chart.Name }}-imgproxy
 spec:
-  replicas: 1
+  replicas: {{ .Values.imgproxy.replicaCount }}
   selector:
     matchLabels:
-      app: imgproxy
+      app: {{ .Chart.Name }}-imgproxy
   template:
     metadata:
       labels:
-        app: imgproxy
+        app: {{ .Chart.Name }}-imgproxy
     spec:
       containers:
-      - name: imgproxy
-        image: darthsim/imgproxy:latest
+      - name: {{ .Chart.Name }}-imgproxy
+        image: {{ .Values.imgproxy.image.repository }}:{{ .Values.imgproxy.image.tag }}
         ports:
           - containerPort: 8080
             name: http
@@ -43,13 +40,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: imgproxy
-  namespace: sky
+  name: {{ .Chart.Name }}-imgproxy
   labels:
-    app: imgproxy
+    app: {{ .Chart.Name }}-imgproxy
 spec:
   selector:
-    app: imgproxy
+    app: {{ .Chart.Name }}-imgproxy
   ports:
     - port: 80
       targetPort: 8080
@@ -61,10 +57,9 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: imgproxy-servicemonitor
-  namespace: sky
+  name: {{ .Chart.Name }}-imgproxy-servicemonitor
   labels:
-    release: prometheus
+    release: k8-main-prometheus
 spec:
   selector:
     matchLabels:

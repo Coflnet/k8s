@@ -8,6 +8,11 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
+imgproxy:
+  replicaCount: 1
+  image:
+    repo: darthsim/imgproxy
+    tag: v3.12
 
 ports:
   - name: websocket
