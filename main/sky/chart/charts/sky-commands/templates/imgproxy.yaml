@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: {{ .Chart.Name }}-imgproxy
-        image: {{ .Values.imgproxy.image.repository }}:{{ .Values.imgproxy.image.tag }}
+        image: {{ .Values.imgproxy.image.repo }}:{{ .Values.imgproxy.image.tag }}
         ports:
           - containerPort: 8080
             name: http
