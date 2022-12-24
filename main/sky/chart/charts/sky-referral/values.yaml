@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/skyreferral
-  tag: a430d5fc-35e0-484a-a70a-d5a3dfc40fc9
+  tag: f59e4bc1-9561-4690-a159-43086d2c8049
   pullPolicy: IfNotPresent
 
 ports:
