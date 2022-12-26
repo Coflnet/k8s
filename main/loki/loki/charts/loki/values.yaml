@@ -129,17 +129,18 @@ client: {}
   # name:
 
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
-nodeSelector: {}
+nodeSelector: 
+  storage: "longhorn"
 
 ## ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
 ## If you set enabled as "True", you need :
 ## - create a pv which above 10Gi and has same namespace with loki
 ## - keep storageClassName same with below setting
 persistence:
-  enabled: false
+  enabled: true
   accessModes:
   - ReadWriteOnce
-  size: 10Gi
+  size: 30Gi
   annotations: {}
   # selector:
   #   matchLabels:
