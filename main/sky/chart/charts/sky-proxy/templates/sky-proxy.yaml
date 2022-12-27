@@ -21,6 +21,8 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
+          ports:
+             {{ toYaml .Values.ports | nindent 10 }}
           env:
             - name: REDIS_HOST
               value: "{{ .Chart.Name }}-redis,syncTimeout=200"
