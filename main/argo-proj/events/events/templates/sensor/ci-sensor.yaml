@@ -58,7 +58,7 @@ spec:
             operation: append
           - src:
               dependencyName: ci-update
-              dataTemplate: "{{"{{"}} .Input.body.repository.name | nospace | lower {{"}}"}}"
+              dataTemplate: "{{"{{"}} .Input.body.repository.name | nospace | lower {{"}}"}}-"
             dest: metadata.generateName
             operation: append
 
