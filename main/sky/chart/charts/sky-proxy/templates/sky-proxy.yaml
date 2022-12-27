@@ -14,8 +14,6 @@ spec:
         name: {{ .Chart.Name }}
         app: {{ .Chart.Name }}
     spec:
-      nodeSelector:
-        sky-proxy: "true"
       imagePullSecrets:
         - name: harbor
       containers:
