@@ -21,9 +21,6 @@ resources:
   requests:
     memory: "2000Mi"
     cpu: "300m"
-  limits:
-    cpu: "600m"
-    memory: "3000Mi"
 
 
 services:
