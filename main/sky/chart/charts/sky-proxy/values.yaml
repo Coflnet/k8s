@@ -1,5 +1,5 @@
 image:
-  repository: harbor.flou.dev/coflnet/skyflipper
+  repository: harbor.flou.dev/coflnet/skyproxy
   tag: 333b7b46-f246-4966-adc9-c11b2c297bbc
   pullPolicy: IfNotPresent
 
