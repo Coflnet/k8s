@@ -13,11 +13,11 @@ ports:
 
 resources: 
   requests:
-    cpu: 1500m
-    memory: 3Gi
+    cpu: 1000m
+    memory: 2Gi
   limits: 
-    cpu: 2500m
-    memory: 5Gi
+    cpu: 1500m
+    memory: 4Gi
 
 
 serivcePorts:
