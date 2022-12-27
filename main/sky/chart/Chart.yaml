@@ -64,6 +64,8 @@ dependencies:
     version: "0.1.0" 
   - name: sky-player-name
     version: "0.1.0" 
+  - name: sky-proxy
+    version: "0.1.0" 
   - name: sky-settings
     version: "0.1.0" 
   - name: hypixel-react

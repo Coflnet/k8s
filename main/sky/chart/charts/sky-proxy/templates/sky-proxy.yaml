@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  selector:
+    matchLabels:
+      name: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Chart.Name }}
+    spec:
+      nodeSelector:
+        sky-proxy: "true"
+      imagePullSecrets:
+        - name: harbor
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
+          env:
+            - name: REDIS_HOST
+              value: "{{ .Chart.Name }}-redis,syncTimeout=200"
+          readinessProbe:
+            {{ toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{ toYaml .Values.resources | nindent 12 }}
