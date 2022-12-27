@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/skyupdater
-  tag: 27cf10f3-57d8-4cfc-aba5-fd80c6541536
+  tag: 79130a8d-6806-4312-92d3-a7214afae899
   pullPolicy: IfNotPresent
 
 ports:
