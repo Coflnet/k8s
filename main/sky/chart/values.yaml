@@ -139,3 +139,5 @@ global:
     value: http://sky-flip-tracker:8000
   - name: CHAT_BASE_URL
     value: http://sky-chat:8000
+  - name: PROXY_BASE_URL
+    value: http://sky-proxy:8000
