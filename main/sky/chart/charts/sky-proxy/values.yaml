@@ -23,7 +23,7 @@ serivcePorts:
 
 readinessProbe:
   httpGet:
-    path: /api/index.html
+    path: /proxy/hypixel/status
     port: api
   initialDelaySeconds: 20
   periodSeconds: 3
