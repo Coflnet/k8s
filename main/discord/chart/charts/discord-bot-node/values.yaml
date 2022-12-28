@@ -53,7 +53,7 @@ envVars:
         key: channel_id_bot_commands
         name: config
   - name: API_ENDPOINT
-    value: http://sky-api.sky/api
+    value: http://sky-api.sky:8000/api
   - name: API_KEY
     valueFrom:
       secretKeyRef:
