@@ -27,6 +27,8 @@ spec:
             value: {{ .Values.global.redis.name }}
           - name: FLIP_REDIS_OPTIONS
             value: "sky-bfcs-redis,syncTimeout=200"
+          - name: MOD_REDIS_HOST
+            value: {{ .Chart.Name }}-redis
           {{ if .Values.envVars }}
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}
