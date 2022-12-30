@@ -44,3 +44,9 @@ envVars:
       configMapKeyRef:
         key: reload_config_on_change
         name: config
+  
+  - name: JWT_SECRET
+    valueFrom:
+      secretKeyRef:
+        key: jwt_secret_sniper
+        name: secret
