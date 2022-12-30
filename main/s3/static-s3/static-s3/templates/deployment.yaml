@@ -18,7 +18,7 @@ spec:
         app: {{ .Chart.Name }}
     spec:
       imagePullSecrets:
-      {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
+      {{ toYaml .Values.imagePullSecrets | nindent 8 }}
       containers:
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
@@ -32,7 +32,6 @@ spec:
           {{ if .Values.envVars }}
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}
-          {{ toYaml .Values.global.envVars | nindent 10 }}
         readinessProbe:
           {{ toYaml .Values.readinessProbe | nindent 10 }}
         resources:

@@ -1,6 +1,9 @@
 replicaCount: 1
 strategy: RollingUpdate
 
+imagePullSecrets: 
+- name: harbor
+
 image:
   repository: harbor.flou.dev/coflnet/statics3
   tag: e33a7a6e-a8ac-400b-acbc-c7425df380dc
