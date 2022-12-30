@@ -24,12 +24,6 @@ serivcePorts:
     port: 8000
     targetPort: 8000
 
-readinessProbe:
-  httpGet:
-    path: /api/index.html
-    port: api
-  initialDelaySeconds: 20
-  periodSeconds: 3
 
 s3:
   host: s3.flou.dev
