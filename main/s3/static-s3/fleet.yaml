@@ -1,0 +1,3 @@
+defaultNamespace: s3
+helm:
+  chart: ./static-s3/
