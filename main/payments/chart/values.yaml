@@ -7,7 +7,7 @@ payments:
   maxUnavailable: 1
   image:
     repository: harbor.flou.dev/coflnet/payments
-    tag: 760d3d16-0d31-407f-85ed-1de91b407e8e
+    tag: ed4ad9ca-f7fa-4f15-b8b6-8c5d038e10dc
   ports:
     - name: api
       containerPort: 8000
