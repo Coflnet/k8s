@@ -6,7 +6,7 @@ imagePullSecrets:
 
 image:
   repository: harbor.flou.dev/coflnet/statics3
-  tag: e33a7a6e-a8ac-400b-acbc-c7425df380dc
+  tag: e1c499b6-6677-4a86-a88b-ee768c4772a6
   pullPolicy: IfNotPresent
 
 ports:
