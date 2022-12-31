@@ -4,7 +4,7 @@ strategy: Recreate
 
 image:
   repository: harbor.flou.dev/coflnet/coflnet-bot
-  tag: 902a74d0-32bb-4320-8495-46699ab6c168
+  tag: 452760d0-8139-410e-828c-17b153c3d554
   pullPolicy: IfNotPresent
 
 ports:
