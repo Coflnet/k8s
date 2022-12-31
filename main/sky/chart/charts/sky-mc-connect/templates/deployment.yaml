@@ -29,7 +29,9 @@ spec:
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}
           {{ toYaml .Values.global.envVars | nindent 10 }}
+        {{ if .Values.readinessProbe.enabled }}
         readinessProbe:
           {{ toYaml .Values.readinessProbe | nindent 10 }}
+        {{ end }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}

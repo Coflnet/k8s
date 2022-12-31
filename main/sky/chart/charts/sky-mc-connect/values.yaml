@@ -26,6 +26,7 @@ serivcePorts:
     targetPort: 8000
 
 readinessProbe:
+  enabled: false
   httpGet:
     path: /api/index.html
     port: api
