@@ -13,11 +13,8 @@ ports:
 
 resources: 
   requests:
-    cpu: 10m
+    cpu: 20m
     memory: 200Mi
-  limits: 
-    cpu: 500m
-    memory: 512Mi
 
 
 serivcePorts:
@@ -26,7 +23,7 @@ serivcePorts:
     targetPort: 8000
 
 readinessProbe:
-  enabled: false
+  enabled: true
   httpGet:
     path: /api/index.html
     port: api
