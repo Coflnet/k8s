@@ -75,7 +75,7 @@ envVars:
   - name: MC_CONNECT_URL
     value: http://sky-mc-connect.sky:8000
   - name: PLAYER_NAME_HOST
-    value: http://player-name.sky:8000
+    value: http://sky-player-name.sky:8000
   - name: PAYMENT_URL
     value: http://payments.payment:8000
   
