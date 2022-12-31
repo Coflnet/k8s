@@ -15,9 +15,6 @@ resources:
   requests:
     cpu: 200m
     memory: 100Mi
-  limits:
-    cpu: 500m
-    memory: 500Mi
 
 
 serivcePorts:
