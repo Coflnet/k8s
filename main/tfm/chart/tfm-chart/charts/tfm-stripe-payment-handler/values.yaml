@@ -1,0 +1,46 @@
+replicaCount: 1
+strategy: RollingUpdate
+
+image:
+  repository: harbor.flou.dev/coflnet/tfmstripepaymenthandler
+  tag: e33a7a6e-a8ac-400b-acbc-c7425df380dc
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: api
+    containerPort: 9618
+
+resources: 
+  requests:
+    cpu: 50m
+    memory: 200Mi
+
+
+serivcePorts:
+  - name: api
+    port: 9618
+    targetPort: 9618
+
+readinessProbe:
+  httpGet:
+    path: /api/index.html
+    port: api
+  initialDelaySeconds: 20
+  periodSeconds: 3
+
+envVars: 
+  - name: MONGO_HOST
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: mongo_host
+  - name: STRIPE_PRIVATE_KEY
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: stripe_private_key
+
+ingress:
+  host: sky.coflnet.com
+  path: /tfm/payment-handler
+  port: 9618
