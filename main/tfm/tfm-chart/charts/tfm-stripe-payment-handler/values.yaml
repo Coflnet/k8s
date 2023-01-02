@@ -3,7 +3,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/tfmstripepaymenthandler
-  tag: 0a6c32ca-cca1-4eaa-ba56-019b0d15f8ea
+  tag: 55b7a60a-ad93-4bf8-9a1d-8e68301d417a
   pullPolicy: IfNotPresent
 
 ports:
