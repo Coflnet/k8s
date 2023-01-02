@@ -21,13 +21,6 @@ serivcePorts:
     port: 9618
     targetPort: 9618
 
-readinessProbe:
-  httpGet:
-    path: /api/index.html
-    port: api
-  initialDelaySeconds: 20
-  periodSeconds: 3
-
 envVars: 
   - name: MONGO_HOST
     valueFrom:
