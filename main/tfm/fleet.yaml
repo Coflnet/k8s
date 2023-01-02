@@ -1,0 +1,3 @@
+defaultNamespace: tfm
+helm:
+  chart: ./chart
