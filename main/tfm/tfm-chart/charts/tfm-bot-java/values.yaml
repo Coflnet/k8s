@@ -32,4 +32,9 @@ envVars:
       secretKeyRef:
         name: secret
         key: stripe_private_key
+  - name: DISCORD_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: discord_token
 
