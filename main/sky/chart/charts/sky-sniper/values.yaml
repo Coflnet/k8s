@@ -4,7 +4,7 @@ strategy: Recreate
 
 image:
   repository: harbor.flou.dev/coflnet/skysniper
-  tag: 46b65adf-a4f9-4aa3-b0ed-baeba01b4756
+  tag: d208e7d1-0c83-476a-b895-6c1e2a7bd8ea
   pullPolicy: IfNotPresent
 
 ports:
