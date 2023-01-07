@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/tfmaveragesgenerator
-  tag: 7119e3da-b27f-40de-b195-cfcf07d1c27c
+  tag: 722567df-db52-4cf4-b269-f2d0d04c95df
   pullPolicy: IfNotPresent
 
 ports:
