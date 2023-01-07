@@ -3,7 +3,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/tfmbot
-  tag: 89ed4ffa-684b-4ef1-8cce-d57361f24494
+  tag: 83ab605c-3b0f-45ea-bfec-2aeeeb0d5c7a
   pullPolicy: IfNotPresent
 
 ports:
