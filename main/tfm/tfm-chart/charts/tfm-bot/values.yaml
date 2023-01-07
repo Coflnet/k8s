@@ -37,4 +37,10 @@ envVars:
       secretKeyRef:
         name: secret
         key: discord_token
+  - name: ALLOWED_FORCE_CREDIT_IDS
+    value: "267680402594988033,256771988352139264"
+  - name: STAFF_CHANNEL
+    value: "926516307778756678"
+  - name: SUPPORT_ROLE_ID
+    value: "889184675346665502"
 
