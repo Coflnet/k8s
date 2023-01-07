@@ -1,0 +1,30 @@
+replicaCount: 1
+
+strategy: RollingUpdate
+
+image:
+  repository: harbor.flou.dev/coflnet/tfmchatmicroservice
+  tag: f5ef92f1-1a5c-4ee2-be0a-fdf3bd27dad5
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: api
+    containerPort: 7181
+
+resources: 
+  requests:
+    cpu: 200m
+    memory: 512Mi
+
+
+serivcePorts:
+  - name: api
+    port: 7181
+    targetPort: 7181
+
+envVars: 
+  - name: MONGO_HOST
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: mongo_host
