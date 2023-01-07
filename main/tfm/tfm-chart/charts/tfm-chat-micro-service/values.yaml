@@ -28,3 +28,8 @@ envVars:
       secretKeyRef:
         name: secret
         key: mongo_host
+
+ingress:
+  host: sky.coflnet.com
+  path: /tfm/chat
+  port: 7181
