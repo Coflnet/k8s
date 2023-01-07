@@ -1,6 +1,6 @@
 apiVersion: v2
-name: tfm-bot-java
-description: The java discord bot for tfm
+name: tfm-bot
+description: The python discord bot for tfm
 
 # A chart can be either an 'application' or a 'library' chart.
 #
