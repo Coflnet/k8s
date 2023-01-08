@@ -30,6 +30,11 @@ envVars:
         key: mongo_host
 
 ingress:
-  host: sky.coflnet.com
-  path: /tfm/chat
-  port: 7181
+  secure:
+    host: sky.coflnet.com
+    path: /tfm/chat
+    port: 7181
+  insecure:
+    host: sky-mod.coflnet.com
+    path: /tfm/chat
+    port: 7181
