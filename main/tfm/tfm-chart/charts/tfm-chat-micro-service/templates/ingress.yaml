@@ -8,23 +8,23 @@ metadata:
       nginx.ingress.kubernetes.io/client-body-buffer-size: 1M
 spec:
   rules:
-  - host: {{ .Values.insecure.ingress.host }}
+  - host: {{ .Values.ingress.insecure.host }}
     http:
       paths:
-      - path: {{ .Values.insecure.ingress.path }}
+      - path: {{ .Values.ingress.insecure.path }}
         pathType: ImplementationSpecific
         backend:
           service:
             name: {{ .Chart.Name }}
             port:
-              number: {{ .Values.insecure.ingress.port }}
-  - host: {{ .Values.secure.ingress.host }}
+              number: {{ .Values.ingress.insecure.port }}
+  - host: {{ .Values.ingress.secure.host }}
     http:
       paths:
-      - path: {{ .Values.secure.ingress.path }}
+      - path: {{ .Values.ingress.secure.path }}
         pathType: ImplementationSpecific
         backend:
           service:
             name: {{ .Chart.Name }}
             port:
-              number: {{ .Values.secure.ingress.port }}
+              number: {{ .Values.ingress.secure.port }}
