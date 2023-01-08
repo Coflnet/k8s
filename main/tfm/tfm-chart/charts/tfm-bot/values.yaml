@@ -46,5 +46,5 @@ envVars:
 
 ingress:
   host: sky.coflnet.com
-  path: /tfm/chat
+  path: /tfm/bot
   port: 8081
