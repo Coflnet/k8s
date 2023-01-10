@@ -30,9 +30,6 @@ spec:
           - name: IMGPROXY_PROMETHEUS_BIND
             value: ":9000"
         resources:
-          limits:
-            memory: "300Mi"
-            cpu: "50m"
           requests:
             memory: "140Mi"
             cpu: "10m"
