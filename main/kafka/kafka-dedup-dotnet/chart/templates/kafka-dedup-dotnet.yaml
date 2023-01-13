@@ -74,16 +74,6 @@ spec:
       labels:
         app: dedup-{{ .name }}-redis
     spec:
-      affinity:
-        podAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - dedup-{{ .name }}
-            topologyKey: "kubernetes.io/hostname"
       containers:
       - name: dedup-{{ .name }}-redis
         image: bitnami/redis:6.2-debian-10
