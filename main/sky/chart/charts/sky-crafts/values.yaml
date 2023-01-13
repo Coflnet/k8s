@@ -1,4 +1,4 @@
-replicaCount: 1
+replicaCount: 2
 
 strategy: RollingUpdate
 
@@ -27,7 +27,7 @@ serivcePorts:
 
 readinessProbe:
   httpGet:
-    path: /api/index.html
+    path: /crafts/ready
     port: api
   initialDelaySeconds: 20
   periodSeconds: 3
