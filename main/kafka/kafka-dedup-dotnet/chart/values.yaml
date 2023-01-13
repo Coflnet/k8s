@@ -30,9 +30,6 @@ securityContext: {}
   # runAsUser: 1000
 
 resources: 
-  limits:
-    cpu: 300m
-    memory: 4Gi
   requests:
     cpu: 100m
     memory: 1Gi
