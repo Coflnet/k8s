@@ -35,3 +35,17 @@ envVars:
       secretKeyRef:
         name: secret 
         key: connection_tracker_database
+  - name: CASSANDRA__HOSTS
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: cassandra_host
+  - name: CASSANDRA__USER
+    value: "crafts"
+  - name: CASSANDRA__KEYSPACE
+    value: "crafts"
+  - name: CASSANDRA__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: cassandra_crafts_password

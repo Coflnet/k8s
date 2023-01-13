@@ -31,18 +31,3 @@ readinessProbe:
   initialDelaySeconds: 120
   periodSeconds: 5
 
-envVars:
-  - name: CASSANDRA__HOSTS
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: cassandra_host
-  - name: CASSANDRA__USER
-    value: "crafts"
-  - name: CASSANDRA__KEYSPACE
-    value: "crafts"
-  - name: CASSANDRA__PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: cassandra_crafts_password
