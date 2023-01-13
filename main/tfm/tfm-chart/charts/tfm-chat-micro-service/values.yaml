@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/tfmchatmicroservice
-  tag: 5a898bde-2229-4c1e-8971-81c2dab5723c
+  tag: 64196ae9-398a-4644-88f4-7813184086e7
   pullPolicy: IfNotPresent
 
 ports:
