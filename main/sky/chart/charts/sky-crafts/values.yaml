@@ -39,6 +39,8 @@ envVars:
         key: cassandra_host
   - name: CASSANDRA__USER
     value: "crafts"
+  - name: CASSANDRA__KEYSPACE
+    value: "crafts"
   - name: CASSANDRA__PASSWORD
     valueFrom:
       secretKeyRef:
