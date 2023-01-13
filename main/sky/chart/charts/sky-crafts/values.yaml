@@ -31,3 +31,17 @@ readinessProbe:
     port: api
   initialDelaySeconds: 20
   periodSeconds: 3
+
+envVars:
+  - name: CASSANDRA__HOSTS
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: cassandra_host
+  - name: CASSANDRA__USER
+    value: "crafts"
+  - name: CASSANDRA__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: cassandra_crafts_password
