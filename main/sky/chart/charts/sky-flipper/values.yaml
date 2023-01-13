@@ -33,6 +33,8 @@ readinessProbe:
   periodSeconds: 3
 
 envVars: 
+  - name: REDIS_HOST
+    value: redis-service
   - name: DBConnection
     valueFrom:
       secretKeyRef:
