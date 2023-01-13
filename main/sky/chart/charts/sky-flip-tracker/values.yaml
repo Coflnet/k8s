@@ -41,11 +41,9 @@ envVars:
         name: config
         key: cassandra_host
   - name: CASSANDRA__USER
-    value: "crafts"
-  - name: CASSANDRA__KEYSPACE
-    value: "crafts"
+    value: "cassandra"
   - name: CASSANDRA__PASSWORD
     valueFrom:
       secretKeyRef:
         name: secret
-        key: cassandra_crafts_password
+        key: cassandra_password
