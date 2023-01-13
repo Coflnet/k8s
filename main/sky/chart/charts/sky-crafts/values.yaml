@@ -13,10 +13,9 @@ ports:
 
 resources: 
   requests:
-    cpu: 200m
+    cpu: 140m
     memory: 200Mi
   limits: 
-    cpu: 500m
     memory: 512Mi
 
 
@@ -29,8 +28,8 @@ readinessProbe:
   httpGet:
     path: /crafts/ready
     port: api
-  initialDelaySeconds: 20
-  periodSeconds: 3
+  initialDelaySeconds: 120
+  periodSeconds: 5
 
 envVars:
   - name: CASSANDRA__HOSTS
