@@ -10,6 +10,8 @@ image:
 ports:
   - name: api
     containerPort: 8000
+  - name: metrics
+    containerPort: 2112
 
 resources: 
   requests:
