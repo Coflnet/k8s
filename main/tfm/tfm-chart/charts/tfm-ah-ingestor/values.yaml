@@ -21,6 +21,9 @@ serivcePorts:
   - name: api
     port: 8000
     targetPort: 8000
+  - name: metrics
+    port: 2112
+    targetPort: 2112
 
 envVars: 
   - name: MONGO_HOST
