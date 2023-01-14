@@ -16,7 +16,6 @@ resources:
     cpu: 140m
     memory: 200Mi
   limits: 
-    cpu: 400m
     memory: 512Mi
 
 
@@ -31,3 +30,4 @@ readinessProbe:
     port: api
   initialDelaySeconds: 120
   periodSeconds: 5
+
