@@ -36,3 +36,8 @@ envVars:
       configMapKeyRef:
         name: config
         key: topic_new_auction-raw
+  - name: TOPICS__SOLD_AUCTION
+    valueFrom: 
+      configMapKeyRef:
+        name: config
+        key: topic_sold_auction-raw
