@@ -17,7 +17,7 @@ resources:
     cpu: 50m
     memory: 200Mi
   limits:
-    memory: 1100Mi
+    memory: 4Gi
 
 
 serivcePorts:
