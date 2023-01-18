@@ -4,7 +4,7 @@ strategy: Recreate
 
 image:
   repository: harbor.flou.dev/coflnet/skyindexer
-  tag: d1f1e867-a6f7-4d38-8149-2656115532b4
+  tag: 0c233f05-f01f-4d2e-b3b2-d2d617925c54
   pullPolicy: IfNotPresent
 
 ports:
