@@ -3,25 +3,30 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/tfmbotjava
-  tag: c1ce6ab5-3782-497c-b0c4-57c0db5f75f2
+  tag: c419ccf1-64d0-4e56-b6e6-3cdebbe083ab
   pullPolicy: IfNotPresent
 
 ports:
   - name: api
     containerPort: 8000
+  - name: metrics
+    containerPort: 1234
 
 resources: 
   requests:
     cpu: 50m
     memory: 200Mi
   limits:
-    memory: 800Mi
+    memory: 4Gi
 
 
 serivcePorts:
   - name: api
     port: 8000
     targetPort: 8000
+  - name: metrics
+    port: 1234
+    targetPort: 1234
 
 envVars: 
   - name: MONGO_HOST

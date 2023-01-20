@@ -4,7 +4,7 @@ strategy: Recreate
 
 image:
   repository: harbor.flou.dev/coflnet/skybfcs
-  tag: 9769de79-f7e4-42c8-8f5c-bdf64f41f904
+  tag: 610c5160-e2fd-4559-9930-209e79bb4b5b
   pullPolicy: IfNotPresent
 
 ports:
