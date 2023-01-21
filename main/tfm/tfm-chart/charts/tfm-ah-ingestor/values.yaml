@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/tfmahingestor
-  tag: f409c448-75d2-4487-8ced-e70196160fc3
+  tag: 5d9e232a-07ab-4764-b7d1-b15cff7e23cf
   pullPolicy: IfNotPresent
 
 ports:
