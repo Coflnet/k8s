@@ -1,14 +1,14 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Chart.Name }}
   labels:
     app: {{ .Chart.Name }}
 spec:
   replicas: {{ .Values.replicaCount }}
-  strategy:
+  serviceName: {{ .Chart.Name }}
+  updateStrategy:
     type: {{ .Values.strategy }}
-  progressDeadlineSeconds: 2592000
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
