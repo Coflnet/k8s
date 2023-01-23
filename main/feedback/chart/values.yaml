@@ -6,7 +6,7 @@ imagePullSecrets:
   - name: harbor
 image:
   repository: harbor.flou.dev/coflnet/feedback
-  tag: b4a7bd2f-f19e-4413-a989-378d25170c52
+  tag: 3ff127d2-35b6-4593-be62-bcc17122e3b9
   pullPolicy: IfNotPresent
 
 ports:
