@@ -25,7 +25,7 @@ serivcePorts:
 
 readinessProbe:
   httpGet:
-    path: /
+    path: /crafts
     port: web
   initialDelaySeconds: 10
   periodSeconds: 10
