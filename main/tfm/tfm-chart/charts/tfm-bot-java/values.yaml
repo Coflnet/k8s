@@ -15,9 +15,9 @@ ports:
 resources: 
   requests:
     cpu: 50m
-    memory: 3Gi
+    memory: 1Gi
   limits:
-    memory: 7Gi
+    memory: 4Gi
 
 
 serivcePorts:
