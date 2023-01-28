@@ -102,8 +102,8 @@ spec:
                       factor: 2
                       maxDuration: "30m"
               ttlStrategy:
-                secondsAfterFailure: 21600
-                secondsAfterSuccess: 7200
+                secondsAfterFailure: 172800
+                secondsAfterSuccess: 86400
               imagePullSecrets:
                 - name: harbor
               volumes:
