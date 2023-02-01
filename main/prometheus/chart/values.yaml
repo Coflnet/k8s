@@ -203,8 +203,17 @@ alertmanager:
       - receiver: 'null'
         matchers:
           - alertname =~ "InfoInhibitor|Watchdog"
+      - receiver: 'robusta'
+        match_re:
+          severity: 'info|warn|error|critical'
+        repeat_interval: 4h
+        continue: true
     receivers:
     - name: 'null'
+    - name: 'robusta'
+      webhook_configs:
+      - url: 'http://robusta-runner.robusta.svc.cluster.local/api/alerts'
+        send_resolved: true
     templates:
     - '/etc/alertmanager/config/*.tmpl'
 
