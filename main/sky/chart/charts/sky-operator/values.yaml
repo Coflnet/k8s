@@ -12,6 +12,8 @@ ports:
     containerPort: 8080
   - name: probes
     containerPort: 8080
+  - name: demo
+    containerPort: 80
 
 resources: 
   requests:
@@ -29,6 +31,6 @@ serivcePorts:
 readinessProbe:
   httpGet:
     path: /
-    port: probes
+    port: demo
   initialDelaySeconds: 20
   periodSeconds: 3
