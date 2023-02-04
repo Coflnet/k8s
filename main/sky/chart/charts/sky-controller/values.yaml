@@ -3,13 +3,8 @@ replicaCount: 1
 strategy: RollingUpdate
 
 image:
-<<<<<<< HEAD
   repository: harbor.flou.dev/coflnet/sky-controller
   tag: b8d7f776-1925-40b3-a2ae-bc66605c28cb
-=======
-  repository: harbor.flou.dev/coflnet/skycontroller
-  tag: d417c054-e9f1-43fc-86a0-b0f1f707a979
->>>>>>> 50efffa2f8637b3c2f8cb5fd98ede7f0729097de
   pullPolicy: IfNotPresent
 
 ports:
