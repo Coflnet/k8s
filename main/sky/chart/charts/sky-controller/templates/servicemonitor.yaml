@@ -10,6 +10,6 @@ spec:
     matchLabels:
       app: {{ .Chart.Name }}
   endpoints:
-  - port: api
+  - port: metrics
     interval: 25s
     path: /metrics
