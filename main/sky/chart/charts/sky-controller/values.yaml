@@ -1,0 +1,26 @@
+replicaCount: 1
+
+strategy: RollingUpdate
+
+image:
+  repository: harbor.flou.dev/coflnet/skycontroller
+  tag: b8d7f776-1925-40b3-a2ae-bc66605c28cb
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: metrics
+    containerPort: 2112
+
+resources: 
+  requests:
+    cpu: 50m
+    memory: 200Mi
+  limits: 
+    cpu: 200m
+    memory: 512Mi
+
+
+serivcePorts:
+  - name: metrics
+    port: 2112
+    targetPort: 2112
