@@ -1,10 +1,13 @@
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: {{ .Chart.Name }}
   labels:
     app: {{ .Chart.Name }}
 spec:
+  progressDeadlineSeconds: 2592000
+  strategy:
+    type: {{ .Values.strategy }}
   selector:
     matchLabels:
       name: {{ .Chart.Name }}
@@ -15,7 +18,17 @@ spec:
         app: {{ .Chart.Name }}
     spec:
       imagePullSecrets:
-        - name: harbor
+      {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - {{ .Chart.Name }}
+            topologyKey: "kubernetes.io/hostname"
       containers:
         - name: {{ .Chart.Name }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
