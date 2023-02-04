@@ -9,7 +9,6 @@ spec:
   strategy:
     type: {{ .Values.strategy }}
   progressDeadlineSeconds: 2592000
-  serviceAccountName: {{ .Chart.Name }}
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
@@ -18,6 +17,7 @@ spec:
       labels:
         app: {{ .Chart.Name }}
     spec:
+      serviceAccountName: {{ .Chart.Name }}
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       containers:
