@@ -1,4 +1,4 @@
-replicaCount: 5
+replicaCount: 8
 
 image:
   repository: harbor.flou.dev/coflnet/skyapi
