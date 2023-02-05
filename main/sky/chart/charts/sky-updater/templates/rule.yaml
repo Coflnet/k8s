@@ -15,7 +15,6 @@ spec:
             severity: critical
           expr: '(sum(rate(sky_updater_new_auctions[$__rate_interval])) * 60) < 5000'
           annotations:
-            description: "{{ .Chart.Name}} - Only {{`{{`}}$value | humanize{{`}}`}} auctions per minute found"
-            summary: "{{ .Chart.Name}} - Few auctions found"
-        {{- end }}
+            description: "{{ .Chart.Name }} - Only {{`{{`}}$value | humanize{{`}}`}} auctions per minute found"
+            summary: "{{ .Chart.Name }} - Few auctions found"
 ---            
