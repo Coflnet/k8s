@@ -6,7 +6,7 @@ imagePullSecrets:
   - name: harbor
 image:
   repository: harbor.flou.dev/private/sky-crypt-private
-  tag: manual-update-01
+  tag: manual-update-02
   pullPolicy: IfNotPresent
 
 ports:
