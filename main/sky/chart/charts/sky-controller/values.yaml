@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/sky-controller
-  tag: 88043433-7863-4fa1-bdeb-7472d31ff8cf
+  tag: 55d62bdc-a7cc-4ae7-8a49-b3e1af63cfde
   pullPolicy: IfNotPresent
 
 ports:
