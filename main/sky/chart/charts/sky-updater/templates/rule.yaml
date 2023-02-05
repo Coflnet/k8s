@@ -7,7 +7,7 @@ metadata:
   name: {{ .Chart.Name }}
 spec:
   groups:
-    - name: "{{ .Chart.Name }}.rules"
+    - name: "sky_updater.rules"
       rules:
         - alert: updater-few-updates
           for: 5m
@@ -17,4 +17,3 @@ spec:
           annotations:
             description: "{{ .Chart.Name }} - Only {{"{{"}} $value {{"}}"}} auctions per minute found"
             summary: "{{ .Chart.Name }} - Few auctions found"
----            
