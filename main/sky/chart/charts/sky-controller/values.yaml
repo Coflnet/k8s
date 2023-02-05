@@ -24,3 +24,7 @@ serivcePorts:
   - name: metrics
     port: 2112
     targetPort: 2112
+
+envVars:
+  - name: OTEL_SERVICE_NAME
+    value: sky-controller
