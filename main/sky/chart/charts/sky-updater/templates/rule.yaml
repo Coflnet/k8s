@@ -4,10 +4,10 @@ metadata:
   labels:
     release: k8-main-prometheus
     app: kube-prometheus-stack
-  name: {{ .Chart.Name }}
+  name: sky-updater
 spec:
   groups:
-    - name: {{ .Chart.Name }}
+    - name: sky-updater
       rules:
         - alert: few-updates
           for: 1m
