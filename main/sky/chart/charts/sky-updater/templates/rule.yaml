@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    release: k8-main-prometheus
+    app: kube-prometheus-stack
+  name: {{ .Chart.Name }}
+spec:
+  groups:
+    - name: "{{ .Chart.Name }}.rules"
+      rules:
+        - alert: updater-few-updates
+          for: 5m
+          labels:
+            severity: critical
+          expr: '(sum(rate(sky_updater_new_auctions[$__rate_interval])) * 60) < 5000'
+          annotations:
+            description: "{{ .Chart.Name }} - Only {{`{{`}} $value {{`}}`}} auctions per minute found"
+            summary: "{{ .Chart.Name }} - Few auctions found"
+---            
