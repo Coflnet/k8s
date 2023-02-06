@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    release: k8-main-prometheus
+    app: kube-prometheus-stack
+  name: db-storage
+spec:
+  groups:
+    - name: "sky-updater.rules"
+      rules:
+        - alert: FewUpdates
+          for: 1m
+          labels:
+            severity: critical
+          expr: 'sum(rate(sky_updater_new_auctions[$__rate_interval])) * 60 < 500'
+          annotations:
+            summary: "Very few auction updates"
+            description: "only {{"{{"}} $value {{"}}"}} auctions found"
+---            
