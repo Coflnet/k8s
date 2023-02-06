@@ -4,7 +4,7 @@ metadata:
   labels:
     release: k8-main-prometheus
     app: kube-prometheus-stack
-  name: db-storage
+  name: sky-updater
 spec:
   groups:
     - name: "sky-updater.rules"
@@ -13,7 +13,7 @@ spec:
           for: 1m
           labels:
             severity: critical
-          expr: 'sum(rate(sky_updater_new_auctions[$__rate_interval])) * 60 < 500'
+          expr: 'sum(rate(sky_updater_new_auctions[1m])) * 60 < 500'
           annotations:
             summary: "Very few auction updates"
             description: "only {{`{{`}} $value {{`}}`}} auctions found"
