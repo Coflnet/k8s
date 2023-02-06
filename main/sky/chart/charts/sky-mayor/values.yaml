@@ -37,6 +37,8 @@ readinessProbe:
   periodSeconds: 3
 
 envVars: 
+  - name: GIN_MODE
+    value: release
   - name: MONGO_URL
     valueFrom:
       secretKeyRef:
