@@ -4,6 +4,7 @@ metadata:
   labels:
     prometheus: longhorn
     role: alert-rules
+    release: k8-main-prometheus
   name: prometheus-longhorn-rules
   namespace: longhorn-system
 spec:
