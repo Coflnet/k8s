@@ -18,5 +18,4 @@ spec:
       expr: "(((avg by (volume) (longhorn_volume_actual_size_bytes))/ (avg by (volume) (longhorn_volume_capacity_bytes))) *100) > 80"
       for: 5m
       labels:
-        issue: 'Longhorn volume {{`{{`}}$labels.volume{{`}}`}} usage on {{`{{`}}$labels.node{{`}}`}} is critical.'
-        severity: critical
+        severity: error
