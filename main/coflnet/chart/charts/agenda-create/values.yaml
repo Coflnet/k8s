@@ -1,11 +1,9 @@
-replicaCount: 3
-
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skysettings
-  tag: e33a7a6e-a8ac-400b-acbc-c7425df380dc
-  pullPolicy: IfNotPresent
+  repository: harbor.flou.dev/flou21/agenda-create
+  tag: latest
+  pullPolicy: Always
 
 ports:
   - name: api

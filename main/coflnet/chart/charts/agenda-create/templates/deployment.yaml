@@ -11,12 +11,10 @@ spec:
       template:
         spec:
           imagePullSecrets:
-            - name: harbor
-          imagePullSecrets:
           {{ toYaml .Values.global.imagePullSecrets | nindent 12 }}
           containers:
             - name: {{ .Chart.Name }}
-              image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag  }}"
               imagePullPolicy: Always
               env:
                 - name: GIT_USERNAME
