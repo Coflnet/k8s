@@ -78,13 +78,6 @@ envVars:
   - name: PAYMENT_URL
     value: http://payments.payment:8000
   
-  - name: HYPIXEL_API_KEY
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: hypixel_api_key
-      
-
   
   - name: CHAT_WEBHOOK
     valueFrom:
