@@ -16,5 +16,5 @@ spec:
           expr: 'sum(rate(sky_updater_new_auctions[$__rate_interval])) * 60 < 500'
           annotations:
             summary: "Very few auction updates"
-            description: "only {{"{{"}} $value {{"}}"}} auctions found"
+            description: "only {{`{{`}} $value {{`}}`}} auctions found"
 ---            
