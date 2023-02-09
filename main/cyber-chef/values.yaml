@@ -1,0 +1,33 @@
+replicaCount: 1
+
+strategy: RollingUpdate
+
+image:
+  repository: mpepping/cyberchef
+  tag: latest
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: web
+    containerPort: 8000
+
+resources: 
+  requests:
+    cpu: 100m
+    memory: 100Mi
+
+
+serivcePorts:
+  - name: web
+    port: 8000
+    targetPort: 8000
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: web
+  initialDelaySeconds: 20
+  periodSeconds: 3
+
+ingress:
+  host: cyber-chef.flou.dev
