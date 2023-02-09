@@ -10,7 +10,7 @@ spec:
     - name: "sky-updater.rules"
       rules:
         - alert: FewUpdates
-          for: 1m
+          for: 5m
           labels:
             severity: critical
           expr: 'sum(rate(sky_updater_new_auctions[1m])) * 60 < 500'
