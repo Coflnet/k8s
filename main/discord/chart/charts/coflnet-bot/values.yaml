@@ -4,7 +4,7 @@ strategy: Recreate
 
 image:
   repository: harbor.flou.dev/coflnet/coflnet-bot
-  tag: 03c4fe92-6cd7-4e2d-a1a6-3f64b0e5d759
+  tag: c5cac271-4a7a-43e1-9dfd-4e73bffc47db
   pullPolicy: IfNotPresent
 
 ports:
@@ -18,7 +18,6 @@ resources:
     cpu: 100m
     memory: 200Mi
   limits: 
-    cpu: 300m
     memory: 512Mi
 
 
@@ -79,13 +78,6 @@ envVars:
   - name: PAYMENT_URL
     value: http://payments.payment:8000
   
-  - name: HYPIXEL_API_KEY
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: hypixel_api_key
-      
-
   
   - name: CHAT_WEBHOOK
     valueFrom:

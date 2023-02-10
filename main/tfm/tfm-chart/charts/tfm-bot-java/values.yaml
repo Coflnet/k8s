@@ -3,7 +3,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/tfmbotjava
-  tag: c419ccf1-64d0-4e56-b6e6-3cdebbe083ab
+  tag: b45f3cc2-65fa-4ee0-80c5-bdaef82d4d79
   pullPolicy: IfNotPresent
 
 ports:
@@ -15,7 +15,7 @@ ports:
 resources: 
   requests:
     cpu: 50m
-    memory: 200Mi
+    memory: 1Gi
   limits:
     memory: 4Gi
 

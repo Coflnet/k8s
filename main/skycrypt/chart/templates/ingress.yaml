@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sky-crypt
+  namespace: sky-crypt
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: skycrypt.flou.dev
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service: 
+            name: {{ .Chart.Name }}
+            port:
+              number: 80
+  - host: skycrypt.coflnet.com
+    http:
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: {{ .Chart.Name }}
+              port:
+                number: 80

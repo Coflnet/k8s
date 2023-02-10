@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    prometheus: longhorn
+    role: alert-rules
+    release: k8-main-prometheus
+  name: prometheus-longhorn-rules
+  namespace: longhorn-system
+spec:
+  groups:
+  - name: longhorn.rules
+    rules:
+    - alert: LonghornVolumeUsageCritical
+      annotations:
+        description: "Longhorn volume {{`{{`}}$labels.volume{{`}}`}} on {{`{{`}}$labels.node{{`}}`}} is at {{`{{`}}$value{{`}}`}}% used for more than 5 minutes."
+        summary: Longhorn volume capacity is over 90% used.
+      expr: "(((avg by (volume) (longhorn_volume_actual_size_bytes))/ (avg by (volume) (longhorn_volume_capacity_bytes))) *100) > 80"
+      for: 5m
+      labels:
+        severity: error

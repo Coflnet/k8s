@@ -1,0 +1,3 @@
+defaultNamespace: skycrypt
+helm:
+  chart: ./chart

@@ -2,7 +2,7 @@ replicaCount: 4
 
 image:
   repository: harbor.flou.dev/coflnet/skycommands
-  tag: 3bbf71e2-6239-4811-81d8-4335166ea8a7
+  tag: eb9aa99d-4f71-4034-a95c-47a0e40e976e
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -21,6 +21,9 @@ resources:
   requests:
     memory: "2000Mi"
     cpu: "300m"
+  limits:
+    memory: "2Gi"
+    cpu: "2000m"
 
 
 services:

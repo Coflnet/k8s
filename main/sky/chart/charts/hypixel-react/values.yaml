@@ -1,9 +1,9 @@
-replicaCount: 4
+replicaCount: 10
 revisionHistoryLimit: 5
 
 image:
   repository: harbor.flou.dev/coflnet/hypixel-react
-  tag: b5473f8f-43a7-469b-a53c-865abd6c248c
+  tag: 148858f1-f026-439a-b154-335a7bba3b14
   pullPolicy: IfNotPresent
 
 ports:
@@ -15,7 +15,6 @@ resources:
     cpu: 200m
     memory: 400Mi
   limits: 
-    cpu: 600m
     memory: 600Mi
 
 
@@ -26,7 +25,7 @@ serivcePorts:
 
 readinessProbe:
   httpGet:
-    path: /
+    path: /crafts
     port: web
   initialDelaySeconds: 10
   periodSeconds: 10

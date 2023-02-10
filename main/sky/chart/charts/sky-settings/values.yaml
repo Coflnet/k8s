@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/skysettings
-  tag: e33a7a6e-a8ac-400b-acbc-c7425df380dc
+  tag: b8d7f776-1925-40b3-a2ae-bc66605c28cb
   pullPolicy: IfNotPresent
 
 ports:
@@ -16,7 +16,6 @@ resources:
     cpu: 200m
     memory: 200Mi
   limits: 
-    cpu: 500m
     memory: 512Mi
 
 

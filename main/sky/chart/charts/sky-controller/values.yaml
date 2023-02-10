@@ -1,0 +1,30 @@
+replicaCount: 1
+
+strategy: RollingUpdate
+
+image:
+  repository: harbor.flou.dev/coflnet/sky-controller
+  tag: 55d62bdc-a7cc-4ae7-8a49-b3e1af63cfde
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: metrics
+    containerPort: 2112
+
+resources: 
+  requests:
+    cpu: 50m
+    memory: 200Mi
+  limits: 
+    cpu: 200m
+    memory: 512Mi
+
+
+serivcePorts:
+  - name: metrics
+    port: 2112
+    targetPort: 2112
+
+envVars:
+  - name: OTEL_SERVICE_NAME
+    value: sky-controller

@@ -1,0 +1,51 @@
+replicaCount: 1
+
+strategy: RollingUpdate
+
+imagePullSecrets: 
+  - name: harbor
+image:
+  repository: harbor.flou.dev/private/sky-crypt-private
+  tag: manual-update-02
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: web
+    containerPort: 32464
+
+resources: 
+  requests:
+    cpu: 200m
+    memory: 800Mi
+  limits:
+    cpu: 3000m
+    memory: 2Gi
+
+
+serivcePorts:
+  - name: web
+    port: 80
+    targetPort: 32464
+
+startupProbe:
+  httpGet:
+      path: /stats/Flou21/Zucchini
+      port: 32464
+  initialDelaySeconds: 10
+  periodSeconds: 30
+  timeoutSeconds: 3
+  failureThreshold: 20
+  successThreshold: 1
+
+readinessProbe:
+  httpGet:
+      path: /stats/Flou21/Zucchini
+      port: 32464
+  initialDelaySeconds: 30
+  periodSeconds: 30
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+envVars: 
+  - name: NODE_ENV
+    value: production
