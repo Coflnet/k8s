@@ -177,14 +177,14 @@ data:
         {
           "slug": "referal_bonus",
           "title": "Bonus if a refered user purchased premium",
-          "cost": 4320,
+          "cost": 5401,
           "ProviderSlug": "custom",
           "type": 36
         },
         {
           "slug": "compensation",
           "title": "Compensation for service unavailibility",
-          "cost": 4320,
+          "cost": 10800,
           "ProviderSlug": "custom",
           "type": 36
         }
