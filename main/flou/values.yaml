@@ -3,7 +3,7 @@ replicaCount: 1
 strategy: RollingUpdate
 
 image:
-  repository: flou21/homepage
+  repository: harbor.flou.dev/flou21/homepage
   tag: latest
   pullPolicy: IfNotPresent
 
