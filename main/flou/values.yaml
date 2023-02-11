@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/flou21/homepage
-  tag: latest
+  tag: fcc66d53-7fed-4eb1-abba-8547633696a7
   pullPolicy: IfNotPresent
 
 ports:
