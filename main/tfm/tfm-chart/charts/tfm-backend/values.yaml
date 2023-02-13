@@ -1,0 +1,35 @@
+replicaCount: 1
+strategy: RollingUpdate
+
+image:
+  repository: harbor.flou.dev/coflnet/tfmbackend
+  tag: b45f3cc2-65fa-4ee0-80c5-bdaef82d4d79
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: metrics
+    containerPort: 1234
+
+resources: 
+  requests:
+    cpu: 1000m
+    memory: 1Gi
+  limits:
+    memory: 2Gi
+
+
+serivcePorts:
+  - name: metrics
+    port: 1234
+    targetPort: 1234
+
+envVars: 
+  - name: MONGO_HOST
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: mongo_host
+  - name: REDIS_HOST
+    value: "sky-bfcs-redis.sky:6379"
+
+
