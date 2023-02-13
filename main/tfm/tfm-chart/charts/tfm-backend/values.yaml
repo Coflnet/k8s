@@ -29,7 +29,7 @@ envVars:
       secretKeyRef:
         name: secret
         key: mongo_host
-  - name: REDIS_HOST
+  - name: REDIS_URL
     value: "sky-bfcs-redis.sky:6379"
 
 
