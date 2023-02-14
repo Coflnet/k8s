@@ -1,22 +1,22 @@
-#apiVersion: monitoring.coreos.com/v1
-#kind: PrometheusRule
-#metadata:
-#  labels:
-#    release: k8-main-prometheus
-#    app: kube-prometheus-stack
-#  name: "{{ .Chart.Name }}-lag-sum"
-#spec:
-#  groups:
-#    - name: "{{ $.Chart.Name }}.rules"
-#      rules:
-#        {{- range .Values.rules.lagSum }}
-#        - alert: "TopicLag"
-#          for: 5m
-#          labels:
-#            severity: {{ .severity }}
-#          expr: 'kafka_consumergroup_lag_sum{topic="{{ .topic }}"} > {{ .threshold }}'
-#          annotations:
-#            summary: "Topic {{ .topic }} has a high lag"
-#            description: "Lag of {{`{{`}} $value {{`}}`}} detected"
-#        {{- end }}
-#---            
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    release: k8-main-prometheus
+    app: kube-prometheus-stack
+  name: "{{ .Chart.Name }}-lag-sum"
+spec:
+  groups:
+    - name: "{{ $.Chart.Name }}.rules"
+      rules:
+        {{- range .Values.rules.lagSum }}
+        - alert: "TopicLag"
+          for: 5m
+          labels:
+            severity: {{ .severity }}
+          expr: 'kafka_consumergroup_lag_sum{topic="{{ .topic }}"} > {{ .threshold }}'
+          annotations:
+            summary: "Topic {{ .topic }} has a high lag"
+            description: "Lag of {{`{{`}} $value {{`}}`}} detected"
+        {{- end }}
+---            
