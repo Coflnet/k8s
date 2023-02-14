@@ -1,0 +1,57 @@
+rules:
+  lagSum:
+
+    # jaeger spans
+    - topic: "jaeger-spans"
+      threshold: 100000
+      severity: warning
+
+    # messages the discord bot sends to notifications
+    - topic: "discord-messages"
+      threshold: 100
+      severity: critical
+
+    - topic: sky-ahsumary
+      threshold: 1000
+      severity: critical
+    - topic: sky-newauction
+      threshold: 1000
+      severity: critical
+    - topic: sky-flipevent
+      threshold: 1000
+      severity: critical
+    - topic: sky-lowpriced
+      threshold: 1000
+      severity: critical
+    - topic: sky-soldauction
+      threshold: 1000
+      severity: critical
+    - topic: sky-newbid
+      threshold: 1000
+      severity: critical
+    - topic: sky-bazaar
+      threshold: 1000
+      severity: critical
+    - topic: sky-verified
+      threshold: 10
+      severity: critical
+    - topic: sky-flip
+      threshold: 1000
+      severity: critical
+    - topic: transactions
+      threshold: 10
+      severity: critical
+    - topic: sky-bazaar-raw
+      threshold: 1000
+      severity: critical
+    - topic: sky-newauction-raw
+      threshold: 1000
+      severity: critical
+    - topic: sky-newbid-raw
+      threshold: 1000
+      severity: critical
+    - topic: sky-soldauction-raw
+      threshold: 1000
+      severity: critical
+
+
