@@ -13,8 +13,8 @@ ports:
 
 resources: 
   requests:
-    cpu: 1000m
-    memory: 2Gi
+    cpu: 500m 
+    memory: 500Mi
 
 
 serivcePorts:
