@@ -1,10 +1,10 @@
-replicaCount: 3
+replicaCount: 2
 
 strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/skyflipper
-  tag: 98f65e6e-c753-48be-9b87-9383fa41f780
+  tag: f92ca7c5-34a6-4be5-82a4-d6a53f420510
   pullPolicy: IfNotPresent
 
 ports:
