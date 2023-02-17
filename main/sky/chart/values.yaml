@@ -5,14 +5,15 @@ global:
   ## Hetzner CPU Affinity
   hetznerAffinity:
     affinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 1
-          preference:
-            matchExpressions:
-            - key: hetzner
-              operator: In
-              values:
-              - "true"
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: hetzner
+                operator: In
+                values:
+                - "true"
 
 
   ## Configuration of the global Redis instance ##
