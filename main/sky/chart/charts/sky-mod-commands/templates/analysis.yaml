@@ -6,13 +6,14 @@ spec:
   args:
   - name: service-name
   metrics:
-  - name: sky-api-error
+  - name: sky-sent_flips
     interval: 1m
-    successCondition: result[0] < 1
+    successCondition: result[0] >= 10
     failureLimit: 1
     count: 3
     provider:
       prometheus:
         address: http://k8-main-prometheus-kube-pr-prometheus.prometheus.svc.cluster.local:9090
         query: |
-          sum(rate(sky_api_error{service="{{"{{"}}args.service-name{{"}}"}}"}[5m]))
+          sum(increase(sky_mod_sent_flips[2m]))
+
