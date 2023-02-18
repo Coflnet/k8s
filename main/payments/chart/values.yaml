@@ -1,6 +1,13 @@
 imagePullSecrets:
   - name: harbor
 
+provisioner:
+  name: provisioner
+
+  image:
+    repository: harbor.flou.dev/coflnet/productprovisioner
+    tag: 86f52eac-dfdf-4620-b116-9d242cf7a31f
+
 payments:
   name: payments
   replicaCount: 2

@@ -1,25 +1,29 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
+  name: {{ .Values.provisioner.name }}
   labels:
-    app: provisioner
-  name: provisioner
+    app: {{ .Values.provisioner.name }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   backoffLimit: 0
   template:
     spec:
       imagePullSecrets:
-        - name: harbor
+      {{ toYaml .Values.imagePullSecrets | nindent 8 }}
       containers:
-      - name: product-provisioner
-        image: harbor.flou.dev/coflnet/productprovisioner:86f52eac-dfdf-4620-b116-9d242cf7a31f
+      - name: {{ .Values.provisioner.name }}
+        image: "{{ .Values.provisioner.image.repository }}:{{ .Values.provisioner.image.tag }}"
         volumeMounts:
         - mountPath: /app/products.json
           name: config-volume
           subPath: products.json
         env:
           - name: "payment_host"
-            value: "payments:8000"
+            value: "{{ .Values.payments.name }}:8000"
       restartPolicy: Never
       terminationGracePeriodSeconds: 30
       volumes:
