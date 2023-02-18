@@ -1,6 +1,6 @@
 replicaCount: 1
 
-strategy: Recreate
+strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/skysniper
@@ -13,11 +13,8 @@ ports:
 
 resources: 
   requests:
-    cpu: 1500m
+    cpu: 1000m
     memory: 3Gi
-  limits: 
-    cpu: 2500m
-    memory: 5Gi
 
 
 serivcePorts:
@@ -27,10 +24,11 @@ serivcePorts:
 
 readinessProbe:
   httpGet:
-    path: /api/index.html
+    path: /ready
     port: api
-  initialDelaySeconds: 20
+  initialDelaySeconds: 10
   periodSeconds: 3
+  failureThreshold: 100
 
 envVars: 
   - name: DBConnection
