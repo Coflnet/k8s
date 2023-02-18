@@ -5,7 +5,7 @@ metadata:
   labels:
     app: {{ .Values.provisioner.name }}
   annotations:
-    "helm.sh/hook": post-install
+    "helm.sh/hook": post-upgrade
     "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:
