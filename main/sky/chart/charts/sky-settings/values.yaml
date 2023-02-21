@@ -37,3 +37,18 @@ envVars:
       secretKeyRef:
         name: secret
         key: sky_settings_database
+  - name: CASSANDRA__HOSTS
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: cassandra_host
+  - name: CASSANDRA__USER
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: cassandra_user
+  - name: CASSANDRA__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: cassandra_password
