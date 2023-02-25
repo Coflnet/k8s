@@ -1,4 +1,4 @@
-replicaCount: 5
+replicaCount: 8
 
 strategy: RollingUpdate
 
