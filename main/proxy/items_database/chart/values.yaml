@@ -307,9 +307,9 @@ configuration: |
   backend  be_main
     mode tcp
     balance leastconn
-    server db-master-01 167.86.103.225:3305 check
+    server db-master-01 164.68.111.117:3305 check
     server db-master-02 164.68.127.152:3305 check
-    server db-master-03 194.163.151.190:3305 check
+    
 
 ## @param containerPorts [array] List of container ports to enable in the haproxy container
 ##

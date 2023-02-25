@@ -15,4 +15,5 @@ spec:
       prometheus:
         address: http://k8-main-prometheus-kube-pr-prometheus.prometheus.svc.cluster.local:9090
         query: |
-          sum(increase(sky_commands_flip_send{service="{{"{{"}}args.service-name{{"}}"}}"}[2m]))
+          sum(increase(sky_commands_flip_send[2m]))
+

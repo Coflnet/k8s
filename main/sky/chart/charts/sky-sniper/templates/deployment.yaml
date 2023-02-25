@@ -17,6 +17,7 @@ spec:
       labels:
         app: {{ .Chart.Name }}
     spec:
+      {{ toYaml .Values.global.hetznerAffinity | nindent 6 }}
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       containers:

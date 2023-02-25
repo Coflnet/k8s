@@ -11,9 +11,9 @@ rules:
       threshold: 100
       severity: critical
 
-    - topic: sky-ahsumary
-      threshold: 1000
-      severity: critical
+        # - topic: sky-ahsumary
+        #   threshold: 1000
+        #   severity: critical
 
         # commented out because unused consumer groups would trigger an alert
         # - topic: sky-newauction
@@ -28,15 +28,16 @@ rules:
         # - topic: sky-flip
         #   threshold: 1000
         #   severity: critical
+        #
     - topic: sky-flipevent
       threshold: 1000
       severity: critical
     - topic: sky-newbid
       threshold: 1000
       severity: critical
-    - topic: sky-bazaar
-      threshold: 1000
-      severity: critical
+        # - topic: sky-bazaar
+        #   threshold: 1000
+        #   severity: critical
     - topic: sky-verified
       threshold: 10
       severity: critical

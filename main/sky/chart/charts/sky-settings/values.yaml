@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/skysettings
-  tag: b8d7f776-1925-40b3-a2ae-bc66605c28cb
+  tag: d7ae5477-50cf-4c87-b5db-120decfe2979
   pullPolicy: IfNotPresent
 
 ports:
@@ -16,7 +16,7 @@ resources:
     cpu: 200m
     memory: 200Mi
   limits: 
-    memory: 512Mi
+    memory: 2Gi
 
 
 serivcePorts:
@@ -37,3 +37,18 @@ envVars:
       secretKeyRef:
         name: secret
         key: sky_settings_database
+  - name: CASSANDRA__HOSTS
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: cassandra_host
+  - name: CASSANDRA__USER
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: cassandra_user
+  - name: CASSANDRA__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: cassandra_password
