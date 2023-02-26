@@ -2,7 +2,7 @@ replicaCount: 5
 
 image:
   repository: harbor.flou.dev/coflnet/skymodcommands
-  tag: 409c6a77-b74f-4e56-8b7b-82bf6e09352b
+  tag: 99d9dd72-648e-4d57-a0db-0b8a9d4b3f50
   pullPolicy: IfNotPresent
 
 nameOverride: ""
