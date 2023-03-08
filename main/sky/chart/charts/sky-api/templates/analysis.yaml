@@ -15,4 +15,4 @@ spec:
       prometheus:
         address: http://k8-main-prometheus-kube-pr-prometheus.prometheus.svc.cluster.local:9090
         query: |
-          sum(rate(sky_api_error{service="{{"{{"}}args.service-name{{"}}"}}"}[5m]))
+          sum(rate(sky_api_error[5m]))

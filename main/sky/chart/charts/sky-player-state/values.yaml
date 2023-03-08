@@ -1,10 +1,10 @@
-replicaCount: 8
+replicaCount: 3
 
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skyfliptracker
-  tag: 493a657f-f789-4039-8205-3ac573f15b62
+  repository: harbor.flou.dev/coflnet/skyplayerstate
+  tag: c40fa042-904a-4f06-932b-a4df5175ffda
   pullPolicy: IfNotPresent
 
 ports:
@@ -15,6 +15,8 @@ resources:
   requests:
     cpu: 200m
     memory: 200Mi
+  limits: 
+    memory: 512Mi
 
 
 serivcePorts:
@@ -30,20 +32,36 @@ readinessProbe:
   periodSeconds: 3
 
 envVars: 
-  - name: DB_CONNECTION
+  # mongo
+  - name: Mongo__ConnectionString
     valueFrom:
       secretKeyRef:
-        name: secret 
-        key: connection_tracker_database
+        name: secret
+        key: mongo_url
+
+  # cassandra
   - name: CASSANDRA__HOSTS
     valueFrom:
       configMapKeyRef:
         name: config
         key: cassandra_host
   - name: CASSANDRA__USER
-    value: "cassandra"
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: cassandra_user
   - name: CASSANDRA__PASSWORD
     valueFrom:
       secretKeyRef:
         name: secret
         key: cassandra_password
+  - name: CASSANDRA__KEYSPACE
+    value: sky_item_movement
+  - name: CASSANDRA__REPLICATION_FACTOR
+    value: NetworkTopologyStrategy
+  - name: CASSANDRA__REPLICATION_FACTOR
+    value: "3"
+  - name: CASSANDRA__SSL_ENABLED
+    value: "true"
+  - name: X509Certificate_PATHS
+    value: /tmp/cassandra/certs/duke.cer
