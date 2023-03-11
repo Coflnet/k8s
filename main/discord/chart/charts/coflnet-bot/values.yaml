@@ -68,7 +68,7 @@ envVars:
   
   # APPLICATION RELATED
   - name: DEBUG
-    value: "true"
+    value: "false"
 
   # DISCORD 
   - name: DISCORD_BOT_TOKEN
