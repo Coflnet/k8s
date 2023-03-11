@@ -90,7 +90,8 @@ envVars:
 
 
   # DISCORD CHANNELS
-  - name: CHAT_CHANNEL_ID
+  - name: DISCORD_IN_GAME_CHANNEL_ID
+    value: "965323875246276660"
 
 
   # COFLNET
