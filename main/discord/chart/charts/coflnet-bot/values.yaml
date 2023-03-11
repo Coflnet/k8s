@@ -34,12 +34,8 @@ readinessProbe:
   periodSeconds: 3
 
 envVars: 
-  - name: DISCORD_BOT_TOKEN
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: coflnet_token
 
+  # DBs
   - name: MONGO_HOST
     valueFrom:
       secretKeyRef:
@@ -48,56 +44,93 @@ envVars:
 
   - name: REDIS_HOST
     value: sky-global-redis.sky:6379
+  - name: REDIS_CHAT_PUBSUB_CHANNEL
+    value: chat
 
-  - name: DISCORD_COFLCHAT_ID
+  # KAFKA
+  - name: KAFKA_HOST
+    value: k8-main-kafka-kafka.kafka:9092
+  - name: TOPIC_MC_VERIFY
+    value: sky-verified
+  - name: TOPIC_MC_VERIFY_CONSUMER_GROUP
+    value: sky-verified-coflnet-bot-cg
+  - name: TOPIC_FLIPSUMMARY
+    value: "flip-summary-processed"
+  - name: TOPIC_FLIPSUMMARY_CONSUMER_GROUP
+    value: "flip-summary-processed-coflnet-bot-cg"
+
+        # TRACING
+  - name: OTEL_SERVICE_NAME 
+    value: coflnet-bot
+  - name: JAEGER_AGENT_HOST
     valueFrom:
-      configMapKeyRef:
-        name: config
-        key: cofl_chat_id
-  
-  - name: REDIS_CHAT_CHANNEL
+      fieldRef:
+        fieldPath: status.hostIP
+  - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
     valueFrom:
-      configMapKeyRef:
-        name: config
-        key: redis_channel
+      fieldRef:
+        fieldPath: status.hostIP
+
+
   
+  # APPLICATION RELATED
+  - name: DEBUG
+    value: "true"
+
+  # DISCORD 
+  - name: DISCORD_BOT_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: coflnet_token
+
+  # ROLES
+  - name: MOD_ROLE
+    value: "869942341442600990"
+
+
+  # DISCORD CHANNELS
+  - name: CHAT_CHANNEL_ID
+
+
+  # COFLNET
+  
+ 
+  # BASE URL
+  - name: COFL_CHAT_BASE_URL
+    value: http://sky-chat.sky:8000
+  - name: COFL_API_BASE_URL
+    value: http://sky-api.sky:8000
+  - name: MC_CONNECT_BASE_URL
+    value: http://sky-mc-connect.sky:8000
+
+  # CHAT
   - name: COFL_CHAT_API_KEY
     valueFrom:
       secretKeyRef:
         name: secret
         key: chat_api_key
 
-  - name: COFL_CHAT_BASE_URL
-    value: http://sky-chat.sky:8000
-  - name: COFL_API_BASE_URL
-    value: http://sky-api.sky:8000
-  - name: MC_CONNECT_URL
-    value: http://sky-mc-connect.sky:8000
-  - name: PLAYER_NAME_HOST
-    value: http://sky-player-name.sky:8000
-  - name: PAYMENT_URL
-    value: http://payments.payment:8000
-  
-  
+
+  # Deprecated
   - name: CHAT_WEBHOOK
     valueFrom:
       secretKeyRef:
         name: secret
         key: cofl_chat_discord_webhook
 
-  - name: GIN_MODE
-    value: release
-
   - name: DEV_WEBHOOK
     valueFrom:
       secretKeyRef:
         key: dev_chat_discord_webhook
         name: secret
+
   - name: DEV_SPAM_WEBHOOK
     valueFrom:
       secretKeyRef:
         key: dev_spam_chat_discord_webhook
         name: secret
+
   - name: AUCTION_STATS_URL
     valueFrom:
       configMapKeyRef:
@@ -120,27 +153,28 @@ envVars:
 
   - name: FLIPS_CHANNEL
     value: "1002876203717369937"
-  - name: TOPIC_FLIPSUMMARY
-    value: "flip-summary-processed"
+
+
   - name: HELPER_ROLE
     value: "933807456151285770"
-  - name: MOD_ROLE
-    value: "869942341442600990"
+
+
   - name: DEV_ROLE
     value: "669258959495888907"
+
   - name: WARNED_ROLE
     value: "936726999106478160"
 
   - name: TOPIC_TRANSACTION
     value: transactions
+
   - name: TOPIC_VERIFICATION
     value: sky-verified
+
   - name: TOPIC_DEV_CHAT
     value: discord-messages
-  - name: TOPIC_MC_VERIFY
-    value: sky-verified
-  - name: KAFKA_HOST
-    value: k8-main-kafka-kafka.kafka:9092
+
+
 
 
   # webhooks
