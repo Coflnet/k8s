@@ -97,12 +97,14 @@ envVars:
   
  
   # BASE URL
-  - name: COFL_CHAT_BASE_URL
+  - name: CHAT_BASE_URL
     value: http://sky-chat.sky:8000
   - name: COFL_API_BASE_URL
     value: http://sky-api.sky:8000
   - name: MC_CONNECT_BASE_URL
     value: http://sky-mc-connect.sky:8000
+  - name: API_BASE_URL
+    value: http://sky-api.sky:8000
 
   # CHAT
   - name: COFL_CHAT_API_KEY
