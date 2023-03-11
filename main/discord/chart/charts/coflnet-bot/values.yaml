@@ -83,8 +83,11 @@ envVars:
 
 
   # DISCORD CHANNELS
+  - name: DISCORD_GUILD_ID
+    value: "267680588666896385"
   - name: DISCORD_IN_GAME_CHANNEL_ID
     value: "965323875246276660"
+
 
 
   # COFLNET
