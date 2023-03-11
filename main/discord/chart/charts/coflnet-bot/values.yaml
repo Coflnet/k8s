@@ -26,13 +26,6 @@ serivcePorts:
     port: 8000
     targetPort: 8000
 
-readinessProbe:
-  httpGet:
-    path: /api/swagger/doc.json
-    port: api
-  initialDelaySeconds: 1
-  periodSeconds: 3
-
 envVars: 
 
   # DBs
