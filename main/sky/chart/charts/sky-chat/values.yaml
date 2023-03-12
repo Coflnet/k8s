@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/skychat
-  tag: eb944c7f-a440-4409-9f2c-a9f805d1920b
+  tag: f86cbfbc-1855-442c-b64e-680aca6130e6
   pullPolicy: IfNotPresent
 
 ports:
