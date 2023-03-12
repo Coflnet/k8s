@@ -100,6 +100,8 @@ envVars:
     value: http://sky-mc-connect.sky:8000
   - name: API_BASE_URL
     value: http://sky-api.sky:8000
+  - name: PAYMENT_BASE_URL
+    value: "http://payments.payment:8000"
 
   # CHAT
   - name: COFL_CHAT_API_KEY
