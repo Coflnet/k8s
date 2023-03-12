@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+data:
+  cassandra_host: k8-main-proxy-cassandra-haproxy.proxy
+  cassandra_user: leaderboard
+
