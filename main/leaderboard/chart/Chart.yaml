@@ -1,5 +1,5 @@
 apiVersion: v2
-name: Leaderboard
+name: leaderboard
 description: Helm Chart to manage the leaderboard service
 
 # A chart can be either an 'application' or a 'library' chart.
