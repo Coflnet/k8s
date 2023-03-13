@@ -47,6 +47,8 @@ envVars:
     value: "flip-summary-processed"
   - name: TOPIC_FLIPSUMMARY_CONSUMER_GROUP
     value: "flip-summary-processed-coflnet-bot-cg"
+  - name: DISCORD_MESSAGES_TOPIC
+    value: discord-messages
 
         # TRACING
   - name: OTEL_SERVICE_NAME 
@@ -83,6 +85,7 @@ envVars:
     value: "267680588666896385"
   - name: DISCORD_IN_GAME_CHANNEL_ID
     value: "965323875246276660"
+
 
 
 
