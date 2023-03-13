@@ -47,8 +47,10 @@ envVars:
     value: "flip-summary-processed"
   - name: TOPIC_FLIPSUMMARY_CONSUMER_GROUP
     value: "flip-summary-processed-coflnet-bot-cg"
-  - name: DISCORD_MESSAGES_TOPIC
+  - name: DISCORD_MESSAGE_TOPIC
     value: discord-messages
+  - name: DISCORD_MESSAGE_CONSUMER_GROUP
+    value: coflnet-bot-cg
 
         # TRACING
   - name: OTEL_SERVICE_NAME 
