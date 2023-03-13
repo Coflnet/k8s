@@ -225,6 +225,7 @@ ingress:
 
   hosts:
     - reborn-grafana.flou.dev
+    - reborn-grafana.coflnet.com
   ## Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
   extraPaths: []
   # - path: /*
