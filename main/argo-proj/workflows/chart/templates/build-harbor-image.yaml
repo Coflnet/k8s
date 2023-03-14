@@ -11,6 +11,16 @@ spec:
     runAsGroup: 3000
     fsGroup: 2000
   serviceAccountName: argo-events-sa
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: hetzner
+                operator: In
+                values:
+                  - "true"
   templates:
   - name: build-harbor-image
     inputs:
