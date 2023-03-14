@@ -44,9 +44,9 @@ envVars:
   - name: TOPIC_MC_VERIFY_CONSUMER_GROUP
     value: sky-verified-coflnet-bot-cg
   - name: TOPIC_FLIPSUMMARY
-    value: "flip-summary-processed"
+    value: "flip-summary"
   - name: TOPIC_FLIPSUMMARY_CONSUMER_GROUP
-    value: "flip-summary-processed-coflnet-bot-cg"
+    value: "coflnet-bot-cg"
   - name: DISCORD_MESSAGE_TOPIC
     value: discord-messages
   - name: DISCORD_MESSAGE_CONSUMER_GROUP
