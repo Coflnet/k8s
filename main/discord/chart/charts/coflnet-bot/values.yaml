@@ -139,6 +139,13 @@ envVars:
         name: config
         key: auction_stats_url
 
+  - name: FLIP_WEBHOOK
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: flips_channel
+
+
   - name: DISCORD_FLIPPER_ROLE
     valueFrom:
       configMapKeyRef:
