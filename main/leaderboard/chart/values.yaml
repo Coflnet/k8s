@@ -6,7 +6,7 @@ replicaCount: 1
 strategy: RollingUpdate
 image:
   repository: harbor.flou.dev/coflnet/leaderboard
-  tag: 4e37fe04-022b-4d87-874a-59b723c923bf
+  tag: 069ea6be-cd29-4af5-93df-188eb4a2e3a9
   pullPolicy: IfNotPresent
 
 ports:
