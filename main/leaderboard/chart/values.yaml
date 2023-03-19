@@ -48,3 +48,18 @@ envVars:
         name: secret
         key: cassandra_password
 
+    ## copy pasted from global sky ## 
+    ### kafka ###
+  - name: KAFKA_HOST
+    value: k8-main-kafka-kafka.kafka.svc.cluster.local
+
+
+    ## common jaeger env vars ##
+  - name: JAEGER_AGENT_HOST
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
+  - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
