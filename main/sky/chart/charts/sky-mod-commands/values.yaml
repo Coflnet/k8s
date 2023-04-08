@@ -51,7 +51,7 @@ resources:
     cpu: 500m
     memory: 600Mi
   limits: 
-    memory: 2Gi
+    memory: 3Gi
 
 
 services:
