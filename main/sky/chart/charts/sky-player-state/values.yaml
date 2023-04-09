@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/skyplayerstate
-  tag: da6ebd25-8f93-4291-ae67-c0a2d7323d0a
+  tag: 93c5d6fd-6ee5-42bb-94db-951c9eea7bc0
   pullPolicy: IfNotPresent
 
 ports:
