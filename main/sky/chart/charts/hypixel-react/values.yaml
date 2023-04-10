@@ -27,6 +27,7 @@ readinessProbe:
     port: web
   initialDelaySeconds: 10
   periodSeconds: 10
+  failureThreshold: 6
 
 envVars: 
   - name: COMMAND_ENDPOINT
