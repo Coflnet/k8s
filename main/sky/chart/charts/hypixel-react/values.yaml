@@ -1,4 +1,4 @@
-replicaCount: 10
+replicaCount: 5
 revisionHistoryLimit: 5
 
 image:
@@ -27,6 +27,8 @@ readinessProbe:
     port: web
   initialDelaySeconds: 10
   periodSeconds: 10
+  failureThreshold: 6
+  timeoutSeconds: 5
 
 envVars: 
   - name: COMMAND_ENDPOINT
