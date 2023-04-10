@@ -34,5 +34,7 @@ spec:
           {{ toYaml .Values.global.minioEnvVars | nindent 10 }}
         readinessProbe:
           {{ toYaml .Values.readinessProbe | nindent 10 }}
+        livenessProbe:
+          {{ toYaml .Values.livenessProbe | nindent 10 }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}

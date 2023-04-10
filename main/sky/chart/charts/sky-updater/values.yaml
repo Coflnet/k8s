@@ -29,6 +29,14 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
+livenessProbe:
+  httpGet:
+    path: /api/index.html
+    port: api
+  initialDelaySeconds: 120
+  periodSeconds: 10
+  failureThreshold: 30
+
 envVars: 
   - name: SLOWDOWN_MS
     value: "100"
