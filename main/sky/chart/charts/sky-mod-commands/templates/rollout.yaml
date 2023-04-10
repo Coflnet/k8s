@@ -15,7 +15,6 @@ spec:
       labels:
         app: {{ .Chart.Name }}
     spec:
-      {{ toYaml .Values.global.hetznerAffinity | nindent 6 }}
       topologySpreadConstraints:
       - maxSkew: 2
         topologyKey: kubernetes.io/hostname
