@@ -1,9 +1,9 @@
-replicaCount: 10
+replicaCount: 5
 revisionHistoryLimit: 5
 
 image:
   repository: harbor.flou.dev/coflnet/hypixel-react
-  tag: d69a243d-a372-44c1-ba10-77dba319c03b
+  tag: ee040908-1cd5-4907-acde-600c51f77e25
   pullPolicy: IfNotPresent
 
 ports:
@@ -27,6 +27,8 @@ readinessProbe:
     port: web
   initialDelaySeconds: 10
   periodSeconds: 10
+  failureThreshold: 6
+  timeoutSeconds: 5
 
 envVars: 
   - name: COMMAND_ENDPOINT
