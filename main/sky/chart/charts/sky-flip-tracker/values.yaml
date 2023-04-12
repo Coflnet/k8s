@@ -26,7 +26,7 @@ readinessProbe:
   httpGet:
     path: /api/index.html
     port: api
-  initialDelaySeconds: 20
+  initialDelaySeconds: 12
   periodSeconds: 3
 
 envVars: 
