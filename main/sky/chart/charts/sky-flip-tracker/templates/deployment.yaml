@@ -16,8 +16,6 @@ spec:
       app: {{ .Chart.Name }}
   template:
     metadata:
-      annotations:
-        config.linkerd.io/opaque-ports: 3310
       labels:
         app: {{ .Chart.Name }}
     spec:
