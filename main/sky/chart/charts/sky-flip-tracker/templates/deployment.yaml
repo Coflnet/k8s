@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Chart.Name }}
-  annotations:
-    config.linkerd.io/opaque-ports: 3310
   labels:
     app: {{ .Chart.Name }}
 spec:
