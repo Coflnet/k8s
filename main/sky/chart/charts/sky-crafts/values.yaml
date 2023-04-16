@@ -1,10 +1,10 @@
-replicaCount: 2
+replicaCount: 3
 
 strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/skycrafts
-  tag: 0827884e-6a1d-4cd1-959a-1a0459de820a
+  tag: b5faa456-fb3e-4fc9-9103-c77792877c8a
   pullPolicy: IfNotPresent
 
 ports:
