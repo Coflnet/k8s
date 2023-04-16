@@ -20,10 +20,7 @@ ports:
 resources:
   requests:
     memory: "2000Mi"
-    cpu: "300m"
-  limits:
-    memory: "2Gi"
-    cpu: "2000m"
+    cpu: "200m"
 
 
 services:

@@ -1,4 +1,4 @@
-replicaCount: 10
+replicaCount: 9
 
 strategy: RollingUpdate
 
@@ -13,7 +13,7 @@ ports:
 
 resources: 
   requests:
-    cpu: 200m
+    cpu: 100m
     memory: 200Mi
 
 
