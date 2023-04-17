@@ -104,7 +104,7 @@ payments:
       value: "/tls/cm/skyblock.ca"
 
     - name: KAFKA__TLS__KEY_LOCATION
-      value: "/cm/secret/skyblock.key"
+      value: "/tls/secret/skyblock.key"
 
 volumes:
   - name: redpanda
