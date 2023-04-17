@@ -98,21 +98,21 @@ payments:
       value: ""
 
     - name: KAKFA__TLS__CERTIFICATE_LOCATION
-      value: "/tls/ca.crt"
+      value: "/tls/cm/ca.crt"
 
     - name: KAFKA__TLS__CA_LOCATION
-      value: "/tls/skyblock.ca"
+      value: "/tls/cm/skyblock.ca"
 
     - name: KAFKA__TLS__KEY_LOCATION
-      value: "/tls/skyblock.key"
+      value: "/tls/secret/skyblock.key"
 
 volumes:
   - name: redpanda
-    mountPath: /tls
+    mountPath: /tls/secret
     type: secret
     mountName: redpanda-secret
   - name: redpanda
-    mountPath: /tls
+    mountPath: /tls/cm
     type: configmap
     mountName: redpanda-cm
 
