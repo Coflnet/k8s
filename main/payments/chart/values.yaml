@@ -88,6 +88,35 @@ payments:
           name: secret
           key: connection_string_payment
 
+    - name: KAFKA__BROKERS
+      value: ""
+
+    - name: KAFKA__USERNAME
+      value: ""
+
+    - name: KAKFA__PASSWORD
+      value: ""
+
+    - name: KAKFA__TLS__CERTIFICATE_LOCATION
+      value: "/tls/ca.crt"
+
+    - name: KAFKA__TLS__CA_LOCATION
+      value: "/tls/skyblock.ca"
+
+    - name: KAFKA__TLS__KEY_LOCATION
+      value: "/tls/skyblock.key"
+
+volumes:
+  - name: redpanda
+    mountPath: /tls
+    type: secret
+    mountName: redpanda-secret
+  - name: redpanda
+    mountPath: /tls
+    type: configmap
+    mountName: redpanda-cm
+
+
 ingress:
   hosts:
   - host: sky.coflnet.com

@@ -27,6 +27,23 @@ spec:
           {{ toYaml .Values.payments.readinessProbe | nindent 10 }}
         resources:
           {{ toYaml .Values.payments.resources | nindent 10 }}
+        {{ range .Values.volumes }}
+        volumeMounts:
+        - name: {{ .mountName }}
+          mountPath: {{ .mountPath }}
+        {{ end }}
+      {{ range .Values.volumes }}
+      volumes: 
+        - name: {{ .mountName }}
+          {{ if eq .type "configmap"  }}
+          configmap:
+            name: {{ .name }}
+          {{ else}}
+          secret:
+            secretName: {{ .name }}
+          {{ end }}
+      {{ end }}
+
 ---
 apiVersion: v1
 kind: Service
