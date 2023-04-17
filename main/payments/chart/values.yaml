@@ -92,10 +92,16 @@ payments:
       value: ""
 
     - name: KAFKA__USERNAME
-      value: ""
+      valueFrom:
+        secretKeyRef:
+          name: redpanda-credentials
+          key: username
 
     - name: KAKFA__PASSWORD
-      value: ""
+      valueFrom:
+        secretKeyRef:
+          name: redpanda-credentials
+          key: password
 
     - name: KAKFA__TLS__CERTIFICATE_LOCATION
       value: "/tls/cm/ca.crt"
