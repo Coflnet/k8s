@@ -32,8 +32,8 @@ spec:
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
-      {{ range .Values.volumes }}
       volumes: 
+      {{ range .Values.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
           configMap:
