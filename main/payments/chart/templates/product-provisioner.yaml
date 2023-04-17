@@ -22,7 +22,7 @@ spec:
           name: config-volume
           subPath: products.json
         env:
-          - name: "payment_host"
+          - name: "PAYMENT_HOST"
             value: "{{ .Values.payments.name }}:8000"
       restartPolicy: Never
       terminationGracePeriodSeconds: 30
