@@ -84,14 +84,6 @@ data:
             "cost": 100,
             "type": "SERVICE",
             "ownershipSeconds": 86400
-        },
-        {
-            "slug": "pre_api",
-            "title": "Player api based flips (before main api update)",
-            "description": "Utilizes the player auctions api endpoint to find auctions before the main auction API endpoint refreshes",
-            "cost": 1400,
-            "type": "SERVICE",
-            "ownershipSeconds": 3600
         }
       ],
       "topups": [
@@ -209,8 +201,7 @@ data:
         ],
         "premium_plus": [
             "premium_plus-day",
-            "premium_plus-hour",
-            "pre_api"
+            "premium_plus-hour"
         ]
       },
       "rules": [
