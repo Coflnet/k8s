@@ -27,8 +27,8 @@ spec:
           {{ toYaml .Values.payments.readinessProbe | nindent 10 }}
         resources:
           {{ toYaml .Values.payments.resources | nindent 10 }}
-        {{ range .Values.volumes }}
         volumeMounts:
+        {{ range .Values.volumes }}
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
