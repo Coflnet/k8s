@@ -89,7 +89,10 @@ payments:
           key: connection_string_payment
 
     - name: KAFKA__BROKERS
-      value: ""
+      valueFrom:
+        secretKeyRef:
+          name: redpanda
+          key: brokers
 
     - name: KAFKA__USERNAME
       valueFrom:
