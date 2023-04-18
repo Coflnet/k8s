@@ -6,7 +6,7 @@ provisioner:
 
   image:
     repository: harbor.flou.dev/coflnet/productprovisioner
-    tag: f816cb89-39ef-42f4-b419-96795128ecf1
+    tag: eda636f6-4845-473b-8f5f-fb491575fb14
 
 payments:
   name: payments
@@ -14,7 +14,7 @@ payments:
   maxUnavailable: 1
   image:
     repository: harbor.flou.dev/coflnet/payments
-    tag: f816cb89-39ef-42f4-b419-96795128ecf1
+    tag: eda636f6-4845-473b-8f5f-fb491575fb14
   ports:
     - name: api
       containerPort: 8000
