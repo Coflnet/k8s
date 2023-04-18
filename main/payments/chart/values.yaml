@@ -5,7 +5,7 @@ imagePullSecrets:
 
 payments:
   name: payments
-  replicaCount: 2
+  replicaCount: 3
   maxUnavailable: 1
   image:
     repository: harbor.flou.dev/coflnet/payments
