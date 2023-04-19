@@ -1,0 +1,7 @@
+image:
+  repository: harbor.flou.dev/coflnet/productprovisioner
+  tag: ff37fa31-0a02-437a-997b-360663896971
+
+envVars:
+  - name: "PAYMENT_HOST"
+    value: "payments:8000"

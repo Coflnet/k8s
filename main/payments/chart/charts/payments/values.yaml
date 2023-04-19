@@ -1,0 +1,161 @@
+replicaCount: 3
+maxUnavailable: 1
+
+strategy: RollingUpdate
+
+image:
+  repository: harbor.flou.dev/coflnet/payments
+  tag: eae34b0a-c2bd-4e9e-ab5d-f9c63a222aaa
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: api
+    containerPort: 8000
+
+resources: 
+  requests:
+    cpu: 200m
+    memory: 200Mi
+  limits: 
+    memory: 2Gi
+
+
+serivcePorts:
+  - name: api
+    port: 8000
+    targetPort: 8000
+
+readinessProbe:
+  httpGet:
+    path: /api/index.html
+    port: api
+  initialDelaySeconds: 20
+  periodSeconds: 3
+
+envVars:
+  - name: JAEGER_AGENT_HOST
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
+
+  - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
+
+  - name: STRIPE__ID
+    valueFrom:
+      secretKeyRef: 
+        name: secret
+        key: stripe_secret
+
+  - name: STRIPE__KEY
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: stripe_key
+
+  - name: STRIPE__SIGNING_SECRET
+    valueFrom:
+      secretKeyRef: 
+        name: secret
+        key: stripe_signing_secret
+
+  - name: PAYPAL__ID
+    valueFrom:
+      secretKeyRef: 
+        name: secret
+        key: paypal_id
+
+  - name: PAYPAL__SECRET
+    valueFrom:
+      secretKeyRef: 
+        name: secret
+        key: paypal_secret
+
+  - name: PAYPAL__IS_SANDBOX
+    value: "false"
+
+  - name: KAFKA_HOST
+    value: k8-main-kafka-kafka.kafka.svc.cluster.local
+
+  - name: DB_CONNECTION
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: connection_string_payment
+
+  - name: KAFKA__BROKERS
+    valueFrom:
+      secretKeyRef:
+        name: redpanda
+        key: brokers
+
+  - name: KAFKA__USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: redpanda-credentials
+        key: username
+
+  - name: KAKFA__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: redpanda-credentials
+        key: password
+
+  - name: KAKFA__TLS__CERTIFICATE_LOCATION
+    value: "/tls/cm/ca.crt"
+
+  - name: KAFKA__TLS__CA_LOCATION
+    value: "/tls/cm/skyblock.ca"
+
+  - name: KAFKA__TLS__KEY_LOCATION
+    value: "/tls/secret/skyblock.key"
+
+volumes:
+- name: redpanda
+  mountPath: /tls/secret
+  type: secret
+  mountName: redpanda-secret
+- name: redpanda
+  mountPath: /tls/cm
+  type: configmap
+  mountName: redpanda-cm
+
+
+ingress:
+  hosts:
+  - host: sky.coflnet.com
+    http:
+      paths:
+      - path: /callback/stripe
+        pathType: ImplementationSpecific
+        backend:
+          service: 
+            name: payments
+            port:
+              number: 8000
+      - path: /callback/paypal
+        pathType: ImplementationSpecific
+        backend:
+          service: 
+            name: payments
+            port:
+              number: 8000
+  - host: skyblock-backend.coflnet.com
+    http:
+      paths:
+      - path: /callback/stripe
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: payments
+            port:
+              number: 8000
+      - path: /callback/paypal
+        pathType: ImplementationSpecific
+        backend:
+          service: 
+            name: payments
+            port:
+              number: 8000
