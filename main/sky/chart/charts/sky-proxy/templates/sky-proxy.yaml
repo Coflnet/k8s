@@ -45,11 +45,11 @@ spec:
             {{ toYaml .Values.readinessProbe | nindent 12 }}
           resources:
             {{ toYaml .Values.resources | nindent 12 }}
-        volumeMounts:
-        {{ range .Values.global.volumes }}
-        - name: {{ .mountName }}
-          mountPath: {{ .mountPath }}
-        {{ end }}
+          volumeMounts:
+          {{ range .Values.global.volumes }}
+            - name: {{ .mountName }}
+              mountPath: {{ .mountPath }}
+          {{ end }}
       volumes: 
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
