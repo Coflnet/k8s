@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/payments
-  tag: eae34b0a-c2bd-4e9e-ab5d-f9c63a222aaa
+  tag: 7b46241b-ac2b-45b9-a281-09c3c7636304
   pullPolicy: IfNotPresent
 
 ports:
@@ -97,13 +97,13 @@ envVars:
         name: redpanda-credentials
         key: username
 
-  - name: KAKFA__PASSWORD
+  - name: KAFKA__PASSWORD
     valueFrom:
       secretKeyRef:
         name: redpanda-credentials
         key: password
 
-  - name: KAKFA__TLS__CERTIFICATE_LOCATION
+  - name: KAFKA__TLS__CERTIFICATE_LOCATION
     value: "/tls/cm/ca.crt"
 
   - name: KAFKA__TLS__CA_LOCATION
