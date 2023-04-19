@@ -107,7 +107,7 @@ envVars:
     value: "/tls/cm/ca.crt"
 
   - name: KAFKA__TLS__CA_LOCATION
-    value: "/tls/cm/skyblock.ca"
+    value: "/tls/cm/skyblock.crt"
 
   - name: KAFKA__TLS__KEY_LOCATION
     value: "/tls/secret/skyblock.key"
