@@ -30,5 +30,5 @@ spec:
           items:
           - key: products.json
             path: products.json
-          name: payments
+          name: {{ .Chart.Name }}
         name: config-volume
