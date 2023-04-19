@@ -68,3 +68,12 @@ dedups:
     targetTopic: sky-soldauction
     batchSize: 200   
 
+volumes:
+- mountPath: /tls/secret
+  type: secret
+  mountName: redpanda-secret
+  name: redpanda
+- mountPath: /tls/cm
+  type: configmap
+  mountName: redpanda-cm
+  name: redpanda

@@ -87,12 +87,12 @@ spec:
             memory: "100Mi"
             cpu: "50m"
         volumeMounts:
-        {{ range .Values.global.volumes }}
+        {{ range $.Values.volumes }}
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
       volumes: 
-      {{ range .Values.global.volumes }}
+      {{ range $.Values.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
           configMap:
