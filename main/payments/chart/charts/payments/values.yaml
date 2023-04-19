@@ -97,13 +97,13 @@ envVars:
         name: redpanda-credentials
         key: username
 
-  - name: KAKFA__PASSWORD
+  - name: KAFKA__PASSWORD
     valueFrom:
       secretKeyRef:
         name: redpanda-credentials
         key: password
 
-  - name: KAKFA__TLS__CERTIFICATE_LOCATION
+  - name: KAFKA__TLS__CERTIFICATE_LOCATION
     value: "/tls/cm/ca.crt"
 
   - name: KAFKA__TLS__CA_LOCATION
