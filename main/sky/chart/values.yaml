@@ -99,6 +99,33 @@ global:
   - name: KAFKA_HOST
     value: k8-main-kafka-kafka.kafka.svc.cluster.local
 
+  ## common redpanda settings
+  - name: KAFKA__BROKERS
+    valueFrom:
+      secretKeyRef:
+        name: redpanda
+        key: brokers
+
+  - name: KAFKA__USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: redpanda-credentials
+        key: username
+
+  - name: KAFKA__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: redpanda-credentials
+        key: password
+
+  - name: KAFKA__TLS__CA_LOCATION
+    value: "/tls/cm/ca.crt"
+
+  - name: KAFKA__TLS__CERTIFICATE_LOCATION
+    value: "/tls/cm/skyblock.crt"
+
+  - name: KAFKA__TLS__KEY_LOCATION
+    value: "/tls/secret/skyblock.key"
 
     ## common jaeger env vars ##
   - name: JAEGER_AGENT_HOST
@@ -155,3 +182,15 @@ global:
     value: http://sky-chat:8000
   - name: PROXY_BASE_URL
     value: http://sky-proxy:8000
+
+  volumes:
+  - mountPath: /tls/secret
+    type: secret
+    mountName: redpanda-secret
+    name: redpanda
+  - mountPath: /tls/cm
+    type: configmap
+    mountName: redpanda-cm
+    name: redpanda
+
+

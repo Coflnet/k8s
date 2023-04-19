@@ -38,3 +38,19 @@ spec:
           {{ toYaml .Values.livenessProbe | nindent 10 }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
+        volumeMounts:
+        {{ range .Values.global.volumes }}
+        - name: {{ .mountName }}
+          mountPath: {{ .mountPath }}
+        {{ end }}
+      volumes: 
+      {{ range .Values.global.volumes }}
+        - name: {{ .mountName }}
+          {{ if eq .type "configmap"  }}
+          configMap:
+            name: {{ .name }}
+          {{ else}}
+          secret:
+            secretName: {{ .name }}
+          {{ end }}
+      {{ end }}
