@@ -1,5 +1,5 @@
 apiVersion: v2
-name: payments
+name: payment-umbrella-chart
 description: Helm Chart to manage the payment resources
 
 # A chart can be either an 'application' or a 'library' chart.
