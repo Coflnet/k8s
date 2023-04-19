@@ -103,10 +103,10 @@ envVars:
         name: redpanda-credentials
         key: password
 
-  - name: KAFKA__TLS__CERTIFICATE_LOCATION
+  - name: KAFKA__TLS__CA_LOCATION
     value: "/tls/cm/ca.crt"
 
-  - name: KAFKA__TLS__CA_LOCATION
+  - name: KAFKA__TLS__CERTIFICATE_LOCATION
     value: "/tls/cm/skyblock.crt"
 
   - name: KAFKA__TLS__KEY_LOCATION
