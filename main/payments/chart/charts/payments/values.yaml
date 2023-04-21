@@ -112,6 +112,9 @@ envVars:
   - name: KAFKA__TLS__KEY_LOCATION
     value: "/tls/secret/skyblock.key"
 
+  - name: KAFKA__REPLICATION_FACTOR
+    value: "3"
+
 volumes:
 - name: redpanda
   mountPath: /tls/secret
