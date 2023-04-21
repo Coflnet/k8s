@@ -69,6 +69,9 @@ spec:
         - name: KAFKA__TLS__KEY_LOCATION
           value: "/tls/secret/skyblock.key"
 
+        - name: GROUP_ID
+          value: sky-deduper
+
         resources:
           {{ toYaml $.Values.resources | nindent 10 }}
         volumeMounts:
