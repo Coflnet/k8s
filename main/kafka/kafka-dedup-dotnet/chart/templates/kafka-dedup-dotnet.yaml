@@ -43,6 +43,32 @@ spec:
           value: {{ .targetTopic }}
         - name: BATCH_SIZE
           value: {{ .batchSize | quote }}
+        - name: KAFKA__BROKERS
+          valueFrom:
+            secretKeyRef:
+              name: redpanda
+              key: brokers
+        - name: KAFKA__USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: redpanda-credentials
+              key: username
+        
+        - name: KAFKA__PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redpanda-credentials
+              key: password
+        
+        - name: KAFKA__TLS__CA_LOCATION
+          value: "/tls/cm/ca.crt"
+        
+        - name: KAFKA__TLS__CERTIFICATE_LOCATION
+          value: "/tls/cm/skyblock.crt"
+        
+        - name: KAFKA__TLS__KEY_LOCATION
+          value: "/tls/secret/skyblock.key"
+
         resources:
           {{ toYaml $.Values.resources | nindent 10 }}
         volumeMounts:
