@@ -1,6 +1,6 @@
 apiVersion: v2
-name: chart
-description: A Helm chart for Kubernetes
+name: kafka-dedup-dotnet
+description: A Helm chart the kafka dedups
 
 # A chart can be either an 'application' or a 'library' chart.
 #
