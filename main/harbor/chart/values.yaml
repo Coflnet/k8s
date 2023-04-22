@@ -219,7 +219,7 @@ persistence:
       storageClass: "longhorn"
       subPath: "data"
       accessMode: ReadWriteOnce
-      size: 80Gi
+      size: 150Gi
       annotations: {}
     chartmuseum:
       existingClaim: ""
