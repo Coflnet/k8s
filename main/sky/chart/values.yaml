@@ -127,6 +127,9 @@ global:
   - name: KAFKA__TLS__KEY_LOCATION
     value: "/tls/secret/skyblock.key"
 
+  - name: KAFKA__REPLICATION_FACTOR
+    value: "3"
+
     ## common jaeger env vars ##
   - name: JAEGER_AGENT_HOST
     valueFrom:
