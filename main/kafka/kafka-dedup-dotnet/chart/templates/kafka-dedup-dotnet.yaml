@@ -32,6 +32,7 @@ spec:
         image: {{ $.Values.image.repository }}:{{ $.Values.image.tag  }}
         ports:
            {{ toYaml $.Values.ports | nindent 10 }}
+        args: [ "--test" ]
         env:
         - name: KAFKA_HOST
           value: {{ $.Values.kafka.host }}
