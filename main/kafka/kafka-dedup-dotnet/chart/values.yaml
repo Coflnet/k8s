@@ -67,6 +67,10 @@ dedups:
     sourceTopic: sky-soldauction-raw
     targetTopic: sky-soldauction
     batchSize: 200   
+  - name: sky-test
+    sourceTopic: sky-test-raw
+    targetTopic: sky-test
+    batchSize: 200   
 
 volumes:
 - mountPath: /tls/secret
