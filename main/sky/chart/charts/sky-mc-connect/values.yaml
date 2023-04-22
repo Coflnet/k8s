@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/skymcconnect
-  tag: 4c947909-16f7-4bfe-9e8d-dae92a8bf829
+  tag: 909f266f-060d-4e05-9b68-9a4fefcc6afe
   pullPolicy: IfNotPresent
 
 ports:
