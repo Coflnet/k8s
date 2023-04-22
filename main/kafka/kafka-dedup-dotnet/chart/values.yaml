@@ -68,8 +68,8 @@ dedups:
     targetTopic: sky-soldauction
     batchSize: 200   
   - name: sky-test
-    sourceTopic: sky-test-raw
-    targetTopic: sky-test
+    sourceTopic: sky-load-test-raw
+    targetTopic: sky-load-test
     batchSize: 200   
 
 volumes:
