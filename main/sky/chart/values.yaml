@@ -173,6 +173,8 @@ global:
     value: http://payments.payment:8000
   - name: PROFILE_BASE_URL
     value: http://sky-profiles:8000
+  - name: PLAYERSTATE_BASE_URL
+    value: http://sky-player-state:8000
   - name: CRAFTS_BASE_URL
     value: http://sky-crafts:8000
   - name: UPDATER_BASE_URL

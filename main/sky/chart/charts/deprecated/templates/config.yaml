@@ -90,6 +90,6 @@ data:
   topic_sold_auction-raw: sky-soldauction-raw
   topic_server_state: server-states
   topic_state_update: sky-state-update
-  topic_transaction: transactions
+  topic_transaction: sky-transactions
   topic_update_settings: sky-update-settings
   topic_verified: sky-verified
