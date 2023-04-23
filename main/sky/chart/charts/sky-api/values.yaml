@@ -48,7 +48,7 @@ ingress:
 
 resources: 
   requests:
-    cpu: 500m
+    cpu: 800m
     memory: 500Mi
   limits: {}
 
@@ -62,7 +62,6 @@ serivcePorts:
     port: 8000
     targetPort: 8000
   - name: websocket
-    port: 8008
     port: 8008
 
 template: &canaryTemplate sky-api
