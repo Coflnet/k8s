@@ -43,6 +43,8 @@ envVars:
     value: "926516307778756678"
   - name: SUPPORT_ROLE_ID
     value: "889184675346665502"
+  - name: SKY_PROXY_BASE_URL
+    value: "sky-proxy.sky:8000"
 
 ingress:
   host: sky.coflnet.com
