@@ -43,4 +43,4 @@ envVars:
   - name: PRODUCTS__VERIFY_MC
     value: "verify_mc"
   - name: TOPICS__TRANSACTION
-    value: transactions
+    value: sky-transactions
