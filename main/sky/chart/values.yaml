@@ -79,7 +79,7 @@ global:
   - name: TOPICS__SETTINGS
     value: sky-update-settings
   - name: TOPICS__TRANSACTION
-    value: transactions
+    value: sky-transactions
   - name: TOPICS__VERIFIED
     value: sky-verified
 
