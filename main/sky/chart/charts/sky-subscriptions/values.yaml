@@ -4,7 +4,7 @@ strategy: Recreate
 
 image:
   repository: harbor.flou.dev/coflnet/skysubscriptions
-  tag: c94e1bed-770c-4e69-83cc-f574d7e4e994
+  tag: 264fa29f-3a86-4219-b5f4-04d5dbe38318
   pullPolicy: IfNotPresent
 
 ports:
