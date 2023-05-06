@@ -1,3 +1,44 @@
 global:
   imagePullSecrets: 
   - name: harbor
+
+  envVars:
+
+  ## common redpanda settings
+  - name: KAFKA_BROKERS
+    valueFrom:
+      secretKeyRef:
+        name: redpanda
+        key: brokers
+
+  - name: KAFKA_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: redpanda-credentials
+        key: username
+
+  - name: KAFKA_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: redpanda-credentials
+        key: password
+
+  - name: KAFKA_TLS_CA_LOCATION
+    value: "/tls/cm/ca.crt"
+
+  - name: KAFKA_TLS_CERTIFICATE_LOCATION
+    value: "/tls/cm/skyblock.crt"
+
+  - name: KAFKA_TLS_KEY_LOCATION
+    value: "/tls/secret/skyblock.key"
+      
+  volumes:
+  - mountPath: /tls/secret
+    type: secret
+    mountName: redpanda-secret
+    name: redpanda
+  - mountPath: /tls/cm
+    type: configmap
+    mountName: redpanda-cm
+    name: redpanda
+
