@@ -32,10 +32,48 @@ spec:
           value: "{{"{{"}}inputs.parameters.organization{{"}}"}}"
         - name: SUCCESS
           value: "{{"{{"}}inputs.parameters.success{{"}}"}}"
-        - name: KAFKA_HOST
-          value: k8-main-kafka-kafka.kafka.svc.cluster.local
         - name: TOPIC_DEV_CHAT
           value: discord-messages
         - name: TOPIC_DEV_SPAM_CHAT
           value: discord-spam-messages
+
+
+        - name: KAFKA_BROKERS
+          valueFrom:
+            secretKeyRef:
+              name: redpanda
+              key: brokers
+
+        - name: KAFKA_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: redpanda-credentials
+              key: username
+
+        - name: KAFKA_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redpanda-credentials
+              key: password
+
+        - name: KAFKA_TLS_CA_LOCATION
+          value: "/tls/cm/ca.crt"
+
+        - name: KAFKA_TLS_CERTIFICATE_LOCATION
+          value: "/tls/cm/skyblock.crt"
+
+        - name: KAFKA_TLS_KEY_LOCATION
+          value: "/tls/secret/skyblock.key"
+      volumeMounts:
+        - name: redpanda-secret
+          mountPath: /tls/secret
+        - name: redpanda-cm
+          mountPath: /tls/cm
+    volumes: 
+    - name: redpanda-secret
+      secret:
+        secretName: redpanda
+    - name: redpanda-cm
+      configMap:
+        name: redpanda
 
