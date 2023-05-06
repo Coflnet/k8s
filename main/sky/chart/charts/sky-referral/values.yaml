@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/skyreferral
-  tag: b292a167-7247-4c5f-8bd0-2fb14bba0157
+  tag: f7bd91fe-317b-40a4-965d-a9139890650f
   pullPolicy: IfNotPresent
 
 ports:
@@ -43,4 +43,4 @@ envVars:
   - name: PRODUCTS__VERIFY_MC
     value: "verify_mc"
   - name: TOPICS__TRANSACTION
-    value: transactions
+    value: sky-transactions

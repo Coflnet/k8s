@@ -4,7 +4,7 @@ strategy: Recreate
 
 image:
   repository: harbor.flou.dev/coflnet/coflnet-bot
-  tag: 98882808-07ac-408d-ab5a-fc2fae4f092a
+  tag: 4c228945-29ff-4239-a22d-da06116a4a22
   pullPolicy: IfNotPresent
 
 ports:
@@ -175,7 +175,7 @@ envVars:
     value: "936726999106478160"
 
   - name: TOPIC_TRANSACTION
-    value: transactions
+    value: sky-transactions
 
   - name: TOPIC_VERIFICATION
     value: sky-verified

@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/skysniper
-  tag: 107ab01d-c771-46d3-a741-4bafce27bebe
+  tag: 0e92baee-8db9-4d50-b597-8dfaecc7a849
   pullPolicy: IfNotPresent
 
 ports:
