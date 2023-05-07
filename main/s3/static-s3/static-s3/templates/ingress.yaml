@@ -6,4 +6,4 @@ metadata:
     name: {{ .Chart.Name }}
 spec:
   rules:
-    {{ toYaml .Values.ingress }}
+    {{ toYaml .Values.ingress | nindent 4 }}
