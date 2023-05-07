@@ -24,7 +24,7 @@ spec:
             name: metrics
         env:
           - name: IMGPROXY_ALLOWED_SOURCES
-            value: "https://sky.shiiyu.moe/,https://skycrypt.coflnet.com,https://mc-heads.net/,https://crafatar.com/,https://static.coflnet.com/"
+            value: "https://sky.shiiyu.moe/,https://skycrypt.coflnet.com,https://mc-heads.net/,https://crafatar.com/,https://static.coflnet.com/,https://sky.coflnet.com"
           - name: IMGPROXY_MAX_ANIMATION_FRAMES
             value: "140"
           - name: IMGPROXY_PROMETHEUS_BIND
