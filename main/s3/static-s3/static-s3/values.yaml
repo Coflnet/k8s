@@ -40,3 +40,15 @@ envVars:
       secretKeyRef:
         name: minio-secret
         key: secret_key
+
+ingress:
+  - host: static.coflnet.com
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        path: "/"
+        backend:
+          service:
+            name: static-server
+            port: 
+              number: 8000
