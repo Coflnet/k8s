@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: harbor.flou.dev/coflnet/blog
   pullPolicy: IfNotPresent
-  tag: "ac2844c3-0c1f-41e5-b0c8-ce6374446c4f"
+  tag: bfbfbf68-aa59-4dcc-bd9e-fc46c2938bf2
 
 imagePullSecrets: []
 nameOverride: ""
