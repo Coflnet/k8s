@@ -174,30 +174,30 @@ spec:
                         depends: "build"
 
 
-                      - name: ci-notification-success
-                        templateRef:
-                          name: ci-notification
-                          template: ci-notification
-                        arguments:
-                          parameters:
-                            - name: project
-                              value: ""
-                            - name: organization
-                              value: ""
-                            - name: success
-                              value: "true"
-                        depends: "promote-v2.Succeeded"
+                      # - name: ci-notification-success
+                      #   templateRef:
+                      #     name: ci-notification
+                      #     template: ci-notification
+                      #   arguments:
+                      #     parameters:
+                      #       - name: project
+                      #         value: ""
+                      #       - name: organization
+                      #         value: ""
+                      #       - name: success
+                      #         value: "true"
+                      #   depends: "promote-v2.Succeeded"
 
-                      - name: ci-notification-fail
-                        templateRef:
-                          name: ci-notification
-                          template: ci-notification
-                        arguments:
-                          parameters:
-                            - name: project
-                              value: ""
-                            - name: organization
-                              value: ""
-                            - name: success
-                              value: "false"
-                        depends: "build.Failed"
+                      # - name: ci-notification-fail
+                      #   templateRef:
+                      #     name: ci-notification
+                      #     template: ci-notification
+                      #   arguments:
+                      #     parameters:
+                      #       - name: project
+                      #         value: ""
+                      #       - name: organization
+                      #         value: ""
+                      #       - name: success
+                      #         value: "false"
+                      #   depends: "build.Failed"
