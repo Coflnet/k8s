@@ -2,7 +2,7 @@ replicaCount: 8
 
 image:
   repository: harbor.flou.dev/coflnet/skyapi
-  tag: 013e4c65-666d-4d04-b1c6-1b4ae4245794
+  tag: 6d588711-54c2-48d5-8843-b7b3ac70dc17
   pullPolicy: IfNotPresent
 
 nameOverride: ""
