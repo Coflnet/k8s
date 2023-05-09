@@ -63,24 +63,24 @@ spec:
             operation: append
 
           # ci notification success
-          - src:
-              dependencyName: ci-update
-              dataKey: body.repository.name
-            dest: spec.templates.0.dag.tasks.2.arguments.parameters.0.value
-          - src:
-              dependencyName: ci-update
-              dataKey: body.repository.owner.name
-            dest: spec.templates.0.dag.tasks.2.arguments.parameters.1.value
+          # - src:
+          #     dependencyName: ci-update
+          #     dataKey: body.repository.name
+          #   dest: spec.templates.0.dag.tasks.2.arguments.parameters.0.value
+          # - src:
+          #     dependencyName: ci-update
+          #     dataKey: body.repository.owner.name
+          #   dest: spec.templates.0.dag.tasks.2.arguments.parameters.1.value
 
-          # ci notification fail
-          - src:
-              dependencyName: ci-update
-              dataKey: body.repository.name
-            dest: spec.templates.0.dag.tasks.3.arguments.parameters.0.value
-          - src:
-              dependencyName: ci-update
-              dataKey: body.repository.owner.name
-            dest: spec.templates.0.dag.tasks.3.arguments.parameters.1.value
+          # # ci notification fail
+          # - src:
+          #     dependencyName: ci-update
+          #     dataKey: body.repository.name
+          #   dest: spec.templates.0.dag.tasks.3.arguments.parameters.0.value
+          # - src:
+          #     dependencyName: ci-update
+          #     dataKey: body.repository.owner.name
+          #   dest: spec.templates.0.dag.tasks.3.arguments.parameters.1.value
 
         source:
           resource:
