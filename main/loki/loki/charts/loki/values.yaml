@@ -186,6 +186,7 @@ securityContext:
   runAsGroup: 10001
   runAsNonRoot: true
   runAsUser: 10001
+  fsGroupChangePolicy: "OnRootMismatch"
 
 service:
   type: ClusterIP
