@@ -47,10 +47,10 @@ serivcePorts:
 
 ## list of all deduplicaters ##
 dedups:
-  - name: sky-bazaar
-    sourceTopic: sky-bazaar-raw
-    targetTopic: sky-bazaar
-    batchSize: 50    
+  # - name: sky-bazaar
+  #   sourceTopic: sky-bazaar-raw
+  #   targetTopic: sky-bazaar
+  #   batchSize: 50    
   - name: sky-missing-auction
     sourceTopic: sky-missingauction-raw
     targetTopic: sky-missingauction
