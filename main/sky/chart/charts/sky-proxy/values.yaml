@@ -1,6 +1,6 @@
 image:
   repository: harbor.flou.dev/coflnet/skyproxy
-  tag: c6d58e62-7e9c-4d63-8d56-b0b950410053
+  tag: a6ebc173-d34c-49e7-bbe6-913342c0cb34
   pullPolicy: IfNotPresent
 
 ports:
