@@ -2,7 +2,7 @@ replicaCount: 3
 
 image:
   repository: harbor.flou.dev/coflnet/skyitems
-  tag: 6aaf3ca5-686d-41f6-be5f-14d9a0212ed4
+  tag: 56cbd4e2-1878-43c0-98c9-ed5a54f8bcfe
   pullPolicy: IfNotPresent
 
 ports:
