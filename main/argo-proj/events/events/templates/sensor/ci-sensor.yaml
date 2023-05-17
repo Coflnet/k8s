@@ -63,24 +63,24 @@ spec:
             operation: append
 
           # ci notification success
-          # - src:
-          #     dependencyName: ci-update
-          #     dataKey: body.repository.name
-          #   dest: spec.templates.0.dag.tasks.2.arguments.parameters.0.value
-          # - src:
-          #     dependencyName: ci-update
-          #     dataKey: body.repository.owner.name
-          #   dest: spec.templates.0.dag.tasks.2.arguments.parameters.1.value
+          - src:
+              dependencyName: ci-update
+              dataKey: body.repository.name
+            dest: spec.templates.0.dag.tasks.2.arguments.parameters.0.value
+          - src:
+              dependencyName: ci-update
+              dataKey: body.repository.owner.name
+            dest: spec.templates.0.dag.tasks.2.arguments.parameters.1.value
 
-          # # ci notification fail
-          # - src:
-          #     dependencyName: ci-update
-          #     dataKey: body.repository.name
-          #   dest: spec.templates.0.dag.tasks.3.arguments.parameters.0.value
-          # - src:
-          #     dependencyName: ci-update
-          #     dataKey: body.repository.owner.name
-          #   dest: spec.templates.0.dag.tasks.3.arguments.parameters.1.value
+          # ci notification fail
+          - src:
+              dependencyName: ci-update
+              dataKey: body.repository.name
+            dest: spec.templates.0.dag.tasks.3.arguments.parameters.0.value
+          - src:
+              dependencyName: ci-update
+              dataKey: body.repository.owner.name
+            dest: spec.templates.0.dag.tasks.3.arguments.parameters.1.value
 
         source:
           resource:
@@ -174,30 +174,30 @@ spec:
                         depends: "build"
 
 
-                      # - name: ci-notification-success
-                      #   templateRef:
-                      #     name: ci-notification
-                      #     template: ci-notification
-                      #   arguments:
-                      #     parameters:
-                      #       - name: project
-                      #         value: ""
-                      #       - name: organization
-                      #         value: ""
-                      #       - name: success
-                      #         value: "true"
-                      #   depends: "promote-v2.Succeeded"
+                      - name: ci-notification-success
+                        templateRef:
+                          name: ci-notification
+                          template: ci-notification
+                        arguments:
+                          parameters:
+                            - name: project
+                              value: ""
+                            - name: organization
+                              value: ""
+                            - name: success
+                              value: "true"
+                        depends: "promote-v2.Succeeded"
 
-                      # - name: ci-notification-fail
-                      #   templateRef:
-                      #     name: ci-notification
-                      #     template: ci-notification
-                      #   arguments:
-                      #     parameters:
-                      #       - name: project
-                      #         value: ""
-                      #       - name: organization
-                      #         value: ""
-                      #       - name: success
-                      #         value: "false"
-                      #   depends: "build.Failed"
+                      - name: ci-notification-fail
+                        templateRef:
+                          name: ci-notification
+                          template: ci-notification
+                        arguments:
+                          parameters:
+                            - name: project
+                              value: ""
+                            - name: organization
+                              value: ""
+                            - name: success
+                              value: "false"
+                        depends: "build.Failed"
