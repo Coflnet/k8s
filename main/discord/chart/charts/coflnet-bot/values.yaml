@@ -50,7 +50,7 @@ envVars:
   - name: DISCORD_MESSAGE_TOPIC
     value: discord-messages
   - name: DISCORD_MESSAGE_CONSUMER_GROUP
-    value: coflnet-bot-cg
+    value: discord-bot-messages-cg
 
         # TRACING
   - name: OTEL_SERVICE_NAME 
