@@ -26,7 +26,7 @@ serivcePorts:
 
 
 s3:
-  host: s3.flou.dev
+  host: eu2.contabostorage.com
   bucket: static
 
 envVars: 
