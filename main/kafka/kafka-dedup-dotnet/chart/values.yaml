@@ -1,7 +1,7 @@
 image:
   repository: harbor.flou.dev/coflnet/kafka-dedup-dotnet
   pullPolicy: IfNotPresent
-  tag: e24de5f0-73a2-4c5f-8275-29a760cf7f0e
+  tag: d6631dff-7e92-4dfc-a2a0-b8d6e5b15d37
 
 imagePullSecrets: []
 nameOverride: ""
