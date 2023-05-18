@@ -26,7 +26,7 @@ serivcePorts:
 
 
 s3:
-  host: https://eu2.contabostorage.com
+  host: eu2.contabostorage.com
   bucket: static
 
 envVars: 
