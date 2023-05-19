@@ -49,6 +49,6 @@ ingress:
         path: "/"
         backend:
           service:
-            name: static-server
-            port: 
+            name: static-s3
+            port:
               number: 8000
