@@ -42,3 +42,7 @@ envVars:
         name: secret
         key: DB_CONNECTION
 
+dbMigration:
+  enabled: true
+  name: db-migration
+  key: secret
