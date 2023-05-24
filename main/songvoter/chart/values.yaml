@@ -50,22 +50,22 @@ envVars:
     valueFrom:
       secretKeyRef:
         name: secret
-        key: spotify_clientid
+        key: spotify__clientid
   - name: spotify__clientsecret
     valueFrom:
       secretKeyRef:
         name: secret
-        key: spotify_clientid
+        key: spotify__clientsecret
   - name: google__clientid
     valueFrom:
       secretKeyRef:
         name: secret
-        key: google_clientid
+        key: google__clientid
   - name: google__clientsecret
     valueFrom:
       secretKeyRef:
         name: secret
-        key: google_clientsecret
+        key: google__clientsecret
 
 dbMigration:
   enabled: false
