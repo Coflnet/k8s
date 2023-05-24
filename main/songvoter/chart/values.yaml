@@ -7,7 +7,7 @@ imagePullSecrets:
 
 image:
   repository: harbor.flou.dev/coflnet/songvoter
-  tag: 41205311-fe0f-4561-afd6-f5e0a72c398e
+  tag: 58851df8-8a7d-427f-8107-00e10c2ad009
   pullPolicy: IfNotPresent
 
 ports:
