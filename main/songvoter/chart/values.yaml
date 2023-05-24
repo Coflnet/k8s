@@ -46,11 +46,26 @@ envVars:
       secretKeyRef:
         name: secret
         key: youtube_key
-  - name: spotify__appid
+  - name: spotify__clientid 
     valueFrom:
       secretKeyRef:
         name: secret
-        key: spotify_key
+        key: spotify_clientid
+  - name: spotify__clientsecret
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: spotify_clientid
+  - name: google__clientid
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: google_clientid
+  - name: google__clientsecret
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: google_clientsecret
 
 dbMigration:
   enabled: false
