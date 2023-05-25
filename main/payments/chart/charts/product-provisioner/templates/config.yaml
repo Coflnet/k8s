@@ -83,7 +83,7 @@ data:
             "title": "Test Premium for invited user",
             "cost": 100,
             "type": "SERVICE",
-            "ownershipSeconds": 86400
+            "ownershipSeconds": 259200
         },
         {
             "slug": "pre_api",
