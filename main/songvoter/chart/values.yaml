@@ -1,13 +1,13 @@
 replicaCount: 1
 
-strategy: Recreate
+strategy: RollingUpdate
 
 imagePullSecrets: 
   - name: harbor
 
 image:
   repository: harbor.flou.dev/coflnet/songvoter
-  tag: 78bfdaf5-7497-4bef-8be4-ba26952b041b
+  tag: 58851df8-8a7d-427f-8107-00e10c2ad009
   pullPolicy: IfNotPresent
 
 ports:
@@ -41,4 +41,33 @@ envVars:
       secretKeyRef:
         name: secret
         key: DB_CONNECTION
+  - name: youtube__apikey
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: youtube_key
+  - name: spotify__clientid 
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: spotify__clientid
+  - name: spotify__clientsecret
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: spotify__clientsecret
+  - name: google__clientid
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: google__clientid
+  - name: google__clientsecret
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: google__clientsecret
 
+dbMigration:
+  enabled: false
+  name: db-migration
+  key: secret

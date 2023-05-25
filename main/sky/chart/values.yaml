@@ -187,6 +187,8 @@ global:
     value: http://sky-chat:8000
   - name: PROXY_BASE_URL
     value: http://sky-proxy:8000
+  - name: LEADERBOARD_BASE_URL
+    value: http://leaderboard.leaderboard:8000
 
   volumes:
   - mountPath: /tls/secret
