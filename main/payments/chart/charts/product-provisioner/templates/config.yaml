@@ -187,6 +187,13 @@ data:
           "cost": 10800,
           "ProviderSlug": "custom",
           "type": 36
+        },
+        {
+          "slug": "tfm-transfer",
+          "title": "Balance imported from tfm",
+          "cost": 300000,
+          "ProviderSlug": "custom",
+          "type": 36
         }
       ],
       "groups": {
