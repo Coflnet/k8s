@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/payments
-  tag: 6b31d9c6-3bc6-4844-b1b1-7323f680cbab
+  tag: 73ea15fd-4ff0-4551-8c06-190840bec4fa
   pullPolicy: IfNotPresent
 
 ports:
