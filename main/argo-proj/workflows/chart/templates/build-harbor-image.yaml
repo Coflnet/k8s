@@ -43,8 +43,8 @@ spec:
       command: ["/kaniko/executor"]
       resources:
         limits:
-          memory: 3000Mi
-          cpu: 1500m
+          memory: 8000Mi
+          cpu: 2000m
       env:
         - name: GIT_USERNAME
           value: "{{"{{"}}inputs.parameters.git_user{{"}}"}}"
