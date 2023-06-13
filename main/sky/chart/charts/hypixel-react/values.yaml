@@ -3,7 +3,7 @@ revisionHistoryLimit: 5
 
 image:
   repository: harbor.flou.dev/coflnet/hypixel-react
-  tag: 5e2c0f1b-1fd8-4673-b840-f3d059290873
+  tag: eb3b8916-c88d-411d-ae80-96072a821dac
   pullPolicy: IfNotPresent
 
 ports:
