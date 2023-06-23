@@ -3,7 +3,7 @@ replicaCount: 1
 strategy: RollingUpdate
 image:
   repository: harbor.flou.dev/coflnet/skybazaar
-  tag: 5a9ed768-4a13-48b3-b98b-6ac37de697ef
+  tag: 2a8383b4-71da-438f-83b1-dec2d2f65560
   pullPolicy: IfNotPresent
 
 ports:
