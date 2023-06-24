@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    release: k8-main-prometheus
+    app: kube-prometheus-stack
+  name: sky-fliptracker
+spec:
+  groups:
+    - name: "{{ .Chart.Name }}.rules"
+      rules:
+        - alert: FewFlipsTracked
+          for: 5m
+          labels:
+            severity: critical
+          expr: 'sum(rate(sky_fliptracker_user_flip[1m])) * 60 < 5'
+          annotations:
+            summary: "Very few flips tracked"
+            description: "only {{`{{`}} $value {{`}}`}} auctions found"
+---            
