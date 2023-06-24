@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/sky-mayor
-  tag: 910d9b65-fa7f-417f-ab48-0b3625c1a33c
+  tag: ae2fd9aa-47ce-4625-8db4-ac385b36832f
   pullPolicy: IfNotPresent
 
 ports:
