@@ -15,6 +15,7 @@ spec:
       - name: k8s_file
       - name: git_secret_name
       - name: git_secret_key
+      - name: pipeline_start
     container:
       image: harbor.flou.dev/coflnet/promoter:latest
       command: ["/bin/sh", "-c", "promoter"]
@@ -38,4 +39,6 @@ spec:
           value: "{{"{{"}}inputs.parameters.tag{{"}}"}}"
         - name: IMAGE_NAME
           value: "{{"{{"}}inputs.parameters.k8s_file{{"}}"}}"
+        - name: PIPELINE_START
+          value: "{{"{{"}}inputs.parameters.pipeline_start{{"}}"}}"
 

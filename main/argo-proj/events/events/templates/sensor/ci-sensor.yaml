@@ -171,6 +171,8 @@ spec:
                               value: password
                             - name: repo_url
                               value: "https://github.com/Coflnet/k8s"
+                            - name: pipeline_start
+                              value: "{{"{{"}}workflow.creationTimestamp.RFC3339{{"}}"}}"
                         depends: "build"
 
 
