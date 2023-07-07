@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: harbor.flou.dev/coflnet/skyfliptracker
-  tag: 88109c05-cd96-4d7b-a226-2f2632217a70
+  tag: b4602682-c923-4c22-bf9e-bc018e2381d1
   pullPolicy: IfNotPresent
 
 ports:
