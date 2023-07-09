@@ -3,8 +3,8 @@ replicaCount: 2
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skysniper
-  tag: 8d6ae012-6c55-41af-85ca-0a2a805a82c6
+  repository: muehlhansfl/skysniper
+  tag: c5fc5649-957e-4752-9ec7-68bf33769499
   pullPolicy: IfNotPresent
 
 ports:
