@@ -3,8 +3,8 @@ replicaCount: 1
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skychat
-  tag: 1f87314f-dddb-4784-8ee2-efae36f3307e
+  repository: muehlhansfl/skychat
+  tag: b1aa6bef-753f-4804-81b3-88a17e6db1c7
   pullPolicy: IfNotPresent
 
 ports:
