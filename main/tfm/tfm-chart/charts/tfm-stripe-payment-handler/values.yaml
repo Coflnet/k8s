@@ -2,8 +2,8 @@ replicaCount: 1
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/tfmstripepaymenthandler
-  tag: b141f677-1136-4bdc-a00e-5a3db19fc80c
+  repository: muehlhansfl/tfmstripepaymenthandler
+  tag: 9359db74-f142-4a9d-be38-8a443a4ed495
   pullPolicy: IfNotPresent
 
 ports:

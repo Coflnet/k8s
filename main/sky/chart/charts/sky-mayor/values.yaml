@@ -3,8 +3,8 @@ replicaCount: 3
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/sky-mayor
-  tag: ae2fd9aa-47ce-4625-8db4-ac385b36832f
+  repository: muehlhansfl/sky-mayor
+  tag: a60c99d3-0803-483c-8c50-0623806256fc
   pullPolicy: IfNotPresent
 
 ports:

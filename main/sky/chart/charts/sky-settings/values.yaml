@@ -3,8 +3,8 @@ replicaCount: 3
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skysettings
-  tag: 24dcfb84-c04b-4e8a-bf79-5810dc7396d1
+  repository: muehlhansfl/skysettings
+  tag: ebeae67b-1d74-4f3d-8783-ef298339c44d
   pullPolicy: IfNotPresent
 
 ports:

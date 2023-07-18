@@ -3,8 +3,8 @@ replicaCount: 5
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skyplayerstate
-  tag: 1618faff-9a6c-4ffd-9a56-409a9e81eb46
+  repository: muehlhansfl/skyplayerstate
+  tag: 271ab9f0-e746-44be-afed-78e86ca681ea
   pullPolicy: IfNotPresent
 
 ports:

@@ -3,8 +3,8 @@ replicaCount: 1
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skyreferral
-  tag: 0ddb337d-c269-435f-b6df-8a7acaeb1646
+  repository: muehlhansfl/skyreferral
+  tag: 5de7e25e-9fed-4bae-b99d-6ffba5a7d31d
   pullPolicy: IfNotPresent
 
 ports:
