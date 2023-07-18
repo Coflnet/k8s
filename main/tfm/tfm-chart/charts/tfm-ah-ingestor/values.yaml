@@ -3,8 +3,8 @@ replicaCount: 1
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/tfmahingestor
-  tag: bac50373-5b3a-42f1-bf8e-f8bcf1176eaa
+  repository: muehlhansfl/tfmahingestor
+  tag: 5a705c1e-ae33-4abc-8d74-c8ddab6b2b7d
   pullPolicy: IfNotPresent
 
 ports:
