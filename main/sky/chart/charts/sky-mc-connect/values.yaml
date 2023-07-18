@@ -3,8 +3,8 @@ replicaCount: 2
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skymcconnect
-  tag: 49aeccf0-97c0-4c3b-8191-083cbd8e6419
+  repository: muehlhansfl/skymcconnect
+  tag: 029cb577-00e9-43c6-8f7c-f0610ea34e77
   pullPolicy: IfNotPresent
 
 ports:
