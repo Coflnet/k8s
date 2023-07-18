@@ -3,8 +3,8 @@ replicaCount: 5
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skyupdater
-  tag: ce80d389-64e7-4c6d-9a86-6fd9da6ced87
+  repository: muehlhansfl/skyupdater
+  tag: 04c3fc43-02f0-47f5-887a-cbc95ce5ac68
   pullPolicy: IfNotPresent
 
 ports:
