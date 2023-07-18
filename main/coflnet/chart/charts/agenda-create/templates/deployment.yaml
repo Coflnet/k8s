@@ -5,7 +5,7 @@ metadata:
   labels:
     app: {{ .Chart.Name }}
 spec:
-  schedule: "0 0 * * THU"
+  schedule: "0 0 * * TUE"
   jobTemplate:
     spec:
       template:

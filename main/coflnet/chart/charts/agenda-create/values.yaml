@@ -1,7 +1,7 @@
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/flou21/agenda-create
+  repository: muehlhansfl/agenda-create
   tag: latest
   pullPolicy: Always
 
