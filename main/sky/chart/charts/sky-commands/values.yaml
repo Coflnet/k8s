@@ -19,8 +19,11 @@ ports:
 
 resources:
   requests:
-    memory: "2000Mi"
-    cpu: "200m"
+    memory: 1Gi
+    cpu: 300m
+  limits:
+    memory: 2Gi
+    cpu: 2000m
 
 
 services:
