@@ -1,7 +1,7 @@
 image:
   repository: muehlhansfl/kafka-dedup-dotnet
   pullPolicy: IfNotPresent
-  tag: 3be3a26f-f64b-4bdd-8498-eeed2c7fad5c
+  tag: 63ac2a93-ad14-48cd-8bd3-d4ac7a3fb75c
 
 imagePullSecrets: []
 nameOverride: ""
