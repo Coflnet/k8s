@@ -3,8 +3,8 @@ replicaCount: 1
 strategy: Recreate
 
 image:
-  repository: harbor.flou.dev/coflnet/skybfcs
-  tag: 47761c2a-0f2c-408d-b226-71218778b9d8
+  repository: muehlhansfl/skybfcs
+  tag: 863fab9d-3fb3-470a-8e2d-8fa2008623e8
   pullPolicy: IfNotPresent
 
 ports:
