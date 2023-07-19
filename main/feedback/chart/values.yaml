@@ -5,8 +5,8 @@ strategy: RollingUpdate
 imagePullSecrets: 
   - name: harbor
 image:
-  repository: harbor.flou.dev/coflnet/feedback
-  tag: 3ff127d2-35b6-4593-be62-bcc17122e3b9
+  repository: muehlhansfl/feedback
+  tag: 1e607593-0f1f-4b47-8a47-1f751a78cc88
   pullPolicy: IfNotPresent
 
 ports:
