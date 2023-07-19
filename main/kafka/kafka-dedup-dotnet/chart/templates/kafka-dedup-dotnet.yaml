@@ -28,7 +28,7 @@ spec:
                 operator: In
                 values:
                 - dedup-{{ .name }}-redis
-            topologyKey: "kubernetes.io/hostname"
+              topologyKey: "kubernetes.io/hostname"
       containers:
       - name: dedup-{{ .name }}
         image: {{ $.Values.image.repository }}:{{ $.Values.image.tag  }}
