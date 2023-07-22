@@ -25,6 +25,8 @@ sky-bazaar:
 
 sky-bfcs:
   enabled: true
+  metrics:
+    enabled: false
 
 sky-chat:
   enabled: false
