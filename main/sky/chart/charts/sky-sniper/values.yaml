@@ -1,3 +1,4 @@
+enabled: true
 replicaCount: 2
 
 strategy: RollingUpdate
@@ -11,11 +12,10 @@ ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
     cpu: 1000m
     memory: 3Gi
-
 
 serivcePorts:
   - name: api
@@ -30,7 +30,7 @@ readinessProbe:
   periodSeconds: 3
   failureThreshold: 100
 
-envVars: 
+envVars:
   - name: DBConnection
     valueFrom:
       secretKeyRef:
@@ -42,7 +42,7 @@ envVars:
       configMapKeyRef:
         key: reload_config_on_change
         name: config
-  
+
   - name: JWT_SECRET
     valueFrom:
       secretKeyRef:
