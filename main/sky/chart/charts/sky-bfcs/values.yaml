@@ -1,4 +1,5 @@
 enabled: true
+defaultEnvVarsEnabled: true
 replicaCount: 1
 
 strategy: Recreate

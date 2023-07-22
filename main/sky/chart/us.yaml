@@ -25,6 +25,7 @@ sky-bazaar:
 
 sky-bfcs:
   enabled: true
+  defaultEnvVarsEnabled: false
   metrics:
     enabled: false
 
