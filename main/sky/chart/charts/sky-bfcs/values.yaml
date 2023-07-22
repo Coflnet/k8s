@@ -24,3 +24,6 @@ serivcePorts:
   - name: api
     port: 8000
     targetPort: 8000
+
+metrics:
+  enabled: true
