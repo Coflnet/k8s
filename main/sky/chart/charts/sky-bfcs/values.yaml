@@ -12,6 +12,8 @@ image:
 ports:
   - name: api
     containerPort: 8000
+  - name: websocket
+    containerPort: 8008
 
 resources:
   requests:
@@ -25,6 +27,9 @@ serivcePorts:
   - name: api
     port: 8000
     targetPort: 8000
+  - name: websocket
+    port: 8008
+    targetPort: 8008
 
 metrics:
   enabled: true
