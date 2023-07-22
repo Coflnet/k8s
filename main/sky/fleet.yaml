@@ -1,3 +1,5 @@
 defaultNamespace: sky
 helm:
   chart: ./chart
+  valuesFiles:
+    - ./chart/eu.yaml

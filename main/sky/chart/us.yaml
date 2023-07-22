@@ -1,0 +1,101 @@
+global:
+  imagePullSecrets:
+    - name: harbor
+
+  redis:
+    enabled: false
+
+  secret:
+    enabled: false
+
+config:
+  enabled: false
+
+
+deprecated:
+  enabled: false
+
+hypixel-react:
+  enabled: false
+
+sky-api:
+  enabled: false
+
+sky-bazaar:
+  enabled: false
+
+sky-bfcs:
+  enabled: false
+
+sky-chat:
+  enabled: false
+
+sky-commands:
+  enabled: false
+
+sky-controller:
+  enabled: false
+
+sky-crafts:
+  enabled: false
+
+sky-event-broker:
+  enabled: false
+
+sky-filter:
+  enabled: false
+
+sky-flip-tracker:
+  enabled: false
+
+sky-flipper:
+  enabled: false
+
+sky-indexer:
+  enabled: false
+
+sky-items:
+  enabled: false
+
+sky-mayor:
+  enabled: false
+
+sky-mc-connect:
+  enabled: false
+
+sky-mod-commands:
+  enabled: false
+
+sky-operator:
+  enabled: false
+
+sky-player-name:
+  enabled: false
+
+sky-player-state:
+  enabled: false
+
+sky-profiles:
+  enabled: false
+
+sky-profiles:
+  enabled: false
+
+sky-proxy:
+  enabled: false
+
+sky-referral:
+  enabled: false
+
+sky-settings:
+  enabled: false
+
+sky-sniper:
+  enabled: false
+
+sky-subscriptions:
+  enabled: false
+
+sky-updater:
+  enabled: false
+
