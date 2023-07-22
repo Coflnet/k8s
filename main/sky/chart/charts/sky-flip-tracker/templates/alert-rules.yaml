@@ -1,3 +1,4 @@
+{{ if .Values.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
@@ -18,3 +19,4 @@ spec:
             summary: "Very few flips tracked"
             description: "only {{`{{`}} $value {{`}}`}} auctions found"
 ---            
+{{ end }}

@@ -1,3 +1,4 @@
+enabled: true
 replicaCount: 9
 
 strategy: RollingUpdate
@@ -11,11 +12,10 @@ ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
     cpu: 100m
     memory: 200Mi
-
 
 serivcePorts:
   - name: api
@@ -29,11 +29,11 @@ readinessProbe:
   initialDelaySeconds: 12
   periodSeconds: 3
 
-envVars: 
+envVars:
   - name: DB_CONNECTION
     valueFrom:
       secretKeyRef:
-        name: secret 
+        name: secret
         key: connection_tracker_database
   - name: CASSANDRA__HOSTS
     valueFrom:

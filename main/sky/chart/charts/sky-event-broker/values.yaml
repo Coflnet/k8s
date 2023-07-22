@@ -1,3 +1,4 @@
+enabled: true
 replicaCount: 1
 
 strategy: RollingUpdate
@@ -16,7 +17,6 @@ resources:
     cpu: 200m
     memory: 100Mi
 
-
 serivcePorts:
   - name: api
     port: 8000
@@ -29,7 +29,7 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: 
+envVars:
   - name: DB_CONNECTION
     valueFrom:
       secretKeyRef:
