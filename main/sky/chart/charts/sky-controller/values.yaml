@@ -1,3 +1,4 @@
+enabled: true
 replicaCount: 1
 
 strategy: RollingUpdate
@@ -11,14 +12,13 @@ ports:
   - name: metrics
     containerPort: 2112
 
-resources: 
+resources:
   requests:
     cpu: 50m
     memory: 200Mi
-  limits: 
+  limits:
     cpu: 200m
     memory: 512Mi
-
 
 serivcePorts:
   - name: metrics

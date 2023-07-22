@@ -1,3 +1,4 @@
+enabled: true
 replicaCount: 1
 
 strategy: Recreate
@@ -11,7 +12,7 @@ ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
     cpu: 200m
     memory: 3Gi
@@ -19,9 +20,7 @@ resources:
     cpu: 3000m
     memory: 4Gi
 
-
 serivcePorts:
   - name: api
     port: 8000
     targetPort: 8000
-

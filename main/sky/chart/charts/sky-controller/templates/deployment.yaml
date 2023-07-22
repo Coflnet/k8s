@@ -1,3 +1,4 @@
+{{ if .Values.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -32,3 +33,4 @@ spec:
           {{ toYaml .Values.global.envVars | nindent 10 }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
+{{ end }}

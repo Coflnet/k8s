@@ -1,3 +1,4 @@
+enabled: true
 replicaCount: 1
 
 strategy: RollingUpdate
@@ -10,11 +11,10 @@ ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
     cpu: 400m
     memory: 200Mi
-
 
 serivcePorts:
   - name: api
@@ -28,7 +28,7 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: 
+envVars:
   - name: CASSANDRA__HOSTS
     valueFrom:
       configMapKeyRef:

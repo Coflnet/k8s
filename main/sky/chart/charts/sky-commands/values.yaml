@@ -1,3 +1,4 @@
+enabled: true
 replicaCount: 4
 
 image:
@@ -25,7 +26,6 @@ resources:
     memory: 2Gi
     cpu: 2000m
 
-
 services:
   - sky-commands
   - sky-commands-canary-service
@@ -44,35 +44,35 @@ canaryService: &canaryService sky-commands-canary-service
 stableService: &stableService sky-commands-stable-service
 mainService: &mainService sky-commands
 trafficSplit: &trafficSplit sky-commands
-canary: 
+canary:
   steps:
-  - setWeight: 10
-  - pause: 
-      duration: 3m
-  - analysis:
-      templates:
-      - templateName: *canaryTemplate
-      args:
-      - name: service-name
-        value: *canaryService
-  - setWeight: 50
-  - pause:
-      duration: 5m
-  - analysis:
-      templates:
-      - templateName: *canaryTemplate
-      args:
-      - name: service-name
-        value: *canaryService
-  - setWeight: 100
-  - pause:
-      duration: 5m
-  - analysis:
-      templates:
-      - templateName: *canaryTemplate
-      args:
-      - name: service-name
-        value: *canaryService
+    - setWeight: 10
+    - pause:
+        duration: 3m
+    - analysis:
+        templates:
+          - templateName: *canaryTemplate
+        args:
+          - name: service-name
+            value: *canaryService
+    - setWeight: 50
+    - pause:
+        duration: 5m
+    - analysis:
+        templates:
+          - templateName: *canaryTemplate
+        args:
+          - name: service-name
+            value: *canaryService
+    - setWeight: 100
+    - pause:
+        duration: 5m
+    - analysis:
+        templates:
+          - templateName: *canaryTemplate
+        args:
+          - name: service-name
+            value: *canaryService
   maxUnavailable: 1
   canaryService: *canaryService
   stableService: *stableService
