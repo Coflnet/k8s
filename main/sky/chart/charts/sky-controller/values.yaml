@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/sky-controller
-  tag: 72a12fb4-e74a-465b-8ed4-de913137fc38
+  tag: 161fe89a-9432-42eb-9715-2c753d6edeeb
   pullPolicy: IfNotPresent
 
 ports:
