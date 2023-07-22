@@ -19,6 +19,6 @@ spec:
           service:
             name: {{ .Chart.Name }}
             port:
-              number: 8008
+              number: 8888
 {{ end }}
 {{ end }}

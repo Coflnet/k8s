@@ -13,7 +13,7 @@ ports:
   - name: api
     containerPort: 8000
   - name: websocket
-    containerPort: 8008
+    containerPort: 8888
 
 resources:
   requests:
@@ -28,8 +28,8 @@ serivcePorts:
     port: 8000
     targetPort: 8000
   - name: websocket
-    port: 8008
-    targetPort: 8008
+    port: 8888
+    targetPort: 8888
 
 metrics:
   enabled: true
