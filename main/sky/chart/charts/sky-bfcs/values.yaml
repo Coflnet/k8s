@@ -28,3 +28,6 @@ serivcePorts:
 
 metrics:
   enabled: true
+
+ingress:
+  enabled: false

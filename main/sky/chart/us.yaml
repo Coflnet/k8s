@@ -28,6 +28,9 @@ sky-bfcs:
   defaultEnvVarsEnabled: false
   metrics:
     enabled: false
+  ingress:
+    enabled: true
+    host: sky-us.coflnet.com
   envVars:
     - name: SNIPER_BASE_URL
       valueFrom:
