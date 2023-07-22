@@ -1,3 +1,4 @@
+enabled: true
 replicaCount: 2
 
 strategy: RollingUpdate
@@ -11,11 +12,10 @@ ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
     cpu: 100m
     memory: 340Mi
-
 
 serivcePorts:
   - name: api
@@ -29,9 +29,9 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: 
+envVars:
   - name: DB_CONNECTION
     valueFrom:
       secretKeyRef:
-        name: secret 
+        name: secret
         key: connection_micro_mc_connect

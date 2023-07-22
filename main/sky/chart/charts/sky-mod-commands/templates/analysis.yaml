@@ -1,3 +1,4 @@
+{{ if .Values.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
@@ -17,3 +18,4 @@ spec:
         query: |
           sum(increase(sky_mod_sent_flips[2m]))
 
+{{ end }}

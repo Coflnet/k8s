@@ -1,3 +1,4 @@
+enabled: true
 replicaCount: 6
 
 image:
@@ -17,12 +18,6 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations: {}
-
-podSecurityContext: {}
-  # fsGroup: 2000
-
-securityContext: {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -46,13 +41,12 @@ ingress:
           pathType: ImplementationSpecific
   tls: []
 
-resources: 
+resources:
   requests:
     cpu: 500m
     memory: 600Mi
-  limits: 
+  limits:
     memory: 3Gi
-
 
 services:
   - sky-mod-commands
@@ -70,35 +64,35 @@ canaryService: &canaryService sky-mod-commands-canary-service
 stableService: &stableService sky-mod-commands-stable-service
 mainService: &mainService sky-mod-commands
 trafficSplit: &trafficSplit sky-mod-commands
-canary: 
+canary:
   steps:
-  - setWeight: 10
-  - pause: 
-      duration: 3m
-  - analysis:
-      templates:
-      - templateName: *canaryTemplate
-      args:
-      - name: service-name
-        value: *canaryService
-  - setWeight: 50
-  - pause:
-      duration: 5m
-  - analysis:
-      templates:
-      - templateName: *canaryTemplate
-      args:
-      - name: service-name
-        value: *canaryService
-  - setWeight: 100
-  - pause:
-      duration: 5m
-  - analysis:
-      templates:
-      - templateName: *canaryTemplate
-      args:
-      - name: service-name
-        value: *canaryService
+    - setWeight: 10
+    - pause:
+        duration: 3m
+    - analysis:
+        templates:
+          - templateName: *canaryTemplate
+        args:
+          - name: service-name
+            value: *canaryService
+    - setWeight: 50
+    - pause:
+        duration: 5m
+    - analysis:
+        templates:
+          - templateName: *canaryTemplate
+        args:
+          - name: service-name
+            value: *canaryService
+    - setWeight: 100
+    - pause:
+        duration: 5m
+    - analysis:
+        templates:
+          - templateName: *canaryTemplate
+        args:
+          - name: service-name
+            value: *canaryService
   maxUnavailable: 1
   canaryService: *canaryService
   stableService: *stableService
@@ -114,11 +108,9 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: 
+envVars:
   - name: CHAT_API_KEY
     valueFrom:
       secretKeyRef:
         name: secret
         key: mod_chat_api_key
-
- 
