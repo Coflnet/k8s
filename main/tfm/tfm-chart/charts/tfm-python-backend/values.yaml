@@ -10,21 +10,20 @@ ports:
   - name: api
     containerPort: 7321
 
-resources: 
+resources:
   requests:
     cpu: 50m
     memory: 512Mi
   limits:
-    cpu: 1000m
-    memory: 1Gi
-
+    cpu: 500m
+    memory: 2Gi
 
 serivcePorts:
   - name: api
     port: 7321
     targetPort: 7321
 
-envVars: 
+envVars:
   - name: MONGO_HOST
     valueFrom:
       secretKeyRef:
