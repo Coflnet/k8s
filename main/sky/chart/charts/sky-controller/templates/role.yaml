@@ -4,7 +4,7 @@ kind: Role
 metadata:
   name: {{ .Chart.Name }}
 rules:
-- apiGroups: ["apps"]
-  resources: ["deployments"]
+- apiGroups: ["apps", ""]
+  resources: ["deployments", "nodes"]
   verbs: ["get", "list", "patch", "update" ]
 {{ end }}
