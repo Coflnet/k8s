@@ -1,3 +1,4 @@
+{{ if .Values.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
@@ -36,3 +37,4 @@ spec:
       autoPromotionEnabled: false
       scaleDownDelaySeconds: 120
       previewReplicaCount: 1
+{{ end }}

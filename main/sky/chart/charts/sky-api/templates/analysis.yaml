@@ -1,3 +1,4 @@
+{{ if .Values.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
@@ -16,3 +17,4 @@ spec:
         address: http://k8-main-prometheus-kube-pr-prometheus.prometheus.svc.cluster.local:9090
         query: |
           sum(rate(sky_api_error[5m]))
+{{ end }}
