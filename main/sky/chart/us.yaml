@@ -39,6 +39,8 @@ sky-bfcs:
         secretKeyRef:
           name: sniper
           key: transfer_token
+    - name: REDIS_HOST
+      value: sky-bfcs-redis,syncTimeout=200
 
 sky-chat:
   enabled: false
