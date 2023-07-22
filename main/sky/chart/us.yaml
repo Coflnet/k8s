@@ -11,7 +11,6 @@ global:
 config:
   enabled: false
 
-
 deprecated:
   enabled: false
 
@@ -25,7 +24,7 @@ sky-bazaar:
   enabled: false
 
 sky-bfcs:
-  enabled: false
+  enabled: true
 
 sky-chat:
   enabled: false
@@ -78,9 +77,6 @@ sky-player-state:
 sky-profiles:
   enabled: false
 
-sky-profiles:
-  enabled: false
-
 sky-proxy:
   enabled: false
 
@@ -98,4 +94,3 @@ sky-subscriptions:
 
 sky-updater:
   enabled: false
-
