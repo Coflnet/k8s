@@ -1,3 +1,4 @@
+enabled: true
 replicaCount: 1
 
 strategy: RollingUpdate
@@ -11,14 +12,13 @@ ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
     cpu: 10m
     memory: 200Mi
-  limits: 
+  limits:
     cpu: 50m
     memory: 512Mi
-
 
 serivcePorts:
   - name: api
@@ -32,11 +32,11 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: 
+envVars:
   - name: DB_CONNECTION
     valueFrom:
       secretKeyRef:
-        name: secret 
+        name: secret
         key: connection_micro_referral
   - name: PRODUCTS__REFERAL_BONUS
     value: "referal_bonus"

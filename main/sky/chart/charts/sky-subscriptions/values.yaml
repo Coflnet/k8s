@@ -1,3 +1,4 @@
+enabled: true
 replicaCount: 1
 
 strategy: Recreate
@@ -11,14 +12,13 @@ ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
     cpu: 150m
     memory: 400Mi
-  limits: 
+  limits:
     cpu: 600m
     memory: 1024Mi
-
 
 serivcePorts:
   - name: api
@@ -32,16 +32,16 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: 
+envVars:
   - name: DB_CONNECTION
     valueFrom:
       secretKeyRef:
-        name: secret 
+        name: secret
         key: connection_micro_subscriptions
   - name: DBConnection
     valueFrom:
       secretKeyRef:
-        name: secret 
+        name: secret
         key: connection_read_secondary
   - name: FIREBASE_SENDER_ID
     valueFrom:
