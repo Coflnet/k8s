@@ -3,3 +3,9 @@ helm:
   chart: ./chart
   valuesFiles:
     - ./chart/eu.yaml
+targetCustomizations:
+  - name: us-cluster
+    clusterName: us-cluster
+    helm:
+      valuesFiles:
+        - ./chart/us.yaml
