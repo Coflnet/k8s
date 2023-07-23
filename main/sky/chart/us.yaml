@@ -8,11 +8,14 @@ global:
   secret:
     enabled: false
 
-config:
-  enabled: false
+  config:
+    enabled: false
 
 deprecated:
   enabled: false
+
+edge-redis:
+  enabled: true
 
 hypixel-react:
   enabled: false
