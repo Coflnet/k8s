@@ -34,7 +34,7 @@ spec:
           - name: REDIS_HOST
             value: {{ .Values.global.redis.name }}
           - name: REDIS_FLIP_INSTANCES__0 
-            value: "EU sky-bfcs-redis,syncTimeout=200"
+            value: "sky-bfcs-redis,syncTimeout=200"
           - name: REDIS_FLIP_INSTANCES__1
             valueFrom:
               secretKeyRef:
