@@ -3,8 +3,8 @@ replicaCount: 1
 strategy: Recreate
 
 image:
-  repository: redis
-  tag: "7"
+  repository: bitnami/redis
+  tag: "7.0"
   pullPolicy: IfNotPresent
 
 ports:
@@ -29,3 +29,10 @@ metrics:
 
 ingress:
   enabled: false
+
+envVars:
+  - name: REDIS_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: redis-edge
+        key: password
