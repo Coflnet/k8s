@@ -26,8 +26,13 @@ spec:
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
-          - name: FLIP_REDIS_OPTIONS
-            value: "{{ .Chart.Name }}-redis,syncTimeout=200"
+          - name: REDIS_FLIP_INSTANCES__0 
+            value: "EU {{ .Chart.Name }}-redis,syncTimeout=200"
+          - name: REDIS_FLIP_INSTANCES__1
+            valueFrom:
+              secretKeyRef:
+                name: redis-edge
+                key: us_connection
           {{ if .Values.envVars }}
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}
