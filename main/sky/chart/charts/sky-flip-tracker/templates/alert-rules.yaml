@@ -3,7 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   labels:
-    release: k8-main-prometheus
+    release: prometheus
     app: kube-prometheus-stack
   name: sky-fliptracker
 spec:

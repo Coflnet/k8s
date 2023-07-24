@@ -6,7 +6,7 @@ metadata:
   name: {{ .Chart.Name }}
   labels:
     app: {{ .Chart.Name }}
-    release: k8-main-prometheus
+    release: prometheus
 spec:
   selector:
     matchLabels:
