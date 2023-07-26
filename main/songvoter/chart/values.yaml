@@ -35,7 +35,19 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: 
+envVars:
+
+  ## common jaeger env vars ##
+  - name: JAEGER_AGENT_HOST
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
+  - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
+
+  ## specific env vars ##
   - name: DB_CONNECTION
     valueFrom:
       secretKeyRef:
