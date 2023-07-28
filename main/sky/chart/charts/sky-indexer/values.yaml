@@ -1,24 +1,24 @@
+enabled: true
 replicaCount: 1
 
 strategy: Recreate
 
 image:
-  repository: harbor.flou.dev/coflnet/skyindexer
-  tag: fe555e3c-ea52-4a3c-9d54-a4895205ccf7
+  repository: muehlhansfl/skyindexer
+  tag: abeded11-f0da-4c90-bf60-26cdbb29c183
   pullPolicy: IfNotPresent
 
 ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
     cpu: 200m
     memory: 200Mi
-  limits: 
+  limits:
     cpu: 500m
     memory: 512Mi
-
 
 serivcePorts:
   - name: api
@@ -32,7 +32,7 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: 
+envVars:
   - name: DBConnection
     valueFrom:
       secretKeyRef:

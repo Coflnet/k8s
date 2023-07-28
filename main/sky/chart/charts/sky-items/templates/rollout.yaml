@@ -1,3 +1,4 @@
+{{ if .Values.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
@@ -67,3 +68,4 @@ spec:
         smi:
           rootService: {{ .Chart.Name }}
           trafficSplitName: {{ .Chart.Name }}-traffic-split
+{{ end }}

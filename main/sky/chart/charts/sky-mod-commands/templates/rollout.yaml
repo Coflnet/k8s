@@ -1,3 +1,4 @@
+{{ if .Values.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
@@ -32,8 +33,13 @@ spec:
         env:
           - name: REDIS_HOST
             value: {{ .Values.global.redis.name }}
-          - name: FLIP_REDIS_OPTIONS
+          - name: REDIS_FLIP_INSTANCES__0 
             value: "sky-bfcs-redis,syncTimeout=200"
+          - name: REDIS_FLIP_INSTANCES__1
+            valueFrom:
+              secretKeyRef:
+                name: redis-edge
+                key: us_connection
           - name: MOD_REDIS_HOST
             value: {{ .Chart.Name }}-redis
           {{ if .Values.envVars }}
@@ -64,3 +70,4 @@ spec:
   strategy:
     canary:
     {{ toYaml .Values.canary | nindent 6 }}
+{{ end }}

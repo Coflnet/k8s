@@ -1,0 +1,38 @@
+enabled: false
+replicaCount: 1
+strategy: Recreate
+
+image:
+  repository: bitnami/redis
+  tag: "7.0"
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: redis
+    containerPort: 6379
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 1Gi
+
+serivcePorts:
+  - name: redis
+    port: 6379
+    targetPort: 6379
+
+metrics:
+  enabled: false
+
+ingress:
+  enabled: false
+
+envVars:
+  - name: REDIS_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: redis-edge
+        key: password

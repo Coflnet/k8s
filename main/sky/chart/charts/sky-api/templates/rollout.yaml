@@ -1,3 +1,4 @@
+{{ if .Values.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
@@ -53,3 +54,4 @@ spec:
   strategy:
     canary:
     {{ toYaml .Values.canary | nindent 6 }}
+{{ end }}

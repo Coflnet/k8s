@@ -1,3 +1,4 @@
+{{ if .Values.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -93,3 +94,4 @@ data:
   topic_transaction: sky-transactions
   topic_update_settings: sky-update-settings
   topic_verified: sky-verified
+{{ end }}

@@ -1,23 +1,23 @@
+enabled: true
 replicaCount: 5
 
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skyplayerstate
-  tag: 1618faff-9a6c-4ffd-9a56-409a9e81eb46
+  repository: muehlhansfl/skyplayerstate
+  tag: 271ab9f0-e746-44be-afed-78e86ca681ea
   pullPolicy: IfNotPresent
 
 ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
     cpu: 200m
     memory: 200Mi
-  limits: 
+  limits:
     memory: 512Mi
-
 
 serivcePorts:
   - name: api
@@ -31,7 +31,7 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: 
+envVars:
   # mongo
   - name: Mongo__ConnectionString
     valueFrom:

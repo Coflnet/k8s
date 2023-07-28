@@ -1,20 +1,21 @@
+enabled: true
+
 replicaCount: 7
 revisionHistoryLimit: 5
 
 image:
   repository: muehlhansfl/hypixel-react
-  tag: 7252bf13-4bca-4b3c-905c-c27ff6e38a96
+  tag: c7bd05d2-33c7-4d58-88bc-5bba0e503364
   pullPolicy: IfNotPresent
 
 ports:
   - name: web
     containerPort: 3000
 
-resources: 
+resources:
   requests:
     cpu: 200m
     memory: 400Mi
-
 
 serivcePorts:
   - name: web
@@ -30,7 +31,7 @@ readinessProbe:
   failureThreshold: 6
   timeoutSeconds: 5
 
-envVars: 
+envVars:
   - name: COMMAND_ENDPOINT
     valueFrom:
       configMapKeyRef:

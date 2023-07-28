@@ -1,3 +1,4 @@
+enabled: true
 replicaCount: 0
 
 strategy: RollingUpdate
@@ -11,14 +12,13 @@ ports:
   - name: api
     containerPort: 80
 
-resources: 
+resources:
   requests:
     cpu: 200m
     memory: 200Mi
-  limits: 
+  limits:
     cpu: 500m
     memory: 512Mi
-
 
 serivcePorts:
   - name: api

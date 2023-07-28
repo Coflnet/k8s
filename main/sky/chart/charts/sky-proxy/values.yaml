@@ -1,3 +1,4 @@
+enabled: true
 image:
   repository: muehlhansfl/skyproxy
   tag: 4d9f6d88-7655-4657-8f90-cfc24293b9ac
@@ -7,11 +8,10 @@ ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
     cpu: 100m
     memory: 200Mi
-
 
 serivcePorts:
   - name: api
@@ -25,19 +25,19 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: 
+envVars:
   - name: DB_CONNECTION
     valueFrom:
       secretKeyRef:
         key: connection_cockroach_proxy_database
         name: secret
   - name: TOPICS__NEW_AUCTION
-    valueFrom: 
+    valueFrom:
       configMapKeyRef:
         name: config
         key: topic_new_auction-raw
   - name: TOPICS__SOLD_AUCTION
-    valueFrom: 
+    valueFrom:
       configMapKeyRef:
         name: config
         key: topic_sold_auction-raw

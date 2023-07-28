@@ -1,3 +1,4 @@
+{{ if .Values.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -56,7 +57,7 @@ kind: ServiceMonitor
 metadata:
   name: {{ .Chart.Name }}-imgproxy-servicemonitor
   labels:
-    release: k8-main-prometheus
+    release: prometheus
 spec:
   selector:
     matchLabels:
@@ -65,3 +66,4 @@ spec:
     - port: metrics
       interval: 60s
       path: /
+{{ end }}

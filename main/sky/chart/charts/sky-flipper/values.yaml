@@ -1,24 +1,24 @@
+enabled: true
 replicaCount: 2
 
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skyflipper
-  tag: dcd97e6d-92dc-41e5-8e71-2ba40da82e84
+  repository: muehlhansfl/skyflipper
+  tag: 69f92d60-d6df-4382-be52-571514854d79
   pullPolicy: IfNotPresent
 
 ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
     cpu: 200m
     memory: 200Mi
-  limits: 
+  limits:
     cpu: 500m
     memory: 512Mi
-
 
 serivcePorts:
   - name: api
@@ -32,11 +32,11 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: 
+envVars:
   - name: REDIS_HOST
     value: redis-service
   - name: DBConnection
     valueFrom:
       secretKeyRef:
-        name: secret 
+        name: secret
         key: connection_read_secondary

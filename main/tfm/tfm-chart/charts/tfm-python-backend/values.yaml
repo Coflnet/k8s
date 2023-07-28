@@ -2,26 +2,28 @@ replicaCount: 1
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/tfmpythonbackend
-  tag: 6f7cffbb-8efa-4e21-9b60-4977e91c9c29
+  repository: muehlhansfl/tfmpythonbackend
+  tag: e4ea5069-56b4-4929-b16b-403d029af335
   pullPolicy: IfNotPresent
 
 ports:
   - name: api
     containerPort: 7321
 
-resources: 
+resources:
   requests:
     cpu: 50m
-    memory: 200Mi
-
+    memory: 512Mi
+  limits:
+    cpu: 500m
+    memory: 2Gi
 
 serivcePorts:
   - name: api
     port: 7321
     targetPort: 7321
 
-envVars: 
+envVars:
   - name: MONGO_HOST
     valueFrom:
       secretKeyRef:

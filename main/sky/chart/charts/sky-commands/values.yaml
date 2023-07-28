@@ -1,8 +1,9 @@
+enabled: true
 replicaCount: 4
 
 image:
-  repository: harbor.flou.dev/coflnet/skycommands
-  tag: d06fbd70-5fb3-48d6-9d01-5107b1e5b159
+  repository: muehlhansfl/skycommands
+  tag: 5dddb05c-41bf-403c-9ad6-a880120c78ac
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -19,9 +20,11 @@ ports:
 
 resources:
   requests:
-    memory: "2000Mi"
-    cpu: "200m"
-
+    memory: 1Gi
+    cpu: 300m
+  limits:
+    memory: 2Gi
+    cpu: 2000m
 
 services:
   - sky-commands
@@ -41,35 +44,35 @@ canaryService: &canaryService sky-commands-canary-service
 stableService: &stableService sky-commands-stable-service
 mainService: &mainService sky-commands
 trafficSplit: &trafficSplit sky-commands
-canary: 
+canary:
   steps:
-  - setWeight: 10
-  - pause: 
-      duration: 3m
-  - analysis:
-      templates:
-      - templateName: *canaryTemplate
-      args:
-      - name: service-name
-        value: *canaryService
-  - setWeight: 50
-  - pause:
-      duration: 5m
-  - analysis:
-      templates:
-      - templateName: *canaryTemplate
-      args:
-      - name: service-name
-        value: *canaryService
-  - setWeight: 100
-  - pause:
-      duration: 5m
-  - analysis:
-      templates:
-      - templateName: *canaryTemplate
-      args:
-      - name: service-name
-        value: *canaryService
+    - setWeight: 10
+    - pause:
+        duration: 3m
+    - analysis:
+        templates:
+          - templateName: *canaryTemplate
+        args:
+          - name: service-name
+            value: *canaryService
+    - setWeight: 50
+    - pause:
+        duration: 5m
+    - analysis:
+        templates:
+          - templateName: *canaryTemplate
+        args:
+          - name: service-name
+            value: *canaryService
+    - setWeight: 100
+    - pause:
+        duration: 5m
+    - analysis:
+        templates:
+          - templateName: *canaryTemplate
+        args:
+          - name: service-name
+            value: *canaryService
   maxUnavailable: 1
   canaryService: *canaryService
   stableService: *stableService

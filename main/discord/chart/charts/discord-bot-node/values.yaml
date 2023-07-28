@@ -3,8 +3,8 @@ replicaCount: 1
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/discord-bot-node
-  tag: 70b3a245-f1e3-4f2c-839b-6d203cd0d3aa
+  repository: muehlhansfl/discord-bot-node
+  tag: 66d9011d-6cbc-41c6-a956-3ef307f9ef53
   pullPolicy: IfNotPresent
 
 resources: 

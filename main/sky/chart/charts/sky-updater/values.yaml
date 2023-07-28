@@ -1,21 +1,21 @@
+enabled: true
 replicaCount: 5
 
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skyupdater
-  tag: ce80d389-64e7-4c6d-9a86-6fd9da6ced87
+  repository: muehlhansfl/skyupdater
+  tag: 7ab13668-f7f1-4f80-a30a-1cb131ba6695
   pullPolicy: IfNotPresent
 
 ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
-    cpu: 400m 
+    cpu: 400m
     memory: 500Mi
-
 
 serivcePorts:
   - name: api
@@ -37,7 +37,7 @@ livenessProbe:
   periodSeconds: 10
   failureThreshold: 30
 
-envVars: 
+envVars:
   - name: SLOWDOWN_MS
     value: "100"
   - name: apiKey
@@ -51,33 +51,33 @@ envVars:
         name: secret
         key: flou_api_key
   ## TODO split into global env vars ##
-  - name: TOPICS__MISSING_AUCTION 
-    valueFrom: 
+  - name: TOPICS__MISSING_AUCTION
+    valueFrom:
       configMapKeyRef:
         name: config
         key: topic_missing_auction-raw
   - name: TOPICS__SOLD_AUCTION
-    valueFrom: 
+    valueFrom:
       configMapKeyRef:
         name: config
         key: topic_sold_auction-raw
   - name: TOPICS__NEW_AUCTION
-    valueFrom: 
+    valueFrom:
       configMapKeyRef:
         name: config
         key: topic_new_auction-raw
   - name: TOPICS__AUCTION_ENDED
-    valueFrom: 
+    valueFrom:
       configMapKeyRef:
         name: config
         key: topic_auction_ended-raw
   - name: TOPICS__NEW_BID
-    valueFrom: 
+    valueFrom:
       configMapKeyRef:
         name: config
         key: topic_new_bid-raw
   - name: TOPICS__BAZAAR
-    valueFrom: 
+    valueFrom:
       configMapKeyRef:
         name: config
         key: topic_bazaar-raw

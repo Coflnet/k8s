@@ -1,19 +1,19 @@
+enabled: true
 replicaCount: 3
 
 image:
-  repository: harbor.flou.dev/coflnet/skyitems
-  tag: 5cfb0b1f-7872-4833-9b28-735bc73103a2
+  repository: muehlhansfl/skyitems
+  tag: 7cd581af-6412-4ab6-ae2b-9de11046d5ff
   pullPolicy: IfNotPresent
 
 ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
     cpu: 200m
     memory: 512Mi
-
 
 serivcePorts:
   - name: api
@@ -27,7 +27,7 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: 
+envVars:
   - name: DBCONNECTION
     valueFrom:
       secretKeyRef:

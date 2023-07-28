@@ -19,14 +19,14 @@ spec:
       {{ toYaml $.Values.imagePullSecrets | nindent 8 }}
       affinity:
         podAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
+          requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchExpressions:
               - key: app
                 operator: In
                 values:
                 - dedup-{{ .name }}-redis
-            topologyKey: "kubernetes.io/hostname"
+            topologyKey: kubernetes.io/hostname
       containers:
       - name: dedup-{{ .name }}-redis
         image: bitnami/redis:7.0.12

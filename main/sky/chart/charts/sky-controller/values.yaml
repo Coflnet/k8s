@@ -1,24 +1,24 @@
+enabled: true
 replicaCount: 1
 
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/sky-controller
-  tag: 55d62bdc-a7cc-4ae7-8a49-b3e1af63cfde
+  repository: muehlhansfl/sky-controller
+  tag: cf52c7c6-de8f-41a3-98d6-7658e406fc1b
   pullPolicy: IfNotPresent
 
 ports:
   - name: metrics
     containerPort: 2112
 
-resources: 
+resources:
   requests:
     cpu: 50m
     memory: 200Mi
-  limits: 
+  limits:
     cpu: 200m
     memory: 512Mi
-
 
 serivcePorts:
   - name: metrics

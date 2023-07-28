@@ -1,8 +1,10 @@
+enabled: true
+
 replicaCount: 8
 
 image:
   repository: muehlhansfl/skyapi
-  tag: 2e545c7d-ad56-4a6d-bbcd-0e5179e66f6a
+  tag: a019c773-32ac-4930-ab75-64de6b5d9634
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -19,13 +21,10 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
-
-securityContext: 
+securityContext:
   capabilities:
     drop:
-    - ALL
+      - ALL
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1000
@@ -46,12 +45,11 @@ ingress:
           pathType: ImplementationSpecific
   tls: []
 
-resources: 
+resources:
   requests:
     cpu: 800m
     memory: 500Mi
   limits: {}
-
 
 services:
   - sky-api
@@ -69,35 +67,35 @@ canaryService: &canaryService sky-api-canary-service
 stableService: &stableService sky-api-stable-service
 mainService: &mainService sky-api
 trafficSplit: &trafficSplit sky-api
-canary: 
+canary:
   steps:
-  - setWeight: 10
-  - pause: 
-      duration: 3m
-  - analysis:
-      templates:
-      - templateName: *canaryTemplate
-      args:
-      - name: service-name
-        value: *canaryService
-  - setWeight: 50
-  - pause:
-      duration: 5m
-  - analysis:
-      templates:
-      - templateName: *canaryTemplate
-      args:
-      - name: service-name
-        value: *canaryService
-  - setWeight: 100
-  - pause:
-      duration: 5m
-  - analysis:
-      templates:
-      - templateName: *canaryTemplate
-      args:
-      - name: service-name
-        value: *canaryService
+    - setWeight: 10
+    - pause:
+        duration: 3m
+    - analysis:
+        templates:
+          - templateName: *canaryTemplate
+        args:
+          - name: service-name
+            value: *canaryService
+    - setWeight: 50
+    - pause:
+        duration: 5m
+    - analysis:
+        templates:
+          - templateName: *canaryTemplate
+        args:
+          - name: service-name
+            value: *canaryService
+    - setWeight: 100
+    - pause:
+        duration: 5m
+    - analysis:
+        templates:
+          - templateName: *canaryTemplate
+        args:
+          - name: service-name
+            value: *canaryService
   maxUnavailable: 1
   canaryService: *canaryService
   stableService: *stableService

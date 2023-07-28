@@ -1,24 +1,24 @@
+enabled: true
 replicaCount: 1
 
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skychat
-  tag: 1f87314f-dddb-4784-8ee2-efae36f3307e
+  repository: muehlhansfl/skychat
+  tag: b1aa6bef-753f-4804-81b3-88a17e6db1c7
   pullPolicy: IfNotPresent
 
 ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
     cpu: 100m
     memory: 300Mi
-  limits: 
+  limits:
     cpu: 250m
     memory: 500Mi
-
 
 serivcePorts:
   - name: api
@@ -32,7 +32,7 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: 
+envVars:
   - name: DB_CONNECTION
     valueFrom:
       secretKeyRef:

@@ -6,8 +6,8 @@ imagePullSecrets:
   - name: harbor
 
 image:
-  repository: harbor.flou.dev/coflnet/songvoter
-  tag: 58851df8-8a7d-427f-8107-00e10c2ad009
+  repository: muehlhansfl/songvoter
+  tag: 43817405-011d-4442-8507-73de910ffb9f
   pullPolicy: IfNotPresent
 
 ports:
@@ -35,7 +35,19 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: 
+envVars:
+
+  ## common jaeger env vars ##
+  - name: JAEGER_AGENT_HOST
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
+  - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
+
+  ## specific env vars ##
   - name: DB_CONNECTION
     valueFrom:
       secretKeyRef:

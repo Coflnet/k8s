@@ -3,8 +3,8 @@ replicaCount: 1
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/tfmchatmicroservice
-  tag: 86d0f711-d723-41d8-b915-a4840b4289fc
+  repository: muehlhansfl/tfmchatmicroservice
+  tag: 0bd966ee-0ed6-4493-9188-d80a7f8f7750
   pullPolicy: IfNotPresent
 
 ports:

@@ -1,23 +1,23 @@
+enabled: true
 replicaCount: 3
 
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skycrafts
-  tag: ea7a6a59-5d3f-4459-8c8a-257d8cc789dc
+  repository: muehlhansfl/skycrafts
+  tag: a786b46f-d4c2-45c5-bcad-fc2601924e55
   pullPolicy: IfNotPresent
 
 ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
     cpu: 140m
     memory: 200Mi
-  limits: 
+  limits:
     memory: 512Mi
-
 
 serivcePorts:
   - name: api
@@ -30,4 +30,3 @@ readinessProbe:
     port: api
   initialDelaySeconds: 120
   periodSeconds: 5
-

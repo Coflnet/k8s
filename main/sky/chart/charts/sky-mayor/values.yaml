@@ -1,10 +1,11 @@
+enabled: true
 replicaCount: 3
 
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/sky-mayor
-  tag: ae2fd9aa-47ce-4625-8db4-ac385b36832f
+  repository: muehlhansfl/sky-mayor
+  tag: a60c99d3-0803-483c-8c50-0623806256fc
   pullPolicy: IfNotPresent
 
 ports:
@@ -13,13 +14,12 @@ ports:
   - name: metrics
     containerPort: 2112
 
-resources: 
+resources:
   requests:
     cpu: 20m
     memory: 128Mi
-  limits: 
+  limits:
     memory: 256Mi
-
 
 serivcePorts:
   - name: api
@@ -36,12 +36,11 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: 
+envVars:
   - name: GIN_MODE
     value: release
   - name: MONGO_URL
     valueFrom:
       secretKeyRef:
-        name: secret 
+        name: secret
         key: mongo_url
-

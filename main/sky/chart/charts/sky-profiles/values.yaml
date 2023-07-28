@@ -1,24 +1,24 @@
+enabled: true
 replicaCount: 2
 
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skyprofiles
-  tag: 16a9a580-0a3b-4ca1-9d06-fd764f63b7a7
+  repository: muehlhansfl/skyprofiles
+  tag: f75e7882-4d74-423d-9de9-8fbe98abfe53
   pullPolicy: IfNotPresent
 
 ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
     cpu: 200m
     memory: 200Mi
-  limits: 
+  limits:
     cpu: 500m
     memory: 512Mi
-
 
 serivcePorts:
   - name: api

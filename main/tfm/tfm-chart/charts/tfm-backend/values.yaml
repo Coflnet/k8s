@@ -2,8 +2,8 @@ replicaCount: 1
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/tfmbackend
-  tag: 70a66e48-f53c-4dd2-ba09-08adce414212
+  repository: muehlhansfl/tfmbackend
+  tag: 5d1f62ba-5ae7-49b1-8e06-741b8eb38987
   pullPolicy: IfNotPresent
 
 ports:

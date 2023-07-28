@@ -3,8 +3,8 @@ replicaCount: 1
 strategy: Recreate
 
 image:
-  repository: harbor.flou.dev/coflnet/coflnet-bot
-  tag: bcb36ae0-9b00-40bd-b7da-ce81e673a638
+  repository: muehlhansfl/coflnet-bot
+  tag: 35992f52-16c8-4a23-8f6a-1504f2285752
   pullPolicy: IfNotPresent
 
 ports:

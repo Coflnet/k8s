@@ -1,3 +1,4 @@
+{{ if .Values.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -30,7 +31,9 @@ spec:
           {{ if .Values.envVars }}
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}
+          {{ if .Values.defaultEnvVarsEnabled }}
           {{ toYaml .Values.global.envVars | nindent 10 }}
+          {{ end }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
@@ -49,3 +52,4 @@ spec:
             secretName: {{ .name }}
           {{ end }}
       {{ end }}
+{{ end }}

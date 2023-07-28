@@ -1,8 +1,9 @@
+{{ if .Values.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   labels:
-    release: k8-main-prometheus
+    release: prometheus
     app: kube-prometheus-stack
   name: sky-fliptracker
 spec:
@@ -18,3 +19,4 @@ spec:
             summary: "Very few flips tracked"
             description: "only {{`{{`}} $value {{`}}`}} auctions found"
 ---            
+{{ end }}
