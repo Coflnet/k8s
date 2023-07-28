@@ -28,6 +28,17 @@ spec:
                 - dedup-{{ .name }}-redis
             topologyKey: "kubernetes.io/hostname"
       containers:
+      - name: dedup-{{ .name }}-redis
+        image: bitnami/redis:7.0.12
+        env:
+          - name: ALLOW_EMPTY_PASSWORD
+            value: "yes"
+        ports:
+          - containerPort: 6379
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "50m"
       - name: dedup-{{ .name }}
         image: {{ $.Values.image.repository }}:{{ $.Values.image.tag  }}
         ports:
@@ -39,7 +50,7 @@ spec:
         - name: KAFKA_HOST
           value: {{ $.Values.kafka.host }}
         - name: REDIS_HOST
-          value: dedup-{{ .name }}-redis
+          value: localhost
         - name: SOURCE_TOPIC
           value: {{ .sourceTopic }}
         - name: TARGET_TOPIC
@@ -105,47 +116,6 @@ spec:
     app: dedup-{{ .name }}
   ports:
     {{ toYaml $.Values.serivcePorts | nindent 4 }}
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: dedup-{{ .name }}-redis
-  labels:
-    app: dedup-{{ .name }}-redis
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: dedup-{{ .name }}-redis
-  template:
-    metadata:
-      labels:
-        app: dedup-{{ .name }}-redis
-    spec:
-      containers:
-      - name: dedup-{{ .name }}-redis
-        image: bitnami/redis:6.2-debian-10
-        env:
-        - name: ALLOW_EMPTY_PASSWORD
-          value: "yes"
-        ports:
-        - containerPort: 6379
-        resources:
-          requests:
-            memory: "100Mi"
-            cpu: "50m"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: dedup-{{ .name }}-redis
-spec:
-  selector:
-    app: dedup-{{ .name }}-redis
-  ports:
-    - protocol: TCP
-      port: 6379
-      targetPort: 6379
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
