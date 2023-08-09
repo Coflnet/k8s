@@ -116,3 +116,6 @@ sky-subscriptions:
 
 sky-updater:
   enabled: false
+
+sky-auctions:
+  enabled: false
