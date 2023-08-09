@@ -51,7 +51,7 @@ envVars:
     value: /tls/secret/db.pfx
 
 volumes:
-  - mountPath: /tls/secret
+  - mountPath: /tlsl/scylla/secret
     type: secret
     mountName: scylla-pfx
     name: scylla-credentials
