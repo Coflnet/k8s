@@ -47,8 +47,13 @@ envVars:
       secretKeyRef:
         name: scylla-credentials
         key: auctions-password
-  - name: X509Certificate_PATHS
+  - name: CASSANDRA__X509Certificate_PATHS
     value: /tls/secret/db.pfx
+  - name: CASSANDRA__X509Certificate_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: scylla-credentials
+        key: db-pfx-password
 
 volumes:
   - mountPath: /tlsl/scylla/secret
