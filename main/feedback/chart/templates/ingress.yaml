@@ -9,7 +9,7 @@ spec:
   - host: feedback.coflnet.com
     http:
       paths:
-      - path: /api/
+      - path: /
         pathType: ImplementationSpecific
         backend:
           service: 
