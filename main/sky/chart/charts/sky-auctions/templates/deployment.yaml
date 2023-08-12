@@ -55,7 +55,8 @@ spec:
       {{ end }}
         - name: scylla-pfx
           secret:
-            secretName: scylla-credentials
+            secretName: scylla-pfx
             items:
             - key: db.pfx
+              path: db.pfx
 {{ end }}
