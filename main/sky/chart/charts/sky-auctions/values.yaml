@@ -4,7 +4,7 @@ replicaCount: 1
 strategy: RollingUpdate
 image:
   repository: muehlhansfl/skyauctions
-  tag: 6ff7f097-0f29-4912-ae76-d0b1d6af8558
+  tag: 06ad5d2b-d99e-48d4-8c73-13da6ee68487
   pullPolicy: IfNotPresent
 
 ports:
@@ -60,3 +60,4 @@ volumes:
     type: secret
     mountName: scylla-pfx
     name: scylla-credentials
+    subPath: db.pfx
