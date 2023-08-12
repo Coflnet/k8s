@@ -40,7 +40,7 @@ spec:
           mountPath: {{ .mountPath }}
         {{ end }}
         - name: scylla-pfx
-          mountPath: /tls/scylla/secret
+          mountPath: /tls/scylla/secret/db.pfx
           subPath: db.pfx
       volumes:
       {{ range .Values.global.volumes }}
