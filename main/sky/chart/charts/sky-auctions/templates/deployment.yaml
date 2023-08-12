@@ -30,6 +30,8 @@ spec:
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}
           {{ toYaml .Values.global.envVars | nindent 10 }}
+          - name: REDIS_HOST
+            value: "{{ .Chart.Name }}-redis"
         readinessProbe:
           {{ toYaml .Values.readinessProbe | nindent 10 }}
         resources:
