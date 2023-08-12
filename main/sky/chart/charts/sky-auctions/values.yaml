@@ -5,6 +5,7 @@ strategy: RollingUpdate
 image:
   repository: muehlhansfl/skyauctions
   tag: 4321d58e-63ea-45e2-a407-9c7fa05c07ad
+
   pullPolicy: IfNotPresent
 
 ports:
