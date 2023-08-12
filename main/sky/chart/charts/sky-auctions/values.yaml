@@ -54,3 +54,8 @@ envVars:
       secretKeyRef:
         name: scylla-credentials
         key: db-pfx-password
+  - name: DBConnection
+    valueFrom:
+      secretKeyRef:
+        key: connection_live
+        name: secret
