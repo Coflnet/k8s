@@ -39,13 +39,9 @@ spec:
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
-        {{ range .Values.volumes }}
-        - name: {{ .mountName }}
-          mountPath: {{ .mountPath }}
-          {{- if .subPath }}
-          subPath: {{ .subPath }}
-          {{- end }}
-        {{ end }}
+        - name: scylla-pfx
+          mountPath: /tls/scylla/secret
+          subPath: db.pfx
       volumes:
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
@@ -57,14 +53,10 @@ spec:
             secretName: {{ .name }}
           {{ end }}
       {{ end }}
-      {{ range .Values.volumes }}
-        - name: {{ .mountName }}
-          {{ if eq .type "configmap"  }}
-          configMap:
-            name: {{ .name }}
-          {{ else}}
+        - name: scylla-pfx
           secret:
-            secretName: {{ .name }}
-          {{ end }}
-      {{ end }}
+            secretName: scylla-credentials
+            items:
+            - key: db.pfx
+              path: db.pfx
 {{ end }}
