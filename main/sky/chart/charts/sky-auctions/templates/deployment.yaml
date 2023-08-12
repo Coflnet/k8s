@@ -58,5 +58,4 @@ spec:
             secretName: scylla-credentials
             items:
             - key: db.pfx
-              path: db.pfx
 {{ end }}
