@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      imagePullSecrets:
+      {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        ports:
+           {{ toYaml .Values.ports | nindent 10 }}
+        env:
+          {{ toYaml .Values.envVars | nindent 10 }}
+        resources:
+          {{ toYaml .Values.resources | nindent 10 }}
+        volumeMounts:
+        {{ range .Values.volumes }}
+        - name: {{ .mountName }}
+          mountPath: {{ .mountPath }}
+        {{ end }}
+      volumes: 
+      {{ range .Values.volumes }}
+        - name: {{ .mountName }}
+          {{ if eq .type "configmap"  }}
+          configMap:
+            name: {{ .name }}
+          {{ else}}
+          secret:
+            secretName: {{ .name }}
+          {{ end }}
+      {{ end }}

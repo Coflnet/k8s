@@ -1,0 +1,101 @@
+replicaCount: 3
+maxUnavailable: 1
+
+strategy: RollingUpdate
+
+image:
+  repository: harbor.flou.dev/coflnet/accounting
+  tag: 7fb7836f-578a-4b94-a1ba-yikes
+  pullPolicy: IfNotPresent
+
+ports: []
+
+resources: 
+  requests:
+    cpu: 100m
+    memory: 200Mi
+  limits:
+    cpu: 200m
+    memory: 512Mi
+
+
+serivcePorts: []
+
+envVars:
+  - name: JAEGER_AGENT_HOST
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
+
+  - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
+
+  - name: STRIPE__KEY
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: stripe_key
+
+  - name: PAYPAL__ID
+    valueFrom:
+      secretKeyRef: 
+        name: secret
+        key: paypal_id
+
+  - name: PAYPAL__SECRET
+    valueFrom:
+      secretKeyRef: 
+        name: secret
+        key: paypal_secret
+
+  - name: PAYPAL__IS_SANDBOX
+    value: "false"
+
+  - name: DB_CONNECTION
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: connection_string_payment
+
+  - name: KAFKA__BROKERS
+    valueFrom:
+      secretKeyRef:
+        name: redpanda
+        key: brokers
+
+  - name: KAFKA__USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: redpanda-credentials
+        key: username
+
+  - name: KAFKA__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: redpanda-credentials
+        key: password
+
+  - name: KAFKA__TLS__CA_LOCATION
+    value: "/tls/cm/ca.crt"
+
+  - name: KAFKA__TLS__CERTIFICATE_LOCATION
+    value: "/tls/cm/skyblock.crt"
+
+  - name: KAFKA__TLS__KEY_LOCATION
+    value: "/tls/secret/skyblock.key"
+
+  - name: KAFKA__REPLICATION_FACTOR
+    value: "3"
+
+volumes:
+- name: redpanda
+  mountPath: /tls/secret
+  type: secret
+  mountName: redpanda-secret
+- name: redpanda
+  mountPath: /tls/cm
+  type: configmap
+  mountName: redpanda-cm
+
