@@ -58,6 +58,12 @@ envVars:
         name: secret
         key: connection_string_payment
 
+  - name: LEX_OFFICE_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: lex_office_token
+
   - name: KAFKA__BROKERS
     valueFrom:
       secretKeyRef:
