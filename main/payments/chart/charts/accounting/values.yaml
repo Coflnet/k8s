@@ -3,8 +3,8 @@ replicaCount: 1
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/accounting
-  tag: 7fb7836f-578a-4b94-a1ba-yikes
+  repository: muehlhansfl/accounting
+  tag: 06e6f3cc-3a35-4ef7-b44d-331cec3ad95f
   pullPolicy: IfNotPresent
 
 ports: []
