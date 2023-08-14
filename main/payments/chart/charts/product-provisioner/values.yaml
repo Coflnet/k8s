@@ -1,6 +1,6 @@
 image:
-  repository: harbor.flou.dev/coflnet/productprovisioner
-  tag: ff37fa31-0a02-437a-997b-360663896971
+  repository: muehlhansfl/productprovisioner
+  tag: 8ae377da-c9b1-4e2d-8a81-62d1adb7fad7
 
 envVars:
   - name: "PAYMENT_HOST"
