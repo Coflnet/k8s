@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/accounting
-  tag: 6ba20741-242d-4df9-a54b-7920e580499e
+  tag: bf910c39-845d-4c53-abd3-49b8cd8cdcad
   pullPolicy: IfNotPresent
 
 ports: []
