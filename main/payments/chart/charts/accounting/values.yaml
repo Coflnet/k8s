@@ -1,5 +1,4 @@
-replicaCount: 3
-maxUnavailable: 1
+replicaCount: 1
 
 strategy: RollingUpdate
 
