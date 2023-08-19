@@ -49,3 +49,5 @@ envVars:
     value: k8-main-kafka-kafka.kafka.svc.cluster.local
   - name: DISCORD_MESSAGES_TOPIC
     value: discord-messages
+  - name: DISCORD_BOT_BASE_URL
+    value: http://coflnet-bot.discord:8080
