@@ -10,20 +10,23 @@ image:
 ports:
   - containerPort: 2112
     name: metrics
+  - containerPort: 8080
+    name: api
 
-resources: 
+resources:
   requests:
     cpu: 100m
     memory: 200Mi
-
 
 serivcePorts:
   - name: metrics
     port: 2112
     targetPort: 2112
+  - name: api
+    port: 8080
+    targetPort: 8080
 
-envVars: 
-
+envVars:
   # DBs
   - name: MONGO_HOST
     valueFrom:
@@ -50,10 +53,11 @@ envVars:
   - name: DISCORD_MESSAGE_TOPIC
     value: discord-messages
   - name: DISCORD_MESSAGE_CONSUMER_GROUP
-    value: discord-bot-messages-cg
+    value:
+      discord-bot-messages-cg
 
-        # TRACING
-  - name: OTEL_SERVICE_NAME 
+      # TRACING
+  - name: OTEL_SERVICE_NAME
     value: coflnet-bot
   - name: JAEGER_AGENT_HOST
     valueFrom:
@@ -64,13 +68,11 @@ envVars:
       fieldRef:
         fieldPath: status.hostIP
 
-
-  
   # APPLICATION RELATED
   - name: DEBUG
     value: "false"
 
-  # DISCORD 
+  # DISCORD
   - name: DISCORD_BOT_TOKEN
     valueFrom:
       secretKeyRef:
@@ -81,19 +83,14 @@ envVars:
   - name: MOD_ROLE
     value: "869942341442600990"
 
-
   # DISCORD CHANNELS
   - name: DISCORD_GUILD_ID
     value: "267680588666896385"
   - name: DISCORD_IN_GAME_CHANNEL_ID
     value: "965323875246276660"
 
-
-
-
   # COFLNET
-  
- 
+
   # BASE URL
   - name: CHAT_BASE_URL
     value: http://sky-chat.sky:8000
@@ -112,7 +109,6 @@ envVars:
       secretKeyRef:
         name: secret
         key: chat_api_key
-
 
   # Deprecated
   - name: CHAT_WEBHOOK
@@ -145,7 +141,6 @@ envVars:
         name: secret
         key: flips_channel
 
-
   - name: DISCORD_FLIPPER_ROLE
     valueFrom:
       configMapKeyRef:
@@ -163,10 +158,8 @@ envVars:
   - name: FLIPS_CHANNEL
     value: "1002876203717369937"
 
-
   - name: HELPER_ROLE
     value: "933807456151285770"
-
 
   - name: DEV_ROLE
     value: "669258959495888907"
@@ -182,9 +175,6 @@ envVars:
 
   - name: TOPIC_DEV_CHAT
     value: discord-messages
-
-
-
 
   # webhooks
   - name: DISCORD_MUTES_WEBHOOK
