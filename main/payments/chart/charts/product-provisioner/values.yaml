@@ -1,6 +1,6 @@
 image:
   repository: muehlhansfl/productprovisioner
-  tag: 8ae377da-c9b1-4e2d-8a81-62d1adb7fad7
+  tag: bdebe0a1-eadf-40f3-b9b0-624fa7952536
 
 envVars:
   - name: "PAYMENT_HOST"
