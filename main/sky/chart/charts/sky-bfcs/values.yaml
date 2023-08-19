@@ -31,6 +31,14 @@ serivcePorts:
     port: 8888
     targetPort: 8888
 
+
+envVars:
+  - name: SNIPER_TRANSFER_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: sniper
+        key: sniper_transfer_token
+
 metrics:
   enabled: true
 
