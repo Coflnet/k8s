@@ -4,8 +4,8 @@ maxUnavailable: 1
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/payments
-  tag: 7fb7836f-578a-4b94-a1ba-d5e42f9ea9f1
+  repository: muehlhansfl/payments
+  tag: 4e9e06bf-e952-4e83-ab33-d70d3581599c
   pullPolicy: IfNotPresent
 
 ports:
