@@ -36,7 +36,7 @@ envVars:
   - name: SNIPER_TRANSFER_TOKEN
     valueFrom:
       secretKeyRef:
-        name: sniper
+        name: sniper-transfer-token
         key: sniper_transfer_token
 
 metrics:
