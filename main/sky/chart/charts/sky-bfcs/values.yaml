@@ -6,7 +6,7 @@ strategy: Recreate
 
 image:
   repository: muehlhansfl/skybfcs
-  tag: ede83805-497c-453d-b03f-77c131eb156b
+  tag: 85245218-90e9-4d27-95b8-c4f8128d7888
   pullPolicy: IfNotPresent
 
 ports:
@@ -30,6 +30,14 @@ serivcePorts:
   - name: websocket
     port: 8888
     targetPort: 8888
+
+
+envVars:
+  - name: SNIPER_TRANSFER_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: sniper-transfer-token
+        key: sniper_transfer_token
 
 metrics:
   enabled: true
