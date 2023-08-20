@@ -104,7 +104,7 @@ envVars:
     value: "http://payments.payment:8000"
 
   # CHAT
-  - name: COFL_CHAT_API_KEY
+  - name: CHAT_API_KEY
     valueFrom:
       secretKeyRef:
         name: secret
