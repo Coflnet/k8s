@@ -6,7 +6,7 @@ imagePullSecrets:
   - name: harbor
 image:
   repository: muehlhansfl/feedback
-  tag: 1d3fdab7-3a5b-4a2a-96ab-2620cc83c23b
+  tag: 224ecc25-7e6b-47ed-8ad3-18f587c97c25
   pullPolicy: IfNotPresent
 
 ports:
@@ -49,3 +49,5 @@ envVars:
     value: k8-main-kafka-kafka.kafka.svc.cluster.local
   - name: DISCORD_MESSAGES_TOPIC
     value: discord-messages
+  - name: DISCORD_BOT_BASE_URL
+    value: http://coflnet-bot.discord:8080
