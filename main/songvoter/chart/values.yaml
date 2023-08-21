@@ -30,7 +30,7 @@ serivcePorts:
 
 readinessProbe:
   httpGet:
-    path: /api/index.html
+    path: /status
     port: api
   initialDelaySeconds: 20
   periodSeconds: 3
