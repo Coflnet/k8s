@@ -1,3 +1,0 @@
-defaultNamespace: coflnet
-helm:
-  chart: ./chart
