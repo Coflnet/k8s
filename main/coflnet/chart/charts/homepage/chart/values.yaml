@@ -1,0 +1,42 @@
+replicaCount: 2
+
+strategy: RollingUpdate
+
+imagePullSecrets: 
+  - name: harbor
+image:
+  repository: muehlhansfl/homepage
+  tag: 8c939bda-7659-4faa-a6b6-1a18f7fcfb8a
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: api
+    containerPort: 3000
+
+resources: 
+  requests:
+    cpu: 10m
+    memory: 20Mi
+  limits: 
+    cpu: 100m
+    memory: 128Mi
+
+
+serivcePorts:
+  - name: api
+    port: 3000
+    targetPort: 3000
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: api
+  initialDelaySeconds: 20
+  periodSeconds: 3
+
+envVars: 
+  - name: DISCORD_WEBHOOK_URL
+    valueFrom:
+      secretKeyRef:
+        name: homepage-secret
+        key: discord_webhook_url
