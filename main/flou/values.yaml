@@ -3,8 +3,8 @@ replicaCount: 1
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/flou21/homepage
-  tag: fcc66d53-7fed-4eb1-abba-8547633696a7
+  repository: muehlhansfl/homepage
+  tag: 8c939bda-7659-4faa-a6b6-1a18f7fcfb8a
   pullPolicy: IfNotPresent
 
 ports:

@@ -1,11 +1,11 @@
 enabled: true
-replicaCount: 5
+replicaCount: 9
 
 strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skyplayerstate
-  tag: f4652189-df92-4c68-9de5-0c66b5bc3514
+  tag: 0313d7a5-434d-40de-8426-0843aa569fa1
   pullPolicy: IfNotPresent
 
 ports:
@@ -17,7 +17,7 @@ resources:
     cpu: 200m
     memory: 200Mi
   limits:
-    memory: 512Mi
+    memory: 812Mi
 
 serivcePorts:
   - name: api
