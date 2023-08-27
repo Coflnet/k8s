@@ -7,7 +7,7 @@ imagePullSecrets:
 
 image:
   repository: muehlhansfl/songvoter
-  tag: c5d91038-81f2-4dae-95f1-dd98c145e4eb
+  tag: b6719f71-bdb2-496d-8947-b438eb0c799f
   pullPolicy: IfNotPresent
 
 ports:
@@ -30,7 +30,7 @@ serivcePorts:
 
 readinessProbe:
   httpGet:
-    path: /api/index.html
+    path: /status
     port: api
   initialDelaySeconds: 20
   periodSeconds: 3

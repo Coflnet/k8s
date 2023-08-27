@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skyplayerstate
-  tag: 0313d7a5-434d-40de-8426-0843aa569fa1
+  tag: aeda5074-86f0-4519-8f57-98e802d2dd07
   pullPolicy: IfNotPresent
 
 ports:
@@ -17,7 +17,7 @@ resources:
     cpu: 200m
     memory: 200Mi
   limits:
-    memory: 812Mi
+    memory: 1Gi
 
 serivcePorts:
   - name: api

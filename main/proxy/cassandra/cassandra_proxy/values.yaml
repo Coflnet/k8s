@@ -312,7 +312,6 @@ configuration: |
     balance leastconn
   
     server cassandra-01 38.242.247.61:9042 check
-    server cassandra-02 38.242.247.62:9042 check
     server cassandra-03 38.242.247.65:9042 check
 
 ## @param containerPorts [array] List of container ports to enable in the haproxy container
