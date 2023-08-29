@@ -80,6 +80,6 @@ envVars:
         key: google__clientsecret
 
 dbMigration:
-  enabled: false
+  enabled: true
   name: db-migration
   key: secret
