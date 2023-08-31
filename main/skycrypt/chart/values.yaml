@@ -60,4 +60,4 @@ envVars:
         name: skycrypt-secret
         key: db_url
   - name: REDIS_URL
-    value: redis://redis.redis:6379
+    value: redis://redis:6379
