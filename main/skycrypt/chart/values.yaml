@@ -5,9 +5,9 @@ strategy: RollingUpdate
 imagePullSecrets: 
   - name: regcred
 image:
-  repository: muehlhansfl/skycrypt
-  tag: aug-06
-  pullPolic: IfNotPresent
+  repository: harbor.flou.dev/private/sky-crypt-private
+  tag: manual-update-02
+  pullPolicy: IfNotPresent
 
 ports:
   - name: web
@@ -49,15 +49,3 @@ readinessProbe:
 envVars: 
   - name: NODE_ENV
     value: production
-  - name: HYPIXEL_API_KEY
-    valueFrom:
-      secretKeyRef:
-        name: skycrypt-secret
-        key: hypixel_api_key
-  - name: DB_URL
-    valueFrom:
-      secretKeyRef:
-        name: skycrypt-secret
-        key: db_url
-  - name: REDIS_URL
-    value: redis://redis:6379
