@@ -4,8 +4,8 @@ replicaCount: 1
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/skyeventbroker
-  tag: 82b336c6-7e2d-48ee-b0c7-ac8de85f6e19
+  repository: muehlhansfl/skyeventbroker
+  tag: 0dfe5028-5cf4-4737-8dcb-73cd1a163479
   pullPolicy: IfNotPresent
 
 ports:
