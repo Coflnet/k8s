@@ -6,7 +6,7 @@ imagePullSecrets:
   - name: regcred
 image:
   repository: muehlhansfl/skycrypt
-  tag: sep-10
+  tag: sep-11
   pullPolicy: IfNotPresent
 
 ports:
@@ -61,3 +61,8 @@ envVars:
         key: db_url
   - name: REDIS_URL
     value: redis://redis:6379
+  - name: SESSION_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: skycrypt-secret
+        key: session_secret
