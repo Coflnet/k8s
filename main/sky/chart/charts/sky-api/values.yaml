@@ -1,10 +1,10 @@
 enabled: true
 
-replicaCount: 8
+replicaCount: 10
 
 image:
   repository: muehlhansfl/skyapi
-  tag: 6b9a3ef4-2fd0-4593-9b7a-d7a7aaa663e3
+  tag: 4d54f28e-118a-4270-9bce-d152eb63731b
   pullPolicy: IfNotPresent
 
 nameOverride: ""

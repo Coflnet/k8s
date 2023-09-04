@@ -10,7 +10,7 @@ ports:
 
 resources:
   requests:
-    cpu: 100m
+    cpu: 200m
     memory: 200Mi
 
 serivcePorts:
