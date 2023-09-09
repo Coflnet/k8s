@@ -15,9 +15,9 @@ ports:
 resources:
   requests:
     cpu: 200m
-    memory: 200Mi
+    memory: 400Mi
   limits:
-    memory: 1Gi
+    memory: 1100Mi
 
 serivcePorts:
   - name: api
