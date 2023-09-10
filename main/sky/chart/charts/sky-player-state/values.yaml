@@ -1,5 +1,5 @@
 enabled: true
-replicaCount: 9
+replicaCount: 11
 
 strategy: RollingUpdate
 
