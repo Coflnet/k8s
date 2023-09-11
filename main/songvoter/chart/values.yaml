@@ -7,7 +7,7 @@ imagePullSecrets:
 
 image:
   repository: muehlhansfl/songvoter
-  tag: 9441a0d8-4408-4d4d-b9a9-10d34d927d5b
+  tag: 9ddf62ef-8066-4fb8-937d-c005916a9171
   pullPolicy: IfNotPresent
 
 ports:
