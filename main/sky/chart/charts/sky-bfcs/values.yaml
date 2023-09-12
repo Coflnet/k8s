@@ -6,7 +6,7 @@ strategy: Recreate
 
 image:
   repository: muehlhansfl/skybfcs
-  tag: 2173ccff-9195-45dd-a0e9-82f323115131
+  tag: cea04f98-19b8-408d-bacb-416a742a6a14
   pullPolicy: IfNotPresent
 
 ports:
