@@ -47,9 +47,11 @@ ingress:
 
 resources:
   requests:
-    cpu: 800m
-    memory: 500Mi
-  limits: {}
+    cpu: 1500m
+    memory: 800Mi
+  limits: 
+    cpu: 2000m
+    memory: 1Gi
 
 services:
   - sky-api
