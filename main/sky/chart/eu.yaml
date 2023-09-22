@@ -199,11 +199,6 @@ global:
 sky-bfcs:
   enabled: true
   envVars:
-    - name: SNIPER_BASE_URL
-      valueFrom:
-        configMapKeyRef:
-          name: sniper
-          key: base_url
     - name: SNIPER_TRANSFER_TOKEN
       valueFrom:
         secretKeyRef:
