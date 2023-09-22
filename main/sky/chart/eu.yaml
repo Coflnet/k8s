@@ -195,3 +195,25 @@ global:
       type: configmap
       mountName: redpanda-cm
       name: redpanda
+
+sky-bfcs:
+  enabled: true
+  envVars:
+    - name: SNIPER_BASE_URL
+      valueFrom:
+        configMapKeyRef:
+          name: sniper
+          key: base_url
+    - name: SNIPER_TRANSFER_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: sniper
+          key: transfer_token
+    - name: REDIS_HOST
+      value: sky-bfcs-redis,syncTimeout=200
+    - name: JWT_SECRET
+      valueFrom:
+        secretKeyRef:
+          key: jwt_secret_sniper
+          name: secret
+
