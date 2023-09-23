@@ -1,5 +1,5 @@
 enabled: true
-replicaCount: 7
+replicaCount: 10
 
 image:
   repository: muehlhansfl/skycommands
@@ -88,4 +88,11 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
+livenessProbe:
+  httpGet:
+    path: /metrics
+    port: 8000
+  initialDelaySeconds: 30
+  failureThreshold: 10
+  periodSeconds: 10
 envVars: []
