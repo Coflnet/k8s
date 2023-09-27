@@ -17,11 +17,11 @@ ports:
 
 resources:
   requests:
-    cpu: 2000m
+    cpu: 1400m
     memory: 3Gi
   limits:
-    cpu: 3000m
-    memory: 4Gi
+    cpu: 2000m
+    memory: 5Gi
 
 serivcePorts:
   - name: api
