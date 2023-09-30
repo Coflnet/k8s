@@ -4,8 +4,8 @@ replicaCount: 1
 strategy: Recreate
 
 image:
-  repository: harbor.flou.dev/coflnet/skysubscriptions
-  tag: 264fa29f-3a86-4219-b5f4-04d5dbe38318
+  repository: muehlhansfl/skysubscriptions
+  tag: 043356be-f946-4c93-bf89-6e56af228816
   pullPolicy: IfNotPresent
 
 ports:
