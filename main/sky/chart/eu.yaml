@@ -185,6 +185,8 @@ global:
       value: http://sky-proxy:8000
     - name: LEADERBOARD_BASE_URL
       value: http://leaderboard.leaderboard:8000
+    - name: EVENTS_BASE_URL
+      value: http://event-broker:8000
 
   volumes:
     - mountPath: /tls/secret
