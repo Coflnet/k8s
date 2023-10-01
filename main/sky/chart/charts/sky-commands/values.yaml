@@ -1,5 +1,5 @@
 enabled: true
-replicaCount: 9
+replicaCount: 6
 
 image:
   repository: muehlhansfl/skycommands
