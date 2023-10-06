@@ -5,7 +5,7 @@ revisionHistoryLimit: 5
 
 image:
   repository: muehlhansfl/hypixel-react
-  tag: e92fe012-49ec-4bee-b9b4-771b593bac1f
+  tag: 0f188030-5f52-4e9e-b0af-ed1e4ff4a447
   pullPolicy: IfNotPresent
 
 ports:
