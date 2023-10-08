@@ -41,6 +41,11 @@ global:
         secretKeyRef:
           key: connection_read_api
           name: secret
+    - name: JWT_SECRET ## to generate and validate auth tokens
+      valueFrom:
+        secretKeyRef:
+          key: jwt_secret_api
+          name: secret
     - name: EVENTS_REDIS_HOST
       value: sky-event-broker-redis
 
