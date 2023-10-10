@@ -207,3 +207,9 @@ envVars:
       secretKeyRef:
         key: discord_feedback_webhook
         name: secret
+
+  - name: SONGVOTER_FEEDBACK_WEBHOOK
+    valueFrom:
+      secretKeyRef:
+        key: discord_songvoter_feedback_webhook
+        name: secret
