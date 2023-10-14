@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/payments
-  tag: 2901d956-97ab-4235-b136-d6d3f1a23ae1
+  tag: c0f78ad3-dae2-448e-a1bf-c0a5d3f4bef1
   pullPolicy: IfNotPresent
 
 ports:
@@ -73,6 +73,18 @@ envVars:
 
   - name: PAYPAL__IS_SANDBOX
     value: "false"
+
+  - name: LEMONSQUEEZY__API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: lemonsqueezy_api_key
+
+  - name: LEMONSQUEEZY__SECRET
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: lemonsqueezy_secret
 
   - name: KAFKA_HOST
     value: k8-main-kafka-kafka.kafka.svc.cluster.local
