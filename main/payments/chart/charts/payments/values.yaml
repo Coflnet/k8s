@@ -74,6 +74,18 @@ envVars:
   - name: PAYPAL__IS_SANDBOX
     value: "false"
 
+  - name: LEMONSQUEEZY__API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: lemonsqueezy_api_key
+
+  - name: LEMONSQUEEZY__SECRET
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: lemonsqueezy_secret
+
   - name: KAFKA_HOST
     value: k8-main-kafka-kafka.kafka.svc.cluster.local
 
