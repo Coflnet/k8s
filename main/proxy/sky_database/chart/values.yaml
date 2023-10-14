@@ -309,6 +309,7 @@ configuration: |
     mode tcp
     balance leastconn
     server db-master-02 164.68.127.152:3307 check
+    server db-master-09 194.163.151.190:3307 check
 
 ## @param containerPorts [array] List of container ports to enable in the haproxy container
 ##

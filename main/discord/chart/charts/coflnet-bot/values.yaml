@@ -4,7 +4,7 @@ strategy: Recreate
 
 image:
   repository: muehlhansfl/coflnet-bot
-  tag: f733e305-f2ef-4952-b94a-1ec4d2ff7d5e
+  tag: 38b8e74c-16c9-430f-9374-8ef47c71562e
   pullPolicy: IfNotPresent
 
 ports:
@@ -206,4 +206,10 @@ envVars:
     valueFrom:
       secretKeyRef:
         key: discord_feedback_webhook
+        name: secret
+
+  - name: SONGVOTER_FEEDBACK_WEBHOOK
+    valueFrom:
+      secretKeyRef:
+        key: discord_songvoter_feedback_webhook
         name: secret
