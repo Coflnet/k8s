@@ -168,6 +168,42 @@ data:
           "type": 4
         },
         {
+          "slug": "l_cc_1800",
+          "title": "1.800 CoflCoins",
+          "cost": 1800,
+          "price": 6.99,
+          "currencyCode": "eur",
+          "ProviderSlug": "lemonsqueezy",
+          "type": 4
+        },
+        {
+          "slug": "l_cc_5400",
+          "title": "5.400 CoflCoins",
+          "cost": 5400,
+          "price": 19.99,
+          "currencyCode": "eur",
+          "ProviderSlug": "lemonsqueezy",
+          "type": 4
+        },
+        {
+          "slug": "l_cc_10800",
+          "title": "10.800 CoflCoins",
+          "cost": 10800,
+          "price": 39.69,
+          "currencyCode": "eur",
+          "ProviderSlug": "lemonsqueezy",
+          "type": 4
+        },
+        {
+          "slug": "l_cc_21600",
+          "title": "21.600 CoflCoins",
+          "cost": 21600,
+          "price": 78.69,
+          "currencyCode": "eur",
+          "ProviderSlug": "lemonsqueezy",
+          "type": 4
+        },
+        {
           "slug": "verify_mc",
           "title": "Bonus for the MC verification",
           "cost": 100,
