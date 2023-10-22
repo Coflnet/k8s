@@ -2,7 +2,7 @@ enabled: true
 defaultEnvVarsEnabled: true
 replicaCount: 1
 
-strategy: Recreate
+strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skybfcs
