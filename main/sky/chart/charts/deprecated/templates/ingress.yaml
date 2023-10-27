@@ -198,17 +198,6 @@ spec:
             name: hypixel-react
             port:
               number: 80
-  - host: coflnet.com
-    http:
-      paths:
-      - path: /
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: sky-commands
-            port:
-              number: 8008
-
   - host: sky-mod.flou.dev
     http:
       paths:
