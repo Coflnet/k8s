@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "external-{{ .Chart.Name }}"
+  labels:
+    app: "external-{{ .Chart.Name }}"
+spec:
+  ports:
+    {{ toYaml .Values.serivcePorts | nindent 4 }}
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: "external-{{ .Chart.Name }}"
+  labels:
+    kubernetes.io/service-name: "external-{{ .Chart.Name }}"
+addressType: IPv4
+ports:
+  - name: 'http' 
+    appProtocol: http
+    protocol: TCP
+    port: 80
+endpoints:
+  - addresses:
+      - "164.68.111.97"
