@@ -1,0 +1,33 @@
+enabled: true
+image:
+  repository: muehlhansfl/skytrade
+  tag: ca6e72d4-6b3d-4862-95af-cb214e8f6bcf
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: api
+    containerPort: 8000
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 200Mi
+
+serivcePorts:
+  - name: api
+    port: 8000
+    targetPort: 8000
+
+readinessProbe:
+  httpGet:
+    path: /api/index.html
+    port: api
+  initialDelaySeconds: 20
+  periodSeconds: 3
+
+envVars:
+  - name: DB_CONNECTION
+    valueFrom:
+      secretKeyRef:
+        key: connection_cockroach_trade_database
+        name: secret

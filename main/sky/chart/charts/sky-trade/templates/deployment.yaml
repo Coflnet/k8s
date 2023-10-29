@@ -1,0 +1,55 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  progressDeadlineSeconds: 2592000
+  strategy:
+    type: {{ .Values.strategy }}
+  selector:
+    matchLabels:
+      name: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Chart.Name }}
+        app: {{ .Chart.Name }}
+    spec:
+      imagePullSecrets:
+      {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
+          ports:
+             {{ toYaml .Values.ports | nindent 10 }}
+          env:
+            - name: REDIS_HOST
+              value: "{{ .Chart.Name }}-redis,syncTimeout=200"
+            {{ if .Values.envVars }}
+            {{ toYaml .Values.envVars | nindent 12 }}
+            {{ end }}
+            {{ toYaml .Values.global.envVars | nindent 12 }}
+          readinessProbe:
+            {{ toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{ toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          {{ range .Values.global.volumes }}
+            - name: {{ .mountName }}
+              mountPath: {{ .mountPath }}
+          {{ end }}
+      volumes: 
+      {{ range .Values.global.volumes }}
+        - name: {{ .mountName }}
+          {{ if eq .type "configmap"  }}
+          configMap:
+            name: {{ .name }}
+          {{ else}}
+          secret:
+            secretName: {{ .name }}
+          {{ end }}
+      {{ end }}
+{{ end }}
