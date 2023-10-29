@@ -26,7 +26,7 @@ readinessProbe:
   periodSeconds: 3
 
 envVars:
-  - name: DB_CONNECTION
+  - name: ConnectionStrings__CockRoachDB
     valueFrom:
       secretKeyRef:
         key: connection_cockroach_trade_database

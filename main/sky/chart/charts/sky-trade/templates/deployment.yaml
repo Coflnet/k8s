@@ -6,6 +6,7 @@ metadata:
   labels:
     app: {{ .Chart.Name }}
 spec:
+  replicas: 1
   progressDeadlineSeconds: 2592000
   strategy:
     type: {{ .Values.strategy }}
