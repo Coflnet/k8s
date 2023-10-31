@@ -9,36 +9,6 @@ spec:
   - host: coflnet.com
     http:
       paths:
-      - path: /legal
-        pathType: ImplementationSpecific
-        backend:
-          service: 
-            name: "external-{{ .Chart.Name }}"
-            port:
-              number: 80
-  - host: coflnet.com
-    http:
-      paths:
-      - path: /impressum
-        pathType: ImplementationSpecific
-        backend:
-          service: 
-            name: "external-{{ .Chart.Name }}"
-            port:
-              number: 80
-  - host: coflnet.com
-    http:
-      paths:
-      - path: /privacy
-        pathType: ImplementationSpecific
-        backend:
-          service: 
-            name: "external-{{ .Chart.Name }}"
-            port:
-              number: 80
-  - host: coflnet.com
-    http:
-      paths:
       - path: /
         pathType: ImplementationSpecific
         backend:
