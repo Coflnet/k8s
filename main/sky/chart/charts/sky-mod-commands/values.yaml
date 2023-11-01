@@ -69,24 +69,9 @@ canary:
     - setWeight: 10
     - pause:
         duration: 3m
-    - analysis:
-        templates:
-          - templateName: *canaryTemplate
-        args:
-          - name: service-name
-            value: *canaryService
-    - setWeight: 50
-    - pause:
-        duration: 5m
-    - analysis:
-        templates:
-          - templateName: *canaryTemplate
-        args:
-          - name: service-name
-            value: *canaryService
     - setWeight: 100
     - pause:
-        duration: 5m
+        duration: 3m
     - analysis:
         templates:
           - templateName: *canaryTemplate

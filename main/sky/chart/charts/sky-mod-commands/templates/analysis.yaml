@@ -8,13 +8,13 @@ spec:
   - name: service-name
   metrics:
   - name: sky-sent_flips
-    interval: 1m
-    successCondition: result[0] >= 10
+    interval: 2m
+    successCondition: result[0] > 2
     failureLimit: 1
     count: 3
     provider:
       prometheus:
         address: http://prometheus-kube-prometheus-prometheus.prometheus.svc.cluster.local:9090
         query: |
-          sum(increase(sky_mod_sent_flips[2m]))
+          sum(increase(sky_mod_flips_purchased[2m]))
 {{ end }}
