@@ -1,0 +1,71 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Chart.Name }}-manager"
+  labels:
+    app: "{{ .Chart.Name }}-manager"
+spec:
+  replicas: "{{ .Values.master.replicaCount }}"
+  strategy: 
+    type: "{{ .Values.master.strategy }}"
+  progressDeadlineSeconds: 2592000
+  selector:
+    matchLabels:
+      app: "{{ .Chart.Name }}-manager"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Chart.Name }}-manager"
+    spec:
+      imagePullSecrets:
+      {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
+      containers:
+      - name: "{{ .Chart.Name }}-manager"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag  }}"
+        ports:
+           {{ toYaml .Values.ports | nindent 10 }}
+        env:
+          - name: REDIS_HOST
+            value: "{{ .Chart.Name }}-redis,syncTimeout=200"
+          - name: IS_MANAGER
+            value: "true"
+          {{ if .Values.envVars }}
+          {{ toYaml .Values.envVars | nindent 10 }}
+          {{ end }}
+          {{ toYaml .Values.global.envVars | nindent 10 }}
+          {{ toYaml .Values.global.minioEnvVars | nindent 10 }}
+        readinessProbe:
+          {{ toYaml .Values.readinessProbe | nindent 10 }}
+        resources:
+          {{ toYaml .Values.resources | nindent 10 }}
+        volumeMounts:
+        {{ range .Values.global.volumes }}
+        - name: {{ .mountName }}
+          mountPath: {{ .mountPath }}
+        {{ end }}
+      volumes: 
+      {{ range .Values.global.volumes }}
+        - name: {{ .mountName }}
+          {{ if eq .type "configmap"  }}
+          configMap:
+            name: {{ .name }}
+          {{ else}}
+          secret:
+            secretName: {{ .name }}
+          {{ end }}
+      {{ end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Chart.Name }}-manager"
+  labels:
+    app: "{{ .Chart.Name }}-manager"
+spec:
+  selector:
+    app: "{{ .Chart.Name }}-manager"
+  ports:
+    {{ toYaml .Values.serivcePorts | nindent 4 }}
+---
+{{ end }}

@@ -2,32 +2,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
+  name: "{{ .Chart.Name }}-worker"
   labels:
-    app: {{ .Chart.Name }}
+    app: "{{ .Chart.Name }}-worker"
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.worker.replicaCount }}
   strategy: 
-    type: {{ .Values.strategy }}
+    type: {{ .Values.worker.strategy }}
   progressDeadlineSeconds: 2592000
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}
+      app: "{{ .Chart.Name }}-worker"
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}
+        app: "{{ .Chart.Name }}-worker"
     spec:
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       containers:
-      - name: {{ .Chart.Name }}
-        image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
+      - name: "{{ .Chart.Name }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag  }}"
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
           - name: REDIS_HOST
             value: "{{ .Chart.Name }}-redis,syncTimeout=200"
+          - name: IS_MANAGER
+            value: "false"
           {{ if .Values.envVars }}
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}
@@ -53,7 +55,4 @@ spec:
             secretName: {{ .name }}
           {{ end }}
       {{ end }}
-  strategy:
-    canary:
-    {{ toYaml .Values.canary | nindent 6 }}
 {{ end }}

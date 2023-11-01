@@ -30,6 +30,14 @@ readinessProbe:
   periodSeconds: 3
   failureThreshold: 100
 
+master:
+  replicaCount: 1
+  strategy: Recreate
+
+worker:
+  replicaCount: 2
+  strategy: RollingUpdate
+
 envVars:
   - name: DBConnection
     valueFrom:
