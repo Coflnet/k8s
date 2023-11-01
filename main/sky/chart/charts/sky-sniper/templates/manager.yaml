@@ -6,7 +6,7 @@ metadata:
   labels:
     app: "{{ .Chart.Name }}-manager"
 spec:
-  replicas: "{{ .Values.master.replicaCount }}"
+  replicas: {{ .Values.master.replicaCount }}
   strategy: 
     type: "{{ .Values.master.strategy }}"
   progressDeadlineSeconds: 2592000
