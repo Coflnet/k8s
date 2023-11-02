@@ -104,3 +104,28 @@ envVars:
       secretKeyRef:
         name: secret
         key: sender_s1_webhook_url
+
+## cassandra conn
+  - name: CASSANDRA__HOSTS
+    valueFrom:
+      configMapKeyRef:
+        name: scylla-config
+        key: scylla_host
+  - name: CASSANDRA__USER
+    valueFrom:
+      configMapKeyRef:
+        name: scylla-config
+        key: scylla_mod_user
+  - name: CASSANDRA__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: scylla-credentials
+        key: mod_password
+  - name: CASSANDRA__X509Certificate_PATHS
+    value: /tls/scylla/secret/db.pfx
+  - name: CASSANDRA__X509Certificate_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: scylla-credentials
+        key: db-pfx-password
+
