@@ -126,5 +126,8 @@ sky-subscriptions:
 sky-updater:
   enabled: false
 
+sky-trade:
+  enabled: false
+
 sky-auctions:
   enabled: false
