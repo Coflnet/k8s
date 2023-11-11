@@ -1,0 +1,33 @@
+replicaCount: 2
+
+strategy: RollingUpdate
+
+imagePullSecrets: 
+  - name: regcred
+
+image:
+  repository: muehlhansfl/exchange
+  tag: f7d3626f-129c-4eab-9350-c59e155963d7
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: api
+    containerPort: 80
+
+resources: 
+  requests:
+    cpu: 10m
+    memory: 20Mi
+
+
+serivcePorts:
+  - name: api
+    port: 80
+    targetPort: 80
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: api
+  initialDelaySeconds: 20
+  periodSeconds: 3
