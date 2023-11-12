@@ -1,0 +1,21 @@
+{{ if .Values.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    release: prometheus
+  name: {{ .Chart.Name }}-rules
+spec:
+  groups:
+    - name: "{{ .Chart.Name }}.rules"
+      rules:
+        - alert: FewAhCheksFromProxy
+          for: 5m
+          labels:
+            severity: critical
+          expr: 'sum(increase(sky_proxy_ah_update_shedules[5m])) < 10'
+          annotations:
+            summary: "Very few ah checks from proxy"
+            description: "Only {{`{{`}} $value {{`}}`}} flip checks were made in the last 5min"
+---            
+{{ end }}
