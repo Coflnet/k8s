@@ -192,6 +192,8 @@ global:
       value: http://leaderboard.leaderboard:8000
     - name: EVENTS_BASE_URL
       value: http://event-broker:8000
+    - name: TRADE_BASE_URL
+      value: http://sky-trade:8000
 
   volumes:
     - mountPath: /tls/secret
