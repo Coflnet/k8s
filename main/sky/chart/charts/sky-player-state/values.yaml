@@ -65,3 +65,26 @@ envVars:
     value: "true"
   - name: X509Certificate_PATHS
     value: /tmp/cassandra/certs/duke.cer
+
+  - name: SCYLLA__HOSTS
+    valueFrom:
+      configMapKeyRef:
+        name: scylla-config
+        key: scylla_host
+  - name: SCYLLA__USER
+    valueFrom:
+      configMapKeyRef:
+        name: scylla-config
+        key: player_state_user
+  - name: SCYLLA__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: scylla-credentials
+        key: player_state_password
+  - name: SCYLLA__X509Certificate_PATHS
+    value: /tls/scylla/secret/db.pfx
+  - name: SCYLLA__X509Certificate_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: scylla-credentials
+        key: db-pfx-password
