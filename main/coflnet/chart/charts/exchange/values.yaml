@@ -7,7 +7,7 @@ imagePullSecrets:
 
 image:
   repository: muehlhansfl/exchange
-  tag: 9fb488a1-4a41-4f4f-94eb-2f076823cd31
+  tag: c25d0849-c1bb-4d99-9074-cd75943c9fe0
   pullPolicy: IfNotPresent
 
 ports:
