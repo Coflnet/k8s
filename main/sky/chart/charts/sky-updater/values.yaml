@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skyupdater
-  tag: 06c0fb6d-5359-4357-971a-f8ccf6b54347
+  tag: a6297c16-5f05-42e7-a7ef-96656f3b8db2
   pullPolicy: IfNotPresent
 
 ports:
@@ -14,11 +14,8 @@ ports:
 
 resources:
   requests:
-    cpu: 500m
-    memory: 800Mi
-  limits:
-    cpu: 1000m
-    memory: 1.2Gi
+    cpu: 600m
+    memory: 2Gi
 
 serivcePorts:
   - name: api
