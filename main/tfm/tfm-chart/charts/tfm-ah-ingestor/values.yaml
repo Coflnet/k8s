@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/tfmahingestor
-  tag: 31c226aa-f500-4e26-8b97-523d28c56a58
+  tag: 9f679261-0fe9-4327-a0a3-c3d52b31c36f
   pullPolicy: IfNotPresent
 
 ports:
