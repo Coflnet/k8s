@@ -1,11 +1,11 @@
 enabled: true
-replicaCount: 9
+replicaCount: 5
 
 strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skyfliptracker
-  tag: 6bbeef70-bf53-4c6f-8bf8-4b0f862a45a9
+  tag: 405b4c04-3c13-4ba5-9f84-c97c3308f1b0
   pullPolicy: IfNotPresent
 
 ports:
@@ -14,8 +14,8 @@ ports:
 
 resources:
   requests:
-    cpu: 100m
-    memory: 200Mi
+    cpu: 120m
+    memory: 350Mi
 
 serivcePorts:
   - name: api
