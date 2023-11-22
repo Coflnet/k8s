@@ -1,5 +1,5 @@
 apiVersion: v2
-name: exchange
+name: thekeyexchange
 description: The helm chart for the homepage
 
 # A chart can be either an 'application' or a 'library' chart.
