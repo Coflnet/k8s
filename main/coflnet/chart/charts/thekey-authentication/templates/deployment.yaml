@@ -9,6 +9,8 @@ spec:
   strategy:
     type: {{ .Values.strategy }}
   progressDeadlineSeconds: 2592000
+  nodeSelector:
+      hetzner: "true"
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
