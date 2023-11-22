@@ -1,0 +1,33 @@
+replicaCount: 2
+
+strategy: RollingUpdate
+
+imagePullSecrets: 
+  - name: regcred
+
+image:
+  repository: muehlhansfl/thekey-authentication
+  tag: 98c50875-82f4-426c-8dfc-1fa66be8d9b3
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: api
+    containerPort: 8080
+
+resources: 
+  requests:
+    cpu: 10m
+    memory: 20Mi
+
+
+serivcePorts:
+  - name: api
+    port: 8080
+    targetPort: 8080
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: api
+  initialDelaySeconds: 20
+  periodSeconds: 10
