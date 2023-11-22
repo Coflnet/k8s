@@ -9,8 +9,6 @@ spec:
   strategy:
     type: {{ .Values.strategy }}
   progressDeadlineSeconds: 2592000
-  nodeSelector:
-      hetzner: "true"
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
@@ -19,6 +17,8 @@ spec:
       labels:
         app: {{ .Chart.Name }}
     spec:
+      nodeSelector:
+        hetzner: "true"
       imagePullSecrets:
       {{ toYaml .Values.imagePullSecrets | nindent 8 }}
       containers:
