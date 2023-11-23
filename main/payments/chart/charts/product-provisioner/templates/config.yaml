@@ -247,6 +247,7 @@ data:
             "premium_plus",
             "premium_plus-day",
             "premium_plus-hour",
+            "premium_plus-100",
             "premium-derpy"
         ],
         "starter_premium": [
@@ -255,12 +256,14 @@ data:
             "premium_plus",
             "premium_plus-day",
             "premium_plus-hour",
+            "premium_plus-100",
             "starter_premium-day",
             "starter_premium-week"
         ],
         "premium_plus": [
             "premium_plus-day",
             "premium_plus-hour",
+            "premium_plus-100",
             "pre_api"
         ]
       },
