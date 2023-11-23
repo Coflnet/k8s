@@ -1,14 +1,12 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: {{ .Chart.Name }}
   labels:
     app: {{ .Chart.Name }}
-spec: 
+spec:
   replicas: {{ .Values.replicaCount }}
-  strategy:
-    type: {{ .Values.strategy }}
-  progressDeadlineSeconds: 2592000
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
@@ -17,18 +15,25 @@ spec:
       labels:
         app: {{ .Chart.Name }}
     spec:
-      nodeSelector:
-        hetzner: "true"
       imagePullSecrets:
       {{ toYaml .Values.imagePullSecrets | nindent 8 }}
       containers:
-      - name: {{ .Chart.Name }}
-        image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
-        ports:
-           {{ toYaml .Values.ports | nindent 10 }}
-        env:
-          {{ if .Values.envVars }}
-          {{ toYaml .Values.envVars | nindent 10 }}
-          {{ end }}
-        resources:
-          {{ toYaml .Values.resources | nindent 10 }}
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          {{ toYaml .Values.envVars | nindent 12 }}
+          ports:
+          {{ toYaml .Values.ports | nindent 12 }}
+          readinessProbe:
+          {{ toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+          {{ toYaml .Values.resources | nindent 12 }}
+  strategy:
+    blueGreen:
+      activeService: {{ .Chart.Name }}
+      previewService: {{ .Chart.Name }}-preview
+      autoPromotionEnabled: false
+      scaleDownDelaySeconds: 120
+      previewReplicaCount: 1
+

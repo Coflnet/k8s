@@ -16,3 +16,22 @@ spec:
             name: {{ .Chart.Name }}
             port:
               number: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Chart.Name }}-preview
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: thekey-preview.coflnet.com
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service: 
+            name: {{ .Chart.Name }}
+            port:
+              number: 8080
