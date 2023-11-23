@@ -55,6 +55,14 @@ data:
             "type": "SERVICE"
         },
         {
+            "slug": "premium_plus-100",
+            "title": "Premium+ (100 days)",
+            "description": "Premium Plus plan granting top tier perks for a 100 days",
+            "cost": 21600,
+            "ownershipSeconds": 8640000,
+            "type": "SERVICE"
+        },
+        {
             "slug": "starter_premium",
             "title": "Basic plan",
             "description": "Access to basic perks",
