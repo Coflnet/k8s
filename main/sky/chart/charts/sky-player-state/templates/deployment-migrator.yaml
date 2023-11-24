@@ -18,7 +18,7 @@ spec:
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         args:
-          - --MIGRATOR
+          - --MIGRATOR=true
         env:
           {{ if .Values.envVars }}
           {{ toYaml .Values.envVars | nindent 10 }}
