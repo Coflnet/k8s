@@ -13,13 +13,13 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}
+        app: {{ .Chart.Name }}-migrate
     spec:
       restartPolicy: Never
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       containers:
-      - name: {{ .Chart.Name }}
+      - name: {{ .Chart.Name }}-migrate
         image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
