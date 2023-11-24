@@ -1,0 +1,61 @@
+{{ if .Values.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Chart.Name }}-migrate
+  labels:
+    app: {{ .Chart.Name }}-migrate
+spec:
+  progressDeadlineSeconds: 2592000
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-migrate
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      imagePullSecrets:
+      {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
+        ports:
+           {{ toYaml .Values.ports | nindent 10 }}
+        args:
+          - --MIGRATOR
+        env:
+          {{ if .Values.envVars }}
+          {{ toYaml .Values.envVars | nindent 10 }}
+          {{ end }}
+          {{ toYaml .Values.global.envVars | nindent 10 }}
+        readinessProbe:
+          {{ toYaml .Values.readinessProbe | nindent 10 }}
+        resources:
+          {{ toYaml .Values.resources | nindent 10 }}
+        volumeMounts:
+        {{ range .Values.global.volumes }}
+        - name: {{ .mountName }}
+          mountPath: {{ .mountPath }}
+        {{ end }}
+        - name: scylla-pfx
+          mountPath: /tls/scylla/secret/db.pfx
+          subPath: db.pfx
+      volumes: 
+        - name: scylla-pfx
+          secret:
+            secretName: scylla-pfx
+            items:
+            - key: db.pfx
+              path: db.pfx
+      {{ range .Values.global.volumes }}
+        - name: {{ .mountName }}
+          {{ if eq .type "configmap"  }}
+          configMap:
+            name: {{ .name }}
+          {{ else}}
+          secret:
+            secretName: {{ .name }}
+          {{ end }}
+      {{ end }}
+{{ end }}
