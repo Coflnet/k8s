@@ -15,7 +15,7 @@ spec:
           service: 
             name: {{ .Chart.Name }}
             port:
-              number: 8080
+              number: 8000
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -34,4 +34,4 @@ spec:
           service: 
             name: {{ .Chart.Name }}
             port:
-              number: 8080
+              number: 8000
