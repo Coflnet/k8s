@@ -14,7 +14,7 @@ image:
 
 ports:
   - name: api
-    containerPort: 8080
+    containerPort: 8000
 
 resources: 
   requests:
