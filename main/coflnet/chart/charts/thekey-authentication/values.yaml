@@ -9,7 +9,7 @@ imagePullSecrets:
 
 image:
   repository: muehlhansfl/thekey-authentication
-  tag: 88ea9837-8a2e-4fe5-b345-7b1265474934
+  tag: a84e082f-6b4a-4e0a-8639-72b9f81b0df0
   pullPolicy: IfNotPresent
 
 ports:
