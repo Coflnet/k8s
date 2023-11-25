@@ -22,6 +22,9 @@ serivcePorts:
     port: 8000
     targetPort: 8000
 
+nodeSelector:
+  hetzner: "true"
+
 readinessProbe:
   httpGet:
     path: /ready
