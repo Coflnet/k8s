@@ -1,7 +1,7 @@
 enabled: true
 image:
   repository: muehlhansfl/skytrade
-  tag: e35460aa-2afd-427e-8eb0-df77cbed00bd
+  tag: 7e2c34d3-ad37-4e24-8afc-dd1e2f9a3b8d
   pullPolicy: IfNotPresent
 
 ports:
