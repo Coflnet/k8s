@@ -56,6 +56,11 @@ sky-bfcs:
           key: transfer_token
     - name: REDIS_HOST
       value: sky-bfcs-redis,syncTimeout=200
+    - name: REDIS_FLIP_INSTANCES__0
+      valueFrom:
+        secretKeyRef:
+          name: tfm-redis
+          key: tfm-1
 
 sky-chat:
   enabled: false
