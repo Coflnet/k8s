@@ -35,6 +35,13 @@ envVars:
       secretKeyRef:
         name: secret
         key: connection_eventmessages_database
+
+  - name: COCKROACH_DB_CONNECTION
+    valueFrom:
+      secretKeyRef:
+        key: connection_cockroach_event_database
+        name: secret
+
   - name: TOPICS__VERIFIED
     valueFrom:
       configMapKeyRef:
