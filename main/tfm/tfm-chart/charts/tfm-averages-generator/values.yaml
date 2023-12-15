@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/tfmaveragesgenerator
-  tag: 288a452c-d423-4d11-8dd1-003cbd4ab868
+  tag: feb436c6-e9fe-496c-a173-9538ecf7cbf9
   pullPolicy: IfNotPresent
 
 ports:
