@@ -3,7 +3,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/tfmpythonbackend
-  tag: e4ea5069-56b4-4929-b16b-403d029af335
+  tag: 4209b45e-27fd-43c7-aea1-97673b168a9e
   pullPolicy: IfNotPresent
 
 ports:
