@@ -3,7 +3,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/tfmbackend
-  tag: 5d1f62ba-5ae7-49b1-8e06-741b8eb38987
+  tag: c059e4c9-6ac4-46a4-9d13-ea0e10c5ab6b
   pullPolicy: IfNotPresent
 
 ports:
