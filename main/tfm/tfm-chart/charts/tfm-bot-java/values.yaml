@@ -3,7 +3,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/tfmbotjava
-  tag: c2f7500d-af90-4f69-a1d5-b0d352fec690
+  tag: ed838a47-3863-4b6f-a420-6e843ad14c07
   pullPolicy: IfNotPresent
 
 ports:

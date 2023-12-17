@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skysniper
-  tag: 3eba5725-5d17-47bf-832e-0ded5388a3f0
+  tag: 8f062619-a469-4190-840e-6f4f7e569855
   pullPolicy: IfNotPresent
 
 ports:
@@ -21,6 +21,9 @@ serivcePorts:
   - name: api
     port: 8000
     targetPort: 8000
+
+nodeSelector:
+  hetzner: "true"
 
 readinessProbe:
   httpGet:

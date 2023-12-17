@@ -40,6 +40,11 @@ spec:
               secretKeyRef:
                 name: redis-edge
                 key: us_connection
+          - name: REDIS_FLIP_INSTANCES__2
+            valueFrom:
+              secretKeyRef:
+                name: tfm-redis
+                key: tfm-1
           - name: MOD_REDIS_HOST
             value: {{ .Chart.Name }}-redis
           {{ if .Values.envVars }}
