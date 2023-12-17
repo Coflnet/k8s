@@ -3,7 +3,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/tfmbot
-  tag: 01141869-9c48-4601-85d8-03f59cfead7f
+  tag: b3b41491-8c42-4f48-9117-a07841b288ac
   pullPolicy: IfNotPresent
 
 ports:
