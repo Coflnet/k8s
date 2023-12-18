@@ -53,3 +53,13 @@ envVars:
       configMapKeyRef:
         name: config
         key: topic_transaction
+  - name: FIREBASE_SENDER_ID
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: firebase_sender_id
+  - name: FIREBASE_KEY
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: firebase_key
