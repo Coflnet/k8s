@@ -108,7 +108,7 @@ canary:
 
 readinessProbe:
   httpGet:
-    path: /metrics
+    path: /api/index.html
     port: 8000
   initialDelaySeconds: 20
   periodSeconds: 3
