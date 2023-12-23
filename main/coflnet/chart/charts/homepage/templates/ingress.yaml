@@ -19,7 +19,7 @@ spec:
   - host: coflnet.com
     http:
       paths:
-      - path: /.well-known/*
+      - path: /.well-known
         pathType: ImplementationSpecific
         backend:
           service:
