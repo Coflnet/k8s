@@ -25,7 +25,7 @@ spec:
           service:
             name: coflnet-mail-server
             port:
-              number: 80
+              number: 443
   - host: new.coflnet.com
     http:
       paths:
