@@ -148,6 +148,8 @@ global:
       value: http://sky-api:8000
     - name: BAZAAR_BASE_URL
       value: http://sky-bazaar:8000
+    - name: BAZAARFLIPPER_BASE_URL
+      value: http://sky-bazaar-flipper:8000
     - name: ITEMS_BASE_URL
       value: http://sky-items:8000
     - name: MAYOR_BASE_URL
