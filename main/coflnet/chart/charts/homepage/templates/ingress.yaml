@@ -16,6 +16,16 @@ spec:
             name: {{ .Chart.Name }}
             port:
               number: 3000
+  - host: coflnet.com
+    http:
+      paths:
+      - path: /.well-known/*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: coflnet-mail-server
+            port:
+              number: 80
   - host: new.coflnet.com
     http:
       paths:
