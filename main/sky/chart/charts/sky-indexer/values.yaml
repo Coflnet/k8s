@@ -1,5 +1,5 @@
 enabled: true
-replicaCount: 0
+replicaCount: 1
 
 strategy: Recreate
 
