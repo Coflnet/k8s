@@ -8,9 +8,9 @@ image:
   pullPolicy: IfNotPresent
 
 ports:
-  - containerPort: 2112
+  - containerPort: 2222
     name: metrics
-  - containerPort: 8080
+  - containerPort: 3000
     name: api
 
 resources:
@@ -22,6 +22,9 @@ serivcePorts:
   - name: api
     port: 3000
     targetPort: 3000
+  - name: metrics
+    port: 2222
+    targetPort: 2222
 
 envVars:
   # general
