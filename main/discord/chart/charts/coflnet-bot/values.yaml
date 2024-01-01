@@ -52,7 +52,7 @@ envVars:
         name: secret
         key: mongo_host
   - name: MIGRATION_ENABLED
-    value: "true"
+    value: "false"
 
   - name: DATABASE_URL
     valueFrom:
