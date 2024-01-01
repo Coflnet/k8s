@@ -67,6 +67,11 @@ envVars:
   # external services
   - name: CHAT_URL
     value: "http://sky-chat:8000/"
+  - name: CHAT_API_AUTHORIZATION
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: chat_api_key
   - name: PROXY_URL
     value: "http://sky-proxy.sky:8000/"
   - name: MC_CONNECT_URL
