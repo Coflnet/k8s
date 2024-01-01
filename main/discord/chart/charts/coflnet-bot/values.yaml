@@ -47,7 +47,13 @@ envVars:
 
   # database vars
   - name: MONGO_URI
-    value: ""
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: mongo_host
+  - name: MIGRATION_ENABLED
+    value: "true"
+
   - name: DATABASE_URL
     valueFrom:
       secretKeyRef:
