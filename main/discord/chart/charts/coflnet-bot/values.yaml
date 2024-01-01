@@ -66,7 +66,7 @@ envVars:
 
   # external services
   - name: CHAT_URL
-    value: "http://sky-chat:8000/"
+    value: "http://sky-chat.sky:8000/"
   - name: CHAT_API_AUTHORIZATION
     valueFrom:
       secretKeyRef:
