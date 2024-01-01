@@ -19,197 +19,59 @@ resources:
     memory: 200Mi
 
 serivcePorts:
-  - name: metrics
-    port: 2112
-    targetPort: 2112
   - name: api
-    port: 8080
-    targetPort: 8080
+    port: 3000
+    targetPort: 3000
 
 envVars:
-  # DBs
-  - name: MONGO_HOST
+  # general
+  - name: PORT
+    value: "3000"
+
+  # discord vars
+  - name: BOT_TOKEN
     valueFrom:
       secretKeyRef:
-        name: secret
-        key: mongo_host
+          name: secret
+          key: coflnet_token
 
-  - name: REDIS_HOST
-    value: sky-global-redis.sky:6379
-  - name: REDIS_CHAT_PUBSUB_CHANNEL
-    value: chat
-
-  # KAFKA
-  - name: KAFKA_HOST
-    value: k8-main-kafka-kafka.kafka:9092
-  - name: TOPIC_MC_VERIFY
-    value: sky-verified
-  - name: TOPIC_MC_VERIFY_CONSUMER_GROUP
-    value: sky-verified-coflnet-bot-cg
-  - name: TOPIC_FLIPSUMMARY
-    value: "sky-flipsummary"
-  - name: TOPIC_FLIPSUMMARY_CONSUMER_GROUP
-    value: "coflnet-bot-cg"
-  - name: DISCORD_MESSAGE_TOPIC
-    value: discord-messages
-  - name: DISCORD_MESSAGE_CONSUMER_GROUP
-    value:
-      discord-bot-messages-cg
-
-      # TRACING
-  - name: OTEL_SERVICE_NAME
-    value: coflnet-bot
-  - name: JAEGER_AGENT_HOST
-    valueFrom:
-      fieldRef:
-        fieldPath: status.hostIP
-  - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
-    valueFrom:
-      fieldRef:
-        fieldPath: status.hostIP
-
-  # APPLICATION RELATED
-  - name: DEBUG
-    value: "false"
-
-  # DISCORD
-  - name: DISCORD_BOT_TOKEN
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: coflnet_token
-
-  # ROLES
-  - name: MOD_ROLE
-    value: "869942341442600990"
-
-  # DISCORD CHANNELS
-  - name: DISCORD_GUILD_ID
+  - name: GUILD_ID
     value: "267680588666896385"
-  - name: DISCORD_IN_GAME_CHANNEL_ID
-    value: "965323875246276660"
-
-  # COFLNET
-
-  # BASE URL
-  - name: CHAT_BASE_URL
-    value: http://sky-chat.sky:8000
-  - name: COFL_API_BASE_URL
-    value: http://sky-api.sky:8000
-  - name: MC_CONNECT_BASE_URL
-    value: http://sky-mc-connect.sky:8000
-  - name: API_BASE_URL
-    value: http://sky-api.sky:8000
-  - name: PAYMENT_BASE_URL
-    value: "http://payments.payment:8000"
-
-  # CHAT
-  - name: CHAT_API_KEY
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: chat_api_key
-
-  # Deprecated
   - name: CHAT_WEBHOOK
     valueFrom:
       secretKeyRef:
         name: secret
         key: cofl_chat_discord_webhook
+  - name: CHAT_CHANNEL_ID
+    value: "965323875246276660"
 
-  - name: DEV_WEBHOOK
-    valueFrom:
-      secretKeyRef:
-        key: dev_chat_discord_webhook
-        name: secret
-
-  - name: DEV_SPAM_WEBHOOK
-    valueFrom:
-      secretKeyRef:
-        key: dev_spam_chat_discord_webhook
-        name: secret
-
-  - name: AUCTION_STATS_URL
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: auction_stats_url
-
-  - name: FLIP_WEBHOOK
+  # database vars
+  - name: MONGO_URI
+    value: ""
+  - name: DATABASE_URL
     valueFrom:
       secretKeyRef:
         name: secret
-        key: flips_channel
+        key: coflnet_database_url
+  - name: REDIS_HOST
+    value: "sky-global-redis.redis"
+  - name: REDIS_CHAT_CHANNEL
+    value: "chat"
 
-  - name: DISCORD_FLIPPER_ROLE
-    valueFrom:
-      configMapKeyRef:
-        key: flipper_role
-        name: config
-  - name: DISCORD_GUILD
-    valueFrom:
-      configMapKeyRef:
-        key: discord_guild
-        name: config
+  # external services
+  - name: CHAT_URL
+    value: "http://sky-chat:8000/"
+  - name: PROXY_URL
+    value: "http://sky-proxy.sky:8000/"
+  - name: MC_CONNECT_URL
+    value: "http://sky-mc-connect.sky:8000/"
+  - name: PAYMENT_URL
+    value: "http://payments.payment:8000/"
 
-  - name: DISCORD_MUTE_ROLE
-    value: "869942341442600990,933807456151285770"
-
-  - name: FLIPS_CHANNEL
-    value: "1002876203717369937"
-
-  - name: HELPER_ROLE
-    value: "933807456151285770"
-
-  - name: DEV_ROLE
-    value: "669258959495888907"
-
-  - name: WARNED_ROLE
-    value: "936726999106478160"
-
-  - name: TOPIC_TRANSACTION
-    value: sky-transactions
-
-  - name: TOPIC_VERIFICATION
-    value: sky-verified
-
-  - name: TOPIC_DEV_CHAT
-    value: discord-messages
-
-  # webhooks
-  - name: DISCORD_MUTES_WEBHOOK
-    valueFrom:
-      secretKeyRef:
-        key: discord_mutes_webhook
-        name: secret
-  - name: DISCORD_WARNINGS_WEBHOOK
-    valueFrom:
-      secretKeyRef:
-        key: discord_warnings_webhook
-        name: secret
-  - name: DISCORD_CI_SUCCESS_WEBHOOK
-    valueFrom:
-      secretKeyRef:
-        key: discord_ci_success_webhook
-        name: secret
-  - name: DISCORD_CI_FAILURE_WEBHOOK
-    valueFrom:
-      secretKeyRef:
-        key: discord_ci_failure_webhook
-        name: secret
-  - name: DISCORD_FLIPPER_ROLE_WEBHOOK
-    valueFrom:
-      secretKeyRef:
-        key: discord_flipper_role_webhook
-        name: secret
-  - name: DISCORD_FEEDBACK_WEBHOOK
-    valueFrom:
-      secretKeyRef:
-        key: discord_feedback_webhook
-        name: secret
-
-  - name: SONGVOTER_FEEDBACK_WEBHOOK
-    valueFrom:
-      secretKeyRef:
-        key: discord_songvoter_feedback_webhook
-        name: secret
+  # tracing
+  - name: OTEL_SERVICE_NAME
+    value: "coflnet-bot"
+  - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+    value: "http://jaeger-collector.observability:4317"
+  - name: OTEL_TRACES_EXPORTER
+    value: jaeger
