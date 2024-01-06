@@ -136,3 +136,6 @@ sky-trade:
 
 sky-auctions:
   enabled: false
+
+sky-bazaar-flipper:
+  enabled: false
