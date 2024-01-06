@@ -1,5 +1,5 @@
 enabled: true
-replicaCount: 4
+replicaCount: 3
 
 strategy: RollingUpdate
 
@@ -38,7 +38,7 @@ master:
   strategy: Recreate
 
 worker:
-  replicaCount: 3
+  replicaCount: 2
   strategy: RollingUpdate
 
 envVars:
