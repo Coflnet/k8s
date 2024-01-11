@@ -1,6 +1,6 @@
 enabled: true
 
-replicaCount: 7
+replicaCount: 5
 
 image:
   repository: muehlhansfl/skyapi
