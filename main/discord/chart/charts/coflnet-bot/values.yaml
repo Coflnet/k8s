@@ -48,6 +48,12 @@ envVars:
   - name: CHAT_CHANNEL_ID
     value: "965323875246276660"
 
+  - name: NOTIFICATION_SERVER_GUILD_ID
+    value: "952968682181632130"
+  - name: NOTIFICATION_CHANNELS
+    value: "1114519871968006195,1114519851009060864"
+
+
   # database vars
   - name: MONGO_URI
     valueFrom:
