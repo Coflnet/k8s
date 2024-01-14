@@ -36,6 +36,8 @@ spec:
           {{ end }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
+        readinessProbe:
+          {{ toYaml .Values.readinessProbe | nindent 10 }}
         volumeMounts:
         {{ range .Values.global.volumes }}
         - name: {{ .mountName }}

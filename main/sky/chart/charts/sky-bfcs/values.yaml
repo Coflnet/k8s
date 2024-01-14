@@ -19,9 +19,6 @@ resources:
   requests:
     cpu: 1400m
     memory: 3Gi
-  limits:
-    cpu: 2000m
-    memory: 5Gi
 
 serivcePorts:
   - name: api
@@ -31,6 +28,13 @@ serivcePorts:
     port: 8888
     targetPort: 8888
 
+readinessProbe:
+  httpGet:
+    path: /ready
+    port: api
+  initialDelaySeconds: 10
+  periodSeconds: 3
+  failureThreshold: 100
 
 envVars:
   - name: SNIPER_TRANSFER_TOKEN
