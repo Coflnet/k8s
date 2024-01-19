@@ -1,5 +1,5 @@
 enabled: true
-replicaCount: 6
+replicaCount: 5
 
 image:
   repository: muehlhansfl/skymodcommands
@@ -43,8 +43,8 @@ ingress:
 
 resources:
   requests:
-    cpu: 500m
-    memory: 600Mi
+    cpu: 600m
+    memory: 900Mi
   limits:
     memory: 3Gi
 
