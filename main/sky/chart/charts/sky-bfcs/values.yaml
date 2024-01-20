@@ -42,6 +42,8 @@ envVars:
       secretKeyRef:
         name: sniper-transfer-token
         key: sniper_transfer_token
+  - name: SLOWDOWN_MS
+    value: "200"
 
 metrics:
   enabled: true
