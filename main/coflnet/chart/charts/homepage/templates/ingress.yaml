@@ -7,6 +7,16 @@ metadata:
     kubernetes.io/proxy_set_header: configmap-with-headers
 spec:
   rules:
+  - host: www.coflnet.com
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service: 
+            name: {{ .Chart.Name }}
+            port:
+              number: 3000
   - host: coflnet.com
     http:
       paths:
