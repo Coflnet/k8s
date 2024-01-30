@@ -1,5 +1,5 @@
 enabled: true
-replicaCount: 7
+replicaCount: 6
 
 strategy: RollingUpdate
 
@@ -16,6 +16,9 @@ resources:
   requests:
     cpu: 120m
     memory: 350Mi
+  limits:
+    cpu: 250m
+    memory: 800Mi
 
 serivcePorts:
   - name: api
