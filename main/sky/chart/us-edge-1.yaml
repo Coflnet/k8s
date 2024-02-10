@@ -28,6 +28,9 @@ sky-bazaar:
 
 sky-bfcs:
   enabled: true
+  redis:
+    enabled: false
+
   defaultEnvVarsEnabled: false
   metrics:
     enabled: false
@@ -55,8 +58,6 @@ sky-bfcs:
           name: sniper
           key: transfer_token
     - name: REDIS_HOST
-      value: sky-bfcs-redis,syncTimeout=200
-    - name: REDIS_FLIP_INSTANCES__0
       valueFrom:
         secretKeyRef:
           name: tfm-redis

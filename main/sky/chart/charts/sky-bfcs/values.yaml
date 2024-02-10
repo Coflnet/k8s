@@ -50,3 +50,7 @@ metrics:
 
 ingress:
   enabled: false
+
+
+redis:
+  enabled: true
