@@ -29,8 +29,6 @@ sky-bazaar:
 sky-bfcs:
   enabled: true
   defaultEnvVarsEnabled: false
-  metrics:
-    enabled: false
   ingress:
     enabled: true
     host: sky-us.coflnet.com

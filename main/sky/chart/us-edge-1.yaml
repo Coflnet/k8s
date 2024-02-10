@@ -33,8 +33,6 @@ sky-bfcs:
     enabled: false
 
   defaultEnvVarsEnabled: false
-  metrics:
-    enabled: false
   ingress:
     enabled: true
     host: sky-us-edge-1.coflnet.com
