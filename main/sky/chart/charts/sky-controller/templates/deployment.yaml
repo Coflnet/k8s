@@ -31,6 +31,8 @@ spec:
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}
           {{ toYaml .Values.global.envVars | nindent 10 }}
+          - name: CLUSTER_NAME
+            value: {{ .Values.clusterName }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
 {{ end }}

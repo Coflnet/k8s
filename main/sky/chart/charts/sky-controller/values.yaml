@@ -28,7 +28,3 @@ serivcePorts:
 envVars:
   - name: OTEL_SERVICE_NAME
     value: sky-controller
-  - name: CLUSTER_DISPLAY_NAME
-    valueFrom:
-      fieldRef:
-        fieldPath: metadata.labels['global.fleet.clusterLabels.management.cattle.io/cluster-display-name']

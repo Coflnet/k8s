@@ -12,5 +12,7 @@ targetCustomizations:
   - name: us-edge-1
     clusterName: us-edge-1
     helm:
+      values:
+        clusterName: global.fleet.clusterLabels.management.cattle.io/cluster-display-name
       valuesFiles:
         - ./chart/us-edge-1.yaml
