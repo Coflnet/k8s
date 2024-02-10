@@ -1,0 +1,141 @@
+global:
+  imagePullSecrets:
+    - name: regcred
+
+  redis:
+    enabled: false
+
+  secret:
+    enabled: false
+
+  config:
+    enabled: false
+
+deprecated:
+  enabled: false
+
+edge-redis:
+  enabled: true
+
+hypixel-react:
+  enabled: false
+
+sky-api:
+  enabled: false
+
+sky-bazaar:
+  enabled: false
+
+sky-bfcs:
+  enabled: true
+  defaultEnvVarsEnabled: false
+  metrics:
+    enabled: false
+  ingress:
+    enabled: true
+    host: sky-us-edge-1.coflnet.com
+  envVars:
+      ## common jaeger env vars ##
+    - name: JAEGER_AGENT_HOST
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
+    - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
+    - name: SNIPER_BASE_URL
+      valueFrom:
+        configMapKeyRef:
+          name: sniper
+          key: base_url
+    - name: SNIPER_TRANSFER_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: sniper
+          key: transfer_token
+    - name: REDIS_HOST
+      value: sky-bfcs-redis,syncTimeout=200
+    - name: REDIS_FLIP_INSTANCES__0
+      valueFrom:
+        secretKeyRef:
+          name: tfm-redis
+          key: tfm-1
+
+sky-chat:
+  enabled: false
+
+sky-commands:
+  enabled: false
+
+sky-controller:
+  enabled: false
+
+sky-crafts:
+  enabled: false
+
+sky-event-broker:
+  enabled: false
+
+sky-filter:
+  enabled: false
+
+sky-flip-tracker:
+  enabled: false
+
+sky-flipper:
+  enabled: false
+
+sky-indexer:
+  enabled: false
+
+sky-items:
+  enabled: false
+
+sky-mayor:
+  enabled: false
+
+sky-mc-connect:
+  enabled: false
+
+sky-mod-commands:
+  enabled: false
+
+sky-operator:
+  enabled: false
+
+sky-player-name:
+  enabled: false
+
+sky-player-state:
+  enabled: false
+
+sky-profiles:
+  enabled: false
+
+sky-proxy:
+  enabled: false
+
+sky-referral:
+  enabled: false
+
+sky-settings:
+  enabled: false
+
+sky-sniper:
+  enabled: false
+
+sky-subscriptions:
+  enabled: false
+
+sky-updater:
+  enabled: false
+
+sky-trade:
+  enabled: false
+
+sky-auctions:
+  enabled: false
+
+sky-bazaar-flipper:
+  enabled: false

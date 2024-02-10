@@ -9,3 +9,8 @@ targetCustomizations:
     helm:
       valuesFiles:
         - ./chart/us.yaml
+  - name: us-edge-1
+    clusterName: us-edge-1
+    helm:
+      valuesFiles:
+        - ./chart/us-edge-1.yaml
