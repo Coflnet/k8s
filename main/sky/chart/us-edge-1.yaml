@@ -1,6 +1,6 @@
 global:
   imagePullSecrets:
-    - name: harbor
+    - name: regcred
 
   redis:
     enabled: false
@@ -28,10 +28,14 @@ sky-bazaar:
 
 sky-bfcs:
   enabled: true
+  strategy: Recreate
+  redis:
+    enabled: false
+
   defaultEnvVarsEnabled: false
   ingress:
     enabled: true
-    host: sky-us.coflnet.com
+    host: sky-us-edge-1.coflnet.com
   envVars:
       ## common jaeger env vars ##
     - name: JAEGER_AGENT_HOST
@@ -53,8 +57,6 @@ sky-bfcs:
           name: sniper
           key: transfer_token
     - name: REDIS_HOST
-      value: sky-bfcs-redis,syncTimeout=200
-    - name: REDIS_FLIP_INSTANCES__0
       valueFrom:
         secretKeyRef:
           name: tfm-redis
