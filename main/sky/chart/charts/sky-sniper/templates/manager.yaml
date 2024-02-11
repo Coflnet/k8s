@@ -32,6 +32,8 @@ spec:
             value: "{{ .Chart.Name }}-redis,syncTimeout=200"
           - name: IS_MANAGER
             value: "true"
+          - name: NO_PRODUCE
+            value: "true"
           {{ if .Values.envVars }}
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}
