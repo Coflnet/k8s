@@ -6,6 +6,7 @@ metadata:
   name: {{ . }}
   labels:
     app: {{ . }}
+    "mirror.linkerd.io/exported": "true"
 spec:
   selector:
     app: {{ $.Chart.Name }}
