@@ -4,6 +4,7 @@ metadata:
   name: {{ .Chart.Name }}
   labels:
     app: {{ .Chart.Name }}
+    "mirror.linkerd.io/inject": "true"
 spec:
   selector:
     app: {{ .Chart.Name }}
