@@ -47,3 +47,13 @@ spec:
             name: {{ .Chart.Name }}
             port:
               number: 3000
+  - host: consulting.coflnet.com
+    http:
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: {{ .Chart.Name }}
+              port:
+                number: 3000
