@@ -11,6 +11,10 @@ global:
   config:
     enabled: false
 
+  frontendEnvVars:
+    - name: EVENTS_REDIS_HOST
+      value: sky-event-broker-redis-eu-cluster
+
   envVars:
     - name: RATE_LIMITER_REDIS_HOST
       value: edge-redis
