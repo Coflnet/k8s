@@ -11,6 +11,107 @@ global:
   config:
     enabled: false
 
+  envVars:
+    - name: RATE_LIMITER_REDIS_HOST
+      value: edge-redis
+
+    - name: SETTINGS_REDIS_HOST
+      value: sky-settings-redis-eu-cluster
+
+    - name: KAFKA__BROKERS
+      valueFrom:
+        secretKeyRef:
+          name: redpanda
+          key: brokers
+
+    - name: KAFKA__USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: redpanda-credentials
+          key: username
+
+    - name: KAFKA__PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: redpanda-credentials
+          key: password
+
+    - name: KAFKA__TLS__CA_LOCATION
+      value: "/tls/cm/ca.crt"
+
+    - name: KAFKA__TLS__CERTIFICATE_LOCATION
+      value: "/tls/cm/skyblock.crt"
+
+    - name: KAFKA__TLS__KEY_LOCATION
+      value: "/tls/secret/skyblock.key"
+
+    - name: KAFKA__REPLICATION_FACTOR
+      value: "3"
+
+      ## common jaeger env vars ##
+    - name: JAEGER_AGENT_HOST
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
+    - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
+
+    ## base urls ##
+    - name: API_BASE_URL
+      value: http://sky-api:8000
+    - name: BAZAAR_BASE_URL
+      value: http://sky-bazaar-eu-cluster:8000
+    - name: BAZAARFLIPPER_BASE_URL
+      value: http://sky-bazaar-flipper-eu-cluster:8000
+    - name: ITEMS_BASE_URL
+      value: http://sky-items-eu-cluster:8000
+    - name: MAYOR_BASE_URL
+      value: http://sky-mayor-eu-cluster:8080
+    - name: PLAYERNAME_BASE_URL
+      value: http://sky-player-name-eu-cluster:8000
+    - name: PLAYERNAME_URL
+      value: http://sky-player-name-eu-cluster:8000
+    - name: REFERRAL_BASE_URL
+      value: http://sky-referral-eu-cluster:8000
+    - name: SETTINGS_BASE_URL
+      value: http://sky-settings-eu-cluster:8000
+    - name: SNIPER_BASE_URL
+      value: http://sky-sniper-eu-cluster:8000
+    - name: INDEXER_BASE_URL
+      value: http://sky-indexer-eu-cluster:8000
+    - name: SUBSCRIPTION_BASE_URL
+      value: http://sky-subscriptions-eu-cluster:8000
+    - name: SKYFLIPPER_BASE_URL
+      value: http://sky-flipper-eu-cluster:8000
+    - name: SKYCOMMANDS_BASE_URL
+      value: http://sky-commands-eu-cluster:8008
+    - name: PAYMENTS_BASE_URL
+      value: http://payments.payment-eu-cluster:8000
+    - name: PROFILE_BASE_URL
+      value: http://sky-profiles-eu-cluster:8000
+    - name: PLAYERSTATE_BASE_URL
+      value: http://sky-player-state-eu-cluster:8000
+    - name: CRAFTS_BASE_URL
+      value: http://sky-crafts-eu-cluster:8000
+    - name: UPDATER_BASE_URL
+      value: http://sky-updater-eu-cluster:8000
+    - name: MCCONNECT_BASE_URL
+      value: http://sky-mc-connect-eu-cluster:8000
+    - name: FLIPTRACKER_BASE_URL
+      value: http://sky-flip-tracker-eu-cluster:8000
+    - name: CHAT_BASE_URL
+      value: http://sky-chat-eu-cluster:8000
+    - name: PROXY_BASE_URL
+      value: http://sky-proxy-eu-cluster:8000
+    - name: LEADERBOARD_BASE_URL
+      value: http://leaderboard-eu-cluster.leaderboard:8000
+    - name: EVENTS_BASE_URL
+      value: http://sky-event-broker-eu-cluster:8000
+    - name: TRADE_BASE_URL
+      value: http://sky-trade-eu-cluster:8000
+
 deprecated:
   enabled: false
 
