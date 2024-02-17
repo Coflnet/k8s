@@ -18,7 +18,13 @@ edge-redis:
   enabled: true
 
 hypixel-react:
-  enabled: false
+  enabled: true
+  replicaCount: 2
+  envVars:
+    - name: COMMAND_ENDPOINT
+      value: "http://sky-commands-eu-cluster:8008/command"
+    - name: API_ENDPOINT
+      value: "http://sky-api-eu-cluster:8000/api"
 
 sky-api:
   enabled: false
