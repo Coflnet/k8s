@@ -5,6 +5,7 @@ metadata:
   name: {{ .Chart.Name }}-redis
   labels:
     app: {{ .Chart.Name }}-redis
+    "mirror.linkerd.io/exported": "true"
 spec:
   replicas: 1
   selector:
