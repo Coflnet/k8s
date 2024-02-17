@@ -34,7 +34,8 @@ spec:
     blueGreen:
       activeService: {{ .Chart.Name }}
       previewService: {{ .Chart.Name }}-preview
-      autoPromotionEnabled: false
+      autoPromotionEnabled: true
+      autoPromotionSeconds: 300
       scaleDownDelaySeconds: 120
       previewReplicaCount: 1
 {{ end }}
