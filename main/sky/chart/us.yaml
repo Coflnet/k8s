@@ -14,6 +14,11 @@ global:
   frontendEnvVars:
     - name: EVENTS_REDIS_HOST
       value: sky-event-broker-redis-eu-cluster
+    - name: DBConnection
+      valueFrom:
+        secretKeyRef:
+          key: connection_read_api
+          name: secret
 
   envVars:
     - name: RATE_LIMITER_REDIS_HOST

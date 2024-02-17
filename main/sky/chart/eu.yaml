@@ -41,7 +41,8 @@ global:
         secretKeyRef:
           key: connection_read_api
           name: secret
-    - name: JWT_SECRET ## to generate and validate auth tokens
+    ## to generate and validate auth tokens
+    - name: JWT_SECRET
       valueFrom:
         secretKeyRef:
           key: jwt_secret_api
