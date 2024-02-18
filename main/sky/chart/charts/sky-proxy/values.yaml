@@ -23,7 +23,7 @@ readinessProbe:
     path: /proxy/hypixel/status
     port: api
   initialDelaySeconds: 20
-  periodSeconds: 3
+  periodSeconds: 15
   timeoutSeconds: 10
 
 envVars:
