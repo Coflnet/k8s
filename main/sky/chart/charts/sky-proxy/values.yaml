@@ -24,6 +24,7 @@ readinessProbe:
     port: api
   initialDelaySeconds: 20
   periodSeconds: 3
+  timeoutSeconds: 10
 
 envVars:
   - name: DB_CONNECTION
