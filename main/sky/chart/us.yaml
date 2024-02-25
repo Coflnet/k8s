@@ -132,9 +132,9 @@ hypixel-react:
   replicaCount: 2
   envVars:
     - name: COMMAND_ENDPOINT
-      value: "http://sky-commands-eu-cluster:8008/command"
+      value: "http://sky-commands:8008/command"
     - name: API_ENDPOINT
-      value: "http://sky-api-eu-cluster:8000/api"
+      value: "http://sky-api:8000/api"
 
 sky-api:
   enabled: true
@@ -205,7 +205,8 @@ sky-chat:
   enabled: false
 
 sky-commands:
-  enabled: false
+  enabled: true
+  replicaCount: 2
 
 sky-controller:
   enabled: false
