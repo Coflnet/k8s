@@ -7,6 +7,17 @@ image:
   tag: e89c15ca-8ce7-4d25-aad8-779ae325f4a6
   pullPolicy: IfNotPresent
 
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
 nameOverride: ""
 fullnameOverride: ""
 
@@ -33,17 +44,6 @@ ports:
     containerPort: 8000
   - name: api
     containerPort: 8008
-
-ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
 
 resources:
   requests:

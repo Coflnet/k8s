@@ -137,7 +137,32 @@ hypixel-react:
       value: "http://sky-api-eu-cluster:8000/api"
 
 sky-api:
-  enabled: false
+  enabled: true
+  replicaCount: 2
+  ingress:
+    enabled: true
+    hosts:
+      - host: sky.coflnet.com
+        paths:
+          - path: /api
+            pathType: ImplementationSpecific
+      - host: sky-commands.coflnet.com
+        paths:
+          - path: /api
+            pathType: ImplementationSpecific
+  envVars:
+    ## common jaeger env vars ##
+    - name: JAEGER_AGENT_HOST
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
+    - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
+    - name: REDIS_HOST
+      value: sky-bfcs-redis,syncTimeout=200
+
 
 sky-bazaar:
   enabled: false
