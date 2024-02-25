@@ -22,7 +22,7 @@ global:
 
   envVars:
     - name: RATE_LIMITER_REDIS_HOST
-      value: edge-redis
+      value: sky-commands-redis
 
     - name: SETTINGS_REDIS_HOST
       value: sky-settings-redis-eu-cluster
