@@ -4,7 +4,7 @@ replicaCount: 5
 
 image:
   repository: muehlhansfl/skyapi
-  tag: 77b2339f-8494-435f-90c8-57907e9881dd
+  tag: 5d7c1d4a-bc5a-43b4-8e84-f7dbbe06ed4c
   pullPolicy: IfNotPresent
 
 nameOverride: ""
