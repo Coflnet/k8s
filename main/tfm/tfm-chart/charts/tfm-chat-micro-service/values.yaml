@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/tfmchatmicroservice
-  tag: f89e4bde-03f2-4c7d-867c-baa478dc3108
+  tag: 3509a7e8-ab43-4619-886b-9abf43151d2d
   pullPolicy: IfNotPresent
 
 ports:
