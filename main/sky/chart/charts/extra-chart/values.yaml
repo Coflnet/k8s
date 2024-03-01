@@ -1,0 +1,55 @@
+enabled: false
+
+hosts:
+
+  # Payment
+  - host:
+    http:
+      paths:
+        - path: /callback/paypal
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: payments-eu-cluster.payment
+              port:
+                number: 8000
+        - path: /callback/stripe
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: payments-eu-cluster.payment
+              port:
+                number: 8000
+
+        # TFM stuff
+        - path: /tfm/bot
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: tfm-bot-eu-cluster.tfm
+              port:
+                number: 7181
+
+        - path: /tfm-chat
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: tfm-chat-micro-service-eu-cluster.tfm
+              port:
+                number: 7181
+
+        - path: /tfm/backend
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: tfm-python-backend-eu-cluster.tfm
+              port:
+                number: 7321
+
+        - path: /tfm/payment-handler
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: tfm-stripe-payment-handler-eu-cluster.tfm
+              port:
+                number: 9618
