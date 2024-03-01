@@ -319,4 +319,4 @@ sky-bazaar-flipper:
   enabled: false
 
 extra-chart:
-  enabled: true
+  enabled: false
