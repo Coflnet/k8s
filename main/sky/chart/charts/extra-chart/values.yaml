@@ -1,55 +1,61 @@
 enabled: false
 
-hosts:
 
-  # Payment
-  - host: sky.coflnet.com
-    http:
-      paths:
-        - path: /callback/paypal
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: payments-eu-cluster.payment
-              port:
-                number: 8000
-        - path: /callback/stripe
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: payments-eu-cluster.payment
-              port:
-                number: 8000
+payment:
+  hosts:
 
-        # TFM stuff
-        - path: /tfm/bot
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: tfm-bot-eu-cluster.tfm
-              port:
-                number: 7181
+    # Payment
+    - host: sky.coflnet.com
+      http:
+        paths:
+          - path: /callback/paypal
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: payments-eu-cluster.payment
+                port:
+                  number: 8000
+          - path: /callback/stripe
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: payments-eu-cluster.payment
+                port:
+                  number: 8000
+tfm:
+  hosts:
+    - host: sky.coflnet.com
+      http:
+        paths:
+          # TFM stuff
+          - path: /tfm/bot
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: tfm-bot-eu-cluster.tfm
+                port:
+                  number: 7181
 
-        - path: /tfm-chat
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: tfm-chat-micro-service-eu-cluster.tfm
-              port:
-                number: 7181
+          - path: /tfm-chat
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: tfm-chat-micro-service-eu-cluster.tfm
+                port:
+                  number: 7181
 
-        - path: /tfm/backend
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: tfm-python-backend-eu-cluster.tfm
-              port:
-                number: 7321
+          - path: /tfm/backend
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: tfm-python-backend-eu-cluster.tfm
+                port:
+                  number: 7321
 
-        - path: /tfm/payment-handler
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: tfm-stripe-payment-handler-eu-cluster.tfm
-              port:
-                number: 9618
+          - path: /tfm/payment-handler
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: tfm-stripe-payment-handler-eu-cluster.tfm
+                port:
+                  number: 9618

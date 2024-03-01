@@ -3,9 +3,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Chart.Name }}
-  annotations:
-    kubernetes.io/ingress.class: nginx
+  namespace: payment
 spec:
   rules:
-    {{ toYaml .Values.hosts | nindent 4 }}
+    {{ toYaml .Values.payment.hosts | nindent 4 }}
 {{ end }}
