@@ -3,7 +3,7 @@ enabled: false
 hosts:
 
   # Payment
-  - host:
+  - host: sky.coflnet.com
     http:
       paths:
         - path: /callback/paypal
