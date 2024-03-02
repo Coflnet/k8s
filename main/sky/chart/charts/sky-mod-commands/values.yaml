@@ -31,7 +31,7 @@ ports:
     containerPort: 8008
 
 ingress:
-  enabled: true
+  enabled: false
   nginx: true
   hosts:
     - host: sky.coflnet.com
