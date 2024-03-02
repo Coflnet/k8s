@@ -28,8 +28,6 @@ spec:
                     values:
                       - {{ .Chart.Name }}
               topologyKey: "kubernetes.io/hostname"
-      strategy:
-        type: {{ .Values.strategy }}
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       containers:
