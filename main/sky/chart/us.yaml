@@ -217,6 +217,7 @@ sky-bazaar:
 sky-bfcs:
   enabled: true
   replicaCount: 2
+  strategy: Recreate
   defaultEnvVarsEnabled: false
   ingress:
     enabled: true
