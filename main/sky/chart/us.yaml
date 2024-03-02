@@ -134,32 +134,35 @@ hypixel-react:
     enabled: true
     hosts:
       - host: sky-commands.coflnet.com
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: hypixel-react
-                port:
-                  number: 80
+        http:
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: hypixel-react
+                  port:
+                    number: 80
       - host: skyblock-backend.coflnet.com
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: hypixel-react
-                port:
-                  number: 80
+        http:
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: hypixel-react
+                  port:
+                    number: 80
       - host: sky.coflnet.com
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: hypixel-react
-                port:
-                  number: 80
+        http:
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: hypixel-react
+                  port:
+                    number: 80
   envVars:
     - name: COMMAND_ENDPOINT
       value: "http://sky-commands:8008/command"
