@@ -9,6 +9,12 @@ tfm-backend:
 
 tfm-bot:
   enabled: false
+  ingress:
+    enabled: true
+    host: sky.coflnet.com
+    path: /tfm/bot
+    port: 8081
+    service: tfm-bot-eu-cluster
 
 tfm-bot-java:
   enabled: false

@@ -48,6 +48,8 @@ envVars:
     value: "sky-proxy.sky:8000"
 
 ingress:
+  enabled: true
   host: sky.coflnet.com
   path: /tfm/bot
   port: 8081
+  service: tfm-bot
