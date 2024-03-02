@@ -18,21 +18,21 @@ payments:
               pathType: ImplementationSpecific
               backend:
                 service:
-                  name: payments-eu-cluster
+                  name: payment-proxy-haproxy
                   port:
                     number: 8000
             - path: /callback/paypal
               pathType: ImplementationSpecific
               backend:
                 service:
-                  name: payments-eu-cluster
+                  name: payment-proxy-haproxy
                   port:
                     number: 8000
             - path: /callback/lemonsqueezy
               pathType: ImplementationSpecific
               backend:
                 service:
-                  name: payments-eu-cluster
+                  name: payment-proxy-haproxy
                   port:
                     number: 8000
       - host: skyblock-backend.coflnet.com
@@ -42,7 +42,7 @@ payments:
               pathType: ImplementationSpecific
               backend:
                 service:
-                  name: payments-eu-cluster
+                  name: payment-proxy-haproxy
                   port:
                     number: 8000
             - path: /callback/paypal
