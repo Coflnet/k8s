@@ -32,6 +32,8 @@ envVars:
         key: mongo_host
 
 ingress:
+  enabled: true
   host: sky.coflnet.com
   path: /tfm/backend
   port: 7321
+  service: tfm-python-backend

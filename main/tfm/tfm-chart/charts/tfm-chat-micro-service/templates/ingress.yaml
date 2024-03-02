@@ -1,4 +1,4 @@
-{{ if .Values.enabled }}
+{{ if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -16,7 +16,7 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: {{ .Chart.Name }}
+            name: {{ .Values.ingress.insecure.service }}
             port:
               number: {{ .Values.ingress.insecure.port }}
   - host: {{ .Values.ingress.secure.host }}
@@ -26,7 +26,7 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: {{ .Chart.Name }}
+            name: {{ .Values.ingress.secure.service }}
             port:
               number: {{ .Values.ingress.secure.port }}
 {{ end }}

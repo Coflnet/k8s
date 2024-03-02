@@ -9,17 +9,20 @@ tfm-backend:
 
 tfm-python-backend:
   enabled: false
+  ingress:
+    enabled: true
+    service: tfm-python-backend-eu-cluster
 
 tfm-stripe-payment-handler:
   enabled: false
+  ingress:
+    enabled: true
+    service: tfm-stripe-payment-handler-eu-cluster
 
 tfm-bot:
   enabled: false
   ingress:
     enabled: true
-    host: sky.coflnet.com
-    path: /tfm/bot
-    port: 8081
     service: tfm-bot-eu-cluster
 
 tfm-bot-java:
@@ -27,3 +30,9 @@ tfm-bot-java:
 
 tfm-chat-micro-service:
   enabled: false
+  ingress:
+    enabled: true
+    secure:
+      service: tfm-chat-micro-service-eu-cluster
+    insecure:
+      service: tfm-chat-micro-service-eu-cluster

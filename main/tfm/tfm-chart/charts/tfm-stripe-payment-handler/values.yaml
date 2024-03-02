@@ -35,6 +35,8 @@ envVars:
         key: stripe_private_key
 
 ingress:
+  enabled: true
   host: sky.coflnet.com
   path: /tfm/payment-handler
   port: 9618
+  service: tfm-stripe-payment-handler
