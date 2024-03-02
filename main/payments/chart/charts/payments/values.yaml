@@ -140,6 +140,7 @@ volumes:
 
 ingress:
   enabled: true
+  nginx: true
   hosts:
   - host: sky.coflnet.com
     http:

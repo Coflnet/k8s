@@ -9,6 +9,7 @@ payments:
   enabled: false
   ingress:
     enabled: true
+    nginx: false
     hosts:
       - host: sky.coflnet.com
         http:
