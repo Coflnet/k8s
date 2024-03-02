@@ -1,3 +1,4 @@
+{{ if .Values.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -28,3 +29,4 @@ spec:
             name: {{ .Chart.Name }}
             port:
               number: {{ .Values.ingress.secure.port }}
+{{ end }}

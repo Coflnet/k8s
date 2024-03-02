@@ -1,6 +1,8 @@
 replicaCount: 1
 strategy: RollingUpdate
 
+enabled: true
+
 image:
   repository: muehlhansfl/tfmbotjava
   tag: 77b858eb-bf67-4047-b0fa-bdb33cf02664

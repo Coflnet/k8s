@@ -1,5 +1,7 @@
 replicaCount: 1
 
+enabled: true
+
 strategy: RollingUpdate
 
 image:

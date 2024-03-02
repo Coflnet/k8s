@@ -1,5 +1,6 @@
 replicaCount: 1
 strategy: RollingUpdate
+enabled: true
 
 image:
   repository: muehlhansfl/tfmpythonbackend

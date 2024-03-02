@@ -1,6 +1,8 @@
 replicaCount: 0
 strategy: RollingUpdate
 
+enabled: false
+
 image:
   repository: muehlhansfl/tfmbackend
   tag: ac2f9f63-66c9-4a67-951e-1b0b052f4440
