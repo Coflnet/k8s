@@ -1,0 +1,56 @@
+global:
+  imagePullSecrets:
+    - name: regcred
+
+acounting:
+  enabled: false
+
+payments:
+  enabled: false
+  ingress:
+    hosts:
+      - host: sky.coflnet.com
+        http:
+          paths:
+            - path: /callback/stripe
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: payments-eu-cluster
+                  port:
+                    number: 8000
+            - path: /callback/paypal
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: payments-eu-cluster
+                  port:
+                    number: 8000
+            - path: /callback/lemonsqueezy
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: payments-eu-cluster
+                  port:
+                    number: 8000
+      - host: skyblock-backend.coflnet.com
+        http:
+          paths:
+            - path: /callback/stripe
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: payments-eu-cluster
+                  port:
+                    number: 8000
+            - path: /callback/paypal
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: payments-eu-cluster
+                  port:
+                    number: 8000
+
+product-provisioner:
+  enabled: false
+
