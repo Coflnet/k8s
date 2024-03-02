@@ -1,0 +1,17 @@
+tfm-ah-ingestor:
+  enabled: false
+
+tfm-averages-generator:
+  enabled: false
+
+tfm-backend:
+  enabled: false
+
+tfm-bot:
+  enabled: false
+
+tfm-bot-java:
+  enabled: false
+
+tfm-chat-microservice:
+  enabled: false

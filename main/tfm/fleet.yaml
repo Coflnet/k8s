@@ -1,3 +1,10 @@
 defaultNamespace: tfm
 helm:
   chart: ./tfm-chart
+
+targetCustomizations:
+  - name: us-cluster
+    clusterName: us-cluster
+    helm:
+      valuesFiles:
+        - ./chart/us.yaml
