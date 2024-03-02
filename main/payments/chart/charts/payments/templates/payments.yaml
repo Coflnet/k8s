@@ -5,7 +5,7 @@ metadata:
   name: {{ .Chart.Name }}
   labels:
     app: {{ .Chart.Name }}
-    config.linkerd.io/opaque-ports: "3304"
+    "config.linkerd.io/skip-outbound-ports": "3304"
 spec:
   selector:
     matchLabels:
@@ -16,7 +16,7 @@ spec:
       labels:
         app: {{ .Chart.Name }}
       annotations:
-        config.linkerd.io/opaque-ports: "3304"
+        "config.linkerd.io/skip-outbound-ports": "3304"
     spec:
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
