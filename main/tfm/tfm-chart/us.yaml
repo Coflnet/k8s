@@ -7,6 +7,12 @@ tfm-averages-generator:
 tfm-backend:
   enabled: false
 
+tfm-python-backend:
+  enabled: false
+
+tfm-stripe-payment-handler:
+  enabled: false
+
 tfm-bot:
   enabled: false
   ingress:
@@ -19,5 +25,5 @@ tfm-bot:
 tfm-bot-java:
   enabled: false
 
-tfm-chat-microservice:
+tfm-chat-micro-service:
   enabled: false
