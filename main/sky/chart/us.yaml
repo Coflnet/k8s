@@ -234,10 +234,7 @@ sky-bfcs:
         fieldRef:
           fieldPath: status.hostIP
     - name: SNIPER_BASE_URL
-      valueFrom:
-        configMapKeyRef:
-          name: sniper
-          key: base_url
+      value: http://sky-sniper-eu-cluster:8000
     - name: SNIPER_TRANSFER_TOKEN
       valueFrom:
         secretKeyRef:
