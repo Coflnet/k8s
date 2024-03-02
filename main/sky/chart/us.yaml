@@ -173,7 +173,7 @@ sky-api:
   enabled: true
   replicaCount: 2
   ingress:
-    enabled: true
+    enabled: false
     hosts:
       - host: sky.coflnet.com
         http:
