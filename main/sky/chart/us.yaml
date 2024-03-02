@@ -173,7 +173,7 @@ sky-api:
   enabled: true
   replicaCount: 2
   ingress:
-    enabled: false
+    enabled: true
     hosts:
       - host: sky.coflnet.com
         http:
@@ -258,13 +258,6 @@ sky-commands:
       - host: sky.coflnet.com
         http:
           paths:
-            - path: /api
-              pathType: ImplementationSpecific
-              backend:
-                service:
-                  name: sky-commands
-                  port:
-                    number: 8008
             - path: /command
               pathType: ImplementationSpecific
               backend:
@@ -303,13 +296,6 @@ sky-commands:
       - host: sky-commands.coflnet.com
         http:
           paths:
-            - path: /api
-              pathType: ImplementationSpecific
-              backend:
-                service:
-                  name: sky-commands
-                  port:
-                    number: 8008
             - path: /command
               pathType: ImplementationSpecific
               backend:
