@@ -1,6 +1,8 @@
 replicaCount: 3
 maxUnavailable: 1
 
+enabled: true
+
 strategy: RollingUpdate
 
 image:
@@ -137,6 +139,7 @@ volumes:
 
 
 ingress:
+  enabled: true
   hosts:
   - host: sky.coflnet.com
     http:

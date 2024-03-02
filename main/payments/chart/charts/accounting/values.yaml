@@ -2,6 +2,8 @@ replicaCount: 0
 
 strategy: RollingUpdate
 
+enabled: false
+
 image:
   repository: muehlhansfl/accounting
   tag: dcce228c-3d2e-4c9c-b768-3701c9c136f9

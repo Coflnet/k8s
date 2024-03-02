@@ -5,3 +5,5 @@ image:
 envVars:
   - name: "PAYMENT_HOST"
     value: "payments:8000"
+
+enabled: true
