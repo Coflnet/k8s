@@ -8,6 +8,7 @@ acounting:
 payments:
   enabled: false
   ingress:
+    enabled: true
     hosts:
       - host: sky.coflnet.com
         http:
