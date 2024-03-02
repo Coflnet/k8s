@@ -99,6 +99,7 @@ envVars: []
 
 ingress:
   enabled: false
+  nginx: true
   className: ""
   annotations: {}
   hosts:

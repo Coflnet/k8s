@@ -132,6 +132,7 @@ hypixel-react:
   replicaCount: 2
   ingress:
     enabled: true
+    nginx: false
     hosts:
       - host: sky-commands.coflnet.com
         http:
@@ -174,6 +175,7 @@ sky-api:
   replicaCount: 2
   ingress:
     enabled: true
+    nginx: false
     hosts:
       - host: sky.coflnet.com
         http:
@@ -217,6 +219,7 @@ sky-bfcs:
   defaultEnvVarsEnabled: false
   ingress:
     enabled: true
+    nginx: false
     host: sky-us.coflnet.com
   envVars:
       ## common jaeger env vars ##
@@ -254,6 +257,7 @@ sky-commands:
   replicaCount: 2
   ingress:
     enabled: true
+    nginx: false
     hosts:
       - host: sky.coflnet.com
         http:
@@ -367,6 +371,7 @@ sky-mod-commands:
   replicaCount: 2
   ingress:
     enabled: true
+    nginx: false
     hosts:
       - host: sky.coflnet.com
         http:

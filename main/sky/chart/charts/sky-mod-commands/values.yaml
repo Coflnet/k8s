@@ -31,15 +31,19 @@ ports:
     containerPort: 8008
 
 ingress:
-  enabled: false
-  className: ""
-  annotations: {}
+  enabled: true
+  nginx: true
   hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
+    - host: sky.coflnet.com
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: hypixel-react
+                port:
+                  number: 80
 
 resources:
   requests:
