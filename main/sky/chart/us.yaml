@@ -173,23 +173,25 @@ sky-api:
     enabled: true
     hosts:
       - host: sky.coflnet.com
-        paths:
-          - path: /api
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-api
-                port:
-                  number: 8000
+        http:
+          paths:
+            - path: /api
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-api
+                  port:
+                    number: 8000
       - host: sky-commands.coflnet.com
-        paths:
-          - path: /api
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-api
-                port:
-                  number: 8000
+        http:
+          paths:
+            - path: /api
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-api
+                  port:
+                    number: 8000
   envVars:
     ## common jaeger env vars ##
     - name: JAEGER_AGENT_HOST
@@ -251,93 +253,95 @@ sky-commands:
     enabled: true
     hosts:
       - host: sky.coflnet.com
-        paths:
-          - path: /api
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-commands
-                port:
-                  number: 8008
-          - path: /command
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-commands
-                port:
-                  number: 8008
-          - path: /skyblock
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-commands
-                port:
-                  number: 8008
-          - path: /static
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-commands
-                port:
-                  number: 8008
-          - path: /static
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-commands
-                port:
-                  number: 8008
-          - path: /swagger
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-commands
-                port:
-                  number: 8008
+        http:
+          paths:
+            - path: /api
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-commands
+                  port:
+                    number: 8008
+            - path: /command
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-commands
+                  port:
+                    number: 8008
+            - path: /skyblock
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-commands
+                  port:
+                    number: 8008
+            - path: /static
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-commands
+                  port:
+                    number: 8008
+            - path: /static
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-commands
+                  port:
+                    number: 8008
+            - path: /swagger
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-commands
+                  port:
+                    number: 8008
       - host: sky-commands.coflnet.com
-        paths:
-          - path: /api
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-commands
-                port:
-                  number: 8008
-          - path: /command
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-commands
-                port:
-                  number: 8008
-          - path: /skyblock
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-commands
-                port:
-                  number: 8008
-          - path: /static
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-commands
-                port:
-                  number: 8008
-          - path: /static
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-commands
-                port:
-                  number: 8008
-          - path: /swagger
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-commands
-                port:
-                  number: 8008
+        http:
+          paths:
+            - path: /api
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-commands
+                  port:
+                    number: 8008
+            - path: /command
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-commands
+                  port:
+                    number: 8008
+            - path: /skyblock
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-commands
+                  port:
+                    number: 8008
+            - path: /static
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-commands
+                  port:
+                    number: 8008
+            - path: /static
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-commands
+                  port:
+                    number: 8008
+            - path: /swagger
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-commands
+                  port:
+                    number: 8008
 
 sky-controller:
   enabled: false
@@ -376,32 +380,35 @@ sky-mod-commands:
     enabled: true
     hosts:
       - host: sky.coflnet.com
-        paths:
-          - path: /modsocket
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-mod-commands
-                port:
-                  number: 8008
+        http:
+          paths:
+            - path: /modsocket
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-mod-commands
+                  port:
+                    number: 8008
       - host: sky-commands.coflnet.com
-        paths:
-          - path: /modsocket
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-mod-commands
-                port:
-                  number: 8008
+        http:
+          paths:
+            - path: /modsocket
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-mod-commands
+                  port:
+                    number: 8008
       - host: sky-mod.coflnet.com
-        paths:
-          - path: /modsocket
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-mod-commands
-                port:
-                  number: 8008
+        http:
+          paths:
+            - path: /modsocket
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: sky-mod-commands
+                  port:
+                    number: 8008
   envVars:
     - name: CHAT_API_KEY
       valueFrom:
