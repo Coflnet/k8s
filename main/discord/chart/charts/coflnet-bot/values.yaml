@@ -69,7 +69,7 @@ envVars:
         name: secret
         key: coflnet_database_url
   - name: REDIS_HOST
-    value: "sky-global-redis.sky"
+    value: "sky-settings-redis.sky"
   - name: REDIS_CHAT_CHANNEL
     value: "chat"
 
