@@ -28,6 +28,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.global.redis.name }}
+  labels:
+    "mirror.linkerd.io/exported": "true"
 spec:
   selector:
     app: {{ .Values.global.redis.name }}

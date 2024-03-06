@@ -38,3 +38,5 @@ envVars:
       secretKeyRef:
         name: secret
         key: connection_chat_database
+  - name: REDIS_HOST
+    value: sky-settings-redis
