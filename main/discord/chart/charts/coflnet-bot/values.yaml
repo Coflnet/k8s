@@ -47,8 +47,8 @@ envVars:
         key: cofl_chat_discord_webhook
   - name: CHAT_CHANNEL_ID
     value: "965323875246276660"
-  - name: MOD_ROLE
-    value: "869942341442600990"
+  - name: MOD_ROLES
+    value: "869942341442600990,1114527243855732796"
 
   - name: NOTIFICATION_SERVER_GUILD_ID
     value: "952968682181632130"
