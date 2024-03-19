@@ -108,7 +108,7 @@ data:
           "slug": "s_cc_1800",
           "title": "1.800 CoflCoins",
           "cost": 1800,
-          "price": 6.69,
+          "price": 8.42,
           "currencyCode": "eur",
           "ProviderSlug": "stripe",
           "type": 4
@@ -144,7 +144,7 @@ data:
           "slug": "p_cc_1800",
           "title": "1.800 CoflCoins",
           "cost": 1800,
-          "price": 6.99,
+          "price": 8.69,
           "currencyCode": "eur",
           "ProviderSlug": "paypal",
           "type": 4
@@ -180,7 +180,7 @@ data:
           "slug": "l_cc_1800",
           "title": "1.800 CoflCoins",
           "cost": 1800,
-          "price": 6.99,
+          "price": 8.69,
           "currencyCode": "eur",
           "ProviderSlug": "lemonsqueezy",
           "type": 4
