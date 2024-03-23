@@ -49,7 +49,7 @@ payments:
               pathType: ImplementationSpecific
               backend:
                 service:
-                  name: payments-eu-cluster
+                  name: sky-payments-eu-cluster
                   port:
                     number: 8000
 

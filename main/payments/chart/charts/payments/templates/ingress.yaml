@@ -1,13 +1,16 @@
-{{ if .Values.ingress.enabled }}
+{{ range $p := .Values.payments }}
+{{ if $p.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ $p.name }}
   annotations:
-    {{ if .Values.ingress.nginx }}
+    {{ if $p.ingress.nginx }}
     kubernetes.io/ingress.class: nginx
     {{ end }}
 spec:
   rules:
-    {{ toYaml .Values.ingress.hosts | nindent 4 }}
+    {{ toYaml $p.ingress.hosts | nindent 4 }}
+---
+{{ end }}
 {{ end }}

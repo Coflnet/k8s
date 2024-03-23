@@ -43,143 +43,175 @@ envVars:
       fieldRef:
         fieldPath: status.hostIP
 
-  - name: STRIPE__ID
-    valueFrom:
-      secretKeyRef: 
-        name: secret
-        key: stripe_secret
 
-  - name: STRIPE__KEY
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: stripe_key
+payments:
+  - name: mds-payments
+    envVars:
+      - name: lemonsqueezy__api_key
+        valuefrom:
+          secretkeyref:
+            name: secret
+            key: lemonsqueezy_api_key
 
-  - name: STRIPE__SIGNING_SECRET
-    valueFrom:
-      secretKeyRef: 
-        name: secret
-        key: stripe_signing_secret
+      - name: lemonsqueezy__secret
+        valuefrom:
+          secretkeyref:
+            name: mds-secret
+            key: lemonsqueezy_secret
+    ingress:
+      enabled: true
+      nginx: true
+      hosts:
+      - host: mds.coflnet.com
+        http:
+          paths:
+          - path: /callback/lemonsqueezy
+            pathType: ImplementationSpecific
+            backend:
+              service: 
+                name: mds-payments
+                port:
+                  number: 8000
 
-  - name: PAYPAL__ID
-    valueFrom:
-      secretKeyRef: 
-        name: secret
-        key: paypal_id
+  - name: sky-payments
+    envVars:
+      - name: STRIPE__ID
+        valueFrom:
+          secretKeyRef: 
+            name: secret
+            key: stripe_secret
 
-  - name: PAYPAL__SECRET
-    valueFrom:
-      secretKeyRef: 
-        name: secret
-        key: paypal_secret
+      - name: STRIPE__KEY
+        valueFrom:
+          secretKeyRef:
+            name: secret
+            key: stripe_key
 
-  - name: PAYPAL__IS_SANDBOX
-    value: "false"
+      - name: STRIPE__SIGNING_SECRET
+        valueFrom:
+          secretKeyRef: 
+            name: secret
+            key: stripe_signing_secret
 
-  - name: LEMONSQUEEZY__API_KEY
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: lemonsqueezy_api_key
+      - name: PAYPAL__ID
+        valueFrom:
+          secretKeyRef: 
+            name: secret
+            key: paypal_id
 
-  - name: LEMONSQUEEZY__SECRET
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: lemonsqueezy_secret
+      - name: PAYPAL__SECRET
+        valueFrom:
+          secretKeyRef: 
+            name: secret
+            key: paypal_secret
 
-  - name: KAFKA_HOST
-    value: k8-main-kafka-kafka.kafka.svc.cluster.local
+      - name: PAYPAL__IS_SANDBOX
+        value: "false"
 
-  - name: DB_CONNECTION
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: connection_string_payment
+      - name: lemonsqueezy__api_key
+        valuefrom:
+          secretkeyref:
+            name: secret
+            key: lemonsqueezy_api_key
 
-  - name: KAFKA__BROKERS
-    valueFrom:
-      secretKeyRef:
-        name: redpanda
-        key: brokers
+      - name: lemonsqueezy__secret
+        valuefrom:
+          secretkeyref:
+            name: secret
+            key: lemonsqueezy_secret
 
-  - name: KAFKA__USERNAME
-    valueFrom:
-      secretKeyRef:
-        name: redpanda-credentials
-        key: username
+      - name: KAFKA_HOST
+        value: k8-main-kafka-kafka.kafka.svc.cluster.local
 
-  - name: KAFKA__PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: redpanda-credentials
-        key: password
+      - name: DB_CONNECTION
+        valueFrom:
+          secretKeyRef:
+            name: secret
+            key: connection_string_payment
 
-  - name: KAFKA__TLS__CA_LOCATION
-    value: "/tls/cm/ca.crt"
+      - name: KAFKA__BROKERS
+        valueFrom:
+          secretKeyRef:
+            name: redpanda
+            key: brokers
 
-  - name: KAFKA__TLS__CERTIFICATE_LOCATION
-    value: "/tls/cm/skyblock.crt"
+      - name: KAFKA__USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: redpanda-credentials
+            key: username
 
-  - name: KAFKA__TLS__KEY_LOCATION
-    value: "/tls/secret/skyblock.key"
+      - name: KAFKA__PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: redpanda-credentials
+            key: password
 
-  - name: KAFKA__REPLICATION_FACTOR
-    value: "3"
+      - name: KAFKA__TLS__CA_LOCATION
+        value: "/tls/cm/ca.crt"
 
-volumes:
-- name: redpanda
-  mountPath: /tls/secret
-  type: secret
-  mountName: redpanda-secret
-- name: redpanda
-  mountPath: /tls/cm
-  type: configmap
-  mountName: redpanda-cm
+      - name: KAFKA__TLS__CERTIFICATE_LOCATION
+        value: "/tls/cm/skyblock.crt"
+
+      - name: KAFKA__TLS__KEY_LOCATION
+        value: "/tls/secret/skyblock.key"
+
+      - name: KAFKA__REPLICATION_FACTOR
+        value: "3"
+
+    volumes:
+      - name: redpanda
+        mountPath: /tls/secret
+        type: secret
+        mountName: redpanda-secret
+      - name: redpanda
+        mountPath: /tls/cm
+        type: configmap
+        mountName: redpanda-cm
 
 
-ingress:
-  enabled: true
-  nginx: true
-  hosts:
-  - host: sky.coflnet.com
-    http:
-      paths:
-      - path: /callback/stripe
-        pathType: ImplementationSpecific
-        backend:
-          service: 
-            name: payments
-            port:
-              number: 8000
-      - path: /callback/paypal
-        pathType: ImplementationSpecific
-        backend:
-          service: 
-            name: payments
-            port:
-              number: 8000
-      - path: /callback/lemonsqueezy
-        pathType: ImplementationSpecific
-        backend:
-          service: 
-            name: payments
-            port:
-              number: 8000
-  - host: skyblock-backend.coflnet.com
-    http:
-      paths:
-      - path: /callback/stripe
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: payments
-            port:
-              number: 8000
-      - path: /callback/paypal
-        pathType: ImplementationSpecific
-        backend:
-          service: 
-            name: payments
-            port:
-              number: 8000
+    ingress:
+      enabled: true
+      nginx: true
+      hosts:
+      - host: sky.coflnet.com
+        http:
+          paths:
+          - path: /callback/stripe
+            pathType: ImplementationSpecific
+            backend:
+              service: 
+                name: sky-payments
+                port:
+                  number: 8000
+          - path: /callback/paypal
+            pathType: ImplementationSpecific
+            backend:
+              service: 
+                name: sky-payments
+                port:
+                  number: 8000
+          - path: /callback/lemonsqueezy
+            pathType: ImplementationSpecific
+            backend:
+              service: 
+                name: sky-payments
+                port:
+                  number: 8000
+      - host: skyblock-backend.coflnet.com
+        http:
+          paths:
+          - path: /callback/stripe
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: sky-payments
+                port:
+                  number: 8000
+          - path: /callback/paypal
+            pathType: ImplementationSpecific
+            backend:
+              service: 
+                name: sky-payments
+                port:
+                  number: 8000
