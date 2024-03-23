@@ -59,9 +59,9 @@ payments:
             name: mds-secret
             key: lemonsqueezy_secret
       - name: lemonsqueezy__STORE_ID
-        value: 76428
+        value: "76428"
       - name: lemonsqueezy__VARIANT_ID
-        value: 308547
+        value: "308547"
       - name: DB_CONNECTION
         valueFrom:
           secretKeyRef:
