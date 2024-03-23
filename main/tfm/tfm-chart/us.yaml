@@ -11,19 +11,19 @@ tfm-python-backend:
   enabled: false
   ingress:
     enabled: true
-    service: tfm-python-backend-eu-cluster
+    service: tfm-python-proxy-haproxy
 
 tfm-stripe-payment-handler:
   enabled: false
   ingress:
     enabled: true
-    service: tfm-stripe-payment-handler-eu-cluster
+    service: tfm-stripe-proxy-haproxy
 
 tfm-bot:
   enabled: false
   ingress:
     enabled: true
-    service: tfm-bot-eu-cluster
+    service: tfm-bot-proxy-haproxy
 
 tfm-bot-java:
   enabled: false
@@ -33,6 +33,6 @@ tfm-chat-micro-service:
   ingress:
     enabled: true
     secure:
-      service: tfm-chat-micro-service-eu-cluster
+      service: tfm-chat-proxy-haproxy
     insecure:
-      service: tfm-chat-micro-service-eu-cluster
+      service: tfm-chat-proxy-haproxy
