@@ -287,8 +287,42 @@ payments:
     envVars:
       - name: "PAYMENT_HOST"
         value: "mds-payments:8000"
-    products: | 
-      {"products": []}
-      
+    products: |
+      {"products": [{
+      "slug": "file-upload",
+      "title": "File Upload",
+      "description": "One file upload to deduct from balance",
+      "cost": 1,
+      "ownershipSeconds": 1,
+      "type": "SERVICE"
+      }],
+      "topups": [
+      {
+      "slug": "1_credit",
+      "title": "1 Credit",
+      "cost": 1,
+      "price": 1,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "type": 4
+      },
+      {
+      "slug": "10_credit",
+      "title": "1 Credit",
+      "cost": 10,
+      "price": 9,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "type": 4
+      },
+      {
+      "slug": "100_credit",
+      "title": "1 Credit",
+      "cost": 100,
+      "price": 80,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "type": 4
+      }}
 
 enabled: true
