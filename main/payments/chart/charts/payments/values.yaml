@@ -114,14 +114,14 @@ payments:
         value: "false"
 
       - name: lemonsqueezy__api_key
-        valuefrom:
-          secretkeyref:
+        valueFrom:
+          secretKeyRef:
             name: secret
             key: lemonsqueezy_api_key
 
       - name: lemonsqueezy__secret
-        valuefrom:
-          secretkeyref:
+        valueFrom:
+          secretKeyRef:
             name: secret
             key: lemonsqueezy_secret
 
