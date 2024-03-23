@@ -47,18 +47,21 @@ envVars:
 payments:
   - name: mds-payments
     envVars:
-      - name: LEMONSQUEEZY__API_KEY
+      - name: lemonsqueezy__API_KEY
         valueFrom:
           secretKeyRef:
             name: secret
             key: lemonsqueezy_api_key
 
-      - name: LEMONSQUEEZY__SECRET
+      - name: lemonsqueezy__SECRET
         valueFrom:
           secretKeyRef:
             name: secret
             key: lemonsqueezy_secret
-
+      - name: lemonsqueezy__STORE_ID
+        value: "76428"
+      - name: lemonsqueezy__VARIANT_ID
+        value: "308547"
       - name: DB_CONNECTION
         valueFrom:
           secretKeyRef:
