@@ -113,13 +113,13 @@ payments:
       - name: PAYPAL__IS_SANDBOX
         value: "false"
 
-      - name: lemonsqueezy__api_key
+      - name: LEMONSQUEEZY__API_KEY
         valueFrom:
           secretKeyRef:
             name: secret
             key: lemonsqueezy_api_key
 
-      - name: lemonsqueezy__secret
+      - name: LEMONSQUEEZY__SECRET
         valueFrom:
           secretKeyRef:
             name: secret
