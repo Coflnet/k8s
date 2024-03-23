@@ -298,6 +298,20 @@ payments:
       }],
       "topups": [
       {
+      "slug": "new_account",
+      "title": "Initial balance",
+      "cost": 5,
+      "ProviderSlug": "custom",
+      "type": 4
+      },
+      {
+      "slug": "referral_bonus",
+      "title": "Bonus if a friend was referred",
+      "cost": 10,
+      "ProviderSlug": "custom",
+      "type": 36
+      },
+      {
       "slug": "1_credit",
       "title": "1 Credit",
       "cost": 1,
@@ -323,6 +337,6 @@ payments:
       "currencyCode": "eur",
       "ProviderSlug": "lemonsqueezy",
       "type": 4
-      }}
+      }]}
 
 enabled: true
