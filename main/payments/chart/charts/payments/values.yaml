@@ -58,6 +58,11 @@ payments:
           secretkeyref:
             name: mds-secret
             key: lemonsqueezy_secret
+      - name: DB_CONNECTION
+        valueFrom:
+          secretKeyRef:
+            name: mds_secret
+            key: connection_string_payment
     ingress:
       enabled: true
       nginx: true
