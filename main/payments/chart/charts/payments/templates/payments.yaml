@@ -45,13 +45,13 @@ spec:
         {{ end }}
         {{ end }}
       {{ if $p.volumes }}
-      volumes: 
-      {{ range $.Values.volumes }}
+      volumes:
+      {{ range $p.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
           configMap:
             name: {{ .name }}
-          {{ else}}
+          {{ else }}
           secret:
             secretName: {{ .name }}
           {{ end }}
