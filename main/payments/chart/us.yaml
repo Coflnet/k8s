@@ -7,51 +7,53 @@ acounting:
 
 payments:
   enabled: false
-  ingress:
-    enabled: true
-    nginx: false
-    hosts:
-      - host: sky.coflnet.com
-        http:
-          paths:
-            - path: /callback/stripe
-              pathType: ImplementationSpecific
-              backend:
-                service:
-                  name: payment-proxy-haproxy
-                  port:
-                    number: 8000
-            - path: /callback/paypal
-              pathType: ImplementationSpecific
-              backend:
-                service:
-                  name: payment-proxy-haproxy
-                  port:
-                    number: 8000
-            - path: /callback/lemonsqueezy
-              pathType: ImplementationSpecific
-              backend:
-                service:
-                  name: payment-proxy-haproxy
-                  port:
-                    number: 8000
-      - host: skyblock-backend.coflnet.com
-        http:
-          paths:
-            - path: /callback/stripe
-              pathType: ImplementationSpecific
-              backend:
-                service:
-                  name: payment-proxy-haproxy
-                  port:
-                    number: 8000
-            - path: /callback/paypal
-              pathType: ImplementationSpecific
-              backend:
-                service:
-                  name: sky-payments-eu-cluster
-                  port:
-                    number: 8000
+  payments:
+  - name: sky-payments
+    ingress:
+      enabled: true
+      nginx: false
+      hosts:
+        - host: sky.coflnet.com
+          http:
+            paths:
+              - path: /callback/stripe
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: payment-proxy-haproxy
+                    port:
+                      number: 8000
+              - path: /callback/paypal
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: payment-proxy-haproxy
+                    port:
+                      number: 8000
+              - path: /callback/lemonsqueezy
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: payment-proxy-haproxy
+                    port:
+                      number: 8000
+        - host: skyblock-backend.coflnet.com
+          http:
+            paths:
+              - path: /callback/stripe
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: payment-proxy-haproxy
+                    port:
+                      number: 8000
+              - path: /callback/paypal
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: payment-proxy-haproxy
+                    port:
+                      number: 8000
 
 product-provisioner:
   enabled: false
