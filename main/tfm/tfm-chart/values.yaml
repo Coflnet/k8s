@@ -1,3 +1,4 @@
 global:
+  nginx: true
   imagePullSecrets: 
   - name: harbor
