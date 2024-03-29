@@ -104,6 +104,14 @@ payments:
       "cost": 1400,
       "type": "SERVICE",
       "ownershipSeconds": 3600
+      },
+      {
+      "slug": "slowdown",
+      "title": "Temporarily slow down a user",
+      "description": "Temporarily slow down a user",
+      "cost": 1330,
+      "type": "SERVICE",
+      "ownershipSeconds": 60
       }
       ],
       "topups": [
