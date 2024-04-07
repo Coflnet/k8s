@@ -303,6 +303,13 @@ payments:
       "cost": 9,
       "ownershipSeconds": 1,
       "type": "SERVICE"
+      },{
+      "slug": "qr-code",
+      "title": "10 QrCodes",
+      "description": "A batch of 10 QrCodes",
+      "cost": 1000,
+      "ownershipSeconds": 1,
+      "type": "PRODUCT"
       }],
       "topups": [
       {
