@@ -35,25 +35,18 @@ envVars:
   - name: CASSANDRA__HOSTS
     valueFrom:
       configMapKeyRef:
-        name: scylla-config
-        key: scylla_host
+        name: config
+        key: cassandra_host
   - name: CASSANDRA__USER
     valueFrom:
       configMapKeyRef:
-        name: scylla-config
-        key: leaderboard_user
+        name: config
+        key: cassandra_user
   - name: CASSANDRA__PASSWORD
     valueFrom:
       secretKeyRef:
-        name: scylla-credentials
-        key: leaderboard_password
-  - name: CASSANDRA__X509Certificate_PATHS
-    value: /tls/scylla/secret/db.pfx
-  - name: CASSANDRA__X509Certificate_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: scylla-credentials
-        key: db-pfx-password
+        name: secret
+        key: cassandra_password
 
     ## copy pasted from global sky ## 
     ### kafka ###
