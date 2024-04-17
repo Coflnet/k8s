@@ -28,18 +28,3 @@ spec:
           {{ toYaml .Values.envVars | nindent 10 }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
-        volumeMounts:
-        {{ range .Values.global.volumes }}
-        - name: {{ .mountName }}
-          mountPath: {{ .mountPath }}
-        {{ end }}
-        - name: scylla-pfx
-          mountPath: /tls/scylla/secret/db.pfx
-          subPath: db.pfx
-      volumes: 
-        - name: scylla-pfx
-          secret:
-            secretName: scylla-pfx
-            items:
-            - key: db.pfx
-              path: db.pfx
