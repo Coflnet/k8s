@@ -104,6 +104,14 @@ payments:
       "cost": 1400,
       "type": "SERVICE",
       "ownershipSeconds": 3600
+      },
+      {
+      "slug": "slowdown",
+      "title": "Temporarily slow down a user",
+      "description": "Temporarily slow down a user",
+      "cost": 1330,
+      "type": "SERVICE",
+      "ownershipSeconds": 60
       }
       ],
       "topups": [
@@ -292,9 +300,16 @@ payments:
       "slug": "file-upload",
       "title": "File Upload",
       "description": "One file upload to deduct from balance",
-      "cost": 1,
+      "cost": 9,
       "ownershipSeconds": 1,
       "type": "SERVICE"
+      },{
+      "slug": "qr-code",
+      "title": "10 QrCodes",
+      "description": "A batch of 10 QrCodes",
+      "cost": 1000,
+      "ownershipSeconds": 1,
+      "type": "PRODUCT"
       }],
       "topups": [
       {
@@ -312,27 +327,27 @@ payments:
       "type": 36
       },
       {
-      "slug": "1_credit",
-      "title": "1 Credit",
-      "cost": 1,
+      "slug": "100_credit",
+      "title": "100 Credits",
+      "cost": 100,
       "price": 1,
       "currencyCode": "eur",
       "ProviderSlug": "lemonsqueezy",
       "type": 4
       },
       {
-      "slug": "10_credit",
-      "title": "1 Credit",
-      "cost": 10,
+      "slug": "1000_credit",
+      "title": "1000 Credit",
+      "cost": 10000,
       "price": 9,
       "currencyCode": "eur",
       "ProviderSlug": "lemonsqueezy",
       "type": 4
       },
       {
-      "slug": "100_credit",
+      "slug": "10000_credit",
       "title": "1 Credit",
-      "cost": 100,
+      "cost": 10000,
       "price": 80,
       "currencyCode": "eur",
       "ProviderSlug": "lemonsqueezy",

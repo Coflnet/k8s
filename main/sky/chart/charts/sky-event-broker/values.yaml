@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skyeventbroker
-  tag: 262c7d7b-42e1-4db0-8d33-adc086db236e
+  tag: 5d0b7572-1e56-41b1-a66e-dc2af217785c
   pullPolicy: IfNotPresent
 
 ports:

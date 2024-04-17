@@ -1,11 +1,11 @@
 enabled: true
-replicaCount: 5
+replicaCount: 4
 
 strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skyupdater
-  tag: 83711814-336c-4f51-a50a-0ab9284872d7
+  tag: 6e83b1de-5aa6-4044-bddd-be3ae75e2aa4
   pullPolicy: IfNotPresent
 
 ports:
