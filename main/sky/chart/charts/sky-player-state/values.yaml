@@ -57,14 +57,6 @@ envVars:
         key: cassandra_password
   - name: CASSANDRA__KEYSPACE
     value: sky_item_movement
-  - name: CASSANDRA__REPLICATION_FACTOR
-    value: NetworkTopologyStrategy
-  - name: CASSANDRA__REPLICATION_FACTOR
-    value: "3"
-  - name: CASSANDRA__SSL_ENABLED
-    value: "true"
-  - name: X509Certificate_PATHS
-    value: /tmp/cassandra/certs/duke.cer
 
   - name: SCYLLA__HOSTS
     valueFrom:
