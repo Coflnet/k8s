@@ -1,4 +1,4 @@
-replicaCount: 2
+replicaCount: 1
 
 strategy: RollingUpdate
 
@@ -45,6 +45,12 @@ envVars:
       secretKeyRef:
         name: secret
         key: mongo_host
+  - name: COCKROACH_CONNECTION
+    valueFrom:
+      secretKeyRef:
+        key: cockroach_connection
+        name: secret
+
   - name: KAFKA_HOST
     value: k8-main-kafka-kafka.kafka.svc.cluster.local
   - name: DISCORD_MESSAGES_TOPIC
