@@ -40,40 +40,14 @@ envVars:
   - name: CASSANDRA__HOSTS
     valueFrom:
       configMapKeyRef:
-        name: scylla-config
-        key: scylla_host
-  - name: CASSANDRA__KEYSPACE
-    value: "settings"
-  - name: CASSANDRA__USER
-    valueFrom:
-      configMapKeyRef:
-        name: scylla-config
-        key: scylla_settings_user
-  - name: CASSANDRA__PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: scylla-credentials
-        key: settings_password
-  - name: CASSANDRA__X509Certificate_PATHS
-    value: /tls/scylla/secret/db.pfx
-  - name: CASSANDRA__X509Certificate_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: scylla-credentials
-        key: db-pfx-password
-
-
-  - name: OLD_CASSANDRA__HOSTS
-    valueFrom:
-      configMapKeyRef:
         name: config
         key: cassandra_host
-  - name: OLD_CASSANDRA__USER
+  - name: CASSANDRA__USER
     valueFrom:
       configMapKeyRef:
         name: config
         key: cassandra_user
-  - name: OLD_CASSANDRA__PASSWORD
+  - name: CASSANDRA__PASSWORD
     valueFrom:
       secretKeyRef:
         name: secret
