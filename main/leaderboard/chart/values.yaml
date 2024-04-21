@@ -47,6 +47,8 @@ envVars:
       secretKeyRef:
         name: secret
         key: cassandra_password
+  - name: OLD_CASSANDRA__KEYSPACE
+    value: leaderboards
 
   - name: CASSANDRA__HOSTS
     valueFrom:
