@@ -78,6 +78,9 @@ envVars:
   - name: KAFKA_HOST
     value: k8-main-kafka-kafka.kafka.svc.cluster.local
 
+  - name: REDIS_HOST
+    value: redis
+
 
     ## common jaeger env vars ##
   - name: JAEGER_AGENT_HOST
