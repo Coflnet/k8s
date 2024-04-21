@@ -32,6 +32,22 @@ readinessProbe:
   periodSeconds: 3
 
 envVars: 
+  - name: OLD_CASSANDRA__HOSTS
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: cassandra_host
+  - name: OLD_CASSANDRA__USER
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: cassandra_user
+  - name: OLD_CASSANDRA__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: cassandra_password
+
   - name: CASSANDRA__HOSTS
     valueFrom:
       configMapKeyRef:
