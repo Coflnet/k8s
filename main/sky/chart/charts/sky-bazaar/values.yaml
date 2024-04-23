@@ -44,3 +44,52 @@ envVars:
       secretKeyRef:
         name: secret
         key: cassandra_password
+
+migrationEnvVars:
+
+  # overwrite the kafka consumer group
+  - name: KAFKA__CONSUMER_GROUP
+    value: "sky-bazaar-new"
+
+  # new scylla configuration
+  - name: CASSANDRA__HOSTS
+    valueFrom:
+      configMapKeyRef:
+        name: scylla-config
+        key: scylla_host
+  - name: CASSANDRA__USER
+    valueFrom:
+      configMapKeyRef:
+        name: scylla-config
+        key: scylla_bazaar_user
+  - name: CASSANDRA__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: scylla-credentials
+        key: bazaar_password
+  - name: CASSANDRA__X509Certificate_PATHS
+    value: /tls/scylla/secret/db.pfx
+  - name: CASSANDRA__X509Certificate_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: scylla-credentials
+        key: db-pfx-password
+
+  # old cassandra configuration
+  - name: OLD_CASSANDRA__HOSTS
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: cassandra_host
+  - name: OLD_CASSANDRA__USER
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: cassandra_user
+  - name: OLD_CASSANDRA__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: cassandra_password
+  
+
