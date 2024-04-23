@@ -74,6 +74,8 @@ migrationEnvVars:
       secretKeyRef:
         name: scylla-credentials
         key: db-pfx-password
+  - name: CASSANDRA_KEYSPACE
+    value: "bazaar_quickstatus"
 
   # old cassandra configuration
   - name: OLD_CASSANDRA__HOSTS
@@ -91,5 +93,7 @@ migrationEnvVars:
       secretKeyRef:
         name: secret
         key: cassandra_password
+  - name: OLD_CASSANDRA_KEYSPACE
+    value: "bazaar_quickstatus"
   
 
