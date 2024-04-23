@@ -2,9 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
+  name: "{{ .Chart.Name }}-migration"
   labels:
-    app: {{ .Chart.Name }}
+    app: "{{ .Chart.Name }}-migration"
 spec:
   replicas: 1
   strategy:
@@ -12,16 +12,16 @@ spec:
   progressDeadlineSeconds: 2592000
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}
+      app: "{{ .Chart.Name }}-migration"
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}
+        app: "{{ .Chart.Name }}-migration"
     spec:
       imagePullSecrets:
       {{ toYaml $.Values.global.imagePullSecrets | nindent 8 }}
       containers:
-      - name: {{ .Chart.Name }}
+      - name: "{{ .Chart.Name }}-migration"
         image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
