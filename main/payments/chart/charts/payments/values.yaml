@@ -1,4 +1,4 @@
-replicaCount: 3
+replicaCount: 1
 maxUnavailable: 1
 
 enabled: true
@@ -132,12 +132,16 @@ payments:
       - name: KAFKA_HOST
         value: k8-main-kafka-kafka.kafka.svc.cluster.local
 
-      - name: DB_CONNECTION
+      - name: OLD_DB_CONNECTION
         valueFrom:
           secretKeyRef:
             name: secret
             key: connection_string_payment
-
+      - name: DB_CONNECTION
+        valueFrom:
+          secretKeyRef:
+            name: secret
+            key: cockroach_connection_payment
       - name: KAFKA__BROKERS
         valueFrom:
           secretKeyRef:
