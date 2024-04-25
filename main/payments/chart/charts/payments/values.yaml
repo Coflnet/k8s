@@ -1,4 +1,4 @@
-replicaCount: 1
+replicaCount: 0
 maxUnavailable: 1
 
 enabled: true
@@ -27,9 +27,9 @@ serivcePorts:
 
 readinessProbe:
   httpGet:
-    path: /api/index.html
+    path: /migrationdone
     port: api
-  initialDelaySeconds: 20
+  initialDelaySeconds: 60
   periodSeconds: 3
 
 envVars:
