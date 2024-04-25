@@ -1,6 +1,6 @@
 image:
   repository: muehlhansfl/productprovisioner
-  tag: 431bece6-30cb-466a-a39b-edd3c9032d44
+  tag: b6f2afec-40fc-454c-8550-a31881ba15e4
 
 payments:
   - name: sky-payments
