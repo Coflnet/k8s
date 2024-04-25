@@ -309,7 +309,7 @@ payments:
       "description": "A batch of 10 QrCodes",
       "cost": 1000,
       "ownershipSeconds": 1,
-      "type": "PRODUCT"
+      "type": "SERVICE"
       }],
       "topups": [
       {
