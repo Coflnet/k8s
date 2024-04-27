@@ -1,5 +1,5 @@
-replicaCount: 0
-maxUnavailable: 0
+replicaCount: 1
+maxUnavailable: 1
 
 enabled: true
 
@@ -7,7 +7,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/payments
-  tag: 7309a5e4-b12b-4e71-a05e-19e245dd76e9
+  tag: b0ac3621-2230-4819-927a-8685ce7d806e
   pullPolicy: IfNotPresent
 
 ports:
