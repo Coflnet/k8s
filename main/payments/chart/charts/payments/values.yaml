@@ -1,5 +1,5 @@
-replicaCount: 0
-maxUnavailable: 0
+replicaCount: 2
+maxUnavailable: 1
 
 enabled: true
 
