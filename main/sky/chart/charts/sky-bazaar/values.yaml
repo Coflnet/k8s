@@ -1,6 +1,9 @@
 enabled: true
 replicaCount: 2
 
+migration:
+  enabled: false
+
 strategy: RollingUpdate
 image:
   repository: muehlhansfl/skybazaar

@@ -1,4 +1,5 @@
 {{ if .Values.enabled }}
+{{ if .Values.migration.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -57,4 +58,5 @@ spec:
             secretName: {{ .name }}
           {{ end }}
       {{ end }}
+{{ end }}
 {{ end }}
