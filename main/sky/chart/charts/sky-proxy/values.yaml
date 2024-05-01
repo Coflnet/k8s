@@ -1,7 +1,7 @@
 enabled: true
 image:
   repository: muehlhansfl/skyproxy
-  tag: bac2f0ed-722d-4069-bf0b-dbf31948560a
+  tag: f79fb2f3-ae5b-4ea9-b0fc-292325c47424
   pullPolicy: IfNotPresent
 
 ports:
