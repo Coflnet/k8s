@@ -369,4 +369,4 @@ payments:
       "type": 4
       }]}
 
-enabled: false
+enabled: true
