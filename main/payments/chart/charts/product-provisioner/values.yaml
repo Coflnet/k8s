@@ -112,6 +112,14 @@ payments:
       "cost": 1330,
       "type": "SERVICE",
       "ownershipSeconds": 60
+      },
+      {
+      "slug": "config-purchase",
+      "title": "Config purchase",
+      "description": "Represents a purchase of a config",
+      "cost": 600,
+      "type": "SERVICE",
+      "ownershipSeconds": 1
       }
       ],
       "topups": [
@@ -248,6 +256,13 @@ payments:
       "slug": "tfm-transfer",
       "title": "Balance imported from tfm",
       "cost": 300000,
+      "ProviderSlug": "custom",
+      "type": 36
+      },
+      {
+      "slug": "config-sell",
+      "title": "Sold a config to somebody",
+      "cost": 10800,
       "ProviderSlug": "custom",
       "type": 36
       }
