@@ -247,6 +247,10 @@ sky-bfcs:
         secretKeyRef:
           name: tfm-redis
           key: tfm-1
+    - name: REDIS_FLIP_INSTANCES__1
+      value: sky-bfcs-redis-eu-cluster
+
+
 
 sky-chat:
   enabled: false
