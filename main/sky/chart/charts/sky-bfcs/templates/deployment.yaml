@@ -36,8 +36,10 @@ spec:
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
+          {{ if .Values.redis.enabled }}
           - name: FLIP_REDIS_OPTIONS
             value: "{{ .Chart.Name }}-redis,syncTimeout=200"
+          {{ end }}
           {{ if .Values.envVars }}
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}
