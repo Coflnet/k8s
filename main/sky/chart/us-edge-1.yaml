@@ -56,7 +56,7 @@ sky-bfcs:
         secretKeyRef:
           name: sniper
           key: transfer_token
-    - name: FLIP_REDIS_OPTIONS
+    - name: REDIS_HOST
       valueFrom:
         secretKeyRef:
           name: tfm-redis
