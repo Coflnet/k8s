@@ -217,7 +217,7 @@ sky-bazaar:
 sky-bfcs:
   enabled: true
   replicaCount: 2
-  strategy: Recreate
+  strategy: RollingUpdate
   defaultEnvVarsEnabled: false
   ingress:
     enabled: true
@@ -249,6 +249,8 @@ sky-bfcs:
           key: tfm-1
     - name: REDIS_FLIP_INSTANCES__1
       value: sky-bfcs-redis-eu-cluster
+    - name: REDIS_FLIP_INSTANCES__2
+      value: sky-bfcs-redis
 
 
 
