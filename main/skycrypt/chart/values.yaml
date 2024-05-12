@@ -6,7 +6,7 @@ imagePullSecrets:
   - name: regcred
 image:
   repository: muehlhansfl/skycrypt
-  tag: sep-12
+  tag: may-01
   pullPolicy: IfNotPresent
 
 ports:
@@ -54,12 +54,12 @@ envVars:
       secretKeyRef:
         name: skycrypt-secret
         key: hypixel_api_key
-  - name: DB_URL
+  - name: MONGO_CONNECTION_STRING
     valueFrom:
       secretKeyRef:
         name: skycrypt-secret
         key: db_url
-  - name: REDIS_URL
+  - name: REDIS_CONNECTION_STRING
     value: redis://redis:6379
   - name: SESSION_SECRET
     valueFrom:
