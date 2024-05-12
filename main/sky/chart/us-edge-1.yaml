@@ -27,7 +27,7 @@ sky-bazaar:
   enabled: false
 
 sky-bfcs:
-  enabled: false
+  enabled: true
   strategy: Recreate
   redis:
     enabled: false
