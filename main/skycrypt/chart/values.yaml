@@ -6,7 +6,7 @@ imagePullSecrets:
   - name: regcred
 image:
   repository: muehlhansfl/skycrypt
-  tag: may-02
+  tag: may-03
   pullPolicy: IfNotPresent
 
 ports:
