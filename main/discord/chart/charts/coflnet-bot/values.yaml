@@ -4,7 +4,7 @@ strategy: Recreate
 
 image:
   repository: muehlhansfl/coflnet-bot
-  tag: 6c9a8823-57b8-4f2a-8086-5a7ec8ec6d2b
+  tag: 3fd0dd79-1257-40b0-9df0-58b7a787c225
   pullPolicy: IfNotPresent
 
 ports:
