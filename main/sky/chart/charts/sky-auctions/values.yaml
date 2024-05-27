@@ -4,7 +4,7 @@ replicaCount: 1
 strategy: RollingUpdate
 image:
   repository: muehlhansfl/skyauctions
-  tag: f30b4dab-e763-4cbb-bea9-c7ce60a33f72
+  tag: 25700766-b477-4094-a5b1-f4cc7f0e5a56
   pullPolicy: IfNotPresent
 
 ports:
