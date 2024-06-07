@@ -129,7 +129,7 @@ edge-redis:
 
 hypixel-react:
   enabled: true
-  replicaCount: 2
+  replicaCount: 0
   ingress:
     enabled: true
     nginx: false
@@ -172,7 +172,7 @@ hypixel-react:
 
 sky-api:
   enabled: true
-  replicaCount: 2
+  replicaCount: 1
   ingress:
     enabled: true
     nginx: false
@@ -259,7 +259,7 @@ sky-chat:
 
 sky-commands:
   enabled: true
-  replicaCount: 2
+  replicaCount: 0
   ingress:
     enabled: true
     nginx: false
@@ -373,7 +373,7 @@ sky-mc-connect:
 
 sky-mod-commands:
   enabled: true
-  replicaCount: 2
+  replicaCount: 0
   ingress:
     enabled: true
     nginx: false
