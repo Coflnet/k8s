@@ -1,13 +1,21 @@
 {{ if .Values.enabled }}
-apiVersion: batch/v1
-kind: Job
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: "{{ .Chart.Name }}-migration"
   labels:
     app: "{{ .Chart.Name }}-migration"
 spec:
-  backoffLimit: 1
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: "{{ .Chart.Name }}-migration"
   template:
+    metadata:
+      labels:
+        app: "{{ .Chart.Name }}-migration"
     spec:
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 12 }}
@@ -18,6 +26,8 @@ spec:
          ports:
           {{ toYaml .Values.ports | nindent 10 }}
          env:
+          - name: REDIS_HOST
+            value: "{{ .Chart.Name }}-redis"
          {{ if .Values.envVars }}
          {{ toYaml .Values.envVars | nindent 10 }}
          {{ end }}
