@@ -6,7 +6,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skybfcs
-  tag: 31011210-e6ce-4377-90e9-e9ca94e1f13f
+  tag: 797cd4ff-a113-4422-a3cf-413ca3cf0286
   pullPolicy: IfNotPresent
 
 ports:
