@@ -34,7 +34,14 @@ readinessProbe:
     port: api
   initialDelaySeconds: 10
   periodSeconds: 3
-  failureThreshold: 100
+  failureThreshold: 10
+livenessProbe:
+  httpGet:
+    path: /ready
+    port: api
+  initialDelaySeconds: 600
+  periodSeconds: 5
+  failureThreshold: 40
 
 envVars:
   - name: SNIPER_TRANSFER_TOKEN
