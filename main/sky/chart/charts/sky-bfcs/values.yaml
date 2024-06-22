@@ -61,3 +61,5 @@ ingress:
 
 redis:
   enabled: true
+
+externalMinio: false
