@@ -19,6 +19,8 @@ resources:
   requests:
     cpu: 1400m
     memory: 3Gi
+  limits:
+    memory: 9Gi
 
 serivcePorts:
   - name: api
@@ -42,6 +44,7 @@ livenessProbe:
   initialDelaySeconds: 600
   periodSeconds: 5
   failureThreshold: 40
+  timeoutSeconds: 2
 
 envVars:
   - name: SNIPER_TRANSFER_TOKEN
