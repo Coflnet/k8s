@@ -32,6 +32,13 @@ readinessProbe:
   initialDelaySeconds: 10
   periodSeconds: 3
   failureThreshold: 100
+liveProbe:
+  httpGet:
+    path: /ready
+    port: api
+  initialDelaySeconds: 900
+  periodSeconds: 5
+  failureThreshold: 60
 
 master:
   replicaCount: 1
