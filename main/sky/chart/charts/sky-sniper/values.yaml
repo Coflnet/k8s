@@ -36,7 +36,7 @@ liveProbe:
   httpGet:
     path: /ready
     port: api
-  initialDelaySeconds: 900
+  initialDelaySeconds: 1200
   periodSeconds: 5
   failureThreshold: 60
 
