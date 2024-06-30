@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skyreferral
-  tag: 30729b35-7274-465a-936d-d3ca298ffa5b
+  tag: 286b38e2-ff14-48dd-a10d-466a910c55aa
   pullPolicy: IfNotPresent
 
 ports:
