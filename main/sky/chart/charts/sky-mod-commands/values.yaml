@@ -70,9 +70,6 @@ mainService: &mainService sky-mod-commands
 trafficSplit: &trafficSplit sky-mod-commands
 canary:
   steps:
-    - setWeight: 10
-    - pause:
-        duration: 3m
     - setWeight: 100
     - pause:
         duration: 3m
