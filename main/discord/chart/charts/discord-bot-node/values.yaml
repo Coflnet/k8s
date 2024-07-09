@@ -4,7 +4,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/discord-bot-node
-  tag: 62698dec-67aa-457b-b7d5-1c141d2df979
+  tag: 308e870d-2d05-4e87-8c67-9224ad90a195
   pullPolicy: IfNotPresent
 
 resources: 
