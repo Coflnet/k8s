@@ -5,6 +5,7 @@ metadata:
   labels:
     release: prometheus
     project: skyblock
+    severity: critical
   name: {{ .Chart.Name }}-rules
 spec:
   groups:

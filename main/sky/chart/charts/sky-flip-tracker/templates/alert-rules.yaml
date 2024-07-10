@@ -6,6 +6,7 @@ metadata:
     release: prometheus
     app: kube-prometheus-stack
     project: skyblock
+    severity: critical
   name: sky-fliptracker
 spec:
   groups:
