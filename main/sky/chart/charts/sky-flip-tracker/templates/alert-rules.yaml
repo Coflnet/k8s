@@ -5,6 +5,7 @@ metadata:
   labels:
     release: prometheus
     app: kube-prometheus-stack
+    project: skyblock
   name: sky-fliptracker
 spec:
   groups:

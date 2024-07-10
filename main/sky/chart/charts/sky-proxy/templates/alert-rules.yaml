@@ -4,6 +4,7 @@ kind: PrometheusRule
 metadata:
   labels:
     release: prometheus
+    project: skyblock
   name: {{ .Chart.Name }}-rules
 spec:
   groups:
