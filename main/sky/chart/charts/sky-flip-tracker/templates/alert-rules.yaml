@@ -11,11 +11,11 @@ spec:
     - name: "{{ .Chart.Name }}.rules"
       rules:
         - alert: FewFlipsTracked
-          for: 1m
+          for: 5m
           labels:
             severity: critical
             project: skyblock
-          expr: 'sum(rate(sky_fliptracker_user_flip[1m])) * 60 > 5'
+          expr: 'sum(rate(sky_fliptracker_user_flip[1m])) * 60 < 5'
           annotations:
             summary: "Very few flips tracked"
             description: "only {{`{{`}} $value {{`}}`}} auctions found"
