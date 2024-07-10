@@ -15,7 +15,7 @@ spec:
           for: 5m
           labels:
             severity: critical
-          expr: 'sum(rate(sky_fliptracker_user_flip[1m])) * 60 < 5'
+          expr: 'sum(rate(sky_fliptracker_user_flip[1m])) * 60 > 5'
           annotations:
             summary: "Very few flips tracked"
             description: "only {{`{{`}} $value {{`}}`}} auctions found"
