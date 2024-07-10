@@ -10,11 +10,11 @@ spec:
     - name: "{{ .Chart.Name }}.rules"
       rules:
         - alert: FewAhCheksFromProxy
-          for: 5m
+          for: 1m
           labels:
             severity: critical
             project: skyblock
-          expr: 'sum(increase(sky_proxy_ah_update_shedules[5m])) < 10'
+          expr: 'sum(increase(sky_proxy_ah_update_shedules[5m])) > 10'
           annotations:
             summary: "Very few ah checks from proxy"
             description: "Only {{`{{`}} $value {{`}}`}} flip checks were made in the last 5min"
