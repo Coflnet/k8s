@@ -4,18 +4,17 @@ kind: PrometheusRule
 metadata:
   labels:
     release: prometheus
-    project: skyblock
-    severity: critical
   name: {{ .Chart.Name }}-rules
 spec:
   groups:
     - name: "{{ .Chart.Name }}.rules"
       rules:
         - alert: FewAhCheksFromProxy
-          for: 1m
+          for: 5m
           labels:
             severity: critical
-          expr: 'sum(increase(sky_proxy_ah_update_shedules[5m])) > 10'
+            project: skyblock
+          expr: 'sum(increase(sky_proxy_ah_update_shedules[5m])) < 10'
           annotations:
             summary: "Very few ah checks from proxy"
             description: "Only {{`{{`}} $value {{`}}`}} flip checks were made in the last 5min"

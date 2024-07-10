@@ -5,18 +5,17 @@ metadata:
   labels:
     release: prometheus
     app: kube-prometheus-stack
-    project: skyblock
-    severity: critical
   name: sky-fliptracker
 spec:
   groups:
     - name: "{{ .Chart.Name }}.rules"
       rules:
         - alert: FewFlipsTracked
-          for: 5m
+          for: 1m
           labels:
             severity: critical
-          expr: 'sum(rate(sky_fliptracker_user_flip[1m])) * 60 < 5'
+            project: skyblock
+          expr: 'sum(rate(sky_fliptracker_user_flip[1m])) * 60 > 5'
           annotations:
             summary: "Very few flips tracked"
             description: "only {{`{{`}} $value {{`}}`}} auctions found"
