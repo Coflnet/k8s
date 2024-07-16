@@ -1,6 +1,6 @@
 enabled: true
 
-replicaCount: 4
+replicaCount: 2
 revisionHistoryLimit: 5
 
 image:
