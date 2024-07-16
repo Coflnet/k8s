@@ -53,13 +53,13 @@ data:
   cassandra_user: cassandra
 
   # redis connections
-  redis_api_host: api-redis-service,syncTimeout=200
-  redis_command_host: commands-redis-service,syncTimeout=200
-  redis_host: redis-service,syncTimeout=200
+  redis_api_host: api-redis-service,syncTimeout=1000
+  redis_command_host: commands-redis-service,syncTimeout=1000
+  redis_host: redis-service,syncTimeout=1000
   redis_host_sky: redis-service
-  redis_event_broker: event-broker-redis,syncTimeout=200
+  redis_event_broker: event-broker-redis,syncTimeout=1000
   redis_settings_host: settings-redis-service
-  redis-us: redis-us,syncTimeout=200
+  redis-us: redis-us,syncTimeout=1000
   sky_bfcs_redis: redis-bfcs
 
   # jaeger

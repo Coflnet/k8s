@@ -217,7 +217,7 @@ sky-bfcs:
           name: sniper-transfer-token
           key: sniper_transfer_token
     - name: REDIS_HOST
-      value: sky-bfcs-redis,syncTimeout=200
+      value: sky-bfcs-redis,syncTimeout=1000
     - name: JWT_SECRET
       valueFrom:
         secretKeyRef:

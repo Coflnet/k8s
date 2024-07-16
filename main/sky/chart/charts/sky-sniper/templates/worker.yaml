@@ -29,7 +29,7 @@ spec:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
           - name: REDIS_HOST
-            value: "{{ .Chart.Name }}-redis,syncTimeout=200"
+            value: "{{ .Chart.Name }}-redis,syncTimeout=1000"
           - name: IS_MANAGER
             value: "false"
           {{ if .Values.envVars }}

@@ -226,7 +226,7 @@ sky-api:
         fieldRef:
           fieldPath: status.hostIP
     - name: REDIS_HOST
-      value: sky-bfcs-redis,syncTimeout=200
+      value: sky-bfcs-redis,syncTimeout=1000
 
 
 sky-bazaar:
@@ -260,7 +260,7 @@ sky-bfcs:
           name: sniper
           key: transfer_token
     - name: REDIS_HOST
-      value: sky-bfcs-redis,syncTimeout=200
+      value: sky-bfcs-redis,syncTimeout=1000
     - name: REDIS_FLIP_INSTANCES__0
       valueFrom:
         secretKeyRef:

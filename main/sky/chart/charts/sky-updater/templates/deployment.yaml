@@ -27,7 +27,7 @@ spec:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
           - name: REDIS_HOST
-            value: "{{ .Values.global.redis.name }},syncTimeout=200"
+            value: "{{ .Values.global.redis.name }},syncTimeout=1000"
           {{ if .Values.envVars }}
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}

@@ -28,7 +28,7 @@ spec:
         env:
           {{ if .Values.redis.enabled }}
           - name: FLIP_REDIS_OPTIONS
-            value: "{{ .Chart.Name }}-redis,syncTimeout=200"
+            value: "{{ .Chart.Name }}-redis,syncTimeout=1000"
           {{ end }}
           {{ if .Values.envVars }}
           {{ toYaml .Values.envVars | nindent 10 }}
