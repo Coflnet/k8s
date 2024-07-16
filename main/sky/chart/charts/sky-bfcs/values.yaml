@@ -1,6 +1,6 @@
 enabled: true
 defaultEnvVarsEnabled: true
-replicaCount: 1
+replicaCount: 0
 
 strategy: RollingUpdate
 
