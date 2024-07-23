@@ -42,7 +42,7 @@ spec:
           mountPath: {{ .mountPath }}
         {{ end }}
         {{- with .Values.volumeMounts }}
-          {{- toYaml . | nindent 10 }}
+          {{- toYaml . | nindent 8 }}
         {{- end }}
       volumes:
       {{ range .Values.global.volumes }}
