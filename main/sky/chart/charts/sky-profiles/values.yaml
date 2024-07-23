@@ -35,8 +35,8 @@ envVars:
   - name: CASSANDRA__HOSTS
     valueFrom:
       configMapKeyRef:
-        name: config
-        key: cassandra_host
+        name: scylla-config
+        key: scylla_host
   - name: CASSANDRA__USER
     valueFrom:
       configMapKeyRef:
