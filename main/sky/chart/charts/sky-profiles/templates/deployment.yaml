@@ -41,7 +41,10 @@ spec:
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
-      volumes: 
+        {{- with .Values.volumeMounts }}
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+      volumes:
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
@@ -52,4 +55,7 @@ spec:
             secretName: {{ .name }}
           {{ end }}
       {{ end }}
+      {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
 {{ end }}
