@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skyfliptracker
-  tag: d145f9fd-d553-4f52-b7da-2c908029a735
+  tag: 1dcf1e5e-cb06-4d19-b08d-92eee7232bfd
   pullPolicy: IfNotPresent
 
 ports:
