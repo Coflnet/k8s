@@ -117,7 +117,7 @@ payments:
       "slug": "config-purchase",
       "title": "Config purchase",
       "description": "Represents a purchase of a config",
-      "cost": 600,
+      "cost": 300,
       "type": "SERVICE",
       "ownershipSeconds": 1
       }
