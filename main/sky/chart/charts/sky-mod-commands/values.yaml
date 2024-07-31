@@ -82,6 +82,7 @@ canary:
   maxUnavailable: 1
   canaryService: *canaryService
   stableService: *stableService
+  dynamicStableScale: true
   trafficRouting:
     smi:
       rootService: *mainService
