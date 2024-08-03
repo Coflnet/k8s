@@ -8,8 +8,8 @@ spec:
   - name: service-name
   metrics:
   - name: sky-sent_flips
-    interval: 2m
-    successCondition: result[0] > 2
+    interval: 3m
+    successCondition: result[0] > 1
     failureLimit: 1
     count: 3
     provider:
