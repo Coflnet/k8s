@@ -16,7 +16,7 @@ spec:
               service:
                 name: {{ .Chart.Name }}
                 port:
-                  number: 3000
+                  number: 8080
     - host: coflnet.com
       http:
         paths:
@@ -26,7 +26,7 @@ spec:
               service:
                 name: {{ .Chart.Name }}
                 port:
-                  number: 3000
+                  number: 8080
     - host: coflnet.com
       http:
         paths:
@@ -46,7 +46,7 @@ spec:
               service:
                 name: {{ .Chart.Name }}
                 port:
-                  number: 3000
+                  number: 8080
     - host: consulting.coflnet.com
       http:
         paths:
@@ -56,7 +56,7 @@ spec:
               service:
                 name: {{ .Chart.Name }}
                 port:
-                  number: 3000
+                  number: 8080
     - host: landing.coflnet.com
       http:
         paths:
