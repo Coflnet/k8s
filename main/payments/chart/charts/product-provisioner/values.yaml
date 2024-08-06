@@ -120,6 +120,14 @@ payments:
       "cost": 300,
       "type": "SERVICE",
       "ownershipSeconds": 1
+      },
+      {
+      "slug": "export-unlock",
+      "title": "Unlock export of some item",
+      "description": "Unlocks the csv/excel export for a specific item",
+      "cost": 300,
+      "type": "SERVICE",
+      "ownershipSeconds": 1
       }
       ],
       "topups": [
