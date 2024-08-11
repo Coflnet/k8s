@@ -36,6 +36,8 @@ readinessProbe:
   periodSeconds: 3
 
 envVars:
+  - name: REDIS_HOST
+    value: "sky-global-redis"
   - name: DB_CONNECTION
     valueFrom:
       secretKeyRef:
