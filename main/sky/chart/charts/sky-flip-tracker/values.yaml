@@ -1,6 +1,9 @@
 enabled: true
 replicaCount: 5
 
+migration:
+  enabled: true
+
 strategy: RollingUpdate
 
 image:
@@ -41,12 +44,63 @@ envVars:
   - name: CASSANDRA__HOSTS
     valueFrom:
       configMapKeyRef:
+        name: scylla-config
+        key: scylla_host
+  - name: CASSANDRA__USER
+    valueFrom:
+      configMapKeyRef:
+        name: scylla-config
+        key: tracker_user
+  - name: CASSANDRA__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: scylla-credentials
+        key: tracker_password
+
+migrationEnvVars:
+  # new scylla configuration
+  - name: CASSANDRA__HOSTS
+    valueFrom:
+      configMapKeyRef:
+        name: scylla-config
+        key: scylla_host
+  - name: CASSANDRA__USER
+    valueFrom:
+      configMapKeyRef:
+        name: scylla-config
+        key: tracker_user
+  - name: CASSANDRA__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: scylla-credentials
+        key: tracker_password
+  - name: CASSANDRA__X509Certificate_PATHS
+    value: /tls/scylla/secret/db.pfx
+  - name: CASSANDRA__X509Certificate_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: scylla-credentials
+        key: db-pfx-password
+  - name: CASSANDRA__KEYSPACE
+    value: "flips"
+
+  # old cassandra configuration
+  - name: OLD_CASSANDRA__HOSTS
+    valueFrom:
+      configMapKeyRef:
         name: config
         key: cassandra_host
-  - name: CASSANDRA__USER
-    value: "cassandra"
-  - name: CASSANDRA__PASSWORD
+  - name: OLD_CASSANDRA__USER
+    valueFrom:
+      configMapKeyRef:
+        name: config
+        key: cassandra_user
+  - name: OLD_CASSANDRA__PASSWORD
     valueFrom:
       secretKeyRef:
         name: secret
         key: cassandra_password
+  - name: OLD_CASSANDRA__KEYSPACE
+    value: "flips"
+
+
