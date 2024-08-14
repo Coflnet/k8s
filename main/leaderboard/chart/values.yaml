@@ -6,7 +6,7 @@ replicaCount: 1
 strategy: RollingUpdate
 image:
   repository: muehlhansfl/leaderboard
-  tag: 697d6e17-3712-42d5-8689-c99cf532f3a0
+  tag: ea051072-774d-4855-9df3-45b032e24bf8
   pullPolicy: IfNotPresent
 
 ports:
