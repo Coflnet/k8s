@@ -75,6 +75,14 @@ payments:
       "type": "SERVICE"
       },
       {
+      "slug": "starter_premium-hour",
+      "title": "Basic plan (day)",
+      "description": "Access to basic perks for 1 hour",
+      "cost": 4,
+      "ownershipSeconds": 3600,
+      "type": "SERVICE"
+      },
+      {
       "slug": "starter_premium-day",
       "title": "Basic plan (day)",
       "description": "Access to basic perks for 24 hours",
