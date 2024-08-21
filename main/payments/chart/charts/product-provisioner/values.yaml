@@ -300,6 +300,7 @@ payments:
       "premium_plus-day",
       "premium_plus-hour",
       "premium_plus-100",
+      "starter_premium-hour",
       "starter_premium-day",
       "starter_premium-week"
       ],
