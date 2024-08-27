@@ -313,12 +313,12 @@ payments:
       },
       "rules": [
       {
-      "slug": "starter-premium-discount",
+      "flags": 10,
+      "slug": "premplus-preapi-discount",
       "priority": 5,
-      "requiresGroup": "starter_premium",
-      "targetsGroup": "starter_premium-week",
-      "flags": "DISCOUNT, PERCENT",
-      "amount": 10
+      "requiresGroup": "premium_plus",
+      "targetsGroup": "pre_api",
+      "amount": 30.0
       }
       ]
       }
