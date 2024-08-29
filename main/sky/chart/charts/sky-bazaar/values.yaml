@@ -2,7 +2,7 @@ enabled: true
 replicaCount: 1
 
 migration:
-  enabled: true
+  enabled: false
 
 strategy: RollingUpdate
 image:
