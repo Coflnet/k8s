@@ -19,6 +19,8 @@ spec:
     metadata:
       labels:
         app: {{ .Chart.Name }}
+      annotations:
+        config.linkerd.io/skip-outbound-ports: "3310"
     spec:
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
