@@ -15,6 +15,8 @@ spec:
     metadata:
       labels:
         app: {{ .Chart.Name }}
+      annotations:
+        {{ toYaml .Values.global.podAnnotations | nindent 8 }}
     spec:
       topologySpreadConstraints:
       - maxSkew: 2

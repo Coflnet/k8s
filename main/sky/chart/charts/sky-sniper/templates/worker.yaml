@@ -17,6 +17,8 @@ spec:
     metadata:
       labels:
         app: "{{ .Chart.Name }}-worker"
+      annotations:
+        {{ toYaml .Values.global.podAnnotations | nindent 8 }}
     spec:
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}

@@ -18,6 +18,8 @@ spec:
       labels:
         name: {{ .Chart.Name }}
         app: {{ .Chart.Name }}
+      annotations:
+        {{ toYaml .Values.global.podAnnotations | nindent 8 }}
     spec:
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}

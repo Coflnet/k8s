@@ -8,6 +8,9 @@ global:
   secret:
     enabled: true
 
+  podAnnotations:
+    config.linkerd.io/skip-outbound-ports: "3307,3304,3310,9042,9092"
+
   ## Hetzner CPU Affinity
   hetznerAffinity:
     affinity:

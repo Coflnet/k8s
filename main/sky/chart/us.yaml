@@ -11,6 +11,9 @@ global:
   config:
     enabled: false
 
+  podAnnotations:
+    config.linkerd.io/skip-outbound-ports: "3307,3304,3310,9042,9092"
+
   frontendEnvVars:
     - name: EVENTS_REDIS_HOST
       value: sky-event-broker-redis-eu-cluster
