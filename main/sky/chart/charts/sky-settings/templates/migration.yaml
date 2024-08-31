@@ -32,7 +32,6 @@ spec:
           - name: MIGRATOR
             value: "true"
           {{ toYaml .Values.global.envVars | nindent 10 }}
-          {{ toYaml .Values.migrationEnvVars | nindent 10 }}
         readinessProbe:
           {{ toYaml .Values.readinessProbe | nindent 10 }}
         resources:
@@ -45,7 +44,7 @@ spec:
         - name: scylla-pfx
           mountPath: /tls/scylla/secret/db.pfx
           subPath: db.pfx
-      volumes: 
+      volumes:
         - name: scylla-pfx
           secret:
             secretName: scylla-pfx
