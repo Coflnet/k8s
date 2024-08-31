@@ -32,6 +32,9 @@ spec:
           - name: MIGRATOR
             value: "true"
           {{ toYaml .Values.global.envVars | nindent 10 }}
+          {{ if .Values.envVars }}
+          {{ toYaml .Values.envVars | nindent 10 }}
+          {{ end }}
         readinessProbe:
           {{ toYaml .Values.readinessProbe | nindent 10 }}
         resources:
