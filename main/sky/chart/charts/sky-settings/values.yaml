@@ -12,6 +12,9 @@ ports:
   - name: api
     containerPort: 8000
 
+migration:
+  enabled: true
+
 resources:
   requests:
     cpu: 100m
