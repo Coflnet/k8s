@@ -78,3 +78,5 @@ envVars:
       secretKeyRef:
         name: secret
         key: cassandra_password
+  - name: OLD_CASSANDRA__KEYSPACE
+    value: settings
