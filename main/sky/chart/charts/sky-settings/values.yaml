@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skysettings
-  tag: 42b045f2-6915-4f8f-9c75-4756f678fa2c
+  tag: 35b35beb-17a6-4425-80a7-6c3c92d9aa12
   pullPolicy: IfNotPresent
 
 ports:
