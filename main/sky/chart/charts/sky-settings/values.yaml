@@ -64,10 +64,7 @@ envVars:
 
 
   - name: OLD_CASSANDRA__HOSTS
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: cassandra_host
+    value: "38.242.247.61"
   - name: OLD_CASSANDRA__USER
     valueFrom:
       configMapKeyRef:
