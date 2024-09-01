@@ -14,7 +14,7 @@ ports:
 resources:
   requests:
     cpu: 50m
-    memory: 150Mi
+    memory: 350Mi
 
 serivcePorts:
   - name: api

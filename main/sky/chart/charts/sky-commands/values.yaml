@@ -20,10 +20,10 @@ ports:
 
 resources:
   requests:
-    memory: 2.5Gi
+    memory: 1.5Gi
     cpu: 400m
   limits:
-    memory: 4Gi
+    memory: 3Gi
     cpu: 1200m
 
 services:
