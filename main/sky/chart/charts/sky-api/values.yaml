@@ -4,7 +4,7 @@ replicaCount: 4
 
 image:
   repository: muehlhansfl/skyapi
-  tag: ea0aa511-6fc4-4a4e-8752-cffd66ee3eb8
+  tag: e0e7dac0-ddb7-4659-85ac-ac15789aee5f
   pullPolicy: IfNotPresent
 
 ingress:
@@ -49,7 +49,7 @@ ports:
 resources:
   requests:
     cpu: 800m
-    memory: 800Mi
+    memory: 850Mi
   limits: 
     cpu: 1200m
     memory: 1Gi

@@ -152,7 +152,7 @@ payments:
       "slug": "s_cc_5400",
       "title": "5.400 CoflCoins",
       "cost": 5400,
-      "price": 19.69,
+      "price": 22.69,
       "currencyCode": "eur",
       "ProviderSlug": "stripe",
       "type": 4
@@ -188,7 +188,7 @@ payments:
       "slug": "p_cc_5400",
       "title": "5.400 CoflCoins",
       "cost": 5400,
-      "price": 19.99,
+      "price": 22.99,
       "currencyCode": "eur",
       "ProviderSlug": "paypal",
       "type": 4
@@ -224,7 +224,7 @@ payments:
       "slug": "l_cc_5400",
       "title": "5.400 CoflCoins",
       "cost": 5400,
-      "price": 19.99,
+      "price": 22.99,
       "currencyCode": "eur",
       "ProviderSlug": "lemonsqueezy",
       "type": 4

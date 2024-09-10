@@ -5,7 +5,7 @@ strategy: Recreate
 
 image:
   repository: muehlhansfl/skyindexer
-  tag: d8a90c53-d19c-42a6-a3d0-71bfa48d2f1d
+  tag: 093b9f52-095b-4163-afb3-d3a34a8db6f1
   pullPolicy: IfNotPresent
 
 ports:
@@ -15,7 +15,7 @@ ports:
 resources:
   requests:
     cpu: 400m
-    memory: 500Mi
+    memory: 550Mi
   limits:
     cpu: 500m
     memory: 700Mi

@@ -1,5 +1,5 @@
 enabled: true
-replicaCount: 3
+replicaCount: 6
 
 migration:
   enabled: true
@@ -8,7 +8,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skyfliptracker
-  tag: a3c2672b-4f70-4104-b2ae-517a5ee70505
+  tag: b59dab4a-b46b-4cd3-817b-749aaea80264
   pullPolicy: IfNotPresent
 
 ports:

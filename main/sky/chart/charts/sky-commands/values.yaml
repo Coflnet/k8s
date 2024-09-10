@@ -3,7 +3,7 @@ replicaCount: 4
 
 image:
   repository: muehlhansfl/skycommands
-  tag: 8c600514-69bb-40a2-bc87-f1381e58ed9b
+  tag: 8362fd32-e132-445b-9ea5-13227fb73473
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -20,10 +20,10 @@ ports:
 
 resources:
   requests:
-    memory: 2.5Gi
+    memory: 1.5Gi
     cpu: 400m
   limits:
-    memory: 4Gi
+    memory: 3Gi
     cpu: 1200m
 
 services:

@@ -215,6 +215,7 @@ global:
 
 sky-bfcs:
   enabled: true
+  externalMinio: true
   envVars:
     - name: SNIPER_TRANSFER_TOKEN
       valueFrom:
