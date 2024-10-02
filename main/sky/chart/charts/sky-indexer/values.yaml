@@ -5,7 +5,7 @@ strategy: Recreate
 
 image:
   repository: muehlhansfl/skyindexer
-  tag: 0cff0528-de16-43d0-832c-dcb92b5c0870
+  tag: 42353ffa-30a1-466b-863c-05c9c2cb2ee3
   pullPolicy: IfNotPresent
 
 ports:
