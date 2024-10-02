@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skymcconnect
-  tag: d5030241-cf7a-4fc6-bddb-9dd95b6f3a2f
+  tag: c5561aa7-ab3c-4021-b002-4b0486d51926
   pullPolicy: IfNotPresent
 
 ports:
