@@ -15,7 +15,7 @@ spec:
           labels:
             severity: critical
             project: skyblock
-          expr: '(count  by (app) (redpanda_application_uptime_seconds_total) OR on() vector(0)) < 4'
+          expr: '(count  by (app) (redpanda_application_uptime_seconds_total) OR on() vector(0)) < 3'
           annotations:
             summary: "At least one redpanda broker is down"
             description: "only {{`{{`}} $value {{`}}`}} brokers are up right now"
