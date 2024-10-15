@@ -212,6 +212,28 @@ payments:
       "type": 4
       },
       {
+      "slug": "l_prem_plus",
+      "title": "4 weeks prem+",
+      "description": "4 weeks of premium+ renewing itself",
+      "cost": 7000,
+      "price": 29.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 2430000,
+      "type": "SERVICE"
+      },
+      {
+      "slug": "l_premium",
+      "title": "4 weeks premium",
+      "description": "4 weeks of premium renewing itself",
+      "cost": 1800,
+      "price": 8.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 2430000,
+      "type": "SERVICE"
+      },
+      {
       "slug": "l_cc_1800",
       "title": "1.800 CoflCoins",
       "cost": 1800,
