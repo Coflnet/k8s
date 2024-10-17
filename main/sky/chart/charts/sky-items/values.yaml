@@ -1,5 +1,5 @@
 enabled: true
-replicaCount: 3
+replicaCount: 2
 
 image:
   repository: muehlhansfl/skyitems
@@ -26,6 +26,13 @@ readinessProbe:
     port: api
   initialDelaySeconds: 20
   periodSeconds: 3
+livenessProbe:
+  httpGet:
+    path: /api/index.html
+    port: api
+  initialDelaySeconds: 20
+  periodSeconds: 3
+  failureThreshold: 5
 
 envVars:
   - name: DBCONNECTION
