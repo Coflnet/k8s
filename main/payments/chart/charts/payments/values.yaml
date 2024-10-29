@@ -170,6 +170,8 @@ payments:
 
       - name: KAFKA__REPLICATION_FACTOR
         value: "3"
+      - name: lemonsqueezy__SUBSCRIPTION_VARIANT_ID
+        value: "502893"
 
     volumes:
       - name: redpanda
