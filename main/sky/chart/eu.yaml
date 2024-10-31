@@ -146,7 +146,7 @@ global:
       valueFrom:
         fieldRef:
           fieldPath: status.hostIP
-    - name: OTLP_EXPORTER_ADDRESS
+    - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
       value: http://tempo-distributor.tempo:4317
 
 
