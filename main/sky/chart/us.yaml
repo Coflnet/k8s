@@ -257,6 +257,8 @@ sky-bfcs:
       valueFrom:
         fieldRef:
           fieldPath: status.hostIP
+    - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+      value: http://tempo-distributor.tempo:4317
     - name: SNIPER_BASE_URL
       value: http://sky-sniper-eu-cluster:8000
     - name: SNIPER_TRANSFER_TOKEN
