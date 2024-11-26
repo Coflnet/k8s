@@ -11,6 +11,14 @@ payments:
       {
       "products": [
       {
+      "slug": "advent-calendar",
+      "title": "Advent calendar",
+      "description": "Extra perks for the advent calendar",
+      "cost": 1000,
+      "ownershipSeconds": 2592000,
+      "type": "SERVICE"
+      },
+      {
       "slug": "premium",
       "title": "Premium",
       "description": "Premium plan granting various perks",
@@ -287,6 +295,13 @@ payments:
       "slug": "compensation",
       "title": "Compensation for service unavailibility",
       "cost": 10800,
+      "ProviderSlug": "custom",
+      "type": 36
+      },
+      {
+      "slug": "advent-reward",
+      "title": "Advent calendar reward",
+      "cost": 100,
       "ProviderSlug": "custom",
       "type": 36
       },
