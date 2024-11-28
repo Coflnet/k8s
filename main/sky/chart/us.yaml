@@ -275,6 +275,8 @@ sky-bfcs:
       value: sky-bfcs-redis-eu-cluster
     - name: REDIS_FLIP_INSTANCES__2
       value: sky-bfcs-redis
+    - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+      value: "http://jaeger-collector-eu-cluster.observability:4317"
 
 
 
