@@ -87,8 +87,6 @@ global:
       valueFrom:
         fieldRef:
           fieldPath: status.hostIP
-    - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-      value: http://tempo-distributor.tempo:4317
 
     ## base urls ##
     - name: API_BASE_URL
