@@ -87,6 +87,8 @@ global:
       valueFrom:
         fieldRef:
           fieldPath: status.hostIP
+    - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+      value: "http://jaeger-collector-eu-cluster.observability:4317"
 
     ## base urls ##
     - name: API_BASE_URL
