@@ -146,9 +146,6 @@ global:
       valueFrom:
         fieldRef:
           fieldPath: status.hostIP
-    - name: OTLP_EXPORTER_ADDRESS
-      value: http://tempo-distributor.tempo:4317
-
 
     ## base urls ##
     - name: API_BASE_URL
