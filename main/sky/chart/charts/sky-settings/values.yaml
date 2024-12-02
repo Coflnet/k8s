@@ -64,19 +64,3 @@ envVars:
       secretKeyRef:
         name: scylla-credentials
         key: db-pfx-password
-
-
-  - name: OLD_CASSANDRA__HOSTS
-    value: "38.242.247.61"
-  - name: OLD_CASSANDRA__USER
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: cassandra_user
-  - name: OLD_CASSANDRA__PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: cassandra_password
-  - name: OLD_CASSANDRA__KEYSPACE
-    value: settings
