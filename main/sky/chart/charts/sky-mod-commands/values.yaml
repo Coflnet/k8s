@@ -1,5 +1,5 @@
 enabled: true
-replicaCount: 4
+replicaCount: 7
 
 image:
   repository: muehlhansfl/skymodcommands
