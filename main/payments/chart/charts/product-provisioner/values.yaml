@@ -43,6 +43,14 @@ payments:
       "type": "SERVICE"
       },
       {
+      "slug": "premium_plus-weeks",
+      "title": "Premium+ 4 weeks",
+      "description": "Premium Plus plan granting top tier perks for 4 weeks",
+      "cost": 7200,
+      "ownershipSeconds": 2419200,
+      "type": "SERVICE"
+      },
+      {
       "slug": "premium_plus",
       "title": "Premium+",
       "description": "Premium Plus plan granting top tier perks",
