@@ -51,6 +51,14 @@ payments:
       "type": "SERVICE"
       },
       {
+      "slug": "premium_plus-week",
+      "title": "Premium+ 1 week",
+      "description": "Premium Plus plan granting top tier perks for 1 week",
+      "cost": 2700,
+      "ownershipSeconds": 604800,
+      "type": "SERVICE"
+      },
+      {
       "slug": "premium_plus",
       "title": "Premium+",
       "description": "Premium Plus plan granting top tier perks",
@@ -339,6 +347,7 @@ payments:
       "premium-derpy",
       "l_prem_plus",
       "l_premium",
+      "premium_plus-week",
       "premium_plus-weeks"
       ],
       "starter_premium": [
@@ -353,12 +362,14 @@ payments:
       "starter_premium-week",
       "l_prem_plus",
       "l_premium",
+      "premium_plus-week",
       "premium_plus-weeks"
       ],
       "premium_plus": [
       "premium_plus-day",
       "premium_plus-hour",
       "premium_plus-weeks",
+      "premium_plus-week",
       "premium_plus-100",
       "pre_api",
       "l_prem_plus"
@@ -372,6 +383,14 @@ payments:
       "requiresGroup": "premium_plus",
       "targetsGroup": "pre_api",
       "amount": 30.0
+      },
+      {
+      "flags": 10,
+      "slug": "premplus-premplus-discount",
+      "priority": 5,
+      "requiresGroup": "premium_plus",
+      "targetsGroup": "premium_plus-week",
+      "amount": 5.0
       }
       ]
       }
