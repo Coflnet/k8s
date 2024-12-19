@@ -54,7 +54,7 @@ payments:
       "slug": "premium_plus",
       "title": "Premium+",
       "description": "Premium Plus plan granting top tier perks",
-      "cost": 1800,
+      "cost": 2700,
       "ownershipSeconds": 604800,
       "type": "SERVICE"
       },
