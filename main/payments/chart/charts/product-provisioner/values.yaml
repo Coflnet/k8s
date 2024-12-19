@@ -338,7 +338,8 @@ payments:
       "premium_plus-100",
       "premium-derpy",
       "l_prem_plus",
-      "l_premium"
+      "l_premium",
+      "premium_plus-weeks"
       ],
       "starter_premium": [
       "premium",
@@ -351,11 +352,13 @@ payments:
       "starter_premium-day",
       "starter_premium-week",
       "l_prem_plus",
-      "l_premium"
+      "l_premium",
+      "premium_plus-weeks"
       ],
       "premium_plus": [
       "premium_plus-day",
       "premium_plus-hour",
+      "premium_plus-weeks",
       "premium_plus-100",
       "pre_api",
       "l_prem_plus"
