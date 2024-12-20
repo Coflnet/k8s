@@ -232,3 +232,5 @@ sky-bfcs:
           key: jwt_secret_sniper
           name: secret
 
+sky-controller:
+  enabled: true

@@ -1,4 +1,4 @@
-enabled: true
+enabled: false
 replicaCount: 1
 
 strategy: RollingUpdate
