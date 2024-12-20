@@ -1,9 +1,9 @@
 enabled: true
-replicaCount: 4
+replicaCount: 3
 
 image:
   repository: muehlhansfl/skycommands
-  tag: 6f96b210-c414-4b33-b986-ea6823c8df28
+  tag: 7e18de38-f4fb-45b2-862c-79e1e14e32e0
   pullPolicy: IfNotPresent
 
 nameOverride: ""

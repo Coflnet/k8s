@@ -1,9 +1,9 @@
 enabled: true
-replicaCount: 5
+replicaCount: 4
 
 image:
   repository: muehlhansfl/skymodcommands
-  tag: aa58b66d-f825-4400-bad9-7f61dd2ab6d3
+  tag: 743395f7-b855-45a6-80f0-9712410d4dd4
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -48,7 +48,7 @@ ingress:
 resources:
   requests:
     cpu: 600m
-    memory: 1400Mi
+    memory: 2200Mi
   limits:
     memory: 3Gi
 

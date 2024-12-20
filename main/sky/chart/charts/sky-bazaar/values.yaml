@@ -7,7 +7,7 @@ migration:
 strategy: RollingUpdate
 image:
   repository: muehlhansfl/skybazaar
-  tag: 28718470-1295-4e1a-8605-15879b6b152f
+  tag: f2a6f391-1212-4a1d-85ba-2930794fd314
   pullPolicy: IfNotPresent
 
 ports:
@@ -26,10 +26,18 @@ serivcePorts:
 
 readinessProbe:
   httpGet:
-    path: /metrics
+    path: /ready
     port: api
   initialDelaySeconds: 20
   periodSeconds: 3
+livenessProbe:
+  httpGet:
+    path: /ready
+    port: api
+  initialDelaySeconds: 60
+  periodSeconds: 5
+  failureThreshold: 5
+  successThreshold: 1
 
 envVars:
   # new scylla configuration
