@@ -34,6 +34,12 @@ sky-bfcs:
   strategy: Recreate
   redis:
     enabled: false
+  resources:
+    requests:
+      cpu: 200m
+      memory: 1Gi
+    limits:
+      memory: 2Gi
 
   defaultEnvVarsEnabled: false
   ingress:
