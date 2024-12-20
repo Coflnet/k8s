@@ -11,8 +11,8 @@ targetCustomizations:
     helm:
       valuesFiles:
         - ./chart/us.yaml
-  - name: us-edge-1
-    clusterName: us-edge-1
+  - name: us-spot-cluster
+    clusterName: us-spot-cluster
     helm:
       valuesFiles:
-        - ./chart/us-edge-1.yaml
+        - ./chart/us-spot-cluster.yaml

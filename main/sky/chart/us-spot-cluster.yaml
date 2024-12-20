@@ -41,14 +41,8 @@ sky-bfcs:
     host: sky-us-edge-1.coflnet.com
   envVars:
       ## common jaeger env vars ##
-    - name: JAEGER_AGENT_HOST
-      valueFrom:
-        fieldRef:
-          fieldPath: status.hostIP
-    - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
-      valueFrom:
-        fieldRef:
-          fieldPath: status.hostIP
+    - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+      value: "http://jaeger-collector-eu-cluster.observability:4317"
     - name: SNIPER_BASE_URL
       valueFrom:
         configMapKeyRef:
