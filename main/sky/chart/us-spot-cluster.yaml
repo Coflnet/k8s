@@ -45,8 +45,6 @@ sky-bfcs:
     requests:
       cpu: 200m
       memory: 512Mi
-    limits:
-      memory: 1Gi
 
   defaultEnvVarsEnabled: false
   ingress:
