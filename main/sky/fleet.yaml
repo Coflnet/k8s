@@ -12,7 +12,7 @@ targetCustomizations:
       valuesFiles:
         - ./chart/us.yaml
   - name: us-spot-cluster
-    clusterName: c-dmnfl
+    clusterName: us-spot-cluster
     helm:
       valuesFiles:
         - ./chart/us-spot-cluster.yaml
