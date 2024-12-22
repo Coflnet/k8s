@@ -383,14 +383,6 @@ payments:
       "requiresGroup": "premium_plus",
       "targetsGroup": "pre_api",
       "amount": 30.0
-      },
-      {
-      "flags": 10,
-      "slug": "premplus-premplus-discount",
-      "priority": 5,
-      "requiresGroup": "premium_plus",
-      "targetsGroup": "premium_plus-week",
-      "amount": 5.0
       }
       ]
       }
