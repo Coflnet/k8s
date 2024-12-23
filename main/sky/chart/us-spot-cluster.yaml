@@ -46,7 +46,6 @@ sky-bfcs:
       cpu: 200m
       memory: 2Gi
     limits:
-      cpu: 200m
       memory: 4Gi
 
   defaultEnvVarsEnabled: false
