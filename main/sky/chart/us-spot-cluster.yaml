@@ -57,10 +57,7 @@ sky-bfcs:
     - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
       value: "http://jaeger-collector-eu-cluster.observability:4317"
     - name: SNIPER_BASE_URL
-      valueFrom:
-        configMapKeyRef:
-          name: sniper
-          key: base_url
+      value: http://sky-sniper-eu-cluster:8000
     - name: SNIPER_TRANSFER_TOKEN
       valueFrom:
         secretKeyRef:
