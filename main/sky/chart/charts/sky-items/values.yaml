@@ -3,7 +3,7 @@ replicaCount: 1
 
 image:
   repository: muehlhansfl/skyitems
-  tag: 3390932b-10b3-4dc5-923b-739f53694b72
+  tag: d8739a5c-5b6f-45bb-a5d0-71b76cedc0eb
   pullPolicy: IfNotPresent
 
 ports:
