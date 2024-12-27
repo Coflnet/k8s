@@ -69,8 +69,8 @@ sky-bfcs:
     - name: FLIP_REDIS_OPTIONS
       valueFrom:
         secretKeyRef:
-          name: tfm-redis
-          key: tfm-1
+          name: flip-redis
+          key: options
 
 sky-chat:
   enabled: false
