@@ -243,6 +243,8 @@ sky-bfcs:
   strategy: RollingUpdate
   defaultEnvVarsEnabled: false
   externalMinio: true
+  nodeSelector:
+    redis: "true"
   ingress:
     enabled: true
     nginx: false
@@ -275,6 +277,11 @@ sky-bfcs:
       value: sky-bfcs-redis-eu-cluster
     - name: REDIS_FLIP_INSTANCES__2
       value: sky-bfcs-redis
+    - name: REDIS_FLIP_INSTANCES__2
+      valueFrom:
+        secretKeyRef:
+          name: redis-edge
+          key: us_connection
     - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
       value: "http://jaeger-collector-eu-cluster.observability:4317"
 
