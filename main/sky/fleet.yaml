@@ -16,3 +16,8 @@ targetCustomizations:
     helm:
       valuesFiles:
         - ./chart/us-spot-cluster.yaml
+  - name: us-aws-spot
+    clusterName: us-aws-spot
+    helm:
+      valuesFiles:
+        - ./chart/us-spot-cluster.yaml
