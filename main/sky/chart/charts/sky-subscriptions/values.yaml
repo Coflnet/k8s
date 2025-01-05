@@ -5,7 +5,7 @@ strategy: Recreate
 
 image:
   repository: muehlhansfl/skysubscriptions
-  tag: aaede1ef-3c27-4450-acf9-77ab0571dd5d
+  tag: 0aa01833-1dea-4b98-8534-808d9a275d9e
   pullPolicy: IfNotPresent
 
 ports:
