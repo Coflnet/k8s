@@ -21,3 +21,8 @@ targetCustomizations:
     helm:
       valuesFiles:
         - ./chart/us-spot-cluster.yaml
+  - name: us-spot-contabo
+    clusterName: us-spot-contabo
+    helm:
+      valuesFiles:
+        - ./chart/us-spot-cluster.yaml
