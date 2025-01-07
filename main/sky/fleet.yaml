@@ -26,3 +26,13 @@ targetCustomizations:
     helm:
       valuesFiles:
         - ./chart/us-spot-cluster.yaml
+  - name: us-spot-gt-torronto
+    clusterName: us-spot-gt-torronto
+    helm:
+      valuesFiles:
+        - ./chart/us-spot-cluster.yaml
+  - name: us-spot-gt-detroit
+    clusterName: us-spot-gt-detroit
+    helm:
+      valuesFiles:
+        - ./chart/us-spot-cluster.yaml
