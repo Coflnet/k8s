@@ -247,6 +247,17 @@ payments:
       "type": "SERVICE"
       },
       {
+      "slug": "l_prem_plus-year",
+      "title": "1 year Prem+",
+      "description": "1 YEAR of premium+ renewing itself",
+      "cost": 84000,
+      "price": 354.20,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 31536000,
+      "type": "SERVICE"
+      },
+      {
       "slug": "l_premium",
       "title": "4 weeks premium",
       "description": "4 weeks of premium renewing itself",
@@ -255,6 +266,17 @@ payments:
       "currencyCode": "eur",
       "ProviderSlug": "lemonsqueezy",
       "ownershipSeconds": 2430000,
+      "type": "SERVICE"
+      },
+      {
+      "slug": "l_premium-year",
+      "title": "1 year Premium",
+      "description": "1 YEAR of premium renewing itself",
+      "cost": 20000,
+      "price": 69.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 31536000,
       "type": "SERVICE"
       },
       {
@@ -347,6 +369,8 @@ payments:
       "premium-derpy",
       "l_prem_plus",
       "l_premium",
+      "l_premium-year",
+      "l_prem_plus-year",
       "premium_plus-week",
       "premium_plus-weeks"
       ],
@@ -362,6 +386,8 @@ payments:
       "starter_premium-week",
       "l_prem_plus",
       "l_premium",
+      "l_premium-year",
+      "l_prem_plus-year",
       "premium_plus-week",
       "premium_plus-weeks"
       ],
@@ -372,6 +398,7 @@ payments:
       "premium_plus-week",
       "premium_plus-100",
       "pre_api",
+      "l_prem_plus-year",
       "l_prem_plus"
       ]
       },
