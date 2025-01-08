@@ -34,6 +34,14 @@ readinessProbe:
     port: api
   initialDelaySeconds: 15
   periodSeconds: 3
+livenessProbe:
+  httpGet:
+    path: /api/index.html
+    port: api
+  initialDelaySeconds: 150
+  periodSeconds: 6
+  failureThreshold: 10
+  successThreshold: 1
 
 envVars:
   - name: REDIS_HOST
