@@ -8,7 +8,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skyfliptracker
-  tag: 51ec7c8e-06e7-4c77-98f0-7d3607d244d9
+  tag: 35b71ce1-1b5a-4e58-994b-124bbc1cff83
   pullPolicy: IfNotPresent
 
 ports:
@@ -34,6 +34,14 @@ readinessProbe:
     port: api
   initialDelaySeconds: 15
   periodSeconds: 3
+livenessProbe:
+  httpGet:
+    path: /api/index.html
+    port: api
+  initialDelaySeconds: 150
+  periodSeconds: 6
+  failureThreshold: 10
+  successThreshold: 1
 
 envVars:
   - name: REDIS_HOST
