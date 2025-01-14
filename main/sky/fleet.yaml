@@ -36,3 +36,8 @@ targetCustomizations:
     helm:
       valuesFiles:
         - ./chart/us-spot-cluster.yaml
+  - name: us-spot-ovh
+    clusterName: us-spot-ovh
+    helm:
+      valuesFiles:
+        - ./chart/us-spot-cluster.yaml
