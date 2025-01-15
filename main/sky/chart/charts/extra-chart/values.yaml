@@ -52,10 +52,3 @@ tfm:
                 port:
                   number: 7321
 
-          - path: /tfm/payment-handler
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: tfm-stripe-payment-handler-eu-cluster.tfm
-                port:
-                  number: 9618

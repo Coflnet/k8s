@@ -16,12 +16,6 @@ tfm-python-backend:
     enabled: true
     service: tfm-python-proxy-haproxy
 
-tfm-stripe-payment-handler:
-  enabled: false
-  ingress:
-    enabled: true
-    service: tfm-stripe-proxy-haproxy
-
 tfm-bot:
   enabled: false
   ingress:
