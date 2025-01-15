@@ -92,7 +92,7 @@ payments:
       },
       {
       "slug": "starter_premium",
-      "title": "Basic plan",
+      "title": "NotEnoughCoin",
       "description": "Access to basic perks",
       "cost": 1800,
       "ownershipSeconds": 15552000,
