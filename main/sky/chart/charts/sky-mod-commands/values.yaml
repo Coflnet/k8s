@@ -44,6 +44,16 @@ ingress:
                 name: hypixel-react
                 port:
                   number: 80
+    - host: notenoughcoins.net
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: necwebsite
+                port:
+                  number: 8080
 
 resources:
   requests:
