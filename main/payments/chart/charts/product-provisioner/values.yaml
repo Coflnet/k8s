@@ -353,7 +353,7 @@ payments:
       {
       "slug": "config-sell",
       "title": "Sold a config to somebody",
-      "cost": 10800,
+      "cost": 15120,
       "ProviderSlug": "custom",
       "type": 36
       }
