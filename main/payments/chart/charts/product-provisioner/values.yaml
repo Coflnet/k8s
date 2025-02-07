@@ -51,6 +51,14 @@ payments:
       "type": "SERVICE"
       },
       {
+      "slug": "premium_plus-months",
+      "title": "Premium+ 11 weeks",
+      "description": "Premium Plus plan granting top tier perks for 11 weeks",
+      "cost": 21600,
+      "ownershipSeconds": 6652800,
+      "type": "SERVICE"
+      },
+      {
       "slug": "premium_plus-week",
       "title": "Premium+ 1 week",
       "description": "Premium Plus plan granting top tier perks for 1 week",
@@ -372,7 +380,8 @@ payments:
       "l_premium-year",
       "l_prem_plus-year",
       "premium_plus-week",
-      "premium_plus-weeks"
+      "premium_plus-weeks",
+      "premium_plus-months"
       ],
       "starter_premium": [
       "premium",
@@ -389,12 +398,14 @@ payments:
       "l_premium-year",
       "l_prem_plus-year",
       "premium_plus-week",
-      "premium_plus-weeks"
+      "premium_plus-weeks",
+      "premium_plus-months"
       ],
       "premium_plus": [
       "premium_plus-day",
       "premium_plus-hour",
       "premium_plus-weeks",
+      "premium_plus-months",
       "premium_plus-week",
       "premium_plus-100",
       "pre_api",
