@@ -75,6 +75,11 @@ envVars:
         key: db-pfx-password
   - name: CASSANDRA__KEYSPACE
     value: "flips"
+  - name: UNFOUND_FLIP_WEBHOOK
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: unfound_flip_webhook
 
 migrationEnvVars:
   # new scylla configuration
