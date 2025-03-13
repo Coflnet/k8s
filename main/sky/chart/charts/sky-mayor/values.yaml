@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/sky-mayor
-  tag: d6159d97-6fe4-4730-bd35-ad84950f5747
+  tag: 0e535f93-df06-4f25-8c58-0663b3f8917e
   pullPolicy: IfNotPresent
 
 ports:
@@ -44,3 +44,27 @@ envVars:
       secretKeyRef:
         name: secret
         key: mongo_url
+  - name: CASSANDRA__HOSTS
+    valueFrom:
+      configMapKeyRef:
+        name: scylla-config
+        key: scylla_host
+  - name: CASSANDRA__KEYSPACE
+    value: "sky_mayor"
+  - name: CASSANDRA__USER
+    valueFrom:
+      configMapKeyRef:
+        name: scylla-config
+        key: scylla_mayor_user
+  - name: CASSANDRA__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: scylla-credentials
+        key: mayor_password
+  - name: CASSANDRA__X509Certificate_PATHS
+    value: /tls/scylla/secret/db.pfx
+  - name: CASSANDRA__X509Certificate_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: scylla-credentials
+        key: db-pfx-password

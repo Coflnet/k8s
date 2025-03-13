@@ -104,6 +104,13 @@ spec:
             name: sky-mod-commands
             port:
               number: 8008
+      - path: /instances
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: sky-mod-commands
+            port:
+              number: 8008
 
   - host: sky-commands.coflnet.com
     http:
