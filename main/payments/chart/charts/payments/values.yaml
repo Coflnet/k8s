@@ -52,6 +52,8 @@ payments:
           secretKeyRef:
             name: ane-secret
             key: connection_string_payment
+    ingress:
+      enabled: false
   - name: dash-payments
     envVars:
       - name: DB_CONNECTION
@@ -59,6 +61,8 @@ payments:
           secretKeyRef:
             name: dash-secret
             key: connection_string_payment
+    ingress:
+      enabled: false
   - name: tab-payments
     envVars:
       - name: DB_CONNECTION
@@ -66,6 +70,8 @@ payments:
           secretKeyRef:
             name: tab-secret
             key: connection_string_payment
+    ingress:
+      enabled: false
 
   - name: mds-payments
     envVars:
