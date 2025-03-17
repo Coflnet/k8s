@@ -488,4 +488,25 @@ payments:
       "type": 4
       }]}
 
+  - name: ane-payments
+    envVars:
+      - name: "PAYMENT_HOST"
+        value: "ane-payments:8000"
+    products: |
+      {"products": []}
+
+  - name: dash-payments
+    envVars:
+      - name: "PAYMENT_HOST"
+        value: "dash-payments:8000"
+    products: |
+      {"products": []}
+
+  - name: tab-payments
+    envVars:
+      - name: "PAYMENT_HOST"
+        value: "tab-payments:8000"
+    products: |
+      {"products": []}
+
 enabled: true
