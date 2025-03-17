@@ -493,20 +493,61 @@ payments:
       - name: "PAYMENT_HOST"
         value: "ane-payments:8000"
     products: |
-      {"products": []}
+      {"topups": [
+      {
+      "slug": "collector",
+      "title": "Collector",
+      "description": "4 weeks the colector plan",
+      "cost": 999,
+      "price": 9.99,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 2430000,
+      "type": "SERVICE"
+      }]}
 
   - name: dash-payments
     envVars:
       - name: "PAYMENT_HOST"
         value: "dash-payments:8000"
     products: |
-      {"products": []}
+      {"topups": [
+      {
+      "slug": "induvidual",
+      "title": "Induvidual",
+      "description": "4 weeks the induvidual plan",
+      "cost": 1299,
+      "price": 12.99,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 2430000,
+      "type": "SERVICE"
+      },
+      {
+      "slug": "business",
+      "title": "Business",
+      "description": "4 weeks the business plan",
+      "cost": 5999,
+      "price": 59.99,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 2430000,
+      "type": "SERVICE"
+      }]}
 
   - name: tab-payments
     envVars:
       - name: "PAYMENT_HOST"
         value: "tab-payments:8000"
     products: |
-      {"products": []}
+      {"products": [
+      {
+      "slug": "line-entry",
+      "title": "Single line",
+      "description": "A single line got entered",
+      "cost": 2,
+      "ownershipSeconds": 1,
+      "type": "SERVICE"
+      }]}
 
 enabled: true
