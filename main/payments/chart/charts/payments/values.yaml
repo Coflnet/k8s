@@ -53,7 +53,19 @@ payments:
             name: ane-secret
             key: connection_string_payment
     ingress:
-      enabled: false
+      enabled: true
+      nginx: true
+      hosts:
+      - host: ane.coflnet.com
+        http:
+          paths:
+          - path: /callback/lemonsqueezy
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: ane-payments
+                port:
+                  number: 8000
   - name: dash-payments
     envVars:
       - name: DB_CONNECTION
@@ -83,7 +95,19 @@ payments:
             name: tab-secret
             key: connection_string_payment
     ingress:
-      enabled: false
+      enabled: true
+      nginx: true
+      hosts:
+      - host: tab.coflnet.com
+        http:
+          paths:
+          - path: /callback/lemonsqueezy
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: tab-payments
+                port:
+                  number: 8000
 
   - name: mds-payments
     envVars:
