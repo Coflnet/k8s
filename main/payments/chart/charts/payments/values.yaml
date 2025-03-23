@@ -62,7 +62,19 @@ payments:
             name: dash-secret
             key: connection_string_payment
     ingress:
-      enabled: false
+      enabled: true
+      nginx: true
+      hosts:
+      - host: dash.coflnet.com
+        http:
+          paths:
+          - path: /callback/lemonsqueezy
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: dash-payments
+                port:
+                  number: 8000
   - name: tab-payments
     envVars:
       - name: DB_CONNECTION
