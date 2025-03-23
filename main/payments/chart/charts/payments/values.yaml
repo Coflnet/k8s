@@ -81,7 +81,7 @@ payments:
             key: lemonsqueezy_secret
       - name: lemonsqueezy__STORE_ID
         value: "162363"
-      - name: lemonsqueezy__VARIANT_ID
+      - name: lemonsqueezy__SUBSCRIPTION_VARIANT_ID
         value: "726701"
       - name: DB_CONNECTION
         valueFrom:
