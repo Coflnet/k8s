@@ -68,6 +68,21 @@ payments:
                   number: 8000
   - name: dash-payments
     envVars:
+      - name: lemonsqueezy__API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: mds-secret
+            key: lemonsqueezy_api_key
+
+      - name: lemonsqueezy__SECRET
+        valueFrom:
+          secretKeyRef:
+            name: mds-secret
+            key: lemonsqueezy_secret
+      - name: lemonsqueezy__STORE_ID
+        value: "162363"
+      - name: lemonsqueezy__VARIANT_ID
+        value: "726701"
       - name: DB_CONNECTION
         valueFrom:
           secretKeyRef:
