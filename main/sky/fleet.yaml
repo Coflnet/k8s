@@ -36,8 +36,8 @@ targetCustomizations:
     helm:
       valuesFiles:
         - ./chart/us-spot-cluster.yaml
-  - name: us-spot-ovh
-    clusterName: us-spot-ovh
+  - name: us-vultr-high-performance
+    clusterName: us-vultr-high-performance
     helm:
       valuesFiles:
         - ./chart/us-spot-cluster.yaml
