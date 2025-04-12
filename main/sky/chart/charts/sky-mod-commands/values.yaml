@@ -3,7 +3,7 @@ replicaCount: 4
 
 image:
   repository: muehlhansfl/skymodcommands
-  tag: 09298c13-3e06-4fc4-9ab0-3da38982b8f9
+  tag: ced28119-5704-4fbb-910d-84ccd4acff09
   pullPolicy: IfNotPresent
 
 nameOverride: ""
