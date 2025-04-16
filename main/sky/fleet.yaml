@@ -41,3 +41,8 @@ targetCustomizations:
     helm:
       valuesFiles:
         - ./chart/us-spot-cluster.yaml
+  - name: us-vultr-high-performance
+    clusterName: us-linode
+    helm:
+      valuesFiles:
+        - ./chart/us-spot-cluster.yaml
