@@ -114,6 +114,11 @@ envVars:
       secretKeyRef:
         name: secret
         key: mod_chat_api_key
+  - name: VPS__SECRET
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: vps_secret
   - name: SENDER__S1__WEBHOOK_URL
     valueFrom:
       secretKeyRef:
