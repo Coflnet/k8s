@@ -154,6 +154,22 @@ payments:
       "ownershipSeconds": 60
       },
       {
+      "slug": "vps",
+      "title": "Managed vps",
+      "description": "Managed instance of a vps",
+      "cost": 2700,
+      "type": "SERVICE",
+      "ownershipSeconds": 2592000
+      },
+      {
+      "slug": "vps+",
+      "title": "Managed vps+",
+      "description": "Managed instance of a vps with paid software",
+      "cost": 5100,
+      "type": "SERVICE",
+      "ownershipSeconds": 2592000
+      },
+      {
       "slug": "config-purchase",
       "title": "Config purchase",
       "description": "Represents a purchase of a config",
