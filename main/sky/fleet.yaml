@@ -31,8 +31,8 @@ targetCustomizations:
     helm:
       valuesFiles:
         - ./chart/us-spot-cluster.yaml
-  - name: us-spot-gt-detroit
-    clusterName: us-spot-gt-detroit
+  - name: us-data-wagon
+    clusterName: us-data-wagon
     helm:
       valuesFiles:
         - ./chart/us-spot-cluster.yaml
@@ -49,4 +49,3 @@ targetCustomizations:
       valuesFiles:
         - ./chart/us-spot-cluster.yaml
         - ./chart/us-linode.yaml
-
