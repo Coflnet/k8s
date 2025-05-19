@@ -29,7 +29,7 @@ readinessProbe:
   httpGet:
     path: /migrationdone
     port: api
-  initialDelaySeconds: 60
+  initialDelaySeconds: 30
   periodSeconds: 3
 
 envVars:
