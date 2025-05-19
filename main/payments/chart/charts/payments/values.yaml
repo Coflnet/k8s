@@ -61,7 +61,7 @@ payments:
       - name: lemonsqueezy__STORE_ID
         value: "174444"
       - name: lemonsqueezy__SUBSCRIPTION_VARIANT_ID
-        value: "805091"
+        value: "515930"
       - name: DB_CONNECTION
         valueFrom:
           secretKeyRef:
