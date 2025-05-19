@@ -50,13 +50,13 @@ payments:
       - name: lemonsqueezy__API_KEY
         valueFrom:
           secretKeyRef:
-            name: mds-secret
+            name: ane-secret
             key: lemonsqueezy_api_key
 
       - name: lemonsqueezy__SECRET
         valueFrom:
           secretKeyRef:
-            name: mds-secret
+            name: ane-secret
             key: lemonsqueezy_secret
       - name: lemonsqueezy__STORE_ID
         value: "174444"
