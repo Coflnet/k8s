@@ -67,6 +67,46 @@ payments:
           secretKeyRef:
             name: ane-secret
             key: connection_string_payment
+      - name: KAFKA__BROKERS
+        valueFrom:
+          secretKeyRef:
+            name: redpanda
+            key: brokers
+
+      - name: KAFKA__USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: redpanda-credentials
+            key: ane_username
+
+      - name: KAFKA__PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: redpanda-credentials
+            key: ane_password
+
+      - name: KAFKA__TLS__CA_LOCATION
+        value: "/tls/cm/ca.crt"
+
+      - name: KAFKA__TLS__CERTIFICATE_LOCATION
+        value: "/tls/cm/skyblock.crt"
+
+      - name: KAFKA__TLS__KEY_LOCATION
+        value: "/tls/secret/skyblock.key"
+
+      - name: KAFKA__REPLICATION_FACTOR
+        value: "3"
+
+    volumes:
+      - name: redpanda
+        mountPath: /tls/secret
+        type: secret
+        mountName: redpanda-secret
+      - name: redpanda
+        mountPath: /tls/cm
+        type: configmap
+        mountName: redpanda-cm
+
     ingress:
       enabled: true
       nginx: true
