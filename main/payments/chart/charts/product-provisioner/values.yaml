@@ -520,7 +520,14 @@ payments:
       "ProviderSlug": "lemonsqueezy",
       "ownershipSeconds": 2430000,
       "type": "SERVICE"
-      }]}
+      },
+      {
+      "slug": "compensation",
+      "title": "Compensation for service unavailibility",
+      "cost": 10000,
+      "ProviderSlug": "custom",
+      "type": 36
+      },]}
 
   - name: dash-payments
     envVars:
