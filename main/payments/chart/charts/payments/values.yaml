@@ -96,6 +96,8 @@ payments:
 
       - name: KAFKA__REPLICATION_FACTOR
         value: "3"
+      - name: KAFKA__TRANSACTION_TOPIC__NAME
+        value: "ane-transactions"
 
     volumes:
       - name: redpanda
