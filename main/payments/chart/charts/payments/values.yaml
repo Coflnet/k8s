@@ -98,6 +98,8 @@ payments:
         value: "3"
       - name: KAFKA__TRANSACTION_TOPIC__NAME
         value: "ane-transactions"
+      - name: KAFKA__PAYMENT_TOPIC__NAME
+        value: "ane-payments"
 
     volumes:
       - name: redpanda
