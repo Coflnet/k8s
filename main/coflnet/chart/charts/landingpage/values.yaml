@@ -6,7 +6,7 @@ imagePullSecrets:
   - name: harbor
 image:
   repository: muehlhansfl/landingpage
-  tag: 05eb90a4-ce3b-4624-85a3-270926bff217
+  tag: 352447f8-ac8a-4b24-9109-4603a323556f
   pullPolicy: IfNotPresent
 
 ports:
