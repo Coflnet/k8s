@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skyflipper
-  tag: 6984bf4d-4110-495a-8c5e-0a63efb5e44e
+  tag: 76afca9b-07ba-4ff8-be6b-a6277e61ca87
   pullPolicy: IfNotPresent
 
 ports:
