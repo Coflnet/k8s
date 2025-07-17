@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skyplayerstate
-  tag: 331c6027-271f-4f12-939b-f63fdd00c6f3
+  tag: 13bf18ef-ec40-4ff7-a895-58ef8f6ee4d7
   pullPolicy: IfNotPresent
 
 ports:
