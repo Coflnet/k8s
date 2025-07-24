@@ -49,7 +49,7 @@ ports:
 resources:
   requests:
     cpu: 800m
-    memory: 850Mi
+    memory: 1050Mi
   limits: 
     cpu: 2000m
     memory: 1200Mi
