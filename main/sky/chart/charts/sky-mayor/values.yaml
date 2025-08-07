@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/sky-mayor
-  tag: 0e535f93-df06-4f25-8c58-0663b3f8917e
+  tag: 5ce04a3f-edc8-4e8f-be96-efadafb7b569
   pullPolicy: IfNotPresent
 
 ports:
