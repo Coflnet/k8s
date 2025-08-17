@@ -33,5 +33,5 @@ readinessProbe:
 
 envVars:
   - name: REDIS_URL
-    value: "redis://redis"
+    value: "redis://redis-service"
 
