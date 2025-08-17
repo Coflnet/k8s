@@ -1,0 +1,37 @@
+enabled: true
+
+replicaCount: 1
+revisionHistoryLimit: 5
+
+image:
+  repository: muehlhansfl/crafatar
+  tag: 39fd7103-380e-4f6e-b61e-194e8001fa42
+  pullPolicy: IfNotPresent
+
+ports:
+  - name: web
+    containerPort: 3000
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 200Mi
+
+serivcePorts:
+  - name: web
+    port: 3000
+    targetPort: 3000
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: web
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 6
+  timeoutSeconds: 5
+
+envVars:
+  - name: REDIS_URL
+    value: "redis://redis"
+
