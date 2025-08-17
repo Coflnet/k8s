@@ -4,8 +4,8 @@ replicaCount: 1
 revisionHistoryLimit: 5
 
 image:
-  repository: muehlhansfl/crafatar
-  tag: 39fd7103-380e-4f6e-b61e-194e8001fa42
+  repository: ekwav/crafatar
+  tag: latest
   pullPolicy: IfNotPresent
 
 ports:
