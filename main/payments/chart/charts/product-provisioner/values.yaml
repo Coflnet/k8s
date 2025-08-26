@@ -282,6 +282,17 @@ payments:
       "type": "SERVICE"
       },
       {
+      "slug": "l_starter_premium-year",
+      "title": "1 year Basic plan",
+      "description": "1 YEAR our basic tier",
+      "cost": 3600,
+      "price": 16.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 31536000,
+      "type": "SERVICE"
+      },
+      {
       "slug": "l_premium",
       "title": "4 weeks premium",
       "description": "4 weeks of premium renewing itself",
@@ -413,6 +424,7 @@ payments:
       "l_premium",
       "l_premium-year",
       "l_prem_plus-year",
+      "l_starter_premium-year",
       "premium_plus-week",
       "premium_plus-weeks",
       "premium_plus-months"
@@ -520,7 +532,14 @@ payments:
       "ProviderSlug": "lemonsqueezy",
       "ownershipSeconds": 2430000,
       "type": "SERVICE"
-      }]}
+      },
+      {
+      "slug": "compensation",
+      "title": "Compensation for service unavailibility",
+      "cost": 10000,
+      "ProviderSlug": "custom",
+      "type": 36
+      },]}
 
   - name: dash-payments
     envVars:

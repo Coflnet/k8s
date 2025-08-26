@@ -7,7 +7,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/payments
-  tag: 1e6f8d3a-03fc-4016-b052-a217c0ff2bef
+  tag: e9bc0fc8-0d84-4f8a-9d56-1bb1c345753f
   pullPolicy: IfNotPresent
 
 ports:
@@ -29,7 +29,7 @@ readinessProbe:
   httpGet:
     path: /migrationdone
     port: api
-  initialDelaySeconds: 60
+  initialDelaySeconds: 30
   periodSeconds: 3
 
 envVars:
@@ -50,23 +50,67 @@ payments:
       - name: lemonsqueezy__API_KEY
         valueFrom:
           secretKeyRef:
-            name: mds-secret
+            name: ane-secret
             key: lemonsqueezy_api_key
 
       - name: lemonsqueezy__SECRET
         valueFrom:
           secretKeyRef:
-            name: mds-secret
+            name: ane-secret
             key: lemonsqueezy_secret
       - name: lemonsqueezy__STORE_ID
         value: "174444"
       - name: lemonsqueezy__SUBSCRIPTION_VARIANT_ID
-        value: "778672"
+        value: "805091"
       - name: DB_CONNECTION
         valueFrom:
           secretKeyRef:
             name: ane-secret
             key: connection_string_payment
+      - name: KAFKA__BROKERS
+        valueFrom:
+          secretKeyRef:
+            name: redpanda
+            key: brokers
+
+      - name: KAFKA__USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: redpanda-credentials
+            key: ane_username
+
+      - name: KAFKA__PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: redpanda-credentials
+            key: ane_password
+
+      - name: KAFKA__TLS__CA_LOCATION
+        value: "/tls/cm/ca.crt"
+
+      - name: KAFKA__TLS__CERTIFICATE_LOCATION
+        value: "/tls/cm/skyblock.crt"
+
+      - name: KAFKA__TLS__KEY_LOCATION
+        value: "/tls/secret/skyblock.key"
+
+      - name: KAFKA__REPLICATION_FACTOR
+        value: "3"
+      - name: KAFKA__TRANSACTION_TOPIC__NAME
+        value: "ane-transactions"
+      - name: KAFKA__PAYMENT_TOPIC__NAME
+        value: "ane-payments"
+
+    volumes:
+      - name: redpanda
+        mountPath: /tls/secret
+        type: secret
+        mountName: redpanda-secret
+      - name: redpanda
+        mountPath: /tls/cm
+        type: configmap
+        mountName: redpanda-cm
+
     ingress:
       enabled: true
       nginx: true
