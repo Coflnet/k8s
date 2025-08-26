@@ -2,7 +2,7 @@ replicaCount: 1
 
 strategy: RollingUpdate
 
-imagePullSecrets: 
+imagePullSecrets:
   - name: harbor
 image:
   repository: muehlhansfl/feedback
@@ -15,14 +15,13 @@ ports:
   - name: metrics
     containerPort: 2112
 
-resources: 
+resources:
   requests:
     cpu: 200m
     memory: 200Mi
-  limits: 
+  limits:
     cpu: 500m
     memory: 512Mi
-
 
 serivcePorts:
   - name: api
@@ -39,7 +38,7 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
-envVars: 
+envVars:
   - name: MONGO_HOST
     valueFrom:
       secretKeyRef:
@@ -57,3 +56,8 @@ envVars:
     value: discord-messages
   - name: DISCORD_BOT_BASE_URL
     value: http://coflnet-bot.discord:8080
+  - name: WEBHOOK_URL
+    valueFrom:
+      secretKeyRef:
+        key: webhook_url
+        name: secret
