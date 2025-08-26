@@ -6,7 +6,7 @@ imagePullSecrets:
   - name: harbor
 image:
   repository: muehlhansfl/feedback
-  tag: 39617d95-48d0-47f2-9eaa-46bd005c5e4c
+  tag: 396efaf4-8aff-49a4-a286-d17fdde5b974
   pullPolicy: IfNotPresent
 
 ports:
