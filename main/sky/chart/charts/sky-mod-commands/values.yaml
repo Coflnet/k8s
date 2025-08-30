@@ -124,6 +124,8 @@ envVars:
       secretKeyRef:
         name: secret
         key: sender_s1_webhook_url
+  - name: LOKI_BASE_URL
+    value: "http://loki-scalable-read.loki-scalable:3100"
 
 ## cassandra conn
   - name: CASSANDRA__HOSTS
