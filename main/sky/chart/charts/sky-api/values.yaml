@@ -120,4 +120,9 @@ livenessProbe:
   initialDelaySeconds: 120
   failureThreshold: 6
   periodSeconds: 10
-envVars: []
+envVars: 
+  - name: GOOGLE_GEMINI_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: gemini_api_key

@@ -124,11 +124,6 @@ envVars:
       secretKeyRef:
         name: secret
         key: sender_s1_webhook_url
-  - name: GOOGLE_GEMINI_API_KEY
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: gemini_api_key
   - name: LOKI_BASE_URL
     value: "http://loki-scalable-read.loki-scalable:3100"
 
