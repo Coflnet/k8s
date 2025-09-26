@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skycrafts
-  tag: 51397c32-395f-4fa5-90ee-021e6aa50e82
+  tag: 4f54baf1-aa2d-48a9-acad-23f4d53dc783
   pullPolicy: IfNotPresent
 
 ports:
