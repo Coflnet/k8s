@@ -49,3 +49,11 @@ envVars:
       configMapKeyRef:
         name: config
         key: topic_new_bid-raw
+
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    # start one new pod before terminating the old one
+    maxSurge: 1
+    # keep the old pod until the new pod is ready
+    maxUnavailable: 0
