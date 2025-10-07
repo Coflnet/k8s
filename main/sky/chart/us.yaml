@@ -194,7 +194,7 @@ hypixel-react:
       value: "http://sky-api:8000/api"
 
 sky-api:
-  enabled: true
+  enabled: false
   replicaCount: 1
   ingress:
     enabled: true
@@ -239,7 +239,7 @@ sky-bazaar:
 
 sky-bfcs:
   enabled: true
-  replicaCount: 2
+  replicaCount: 1
   strategy: RollingUpdate
   defaultEnvVarsEnabled: false
   externalMinio: true
