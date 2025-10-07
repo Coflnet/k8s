@@ -1,5 +1,5 @@
 enabled: true
-replicaCount: 3
+replicaCount: 0
 
 migration:
   enabled: false
