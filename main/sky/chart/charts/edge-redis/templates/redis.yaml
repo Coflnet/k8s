@@ -1,8 +1,7 @@
 {{ if .Values.enabled }}
 apiVersion: apps/v1
 kind: Deployment
-metadata:
-  name: {{ .Chart.Name }}
+metadata: name: {{ .Chart.Name }}
   labels:
     app: {{ .Chart.Name }}
 spec:
@@ -18,13 +17,11 @@ spec:
       hostNetwork: true
       containers:
       - name: {{ .Chart.Name }}
+        command: ["redis-server"]
+        args: ["--requirepass", "$(REDIS_PASSWORD)"]
         image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
-          {{ if .Values.envVars }}
-        env:
-          {{ toYaml .Values.envVars | nindent 10 }}
-          {{ end }}
 {{ end }}
