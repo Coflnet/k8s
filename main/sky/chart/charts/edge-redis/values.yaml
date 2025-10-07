@@ -3,8 +3,8 @@ replicaCount: 1
 strategy: Recreate
 
 image:
-  repository: redis
-  tag: "8"
+  repository: bitnami/redis
+  tag: "7.0"
   pullPolicy: IfNotPresent
 
 ports:
