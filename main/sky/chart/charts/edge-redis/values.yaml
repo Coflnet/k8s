@@ -3,7 +3,7 @@ replicaCount: 1
 strategy: Recreate
 
 image:
-  repository: bitnami/redis
+  repository: bitnamilegacy/redis
   tag: "7.0"
   pullPolicy: IfNotPresent
 
