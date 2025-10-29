@@ -323,13 +323,9 @@ payments:
         type: configmap
         mountName: redpanda-cm
       - name: gcp-secret
-        secret:
-          secretName: google-credentials
-
-    volumeMounts:
-      - name: gcp-secret
-        mountPath: "/config/google/credentials.json"
-        subPath: credentials.json
+        type: secret
+        mountPath: /config/google
+        mountName: google-credentials
 
     ingress:
       enabled: true
