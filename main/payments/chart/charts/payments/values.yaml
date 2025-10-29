@@ -308,6 +308,8 @@ payments:
 
       - name: KAFKA__REPLICATION_FACTOR
         value: "3"
+      - name: GOOGLEPAY__ServiceAccountKeyFile
+        value: /config/google/credentials.json
       - name: lemonsqueezy__SUBSCRIPTION_VARIANT_ID
         value: "502893"
 
@@ -320,7 +322,14 @@ payments:
         mountPath: /tls/cm
         type: configmap
         mountName: redpanda-cm
+      - name: gcp-secret
+        secret:
+          secretName: google-credentials
 
+    volumeMounts:
+      - name: gcp-secret
+        mountPath: "/config/google/credentials.json"
+        subPath: credentials.json
 
     ingress:
       enabled: true
