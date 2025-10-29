@@ -188,10 +188,28 @@ payments:
       ],
       "topups": [
       {
-      "slug": "ps_1800",
+      "slug": "ps_cc__1800",
       "title": "1.800 CoflCoins",
       "cost": 1800,
       "price": 9.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "googlepay",
+      "type": 4
+      },
+      {
+      "slug": "ps_cc_5400",
+      "title": "5.400 CoflCoins",
+      "cost": 5400,
+      "price": 24.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "googlepay",
+      "type": 4
+      },
+      {
+      "slug": "ps_cc_10800",
+      "title": "10.800 CoflCoins",
+      "cost": 10800,
+      "price": 44.69,
       "currencyCode": "eur",
       "ProviderSlug": "googlepay",
       "type": 4
