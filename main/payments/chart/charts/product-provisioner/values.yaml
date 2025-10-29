@@ -188,6 +188,15 @@ payments:
       ],
       "topups": [
       {
+      "slug": "ps_1800",
+      "title": "1.800 CoflCoins",
+      "cost": 1800,
+      "price": 9.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "googlepay",
+      "type": 4
+      },
+      {
       "slug": "s_cc_1800",
       "title": "1.800 CoflCoins",
       "cost": 1800,
