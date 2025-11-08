@@ -1,4 +1,6 @@
 sky-bfcs:
   ingress:
     enabled: true
-    host: us-linode.coflnet.com
+    hosts:
+      - us-linode.coflnet.com
+      - sky-us.coflnet.com
