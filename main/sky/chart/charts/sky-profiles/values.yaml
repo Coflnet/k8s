@@ -48,10 +48,7 @@ envVars:
         name: secret
         key: sky_profile_cassandra_password
   - name: CASSANDRA__KEYSPACE
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: sky_profile_cassandra_keyspace
+    value: sky_player_info
   - name: CASSANDRA__X509Certificate_PATHS
     value: /tls/scylla/secret/db.pfx
   - name: CASSANDRA__X509Certificate_PASSWORD
