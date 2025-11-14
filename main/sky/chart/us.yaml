@@ -242,6 +242,9 @@ sky-mc-connect:
 
 sky-mod-commands:
   enabled: false
+  
+sky-commands:
+  enabled: false
 
 sky-player-name:
   enabled: false
