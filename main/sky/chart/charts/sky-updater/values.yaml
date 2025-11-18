@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skyupdater
-  tag: 1846872b-9eab-4dd4-b96f-6845f4429e34
+  tag: 0647d16b-a758-4210-87c9-adc818298f3e
   pullPolicy: IfNotPresent
 
 ports:
