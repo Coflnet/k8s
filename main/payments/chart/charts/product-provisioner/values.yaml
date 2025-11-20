@@ -300,7 +300,7 @@ payments:
       {
       "slug": "l_bazaarpro-year",
       "title": "1 year Bazaar Pro",
-      "description": "4 weeks of Bazaar Pro renewing itself",
+      "description": "Full year of Bazaar Pro renewing itself",
       "cost": 21000,
       "price": 69.99,
       "currencyCode": "eur",
