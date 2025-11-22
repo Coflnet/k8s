@@ -14,7 +14,7 @@ ports:
 
 resources:
   requests:
-    cpu: 800m
+    cpu: 1000m
     memory: 5Gi
 
 serivcePorts:
