@@ -17,7 +17,7 @@ migration:
 
 resources:
   requests:
-    cpu: 100m
+    cpu: 200m
     memory: 400Mi
   limits:
     memory: 800Mi
