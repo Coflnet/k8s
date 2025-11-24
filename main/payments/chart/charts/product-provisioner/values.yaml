@@ -488,6 +488,9 @@ payments:
       "pre_api",
       "l_prem_plus-year",
       "l_prem_plus"
+      ],
+      "l_bazaarpro": [
+      "l_bazaarpro-year"
       ]
       },
       "rules": [
