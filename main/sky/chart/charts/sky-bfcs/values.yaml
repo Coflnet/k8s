@@ -60,6 +60,9 @@ metrics:
 
 ingress:
   enabled: false
+  host: ""
+  tls:
+    enabled: false
 
 
 redis:
