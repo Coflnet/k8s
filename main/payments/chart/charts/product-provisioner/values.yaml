@@ -287,6 +287,28 @@ payments:
       "type": 4
       },
       {
+      "slug": "l_bazaarpro",
+      "title": "1 month Bazaar Pro",
+      "description": "4 weeks of Bazaar Pro renewing itself",
+      "cost": 2100,
+      "price": 12.99,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 2430000,
+      "type": "SERVICE"
+      },
+      {
+      "slug": "l_bazaarpro-year",
+      "title": "1 year Bazaar Pro",
+      "description": "Full year of Bazaar Pro renewing itself",
+      "cost": 21000,
+      "price": 69.99,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 31536000,
+      "type": "SERVICE"
+      },
+      {
       "slug": "l_prem_plus",
       "title": "4 weeks prem+",
       "description": "4 weeks of premium+ renewing itself",
@@ -466,6 +488,9 @@ payments:
       "pre_api",
       "l_prem_plus-year",
       "l_prem_plus"
+      ],
+      "l_bazaarpro": [
+      "l_bazaarpro-year"
       ]
       },
       "rules": [

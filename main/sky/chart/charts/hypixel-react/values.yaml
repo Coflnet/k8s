@@ -5,7 +5,7 @@ revisionHistoryLimit: 5
 
 image:
   repository: muehlhansfl/hypixel-react
-  tag: cd8d477f-43f5-489b-8310-c17e88f8eec9
+  tag: 4e4c9ce5-2c6b-4427-b1f0-7eb975a90854
   pullPolicy: IfNotPresent
 
 ports:
@@ -14,8 +14,8 @@ ports:
 
 resources:
   requests:
-    cpu: 250m
-    memory: 400Mi
+    cpu: 350m
+    memory: 500Mi
 
 serivcePorts:
   - name: web

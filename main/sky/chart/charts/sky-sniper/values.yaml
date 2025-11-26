@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skysniper
-  tag: d13c26b4-0df8-4cad-849a-541a896a7ee0
+  tag: cbbaae88-69c5-4257-b5ea-856b5a515cdb
   pullPolicy: IfNotPresent
 
 ports:
@@ -14,7 +14,7 @@ ports:
 
 resources:
   requests:
-    cpu: 800m
+    cpu: 1000m
     memory: 5Gi
 
 serivcePorts:
