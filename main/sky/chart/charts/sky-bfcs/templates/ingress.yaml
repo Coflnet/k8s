@@ -20,11 +20,11 @@ spec:
             name: {{ .Chart.Name }}
             port:
               number: 8888
-    {{ if .Values.ingress.tls.enabled }}
-    tls:
-      - hosts:
-          - {{ .Values.ingress.host }}
-        secretName: {{ .Chart.Name }}-tls
-    {{ end }}
+  {{ if .Values.ingress.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ .Values.ingress.host }}
+      secretName: {{ .Chart.Name }}-tls
+  {{ end }}
 {{ end }}
 {{ end }}
