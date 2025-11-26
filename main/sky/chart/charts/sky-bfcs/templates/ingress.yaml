@@ -5,9 +5,9 @@ kind: Ingress
 metadata:
   name: {{ .Chart.Name }}-ingress
   annotations:
-  {{ if .Values.ingress.tls.enabled}}
-  cert-manager.io/cluster-issuer: letsencrypt-prod
-  {{ end }}
+    {{ if .Values.ingress.tls.enabled }}
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    {{ end }}
 spec:
   rules:
   - host: {{ .Values.ingress.host }}
