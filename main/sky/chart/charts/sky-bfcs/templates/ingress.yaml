@@ -6,7 +6,7 @@ metadata:
   name: {{ .Chart.Name }}-ingress
   annotations:
   {{ if .Values.ingress.tls.enabled}}
-    kubernetes.io/tls-acme: "true"
+  cert-manager.io/cluster-issuer: letsencrypt-prod
   {{ end }}
 spec:
   rules:
