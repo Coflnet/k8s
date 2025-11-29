@@ -8,12 +8,18 @@ metadata:
       kubernetes.io/ingress.class: "nginx"
       nginx.ingress.kubernetes.io/service-upstream: "true"
       nginx.ingress.kubernetes.io/client-body-buffer-size: 1M
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   defaultBackend:
     service: 
       name: hypixel-react
       port:
         number: 80
+  tls:
+    - hosts:
+        - sky-mod.coflnet.com
+      secretName: sky-mod-tls
   rules:
 
   - host: sky.coflnet.com
