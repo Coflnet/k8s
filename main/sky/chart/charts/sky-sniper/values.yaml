@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skysniper
-  tag: f484a3f0-3ed6-4b40-8659-a15c49cd8f26
+  tag: 80312d90-cccd-456e-a2cc-203955f65e60
   pullPolicy: IfNotPresent
 
 ports:
