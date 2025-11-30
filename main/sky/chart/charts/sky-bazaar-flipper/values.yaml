@@ -4,7 +4,7 @@ replicaCount: 2
 strategy: RollingUpdate
 image:
   repository: muehlhansfl/skybazaarflipper
-  tag: 6edf4e58-0420-4b30-9c83-f88dc8fe5dcd
+  tag: 8b3c6994-c95f-4dba-80b1-d6e6dc059a39
   pullPolicy: IfNotPresent
 
 ports:
