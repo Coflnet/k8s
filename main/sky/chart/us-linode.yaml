@@ -1,6 +1,0 @@
-sky-bfcs:
-  ingress:
-    enabled: true
-    tls:
-      enabled: true
-    host: us-linode.coflnet.com

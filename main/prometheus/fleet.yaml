@@ -1,4 +1,0 @@
-defaultNamespace: prometheus
-paused: false
-helm:
-  chart: ./chart

@@ -1,4 +1,0 @@
-sky-bfcs:
-  ingress:
-    enabled: true
-    host: us-vultr.coflnet.com

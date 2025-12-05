@@ -1,3 +1,0 @@
-defaultNamespace: leaderboard
-helm:
-  chart: ./chart

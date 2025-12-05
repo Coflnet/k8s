@@ -1,4 +1,0 @@
-defaultNamespace: harbor
-paused: false
-helm:
-  chart: ./chart

@@ -1,3 +1,0 @@
-defaultNamespace: argo-events
-helm:
-  chart: ./chart

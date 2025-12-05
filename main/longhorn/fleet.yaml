@@ -1,4 +1,0 @@
-defaultNamespace: longhorn-system
-paused: false
-helm:
-  chart: ./chart
