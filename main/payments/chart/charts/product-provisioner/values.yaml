@@ -188,7 +188,7 @@ payments:
       ],
       "topups": [
       {
-      "slug": "ps_cc__1800",
+      "slug": "ps_cc_1800",
       "title": "1.800 CoflCoins",
       "cost": 1800,
       "price": 9.69,
