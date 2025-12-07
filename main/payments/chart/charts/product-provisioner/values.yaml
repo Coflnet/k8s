@@ -342,6 +342,17 @@ payments:
       "type": "SERVICE"
       },
       {
+      "slug": "l_starter_premium",
+      "title": "1 month Basic plan",
+      "description": "1 month our basic tier",
+      "cost": 450,
+      "price": 2.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 2430000,
+      "type": "SERVICE"
+      },
+      {
       "slug": "l_premium",
       "title": "4 weeks premium",
       "description": "4 weeks of premium renewing itself",
@@ -474,6 +485,7 @@ payments:
       "l_premium-year",
       "l_prem_plus-year",
       "l_starter_premium-year",
+      "l_starter_premium",
       "premium_plus-week",
       "premium_plus-weeks",
       "premium_plus-months"
