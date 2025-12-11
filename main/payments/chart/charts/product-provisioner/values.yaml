@@ -218,7 +218,7 @@ payments:
       "slug": "s_cc_1800",
       "title": "1.800 CoflCoins",
       "cost": 1800,
-      "price": 8.42,
+      "price": 9.42,
       "currencyCode": "eur",
       "ProviderSlug": "stripe",
       "type": 4
@@ -254,7 +254,7 @@ payments:
       "slug": "p_cc_1800",
       "title": "1.800 CoflCoins",
       "cost": 1800,
-      "price": 8.69,
+      "price": 9.69,
       "currencyCode": "eur",
       "ProviderSlug": "paypal",
       "type": 4
@@ -357,7 +357,7 @@ payments:
       "title": "4 weeks premium",
       "description": "4 weeks of premium renewing itself",
       "cost": 1800,
-      "price": 8.69,
+      "price": 9.69,
       "currencyCode": "eur",
       "ProviderSlug": "lemonsqueezy",
       "ownershipSeconds": 2430000,
@@ -378,7 +378,7 @@ payments:
       "slug": "l_cc_1800",
       "title": "1.800 CoflCoins",
       "cost": 1800,
-      "price": 8.69,
+      "price": 9.69,
       "currencyCode": "eur",
       "ProviderSlug": "lemonsqueezy",
       "type": 4
