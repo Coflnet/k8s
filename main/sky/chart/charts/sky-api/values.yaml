@@ -127,4 +127,7 @@ envVars:
         name: secret
         key: gemini_api_key
   - name: PREMIUM_CLIENT_RULES
-    value: "test-key-kuvdra:10s=100,1m=300"
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: paid_api_access_rules
