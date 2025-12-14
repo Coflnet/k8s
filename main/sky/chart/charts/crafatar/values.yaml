@@ -38,4 +38,8 @@ envVars:
     value: "36000"
   - name: CACHE_BROWSER
     value: "86000"
+ingress:
+  enabled: true
+  host: sky.coflnet.com
+  # TLS is managed upstream (Cloudflare); no TLS settings here
 
