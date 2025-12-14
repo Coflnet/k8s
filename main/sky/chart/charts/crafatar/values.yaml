@@ -34,4 +34,8 @@ readinessProbe:
 envVars:
   - name: REDIS_URL
     value: "redis://redis-service"
+  - name: CACHE_LOCAL
+    value: "36000"
+  - name: CACHE_BROWSER
+    value: "86000"
 
