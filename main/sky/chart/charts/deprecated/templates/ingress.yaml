@@ -75,13 +75,6 @@ spec:
             name: sky-api
             port:
               number: 8000
-      - path: /avatars/
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: crafatar
-            port:
-              number: 3000
       - path: /avatars
         pathType: ImplementationSpecific
         backend:
