@@ -38,6 +38,8 @@ envVars:
     value: "36000"
   - name: CACHE_BROWSER
     value: "86000"
+  - name: EPHEMERAL_STORAGE
+    value: "true"
 ingress:
   enabled: true
   host: sky.coflnet.com
