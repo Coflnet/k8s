@@ -41,7 +41,7 @@ envVars:
   - name: EPHEMERAL_STORAGE
     value: "true"
 ingress:
-  enabled: true
+  enabled: false
   host: sky.coflnet.com
   # TLS is managed upstream (Cloudflare); no TLS settings here
 
