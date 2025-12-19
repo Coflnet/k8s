@@ -7,7 +7,7 @@ migration:
 strategy: RollingUpdate
 image:
   repository: muehlhansfl/skybazaar
-  tag: 1ed85e14-ac92-4e5a-97b1-240c6306462f
+  tag: fdb9e6bf-4f62-4eef-a7a3-31ef20ab861b
   pullPolicy: IfNotPresent
 
 ports:
