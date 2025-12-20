@@ -170,6 +170,14 @@ payments:
       "ownershipSeconds": 2592000
       },
       {
+      "slug": "bazaarpro",
+      "title": "1 month Bazaar Pro",
+      "description": "4 weeks of Bazaar Pro",
+      "cost": 2100,
+      "ownershipSeconds": 2430000,
+      "type": "SERVICE"
+      },
+      {
       "slug": "config-purchase",
       "title": "Config purchase",
       "description": "Represents a purchase of a config",
@@ -502,7 +510,8 @@ payments:
       "l_prem_plus"
       ],
       "l_bazaarpro": [
-      "l_bazaarpro-year"
+      "l_bazaarpro-year",
+      "bazaarpro"
       ]
       },
       "rules": [
