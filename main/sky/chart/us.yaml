@@ -204,6 +204,11 @@ sky-bfcs:
         secretKeyRef:
           name: redis-edge
           key: us_connection
+    - name: REDIS_FLIP_INSTANCES__4
+      valueFrom:
+        secretKeyRef:
+          name: redis-edge
+          key: linode_us_connection
     - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
       value: "http://jaeger-collector-eu-cluster.observability:4317"
     - name: FLIP_REDIS_OPTIONS
