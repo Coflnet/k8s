@@ -67,6 +67,11 @@ sky-bfcs:
         secretKeyRef:
           name: flip-redis
           key: options
+    - name: REDIS_FLIP_INSTANCES__0
+      valueFrom:
+        secretKeyRef:
+          name: redis-edge
+          key: linode_us_connection
 
 sky-chat:
   enabled: false
