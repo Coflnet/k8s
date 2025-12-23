@@ -1,6 +1,6 @@
 enabled: true
 
-replicaCount: 1
+replicaCount: 2
 revisionHistoryLimit: 5
 
 image:
@@ -34,4 +34,14 @@ readinessProbe:
 envVars:
   - name: REDIS_URL
     value: "redis://redis-service"
+  - name: CACHE_LOCAL
+    value: "36000"
+  - name: CACHE_BROWSER
+    value: "86000"
+  - name: EPHEMERAL_STORAGE
+    value: "true"
+ingress:
+  enabled: false
+  host: sky.coflnet.com
+  # TLS is managed upstream (Cloudflare); no TLS settings here
 

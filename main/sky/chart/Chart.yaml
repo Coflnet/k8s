@@ -68,6 +68,8 @@ dependencies:
     version: "0.1.0" 
   - name: sky-settings
     version: "0.1.0" 
+  - name: crafatar
+    version: "0.1.0" 
   - name: hypixel-react
     version: "0.1.0" 
   - name: deprecated

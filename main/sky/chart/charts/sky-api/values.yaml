@@ -4,7 +4,7 @@ replicaCount: 4
 
 image:
   repository: muehlhansfl/skyapi
-  tag: a5277ad4-467f-440a-8373-e74307e384c7
+  tag: 98e6ead0-3d55-4f58-82ef-a7caeda9b4a9
   pullPolicy: IfNotPresent
 
 ingress:
@@ -126,3 +126,8 @@ envVars:
       secretKeyRef:
         name: secret
         key: gemini_api_key
+  - name: PREMIUM_CLIENT_RULES
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: paid_api_access_rules

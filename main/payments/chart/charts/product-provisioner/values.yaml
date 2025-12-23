@@ -170,6 +170,14 @@ payments:
       "ownershipSeconds": 2592000
       },
       {
+      "slug": "bazaarpro",
+      "title": "1 month Bazaar Pro",
+      "description": "4 weeks of Bazaar Pro",
+      "cost": 2100,
+      "ownershipSeconds": 2430000,
+      "type": "SERVICE"
+      },
+      {
       "slug": "config-purchase",
       "title": "Config purchase",
       "description": "Represents a purchase of a config",
@@ -188,7 +196,7 @@ payments:
       ],
       "topups": [
       {
-      "slug": "ps_cc__1800",
+      "slug": "ps_cc_1800",
       "title": "1.800 CoflCoins",
       "cost": 1800,
       "price": 9.69,
@@ -218,7 +226,7 @@ payments:
       "slug": "s_cc_1800",
       "title": "1.800 CoflCoins",
       "cost": 1800,
-      "price": 8.42,
+      "price": 9.42,
       "currencyCode": "eur",
       "ProviderSlug": "stripe",
       "type": 4
@@ -254,7 +262,7 @@ payments:
       "slug": "p_cc_1800",
       "title": "1.800 CoflCoins",
       "cost": 1800,
-      "price": 8.69,
+      "price": 9.69,
       "currencyCode": "eur",
       "ProviderSlug": "paypal",
       "type": 4
@@ -342,11 +350,22 @@ payments:
       "type": "SERVICE"
       },
       {
+      "slug": "l_starter_premium",
+      "title": "1 month Basic plan",
+      "description": "1 month our basic tier",
+      "cost": 450,
+      "price": 2.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 2430000,
+      "type": "SERVICE"
+      },
+      {
       "slug": "l_premium",
       "title": "4 weeks premium",
       "description": "4 weeks of premium renewing itself",
       "cost": 1800,
-      "price": 8.69,
+      "price": 9.69,
       "currencyCode": "eur",
       "ProviderSlug": "lemonsqueezy",
       "ownershipSeconds": 2430000,
@@ -367,7 +386,7 @@ payments:
       "slug": "l_cc_1800",
       "title": "1.800 CoflCoins",
       "cost": 1800,
-      "price": 8.69,
+      "price": 9.69,
       "currencyCode": "eur",
       "ProviderSlug": "lemonsqueezy",
       "type": 4
@@ -474,6 +493,7 @@ payments:
       "l_premium-year",
       "l_prem_plus-year",
       "l_starter_premium-year",
+      "l_starter_premium",
       "premium_plus-week",
       "premium_plus-weeks",
       "premium_plus-months"
@@ -490,7 +510,8 @@ payments:
       "l_prem_plus"
       ],
       "l_bazaarpro": [
-      "l_bazaarpro-year"
+      "l_bazaarpro-year",
+      "bazaarpro"
       ]
       },
       "rules": [
