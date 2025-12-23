@@ -206,6 +206,11 @@ sky-bfcs:
           key: us_connection
     - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
       value: "http://jaeger-collector-eu-cluster.observability:4317"
+    - name: FLIP_REDIS_OPTIONS
+      valueFrom:
+        secretKeyRef:
+          name: flip-redis
+          key: options
 
 
 
