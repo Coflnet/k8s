@@ -516,7 +516,9 @@ payments:
       "premium-derpy",
       "l_prem_plus",
       "l_premium",
+      "l_premium-quarter",
       "l_premium-year",
+      "l_prem_plus-quarter",
       "l_prem_plus-year",
       "premium_plus-week",
       "premium_plus-weeks",
@@ -538,6 +540,7 @@ payments:
       "l_prem_plus-year",
       "l_starter_premium-year",
       "l_starter_premium",
+      "l_starter_premium-quarter",
       "premium_plus-week",
       "premium_plus-weeks",
       "premium_plus-months"
@@ -551,11 +554,13 @@ payments:
       "premium_plus-100",
       "pre_api",
       "l_prem_plus-year",
-      "l_prem_plus"
+      "l_prem_plus",
+      "l_prem_plus-quarter"
       ],
       "l_bazaarpro": [
       "l_bazaarpro-year",
       "bazaarpro"
+      ,"l_bazaarpro-quarter"
       ]
       },
       "rules": [
