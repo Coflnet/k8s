@@ -317,6 +317,50 @@ payments:
       "type": "SERVICE"
       },
       {
+      "slug": "l_bazaarpro-quarter",
+      "title": "3 months Bazaar Pro",
+      "description": "3 months of Bazaar Pro renewing itself",
+      "cost": 6300,
+      "price": 38.97,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 7776000,
+      "type": "SERVICE"
+      },
+      {
+      "slug": "l_prem_plus-quarter",
+      "title": "3 months Prem+",
+      "description": "3 months of Premium+ renewing itself",
+      "cost": 25500,
+      "price": 99.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 7776000,
+      "type": "SERVICE"
+      },
+      {
+      "slug": "l_premium-quarter",
+      "title": "3 months Premium",
+      "description": "3 months of Premium renewing itself",
+      "cost": 5400,
+      "price": 27.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 7776000,
+      "type": "SERVICE"
+      },
+      {
+      "slug": "l_starter_premium-quarter",
+      "title": "3 months Basic plan",
+      "description": "3 months of the basic tier renewing itself",
+      "cost": 1350,
+      "price": 9.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 7776000,
+      "type": "SERVICE"
+      },
+      {
       "slug": "l_prem_plus",
       "title": "4 weeks prem+",
       "description": "4 weeks of premium+ renewing itself",
