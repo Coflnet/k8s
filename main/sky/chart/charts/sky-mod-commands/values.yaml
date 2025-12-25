@@ -132,6 +132,13 @@ envVars:
   - name: LOKI_BASE_URL
     value: "http://loki-scalable-read.loki-scalable:3100"
 
+  - name: REDIS_FLIP_INSTANCES__0
+    valueFrom:
+      secretKeyRef:
+        name: redis-edge
+        key: linode_us_connection
+  - name: REDIS_FLIP_INSTANCES__1
+    value: sky-bfcs-redis-eu-cluster
 ## cassandra conn
   - name: CASSANDRA__HOSTS
     valueFrom:
