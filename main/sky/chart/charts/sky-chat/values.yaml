@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skychat
-  tag: 3d5fa5f7-a1a8-45a2-a1e5-2c0c7df161ab
+  tag: 4ba78f2f-3bcd-48e3-9bff-167baddef68e
   pullPolicy: IfNotPresent
 
 ports:
