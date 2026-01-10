@@ -29,7 +29,7 @@ spec:
           - name: REDIS_HOST
             value: "{{ .Chart.Name }}-redis,syncTimeout=1000"
           - name: IMGPROXY_BASE_URL
-            value: "http://{{ .Chart.Name }}-imgproxy:8080"
+            value: "http://{{ .Chart.Name }}-imgproxy:80"
           {{ if .Values.envVars }}
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}
