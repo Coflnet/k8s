@@ -178,6 +178,14 @@ payments:
       "type": "SERVICE"
       },
       {
+      "slug": "bazaarpro-trial",
+      "title": "3 days Bazaar Pro",
+      "description": "3 days of Bazaar Pro",
+      "cost": 200,
+      "ownershipSeconds": 259200,
+      "type": "SERVICE"
+      },
+      {
       "slug": "config-purchase",
       "title": "Config purchase",
       "description": "Represents a purchase of a config",
@@ -567,8 +575,9 @@ payments:
       ],
       "l_bazaarpro": [
       "l_bazaarpro-year",
-      "bazaarpro"
-      ,"l_bazaarpro-quarter"
+      "bazaarpro",
+      "l_bazaarpro-quarter",
+      "bazaarpro-trial"
       ]
       },
       "rules": [
