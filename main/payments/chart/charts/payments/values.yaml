@@ -267,6 +267,17 @@ payments:
             name: secret
             key: lemonsqueezy_secret
 
+      - name: COINGATE__API_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: secret
+            key: coingate_api_token
+      - name: COINGATE__CALLBACK_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: secret
+            key: coingate_callback_secret
+
       - name: KAFKA_HOST
         value: k8-main-kafka-kafka.kafka.svc.cluster.local
       - name: OLD_DB_CONNECTION
