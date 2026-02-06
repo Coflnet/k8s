@@ -311,6 +311,42 @@ payments:
       "type": 4
       },
       {
+      "slug": "c_cc_1800",
+      "title": "1.800 CoflCoins",
+      "cost": 1800,
+      "price": 9.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "coingate",
+      "type": 4
+      },
+      {
+      "slug": "c_cc_5400",
+      "title": "5.400 CoflCoins",
+      "cost": 5400,
+      "price": 22.99,
+      "currencyCode": "eur",
+      "ProviderSlug": "coingate",
+      "type": 4
+      },
+      {
+      "slug": "c_cc_10800",
+      "title": "10.800 CoflCoins",
+      "cost": 10800,
+      "price": 39.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "coingate",
+      "type": 4
+      },
+      {
+      "slug": "c_cc_21600",
+      "title": "21.600 CoflCoins",
+      "cost": 21600,
+      "price": 78.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "coingate",
+      "type": 4
+      },
+      {
       "slug": "l_bazaarpro",
       "title": "1 month Bazaar Pro",
       "description": "4 weeks of Bazaar Pro renewing itself",
