@@ -373,6 +373,13 @@ payments:
                 name: sky-payments
                 port:
                   number: 8000
+          - path: /callback/coingate
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: sky-payments
+                port:
+                  number: 8000
       - host: skyblock-backend.coflnet.com
         http:
           paths:
