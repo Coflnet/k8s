@@ -380,7 +380,7 @@ payments:
                 name: sky-payments
                 port:
                   number: 8000
-          - path: /callback/Coingate
+          - path: /Callback/coingate
             pathType: ImplementationSpecific
             backend:
               service:
