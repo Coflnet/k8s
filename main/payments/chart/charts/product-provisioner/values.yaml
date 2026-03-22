@@ -203,11 +203,11 @@ payments:
       },
       {
       "slug": "rust-addon",
-      "title": "Rust finder addon",
+      "title": "Rust finder addon (discontinued)",
       "description": "Unlocks rust finder addon",
-      "cost": 1200,
+      "cost": 12000,
       "type": "SERVICE",
-      "ownershipSeconds": 2592000
+      "ownershipSeconds": 2092000
       }
       ],
       "topups": [
