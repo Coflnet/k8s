@@ -709,6 +709,17 @@ payments:
       "type": "SERVICE"
       },
       {
+      "slug": "flipper",
+      "title": "Flipper",
+      "description": "4 weeks the flipper plan",
+      "cost": 6999,
+      "price": 69.99,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 2430000,
+      "type": "SERVICE"
+      },
+      {
       "slug": "compensation",
       "title": "Compensation for service unavailibility",
       "cost": 10000,
