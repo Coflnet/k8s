@@ -1,0 +1,60 @@
+{{ if .Values.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow inbound traffic from any source on the web port (ingress controller, other pods)
+    - ports:
+        - protocol: TCP
+          port: 3000
+  egress:
+    # DNS resolution (kube-dns / CoreDNS)
+    - to:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    # sky-api (port 8000)
+    - to:
+        - podSelector:
+            matchLabels:
+              app: sky-api
+      ports:
+        - protocol: TCP
+          port: 8000
+    # sky-commands (port 8008)
+    - to:
+        - podSelector:
+            matchLabels:
+              app: sky-commands
+      ports:
+        - protocol: TCP
+          port: 8008
+    # Jaeger tracing (observability namespace, port 4317)
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: observability
+          podSelector:
+            matchLabels:
+              app: jaeger
+      ports:
+        - protocol: TCP
+          port: 4317
+    # No external internet access needed — all SSR calls use in-cluster services
+{{ end }}
