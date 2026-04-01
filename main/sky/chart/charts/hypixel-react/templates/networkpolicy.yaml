@@ -1,0 +1,101 @@
+{{ if .Values.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow inbound traffic on the app port (ingress controller, other pods)
+    - ports:
+        - protocol: TCP
+          port: 3000
+    # Allow inbound Linkerd mTLS proxy connections (meshed peers)
+    - ports:
+        - protocol: TCP
+          port: 4143
+    # Allow Linkerd admin/diagnostics (readiness probes, metrics scraping)
+    - ports:
+        - protocol: TCP
+          port: 4191
+  egress:
+    # DNS resolution (kube-dns / CoreDNS)
+    - to:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    # Linkerd control plane — destination service (service discovery & routing)
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: linkerd
+          podSelector:
+            matchLabels:
+              linkerd.io/control-plane-component: destination
+      ports:
+        - protocol: TCP
+          port: 8086
+    # Linkerd control plane — identity service (mTLS certificate issuance)
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: linkerd
+          podSelector:
+            matchLabels:
+              linkerd.io/control-plane-component: identity
+      ports:
+        - protocol: TCP
+          port: 8080
+    # Linkerd control plane — policy service (authorization policy)
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: linkerd
+          podSelector:
+            matchLabels:
+              linkerd.io/control-plane-component: destination
+      ports:
+        - protocol: TCP
+          port: 8090
+    # sky-api via Linkerd mTLS proxy (port 4143, not the app port)
+    - to:
+        - podSelector:
+            matchLabels:
+              app: sky-api
+      ports:
+        - protocol: TCP
+          port: 4143
+    # sky-commands via Linkerd mTLS proxy (port 4143, not the app port)
+    - to:
+        - podSelector:
+            matchLabels:
+              app: sky-commands
+      ports:
+        - protocol: TCP
+          port: 4143
+    # Jaeger collector via Linkerd mTLS proxy (observability namespace)
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: observability
+          podSelector:
+            matchLabels:
+              app: jaeger
+      ports:
+        - protocol: TCP
+          port: 4143
+    # No external internet access needed — all SSR calls use in-cluster services
+{{ end }}
