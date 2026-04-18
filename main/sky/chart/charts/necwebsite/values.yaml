@@ -4,7 +4,7 @@ replicaCount: 1
 
 image:
   repository: muehlhansfl/necwebsite
-  tag: 698fac61-1750-44bc-9725-254abb7e1bcb
+  tag: b7be3194-7426-4d08-9668-cfa104a41a06
   pullPolicy: IfNotPresent
 
 ports:
