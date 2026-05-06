@@ -126,6 +126,8 @@ envVars:
       secretKeyRef:
         name: secret
         key: gemini_api_key
+  - name: DONUT_API_BASE_URL
+    value: "http://donutapi.donut.svc.cluster.local:8000"
   - name: PREMIUM_CLIENT_RULES
     valueFrom:
       secretKeyRef:
