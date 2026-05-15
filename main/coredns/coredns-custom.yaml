@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  forward.override: |
+    # Pin IPv4 upstream resolvers so CoreDNS does not inherit broken IPv6-only host resolvers.
+    forward . 1.1.1.1 1.0.0.1 {
+        policy sequential
+    }

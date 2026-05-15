@@ -1,0 +1,4 @@
+defaultNamespace: kube-system
+targetCustomizations:
+  - name: us-cluster
+    clusterName: us-cluster
