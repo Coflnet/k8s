@@ -43,7 +43,6 @@ envVars:
       fieldRef:
         fieldPath: status.hostIP
 
-
 payments:
   - name: ane-payments
     envVars:
@@ -115,16 +114,16 @@ payments:
       enabled: true
       nginx: true
       hosts:
-      - host: ane.coflnet.com
-        http:
-          paths:
-          - path: /callback/lemonsqueezy
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: ane-payments
-                port:
-                  number: 8000
+        - host: ane.coflnet.com
+          http:
+            paths:
+              - path: /callback/lemonsqueezy
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: ane-payments
+                    port:
+                      number: 8000
   - name: dash-payments
     envVars:
       - name: lemonsqueezy__API_KEY
@@ -151,16 +150,16 @@ payments:
       enabled: true
       nginx: true
       hosts:
-      - host: dash.coflnet.com
-        http:
-          paths:
-          - path: /callback/lemonsqueezy
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: dash-payments
-                port:
-                  number: 8000
+        - host: dash.coflnet.com
+          http:
+            paths:
+              - path: /callback/lemonsqueezy
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: dash-payments
+                    port:
+                      number: 8000
   - name: tab-payments
     envVars:
       - name: DB_CONNECTION
@@ -172,53 +171,16 @@ payments:
       enabled: true
       nginx: true
       hosts:
-      - host: tab.coflnet.com
-        http:
-          paths:
-          - path: /callback/lemonsqueezy
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: tab-payments
-                port:
-                  number: 8000
-
-  - name: mds-payments
-    envVars:
-      - name: lemonsqueezy__API_KEY
-        valueFrom:
-          secretKeyRef:
-            name: mds-secret
-            key: lemonsqueezy_api_key
-
-      - name: lemonsqueezy__SECRET
-        valueFrom:
-          secretKeyRef:
-            name: mds-secret
-            key: lemonsqueezy_secret
-      - name: lemonsqueezy__STORE_ID
-        value: "76428"
-      - name: lemonsqueezy__VARIANT_ID
-        value: "308547"
-      - name: DB_CONNECTION
-        valueFrom:
-          secretKeyRef:
-            name: mds-secret
-            key: connection_string_payment
-    ingress:
-      enabled: true
-      nginx: true
-      hosts:
-      - host: mds.coflnet.com
-        http:
-          paths:
-          - path: /callback/lemonsqueezy
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: mds-payments
-                port:
-                  number: 8000
+        - host: tab.coflnet.com
+          http:
+            paths:
+              - path: /callback/lemonsqueezy
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: tab-payments
+                    port:
+                      number: 8000
 
   - name: sky-payments
     envVars:
@@ -342,65 +304,65 @@ payments:
       enabled: true
       nginx: true
       hosts:
-      - host: sky.coflnet.com
-        http:
-          paths:
-          - path: /callback/stripe
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-payments
-                port:
-                  number: 8000
-          - path: /callback/paypal
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-payments
-                port:
-                  number: 8000
-          - path: /callback/lemonsqueezy
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-payments
-                port:
-                  number: 8000
-          - path: /callback/googlepay
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-payments
-                port:
-                  number: 8000
-          - path: /callback/coingate
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-payments
-                port:
-                  number: 8000
-          - path: /Callback/coingate
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-payments
-                port:
-                  number: 8000
-      - host: skyblock-backend.coflnet.com
-        http:
-          paths:
-          - path: /callback/stripe
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-payments
-                port:
-                  number: 8000
-          - path: /callback/paypal
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: sky-payments
-                port:
-                  number: 8000
+        - host: sky.coflnet.com
+          http:
+            paths:
+              - path: /callback/stripe
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: sky-payments
+                    port:
+                      number: 8000
+              - path: /callback/paypal
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: sky-payments
+                    port:
+                      number: 8000
+              - path: /callback/lemonsqueezy
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: sky-payments
+                    port:
+                      number: 8000
+              - path: /callback/googlepay
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: sky-payments
+                    port:
+                      number: 8000
+              - path: /callback/coingate
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: sky-payments
+                    port:
+                      number: 8000
+              - path: /Callback/coingate
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: sky-payments
+                    port:
+                      number: 8000
+        - host: skyblock-backend.coflnet.com
+          http:
+            paths:
+              - path: /callback/stripe
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: sky-payments
+                    port:
+                      number: 8000
+              - path: /callback/paypal
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: sky-payments
+                    port:
+                      number: 8000
