@@ -83,8 +83,6 @@ envVars:
 
 migrationEnvVars:
   # new scylla configuration
-  - name: REDIS_HOST
-    value: "sky-global-redis"
   - name: CASSANDRA__HOSTS
     valueFrom:
       configMapKeyRef:
@@ -128,5 +126,3 @@ migrationEnvVars:
         key: cassandra_password
   - name: OLD_CASSANDRA__KEYSPACE
     value: "flips"
-
-
