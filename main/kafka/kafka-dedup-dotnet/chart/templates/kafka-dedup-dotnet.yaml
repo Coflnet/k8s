@@ -19,7 +19,7 @@ spec:
       {{ toYaml $.Values.imagePullSecrets | nindent 8 }}
       containers:
       - name: dedup-{{ .name }}-redis
-        image: bitnami/redis:7.0.12
+        image: bitnami/redis:latest
         env:
           - name: ALLOW_EMPTY_PASSWORD
             value: "yes"
