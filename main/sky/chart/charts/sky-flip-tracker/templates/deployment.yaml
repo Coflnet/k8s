@@ -28,8 +28,6 @@ spec:
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
-          - name: REDIS_HOST
-            value: "{{ .Chart.Name }}-redis,syncTimeout=1000"
           {{ if .Values.envVars }}
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}
