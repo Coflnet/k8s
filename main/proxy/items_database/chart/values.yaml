@@ -120,7 +120,7 @@ service:
 image:
   registry: docker.io
   repository: bitnami/haproxy
-  tag: 2.5.1-debian-10-r0
+  tag: latest
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -310,7 +310,6 @@ configuration: |
     server db-master-01 164.68.111.117:3305 check
     server db-master-02 164.68.127.152:3305 check
     server db-master-03 194.163.151.190:3305 check
-    
 
 ## @param containerPorts [array] List of container ports to enable in the haproxy container
 ##

@@ -122,7 +122,7 @@ service:
 image:
   registry: docker.io
   repository: bitnami/haproxy
-  tag: 2.5.1-debian-10-r0
+  tag: latest
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -310,7 +310,7 @@ configuration: |
   backend  be_main
     mode tcp
     balance leastconn
-  
+
     server cassandra-01 38.242.247.61:9042 check
     server cassandra-03 38.242.247.65:9042 check
 
