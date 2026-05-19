@@ -70,20 +70,24 @@ spec:
       ports:
         - protocol: TCP
           port: 8090
-    # sky-api via Linkerd mTLS proxy (port 4143, not the app port)
+    # sky-api via direct app port and Linkerd mTLS proxy
     - to:
         - podSelector:
             matchLabels:
               app: sky-api
       ports:
         - protocol: TCP
+          port: 8000
+        - protocol: TCP
           port: 4143
-    # sky-commands via Linkerd mTLS proxy (port 4143, not the app port)
+    # sky-commands via direct app port and Linkerd mTLS proxy
     - to:
         - podSelector:
             matchLabels:
               app: sky-commands
       ports:
+        - protocol: TCP
+          port: 8008
         - protocol: TCP
           port: 4143
     # Jaeger collector via Linkerd mTLS proxy (observability namespace)
