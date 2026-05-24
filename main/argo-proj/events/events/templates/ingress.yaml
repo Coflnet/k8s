@@ -14,30 +14,6 @@ spec:
   - host: argo-events.flou.dev
     http:
       paths:
-      - path: /ci
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: ci-eventsource-eventsource-svc
-            port:
-              number: 12000
-      - path: /ci-update
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: ci-eventsource-eventsource-svc
-            port:
-              number: 12000
-      - path: /static-update
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: ci-eventsource-eventsource-svc
-            port:
-              number: 12000
-  - host: argo-events.flou.dev
-    http:
-      paths:
       - path: /discord-bot-node
         pathType: ImplementationSpecific
         backend:

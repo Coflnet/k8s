@@ -11,46 +11,6 @@ spec:
       - port: 12000
         targetPort: 12000
 
-  github:
-    ci:
-      organizations:
-        - Coflnet
-      events:
-        - push
-      webhook:
-        port: "12000"
-        endpoint: /ci
-        method: POST
-      webhookSecret:
-        name: github-webhook-secret
-        key: secret
-
-    ci-update:
-      organizations:
-        - Coflnet
-      events:
-        - push
-      webhook:
-        port: "12000"
-        endpoint: /ci-update
-        method: POST
-      webhookSecret:
-        name: github-webhook-secret
-        key: secret
-
-    static-update:
-      organizations:
-        - Coflnet
-      events:
-        - push
-      webhook:
-        port: "12000"
-        endpoint: /static-update
-        method: POST
-      webhookSecret:
-        name: github-webhook-secret
-        key: secret
-
   webhook:
 
     # discord
