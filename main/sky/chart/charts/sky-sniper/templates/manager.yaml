@@ -35,7 +35,7 @@ spec:
           - name: OPENBAO__ENABLED
             value: "true"
           - name: OPENBAO__OPTIONAL
-            value: "false"
+            value: "true"
           - name: OPENBAO__ADDR
             value: http://openbao.openbao.svc:8200
           - name: OPENBAO__MOUNT
