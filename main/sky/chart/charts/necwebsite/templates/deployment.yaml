@@ -29,9 +29,9 @@ spec:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
           {{ if .Values.envVars }}
-          {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 10 }}
+          {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}
-          {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars) | nindent 10 }}
+          {{ toYaml .Values.global.envVars | nindent 10 }}
         readinessProbe:
           {{ toYaml .Values.readinessProbe | nindent 10 }}
         resources:
