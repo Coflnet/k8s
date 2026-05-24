@@ -18,7 +18,9 @@ spec:
     metadata:
       labels:
         app: "{{ .Chart.Name }}-migration"
+        security.coflnet.com/k8s-api-access: "false"
     spec:
+      serviceAccountName: {{ .Chart.Name }}
       imagePullSecrets:
       {{ toYaml $.Values.global.imagePullSecrets | nindent 8 }}
       containers:
@@ -27,13 +29,25 @@ spec:
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
+          - name: OPENBAO__ENABLED
+            value: "true"
+          - name: OPENBAO__OPTIONAL
+            value: "false"
+          - name: OPENBAO__ADDR
+            value: http://openbao.openbao.svc:8200
+          - name: OPENBAO__MOUNT
+            value: kv
+          - name: OPENBAO__PATH
+            value: {{ printf "sky/%s" .Chart.Name | quote }}
+          - name: OPENBAO__ROLE
+            value: {{ .Chart.Name | quote }}
           - name: REDIS_HOST
             value: "{{ .Chart.Name }}-redis,syncTimeout=1000"
           - name: MIGRATOR
             value: "true"
-          {{ toYaml .Values.global.envVars | nindent 10 }}
+          {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars) | nindent 10 }}
           {{ if .Values.envVars }}
-          {{ toYaml .Values.envVars | nindent 10 }}
+          {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 10 }}
           {{ end }}
         readinessProbe:
           {{ toYaml .Values.readinessProbe | nindent 10 }}

@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: argo-events-sa
+  namespace: argo-events
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: argo-workflows-build
+  namespace: argo
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: argo-workflows-promote
+  namespace: argo
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: argo
+  name: argo-events-workflow-submitter
+rules:
+  - apiGroups: ["argoproj.io"]
+    resources: ["workflows"]
+    verbs: ["create", "get"]
+  - apiGroups: ["argoproj.io"]
+    resources: ["workflowtemplates"]
+    verbs: ["get", "list"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: argo-events-workflow-submitter
+  namespace: argo
+subjects:
+  - kind: ServiceAccount
+    name: argo-events-sa
+    namespace: argo-events
+roleRef:
+  kind: Role
+  name: argo-events-workflow-submitter
+  apiGroup: rbac.authorization.k8s.io

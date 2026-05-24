@@ -4,6 +4,15 @@ strategy: RollingUpdate
 imagePullSecrets: 
 - name: harbor
 
+serviceAccount:
+  name: static-s3
+
+openbao:
+  addr: http://openbao.openbao.svc:8200
+  mount: kv
+  path: services/static-s3
+  role: static-s3
+
 image:
   repository: muehlhansfl/statics3
   tag: 8b8f8110-dc77-4809-9b0b-66495eda7cfb
@@ -30,16 +39,18 @@ s3:
   bucket: static
 
 envVars: 
-  - name: ACCESS_KEY
-    valueFrom: 
-      secretKeyRef:
-        name: minio-secret
-        key: access_key
-  - name: SECRET_KEY
-    valueFrom: 
-      secretKeyRef:
-        name: minio-secret
-        key: secret_key
+  - name: OPENBAO__ENABLED
+    value: "true"
+  - name: OPENBAO__OPTIONAL
+    value: "false"
+  - name: OPENBAO__ADDR
+    value: http://openbao.openbao.svc:8200
+  - name: OPENBAO__MOUNT
+    value: kv
+  - name: OPENBAO__PATH
+    value: services/static-s3
+  - name: OPENBAO__ROLE
+    value: static-s3
 
 ingress:
   - host: static.coflnet.com

@@ -11,6 +11,10 @@ images:
 crds:
   # -- Install and upgrade CRDs
   install: true
+  # Keep CRDs rendered locally. Chart 1.x defaults to full CRDs via a hook Job
+  # that downloads from GitHub during sync, which is awkward for locked-down
+  # clusters and not required for the workflow restriction mitigation.
+  full: false
   # -- Keep CRDs on chart uninstall
   keep: true
   # -- Annotations to be added to all CRDs
@@ -147,8 +151,8 @@ controller:
   workflowWorkers: # 32
   # -- Restricts the Workflows that the controller will process.
   # Only valid for 2.9+
-  workflowRestrictions: {}
-    # templateReferencing: Strict|Secure
+  workflowRestrictions:
+    templateReferencing: Secure
 
   # telemetryConfig controls the path and port for prometheus telemetry. Telemetry is enabled and emitted in the same endpoint
   # as metrics by default, but can be overridden using this config.
@@ -423,8 +427,8 @@ server:
     #   value: "bar"
 
   # -- Extra arguments to provide to the Argo server binary, such as for disabling authentication.
-  extraArgs: 
-    - "--auth-mode=server"
+  extraArgs:
+    - "--auth-mode=client"
 
   # If you want to disable authentication for purposes such as:
   #   - local dev-mode without authentication
@@ -487,7 +491,7 @@ server:
     # -- Create a ClusterRole and CRB for the server to access ClusterWorkflowTemplates.
     enabled: true
     # -- Give the server permissions to edit ClusterWorkflowTemplates.
-    enableEditing: true
+    enableEditing: false
 
   # -- SSO configuration when SSO is specified as a server auth mode.
   sso: {}
@@ -557,24 +561,7 @@ artifactRepository:
   archiveLogs: false
   # -- Store artifact in a S3-compliant object store
   # @default -- See [values.yaml]
-  s3:
-    # Note the `key` attribute is not the actual secret, it's the PATH to
-    # the contents in the associated secret, as defined by the `name` attribute.
-    accessKeySecret:
-      # name: <releaseName>-minio
-      key: accesskey
-    secretKeySecret:
-      # name: <releaseName>-minio
-      key: secretkey
-    # insecure will disable TLS. Primarily used for minio installs not configured with TLS
-    insecure: false
-    # bucket:
-    # endpoint:
-    # region:
-    # roleARN:
-    # useSDKCreds: true
-    # encryptionOptions:
-    #    enableEncryption: true
+  s3: {}
   # -- Store artifact in a GCS object store
   # @default -- `{}` (See [values.yaml])
   gcs: {}

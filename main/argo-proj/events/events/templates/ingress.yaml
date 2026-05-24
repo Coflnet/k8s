@@ -5,6 +5,10 @@ metadata:
   namespace: argo-events
   annotations:
     kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/auth-tls-secret: argo-events/cloudflare-authenticated-origin-pull-ca
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   rules:
   - host: argo-events.flou.dev
@@ -31,14 +35,6 @@ spec:
             name: ci-eventsource-eventsource-svc
             port:
               number: 12000
-      - path: /build-container
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: build-container-eventsource-svc
-            port:
-              number: 12000
-
   - host: argo-events.flou.dev
     http:
       paths:

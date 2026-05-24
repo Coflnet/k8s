@@ -1,0 +1,153 @@
+{{ if .Values.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: payments-default-deny-ingress
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: payments
+  policyTypes: [Ingress]
+  ingress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: payments-default-deny-egress
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: payments
+  policyTypes: [Egress]
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: payments-allow-public-callback-ingress
+spec:
+  podSelector:
+    matchLabels:
+      security.coflnet.com/public-http: "true"
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        {{- range $.Values.networkPolicy.publicIngressNamespaces }}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: {{ . | quote }}
+        {{- end }}
+        {{- range $.Values.networkPolicy.publicIngressCidrs }}
+        - ipBlock:
+            cidr: {{ . | quote }}
+        {{- end }}
+      ports:
+        - { protocol: TCP, port: 8000 }
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: payments-allow-approved-internal-clients
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: payments
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        {{- range $.Values.networkPolicy.paymentClientNamespaces }}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: {{ . | quote }}
+        {{- end }}
+        - namespaceSelector:
+            matchLabels:
+              security.coflnet.com/payments-client: "true"
+      ports:
+        - { protocol: TCP, port: 8000 }
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: payments-allow-platform-egress
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: payments
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - { protocol: UDP, port: 53 }
+        - { protocol: TCP, port: 53 }
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openbao
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: openbao
+      ports:
+        - { protocol: TCP, port: 8200 }
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kafka
+      ports:
+        - { protocol: TCP, port: 9092 }
+        - { protocol: TCP, port: 9093 }
+        - { protocol: TCP, port: 9094 }
+    {{- if $.Values.networkPolicy.externalKafkaCidrs }}
+    - to:
+        {{- range $.Values.networkPolicy.externalKafkaCidrs }}
+        - ipBlock: { cidr: {{ . | quote }} }
+        {{- end }}
+      ports:
+        - { protocol: TCP, port: 9092 }
+    {{- end }}
+    - to:
+        - ipBlock: { cidr: 155.133.23.194/32 }
+        - ipBlock: { cidr: 155.133.23.195/32 }
+        - ipBlock: { cidr: 155.133.23.196/32 }
+      ports:
+        - { protocol: TCP, port: 26257 }
+    - to:
+        - ipBlock: { cidr: 164.68.127.152/32 }
+      ports:
+        - { protocol: TCP, port: 3304 }
+    # External PSP APIs (Stripe/PayPal/LemonSqueezy/CoinGate/Google Pay).
+    # Replace this broad 443 rule with egress-gateway FQDN policy if the CNI
+    # supports it (Cilium DNS policies preferred).
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except:
+              - 10.0.0.0/8
+              - 172.16.0.0/12
+              - 192.168.0.0/16
+      ports:
+        - { protocol: TCP, port: 443 }
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: payments-allow-kube-api-for-labelled-operators-only
+spec:
+  podSelector:
+    matchLabels:
+      security.coflnet.com/k8s-api-access: "true"
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - ipBlock:
+            cidr: {{ .Values.security.kubernetesApiServiceCidr | default "10.43.0.1/32" | quote }}
+      ports:
+        - { protocol: TCP, port: 443 }
+        - { protocol: TCP, port: 6443 }
+{{ end }}

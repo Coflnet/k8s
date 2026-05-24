@@ -15,9 +15,11 @@ spec:
     metadata:
       labels:
         app: {{ .Chart.Name }}
+        security.coflnet.com/k8s-api-access: "false"
       annotations:
         {{ toYaml .Values.global.podAnnotations | nindent 8 }}
     spec:
+      serviceAccountName: {{ .Chart.Name }}
       topologySpreadConstraints:
       - maxSkew: 2
         topologyKey: kubernetes.io/hostname
@@ -33,27 +35,29 @@ spec:
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
+          - name: OPENBAO__ENABLED
+            value: "true"
+          - name: OPENBAO__OPTIONAL
+            value: "false"
+          - name: OPENBAO__ADDR
+            value: http://openbao.openbao.svc:8200
+          - name: OPENBAO__MOUNT
+            value: kv
+          - name: OPENBAO__PATH
+            value: {{ printf "sky/%s" .Chart.Name | quote }}
+          - name: OPENBAO__ROLE
+            value: {{ .Chart.Name | quote }}
           - name: REDIS_HOST
             value: {{ .Values.global.redis.name }}
           - name: REDIS_FLIP_INSTANCES__0 
             value: "sky-bfcs-redis,syncTimeout=1000"
-          - name: REDIS_FLIP_INSTANCES__1
-            valueFrom:
-              secretKeyRef:
-                name: redis-edge
-                key: us_connection
-          - name: REDIS_FLIP_INSTANCES__2
-            valueFrom:
-              secretKeyRef:
-                name: tfm-redis
-                key: tfm-1
           - name: MOD_REDIS_HOST
             value: {{ .Chart.Name }}-redis
           {{ if .Values.envVars }}
-          {{ toYaml .Values.envVars | nindent 10 }}
+          {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 10 }}
           {{ end }}
-          {{ toYaml .Values.global.envVars | nindent 10 }}
-          {{ toYaml .Values.global.frontendEnvVars | nindent 10 }}
+          {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars) | nindent 10 }}
+          {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.frontendEnvVars) | nindent 10 }}
         readinessProbe:
          {{ toYaml .Values.readinessProbe | nindent 10 }}
         resources:

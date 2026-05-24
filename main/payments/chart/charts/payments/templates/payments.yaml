@@ -16,9 +16,52 @@ spec:
     metadata:
       labels:
         app: {{ $p.name }}
+        app.kubernetes.io/part-of: payments
+        security.coflnet.com/k8s-api-access: "false"
+        security.coflnet.com/public-http: "true"
       annotations:
         "config.linkerd.io/skip-outbound-ports": "3304"
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: {{ printf "payment-%s" $p.name | quote }}
+        vault.hashicorp.com/agent-service-account-token-volume-name: "openbao-token"
+        vault.hashicorp.com/tls-secret: {{ $.Values.openbao.caSecretName | default "openbao-ca" | quote }}
+        vault.hashicorp.com/ca-cert: "/vault/tls/ca.crt"
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/secret-volume-path: "/var/run/secrets/openbao"
+        vault.hashicorp.com/agent-inject-secret-payment.env: {{ printf "kv/data/payment/%s" $p.name | quote }}
+        vault.hashicorp.com/agent-inject-template-payment.env: |
+          {{`{{- with secret "`}}{{ printf "kv/data/payment/%s" $p.name }}{{`" -}}`}}
+          {{`{{- range $key, $value := .Data.data }}`}}
+          {{`export {{ $key }}="$(printf '%s' '{{ $value | base64Encode }}' | base64 -d)"`}}
+          {{`{{- end }}`}}
+          {{`{{- end }}`}}
     spec:
+      serviceAccountName: {{ $p.name }}
+      automountServiceAccountToken: true
+      initContainers:
+      - name: openbao-ca-bundle
+        image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+        command: ["/bin/sh", "-ec"]
+        args:
+          - |
+            bundle=""
+            for candidate in /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt; do
+              if [ -s "$candidate" ]; then
+                bundle="$candidate"
+                break
+              fi
+            done
+            if [ -n "$bundle" ]; then
+              cat "$bundle" /openbao-ca/ca.crt > /openbao-bundle/ca-certificates.crt
+            else
+              cp /openbao-ca/ca.crt /openbao-bundle/ca-certificates.crt
+            fi
+        volumeMounts:
+          - name: openbao-ca
+            mountPath: /openbao-ca
+            readOnly: true
+          - name: openbao-ca-bundle
+            mountPath: /openbao-bundle
       {{ if $.Values.global }}
       {{ if $.Values.global.imagePullSecrets }}
       imagePullSecrets:
@@ -28,24 +71,67 @@ spec:
       containers:
       - name: {{ $p.name }}
         image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+        command: ["/bin/sh", "-ec"]
+        args:
+          - |
+            . /var/run/secrets/openbao/payment.env
+            exec dotnet Payments.dll --hostBuilder:reloadConfigOnChange=false
         ports:
            {{ toYaml $.Values.ports | nindent 10 }}
         env:
+          - name: OPENBAO__ENABLED
+            value: "true"
+          - name: OPENBAO__ADDR
+            value: {{ $.Values.openbao.addr | default "https://openbao.openbao.svc:8200" | quote }}
+          - name: OPENBAO__ROLE
+            value: {{ printf "payment-%s" $p.name | quote }}
+          - name: OPENBAO__MOUNT
+            value: {{ $.Values.openbao.mount | default "kv" | quote }}
+          - name: OPENBAO__PATH
+            value: {{ printf "payment/%s" $p.name | quote }}
+          - name: OPENBAO__OPTIONAL
+            value: {{ $.Values.openbao.optional | default "false" | quote }}
+          - name: OPENBAO__TOKEN_PATH
+            value: {{ $.Values.openbao.tokenPath | default "/var/run/secrets/openbao-serviceaccount/token" | quote }}
+          - name: SSL_CERT_FILE
+            value: {{ $.Values.openbao.caBundlePath | default "/var/run/secrets/openbao-ca-bundle/ca-certificates.crt" | quote }}
+          {{- if $.Values.envVars }}
           {{ toYaml $.Values.envVars | nindent 10 }}
+          {{- end }}
+          {{- if $p.envVars }}
           {{ toYaml $p.envVars | nindent 10 }}
+          {{- end }}
         readinessProbe:
           {{ toYaml $.Values.readinessProbe | nindent 10 }}
         resources:
           {{ toYaml $.Values.resources | nindent 10 }}
-        {{ if $p.volumes }}
         volumeMounts:
+        - name: openbao-token
+          mountPath: {{ trimSuffix "/token" ($.Values.openbao.tokenPath | default "/var/run/secrets/openbao-serviceaccount/token") | quote }}
+          readOnly: true
+        - name: openbao-ca-bundle
+          mountPath: {{ dir ($.Values.openbao.caBundlePath | default "/var/run/secrets/openbao-ca-bundle/ca-certificates.crt") | quote }}
+          readOnly: true
+        {{ if $p.volumes }}
         {{ range $p.volumes }}
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
         {{ end }}
-      {{ if $p.volumes }}
       volumes:
+        - name: openbao-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  audience: {{ $.Values.openbao.tokenAudience | default "openbao" | quote }}
+                  expirationSeconds: 3600
+                  path: token
+        - name: openbao-ca
+          secret:
+            secretName: {{ $.Values.openbao.caSecretName | default "openbao-ca" | quote }}
+        - name: openbao-ca-bundle
+          emptyDir: {}
+      {{ if $p.volumes }}
       {{ range $p.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
@@ -57,6 +143,14 @@ spec:
           {{ end }}
       {{ end }}
       {{ end }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $p.name }}
+  labels:
+    app.kubernetes.io/part-of: payments
+automountServiceAccountToken: true
 ---
 {{ end }}
 {{ end }}

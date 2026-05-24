@@ -1,0 +1,422 @@
+{{- $open := "{{" -}}
+{{- $close := "}}" -}}
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: build-harbor-image
+  namespace: argo
+  labels:
+    workflows.argoproj.io/container-runtime-executor: emissary
+    security.coflnet.com/k8s-api-access: "false"
+  annotations:
+    security.coflnet.com/hardening: "rootless-buildkit-openbao-coflnet-only"
+spec:
+  serviceAccountName: argo-workflows-build
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    runAsNonRoot: true
+    fsGroup: 1000
+    seccompProfile:
+      type: RuntimeDefault
+  nodeSelector:
+    workload-class: ci
+  tolerations:
+    - key: dedicated
+      operator: Equal
+      value: ci
+      effect: NoSchedule
+  templates:
+    - name: build-harbor-image
+      inputs:
+        parameters:
+          - { name: app_repo }
+          - { name: branch }
+          - { name: container_image }
+          - { name: container_tag }
+          - { name: sub_path }
+          - { name: git_user }
+      metadata:
+        labels:
+          security.coflnet.com/ci-phase: build
+        annotations:
+          vault.hashicorp.com/agent-inject: "true"
+          vault.hashicorp.com/role: "argo-workflows-build"
+          vault.hashicorp.com/agent-pre-populate-only: "true"
+          vault.hashicorp.com/secret-volume-path: "/var/run/secrets/openbao"
+          vault.hashicorp.com/agent-inject-secret-build.env: "kv/data/argo-workflows/build"
+          vault.hashicorp.com/agent-inject-template-build.env: |
+            {{ $open }}- with secret "kv/data/argo-workflows/build" -{{ $close }}
+            export GIT_PASSWORD='{{ $open }} .Data.data.git_password {{ $close }}'
+            export NUGET_USERNAME='{{ $open }} .Data.data.nuget_username {{ $close }}'
+            export NUGET_PASSWORD='{{ $open }} .Data.data.nuget_password {{ $close }}'
+            export NUXT_UI_PRO_LICENSE='{{ $open }} .Data.data.nuxt_ui_pro_license {{ $close }}'
+            export GOOGLE_APPLICATION_CREDENTIALS='{{ $open }} .Data.data.gcp_credentials {{ $close }}'
+            export HF_TOKEN='{{ $open }} .Data.data.hf_token {{ $close }}'
+            {{ $open }}- end {{ $close }}
+      container:
+        image: moby/buildkit:v0.16.0-rootless
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            set -euo pipefail
+            APP_REPO="$APP_REPO"
+            BRANCH="$BRANCH"
+            CONTAINER_IMAGE="$CONTAINER_IMAGE"
+            CONTAINER_TAG="$CONTAINER_TAG"
+            SUB_PATH="$SUB_PATH"
+            GIT_USER="$GIT_USER"
+
+            case "$APP_REPO" in
+              git://github.com/Coflnet/*.git) REPO_PATH="${APP_REPO#git://github.com/}" ;;
+              https://github.com/Coflnet/*.git) REPO_PATH="${APP_REPO#https://github.com/}" ;;
+              https://github.com/Coflnet/*) REPO_PATH="${APP_REPO#https://github.com/}" ;;
+              git@github.com:Coflnet/*.git) REPO_PATH="${APP_REPO#git@github.com:}" ;;
+              *) echo "refusing to build non-Coflnet repository: $APP_REPO" >&2; exit 42 ;;
+            esac
+            REPO_PATH="${REPO_PATH%.git}"
+            case "$REPO_PATH" in
+              Coflnet/*) ;;
+              *) echo "refusing unsafe repository path: $REPO_PATH" >&2; exit 43 ;;
+            esac
+            case "$REPO_PATH$BRANCH$SUB_PATH" in
+              *[!A-Za-z0-9_./-]*|*..*|*/../*|/*) echo "refusing unsafe build input" >&2; exit 44 ;;
+            esac
+
+            IMAGE_REF="$CONTAINER_IMAGE"
+            case "$IMAGE_REF" in harbor.flou.dev/*) ;; *) IMAGE_REF="harbor.flou.dev/$IMAGE_REF" ;; esac
+            case "$IMAGE_REF" in harbor.flou.dev/coflnet/*) ;; *) echo "refusing non-Coflnet image: $IMAGE_REF" >&2; exit 45 ;; esac
+            case "$IMAGE_REF$CONTAINER_TAG" in *[!a-zA-Z0-9_./:-]*|*..*|*//*) echo "refusing unsafe image/tag" >&2; exit 46 ;; esac
+
+            . /var/run/secrets/openbao/build.env
+            export BUILDCTL_CONNECT_RETRIES_MAX=15
+            buildctl-daemonless.sh build \
+              --frontend gateway.v0 \
+              --opt context=https://$GIT_USER:$GIT_PASSWORD@github.com/$REPO_PATH.git#refs/heads/$BRANCH \
+              --opt source=docker/dockerfile \
+              --opt filename=$SUB_PATH/Dockerfile \
+              --secret id=nuget_username,env=NUGET_USERNAME \
+              --secret id=nuget_password,env=NUGET_PASSWORD \
+              --secret id=nuxt,env=NUXT_UI_PRO_LICENSE \
+              --secret id=gcp,env=GOOGLE_APPLICATION_CREDENTIALS \
+              --secret id=hf,env=HF_TOKEN \
+              --output type=oci,dest=/workspace/image.tar
+        env:
+          - name: APP_REPO
+            value: "{{ $open }}inputs.parameters.app_repo{{ $close }}"
+          - name: BRANCH
+            value: "{{ $open }}inputs.parameters.branch{{ $close }}"
+          - name: CONTAINER_IMAGE
+            value: "{{ $open }}inputs.parameters.container_image{{ $close }}"
+          - name: CONTAINER_TAG
+            value: "{{ $open }}inputs.parameters.container_tag{{ $close }}"
+          - name: SUB_PATH
+            value: "{{ $open }}inputs.parameters.sub_path{{ $close }}"
+          - name: GIT_USER
+            value: "{{ $open }}inputs.parameters.git_user{{ $close }}"
+          - name: BUILDKITD_FLAGS
+            value: ""
+        resources:
+          requests: { memory: 2Gi, cpu: 800m }
+          limits: { memory: 6Gi, cpu: "4" }
+        securityContext:
+          privileged: false
+          runAsNonRoot: true
+          runAsUser: 1000
+          runAsGroup: 1000
+          allowPrivilegeEscalation: false
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop: ["ALL"]
+        volumeMounts:
+          - { name: workspace, mountPath: /workspace }
+          - { name: buildkitd, mountPath: /home/user/.local/share/buildkit }
+          - { name: tmp, mountPath: /tmp }
+      volumes:
+        - name: buildkitd
+          emptyDir: {}
+        - name: tmp
+          emptyDir: { medium: Memory, sizeLimit: 2Gi }
+---
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: push-harbor-image
+  namespace: argo
+  labels:
+    security.coflnet.com/k8s-api-access: "false"
+  annotations:
+    security.coflnet.com/hardening: "registry-push-openbao-only"
+spec:
+  serviceAccountName: argo-workflows-promote
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    runAsNonRoot: true
+    fsGroup: 1000
+    seccompProfile:
+      type: RuntimeDefault
+  templates:
+    - name: push-harbor-image
+      inputs:
+        parameters:
+          - { name: container_image }
+          - { name: container_tag }
+      metadata:
+        labels:
+          security.coflnet.com/ci-phase: push
+        annotations:
+          vault.hashicorp.com/agent-inject: "true"
+          vault.hashicorp.com/role: "argo-workflows-promote"
+          vault.hashicorp.com/agent-pre-populate-only: "true"
+          vault.hashicorp.com/secret-volume-path: "/var/run/secrets/openbao"
+          vault.hashicorp.com/agent-inject-secret-promote.env: "kv/data/argo-workflows/promote"
+          vault.hashicorp.com/agent-inject-template-promote.env: |
+            {{ $open }}- with secret "kv/data/argo-workflows/promote" -{{ $close }}
+            export REGISTRY_AUTH_JSON='{{ $open }} .Data.data.registry_auth_json {{ $close }}'
+            {{ $open }}- end {{ $close }}
+      container:
+        image: quay.io/skopeo/stable:v1.16.1
+        command: ["/bin/sh", "-ec"]
+        args:
+          - |
+            IMAGE_REF="$CONTAINER_IMAGE"
+            case "$IMAGE_REF" in harbor.flou.dev/*) ;; *) IMAGE_REF="harbor.flou.dev/$IMAGE_REF" ;; esac
+            case "$IMAGE_REF" in harbor.flou.dev/coflnet/*) ;; *) echo "refusing non-Coflnet image: $IMAGE_REF" >&2; exit 49 ;; esac
+            case "$IMAGE_REF:$CONTAINER_TAG" in *[!a-zA-Z0-9_./:-]*|*..*|*//*) echo "refusing unsafe image/tag" >&2; exit 50 ;; esac
+            test -s /workspace/image.tar
+            . /var/run/secrets/openbao/promote.env
+            printf '%s' "$REGISTRY_AUTH_JSON" > /tmp/auth.json
+            skopeo copy --authfile /tmp/auth.json oci-archive:/workspace/image.tar docker://$IMAGE_REF:$CONTAINER_TAG
+            skopeo copy --authfile /tmp/auth.json oci-archive:/workspace/image.tar docker://$IMAGE_REF:latest
+        env:
+          - name: CONTAINER_IMAGE
+            value: "{{ $open }}inputs.parameters.container_image{{ $close }}"
+          - name: CONTAINER_TAG
+            value: "{{ $open }}inputs.parameters.container_tag{{ $close }}"
+          - { name: HOME, value: /tmp }
+          - { name: XDG_RUNTIME_DIR, value: /tmp }
+        resources:
+          requests: { memory: 128Mi, cpu: 50m }
+          limits: { memory: 512Mi, cpu: 500m }
+        securityContext:
+          privileged: false
+          runAsNonRoot: true
+          runAsUser: 1000
+          runAsGroup: 1000
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop: ["ALL"]
+        volumeMounts:
+          - { name: workspace, mountPath: /workspace }
+          - { name: tmp, mountPath: /tmp }
+      volumes:
+        - name: tmp
+          emptyDir: { medium: Memory, sizeLimit: 128Mi }
+---
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: ci-image-pipeline
+  namespace: argo
+  labels:
+    security.coflnet.com/k8s-api-access: "false"
+  annotations:
+    security.coflnet.com/hardening: "workflowtemplate-ref-build-push-promote"
+spec:
+  entrypoint: build-promote
+  serviceAccountName: argo-workflows-build
+  arguments:
+    parameters:
+      - { name: app_repo, value: "" }
+      - { name: branch, value: "main" }
+      - { name: container_image, value: "" }
+      - { name: container_tag, value: "{{ $open }}workflow.uid{{ $close }}" }
+      - { name: sub_path, value: "." }
+      - { name: git_user, value: "Flou21" }
+      - { name: k8s_file, value: "" }
+      - { name: repo_url, value: "https://github.com/Coflnet/k8s" }
+      - { name: pipeline_start, value: "{{ $open }}workflow.creationTimestamp.RFC3339{{ $close }}" }
+  retryStrategy:
+    limit: 3
+    retryPolicy: Always
+    backoff:
+      duration: "1"
+      factor: 2
+      maxDuration: 30m
+  ttlStrategy:
+    secondsAfterFailure: 172800
+    secondsAfterSuccess: 86400
+  volumeClaimTemplates:
+    - metadata:
+        name: workspace
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 20Gi
+  templates:
+    - name: build-promote
+      dag:
+        tasks:
+          - name: build
+            templateRef:
+              name: build-harbor-image
+              template: build-harbor-image
+            arguments:
+              parameters:
+                - { name: app_repo, value: "{{ $open }}workflow.parameters.app_repo{{ $close }}" }
+                - { name: branch, value: "{{ $open }}workflow.parameters.branch{{ $close }}" }
+                - { name: container_image, value: "{{ $open }}workflow.parameters.container_image{{ $close }}" }
+                - { name: container_tag, value: "{{ $open }}workflow.parameters.container_tag{{ $close }}" }
+                - { name: sub_path, value: "{{ $open }}workflow.parameters.sub_path{{ $close }}" }
+                - { name: git_user, value: "{{ $open }}workflow.parameters.git_user{{ $close }}" }
+          - name: push
+            depends: build
+            templateRef:
+              name: push-harbor-image
+              template: push-harbor-image
+            arguments:
+              parameters:
+                - { name: container_image, value: "{{ $open }}workflow.parameters.container_image{{ $close }}" }
+                - { name: container_tag, value: "{{ $open }}workflow.parameters.container_tag{{ $close }}" }
+          - name: promote-v2
+            depends: push
+            templateRef:
+              name: promote-v2
+              template: promote-v2
+            arguments:
+              parameters:
+                - { name: image_name, value: "{{ $open }}workflow.parameters.container_image{{ $close }}" }
+                - { name: k8s_file, value: "{{ $open }}workflow.parameters.k8s_file{{ $close }}" }
+                - { name: message, value: "[CI] update - version bump {{ $open }}workflow.parameters.k8s_file{{ $close }}" }
+                - { name: tag, value: "{{ $open }}workflow.parameters.container_tag{{ $close }}" }
+                - { name: git_user, value: "{{ $open }}workflow.parameters.git_user{{ $close }}" }
+                - { name: repo_url, value: "{{ $open }}workflow.parameters.repo_url{{ $close }}" }
+                - { name: pipeline_start, value: "{{ $open }}workflow.parameters.pipeline_start{{ $close }}" }
+    - name: build-only
+      dag:
+        tasks:
+          - name: build
+            templateRef:
+              name: build-harbor-image
+              template: build-harbor-image
+            arguments:
+              parameters:
+                - { name: app_repo, value: "{{ $open }}workflow.parameters.app_repo{{ $close }}" }
+                - { name: branch, value: "{{ $open }}workflow.parameters.branch{{ $close }}" }
+                - { name: container_image, value: "{{ $open }}workflow.parameters.container_image{{ $close }}" }
+                - { name: container_tag, value: "{{ $open }}workflow.parameters.container_tag{{ $close }}" }
+                - { name: sub_path, value: "{{ $open }}workflow.parameters.sub_path{{ $close }}" }
+                - { name: git_user, value: "{{ $open }}workflow.parameters.git_user{{ $close }}" }
+          - name: push
+            depends: build
+            templateRef:
+              name: push-harbor-image
+              template: push-harbor-image
+            arguments:
+              parameters:
+                - { name: container_image, value: "{{ $open }}workflow.parameters.container_image{{ $close }}" }
+                - { name: container_tag, value: "{{ $open }}workflow.parameters.container_tag{{ $close }}" }
+---
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: promote-v2
+  namespace: argo
+  labels:
+    security.coflnet.com/k8s-api-access: "false"
+  annotations:
+    security.coflnet.com/hardening: "openbao-coflnet-only"
+spec:
+  serviceAccountName: argo-workflows-promote
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    runAsNonRoot: true
+    fsGroup: 1000
+    seccompProfile:
+      type: RuntimeDefault
+  templates:
+    - name: promote-v2
+      inputs:
+        parameters:
+          - { name: image_name }
+          - { name: k8s_file }
+          - { name: message }
+          - { name: tag }
+          - { name: git_user }
+          - { name: repo_url }
+          - { name: pipeline_start }
+      metadata:
+        labels:
+          security.coflnet.com/ci-phase: promote
+        annotations:
+          vault.hashicorp.com/agent-inject: "true"
+          vault.hashicorp.com/role: "argo-workflows-promote"
+          vault.hashicorp.com/agent-pre-populate-only: "true"
+          vault.hashicorp.com/secret-volume-path: "/var/run/secrets/openbao"
+          vault.hashicorp.com/agent-inject-secret-promote.env: "kv/data/argo-workflows/promote"
+          vault.hashicorp.com/agent-inject-template-promote.env: |
+            {{ $open }}- with secret "kv/data/argo-workflows/promote" -{{ $close }}
+            export GIT_TOKEN='{{ $open }} .Data.data.git_token {{ $close }}'
+            {{ $open }}- end {{ $close }}
+      container:
+        image: muehlhansfl/promoter:latest
+        workingDir: /tmp
+        command: ["/bin/sh", "-ec"]
+        args:
+          - |
+            case "$REPO_URL" in
+              https://github.com/Coflnet/*) ;;
+              *) echo "refusing to promote non-Coflnet repo: $REPO_URL" >&2; exit 47 ;;
+            esac
+            case "$K8S_FILE$IMAGE_NAME$TAG" in
+              *[!A-Za-z0-9_./:-]*|*..*|*/../*|/*) echo "refusing unsafe promote input" >&2; exit 48 ;;
+            esac
+            . /var/run/secrets/openbao/promote.env
+            exec promoter
+        env:
+          - name: GIT_USERNAME
+            value: "{{ $open }}inputs.parameters.git_user{{ $close }}"
+          - name: GIT_REPOSITORY
+            value: "{{ $open }}inputs.parameters.repo_url{{ $close }}"
+          - name: REPO_URL
+            value: "{{ $open }}inputs.parameters.repo_url{{ $close }}"
+          - name: FILENAME
+            value: "{{ $open }}inputs.parameters.k8s_file{{ $close }}"
+          - name: K8S_FILE
+            value: "{{ $open }}inputs.parameters.k8s_file{{ $close }}"
+          - name: NEW_TAG
+            value: "{{ $open }}inputs.parameters.tag{{ $close }}"
+          - name: TAG
+            value: "{{ $open }}inputs.parameters.tag{{ $close }}"
+          - name: IMAGE_NAME
+            value: "{{ $open }}inputs.parameters.image_name{{ $close }}"
+          - name: COMMIT_MESSAGE
+            value: "{{ $open }}inputs.parameters.message{{ $close }}"
+          - name: PIPELINE_START
+            value: "{{ $open }}inputs.parameters.pipeline_start{{ $close }}"
+        resources:
+          requests: { memory: 64Mi, cpu: 20m }
+          limits: { memory: 256Mi, cpu: 500m }
+        securityContext:
+          privileged: false
+          runAsNonRoot: true
+          runAsUser: 1000
+          runAsGroup: 1000
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop: ["ALL"]
+        volumeMounts:
+          - { name: tmp, mountPath: /tmp }
+      volumes:
+        - name: tmp
+          emptyDir: { medium: Memory, sizeLimit: 128Mi }

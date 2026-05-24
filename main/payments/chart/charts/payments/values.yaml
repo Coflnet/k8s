@@ -3,6 +3,43 @@ maxUnavailable: 1
 
 enabled: true
 
+openbao:
+  addr: https://openbao.openbao.svc:8200
+  mount: kv
+  optional: "false"
+  tokenAudience: openbao
+  tokenPath: /var/run/secrets/openbao-serviceaccount/token
+  caSecretName: openbao-ca
+  caBundlePath: /var/run/secrets/openbao-ca-bundle/ca-certificates.crt
+
+security:
+  kubernetesApiServiceCidr: 10.43.0.1/32
+
+networkPolicy:
+  publicIngressNamespaces:
+    - nginx-ingress
+    - ingress-nginx
+  publicIngressCidrs:
+    - 46.224.66.37/32
+    - 46.224.68.6/32
+    - 23.88.39.122/32
+    - 49.13.132.87/32
+    - 142.132.186.142/32
+    - 10.42.38.64/32
+    - 10.42.203.0/32
+    - 10.42.226.64/32
+    - 10.42.97.192/32
+  paymentClientNamespaces:
+    - sky
+    - skyblock-bz
+    - ane
+    - discord
+    - payment
+  externalKafkaCidrs:
+    - 195.201.60.99/32
+    - 195.201.61.153/32
+    - 195.201.61.227/32
+
 strategy: RollingUpdate
 
 image:
@@ -46,44 +83,10 @@ envVars:
 payments:
   - name: ane-payments
     envVars:
-      - name: lemonsqueezy__API_KEY
-        valueFrom:
-          secretKeyRef:
-            name: ane-secret
-            key: lemonsqueezy_api_key
-
-      - name: lemonsqueezy__SECRET
-        valueFrom:
-          secretKeyRef:
-            name: ane-secret
-            key: lemonsqueezy_secret
       - name: lemonsqueezy__STORE_ID
         value: "174444"
       - name: lemonsqueezy__SUBSCRIPTION_VARIANT_ID
         value: "805091"
-      - name: DB_CONNECTION
-        valueFrom:
-          secretKeyRef:
-            name: ane-secret
-            key: connection_string_payment
-      - name: KAFKA__BROKERS
-        valueFrom:
-          secretKeyRef:
-            name: redpanda
-            key: brokers
-
-      - name: KAFKA__USERNAME
-        valueFrom:
-          secretKeyRef:
-            name: redpanda-credentials
-            key: ane_username
-
-      - name: KAFKA__PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: redpanda-credentials
-            key: ane_password
-
       - name: KAFKA__TLS__CA_LOCATION
         value: "/tls/cm/ca.crt"
 
@@ -126,26 +129,10 @@ payments:
                       number: 8000
   - name: dash-payments
     envVars:
-      - name: lemonsqueezy__API_KEY
-        valueFrom:
-          secretKeyRef:
-            name: mds-secret
-            key: lemonsqueezy_api_key
-
-      - name: lemonsqueezy__SECRET
-        valueFrom:
-          secretKeyRef:
-            name: mds-secret
-            key: lemonsqueezy_secret
       - name: lemonsqueezy__STORE_ID
         value: "162363"
       - name: lemonsqueezy__SUBSCRIPTION_VARIANT_ID
         value: "726701"
-      - name: DB_CONNECTION
-        valueFrom:
-          secretKeyRef:
-            name: dash-secret
-            key: connection_string_payment
     ingress:
       enabled: true
       nginx: true
@@ -161,12 +148,7 @@ payments:
                     port:
                       number: 8000
   - name: tab-payments
-    envVars:
-      - name: DB_CONNECTION
-        valueFrom:
-          secretKeyRef:
-            name: tab-secret
-            key: connection_string_payment
+    envVars: []
     ingress:
       enabled: true
       nginx: true
@@ -184,92 +166,10 @@ payments:
 
   - name: sky-payments
     envVars:
-      - name: STRIPE__ID
-        valueFrom:
-          secretKeyRef:
-            name: secret
-            key: stripe_secret
-
-      - name: STRIPE__KEY
-        valueFrom:
-          secretKeyRef:
-            name: secret
-            key: stripe_key
-
-      - name: STRIPE__SIGNING_SECRET
-        valueFrom:
-          secretKeyRef:
-            name: secret
-            key: stripe_signing_secret
-
-      - name: PAYPAL__ID
-        valueFrom:
-          secretKeyRef:
-            name: secret
-            key: paypal_id
-
-      - name: PAYPAL__SECRET
-        valueFrom:
-          secretKeyRef:
-            name: secret
-            key: paypal_secret
-
       - name: PAYPAL__IS_SANDBOX
         value: "false"
-
-      - name: LEMONSQUEEZY__API_KEY
-        valueFrom:
-          secretKeyRef:
-            name: secret
-            key: lemonsqueezy_api_key
-
-      - name: LEMONSQUEEZY__SECRET
-        valueFrom:
-          secretKeyRef:
-            name: secret
-            key: lemonsqueezy_secret
-
-      - name: COINGATE__API_TOKEN
-        valueFrom:
-          secretKeyRef:
-            name: secret
-            key: coingate_api_token
-      - name: COINGATE__CALLBACK_SECRET
-        valueFrom:
-          secretKeyRef:
-            name: secret
-            key: coingate_callback_secret
-
       - name: KAFKA_HOST
         value: k8-main-kafka-kafka.kafka.svc.cluster.local
-      - name: OLD_DB_CONNECTION
-        valueFrom:
-          secretKeyRef:
-            name: secret
-            key: connection_string_payment
-      - name: DB_CONNECTION
-        valueFrom:
-          secretKeyRef:
-            name: secret
-            key: cockroach_connection_payment
-      - name: KAFKA__BROKERS
-        valueFrom:
-          secretKeyRef:
-            name: redpanda
-            key: brokers
-
-      - name: KAFKA__USERNAME
-        valueFrom:
-          secretKeyRef:
-            name: redpanda-credentials
-            key: username
-
-      - name: KAFKA__PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: redpanda-credentials
-            key: password
-
       - name: KAFKA__TLS__CA_LOCATION
         value: "/tls/cm/ca.crt"
 
@@ -281,8 +181,6 @@ payments:
 
       - name: KAFKA__REPLICATION_FACTOR
         value: "3"
-      - name: GOOGLEPAY__ServiceAccountKeyFile
-        value: /config/google/credentials.json
       - name: lemonsqueezy__SUBSCRIPTION_VARIANT_ID
         value: "502893"
 
@@ -295,11 +193,6 @@ payments:
         mountPath: /tls/cm
         type: configmap
         mountName: redpanda-cm
-      - name: gcp-secret
-        type: secret
-        mountPath: /config/google
-        mountName: google-credentials
-
     ingress:
       enabled: true
       nginx: true

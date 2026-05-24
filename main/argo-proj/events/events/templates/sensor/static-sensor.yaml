@@ -16,6 +16,14 @@ spec:
         type: string
         value:
           - refs/heads/main
+      - path: body.repository.owner.name
+        type: string
+        value:
+          - Coflnet
+      - path: body.repository.owner.login
+        type: string
+        value:
+          - Coflnet
   triggers:
   - template:
       name: trigger
@@ -28,16 +36,16 @@ spec:
           - src: 
               dependencyName: static-update
               dataKey: body.repository.git_url
-            dest: spec.templates.0.dag.tasks.0.arguments.parameters.0.value
+            dest: spec.arguments.parameters.0.value
           - src: 
               dependencyName: static-update
               dataKey: body.repository.default_branch
-            dest: spec.templates.0.dag.tasks.0.arguments.parameters.1.value
+            dest: spec.arguments.parameters.1.value
           - src: 
               dependencyName: static-update
               dataKey: body.repository.default_branch
               dataTemplate: "{{"{{"}} .Input.body.repository.full_name | nospace | lower {{"}}"}}"
-            dest: spec.templates.0.dag.tasks.0.arguments.parameters.2.value
+            dest: spec.arguments.parameters.2.value
             operation: append
           - src:
               dependencyName: static-update
@@ -51,49 +59,20 @@ spec:
             metadata:
               namespace: argo
               generateName: ci-update-
+              labels:
+                security.coflnet.com/k8s-api-access: "false"
             spec:
-              entrypoint: build
-              serviceAccountName: argo-events-sa
-              retryStrategy:
-                    limit: 10
-                    retryPolicy: "Always"
-                    backoff:
-                      duration: "1"
-                      factor: 2
-                      maxDuration: "30m"
-              ttlStrategy:
-                secondsAfterFailure: 21600
-                secondsAfterSuccess: 7200
-              volumes:
-              - name: harbor
-                secret:
-                  secretName: harbor
-                  items:
-                    - key: .dockerconfigjson
-                      path: config.json
-              templates:
-              - name: build
-                dag:
-                  tasks:
-                  - name: build
-                    templateRef:
-                      name: build-harbor-image
-                      template: build-harbor-image
-                    arguments:
-                      parameters:
-                      - name: app_repo
-                        value: ""
-                      - name: branch
-                        value: ""
-                      - name: container_image
-                        value: ""
-                      - name: container_tag
-                        value: "latest"
-                      - name: sub_path 
-                        value: .
-                      - name: git_user
-                        value: "Flou21"
-                      - name: git_secret_name
-                        value: github-secret
-                      - name: git_secret_key
-                        value: password
+              workflowTemplateRef:
+                name: ci-image-pipeline
+              entrypoint: build-only
+              arguments:
+                parameters:
+                  - { name: app_repo, value: "" }
+                  - { name: branch, value: "" }
+                  - { name: container_image, value: "" }
+                  - { name: container_tag, value: "latest" }
+                  - { name: sub_path, value: "." }
+                  - { name: git_user, value: "Flou21" }
+                  - { name: k8s_file, value: "" }
+                  - { name: repo_url, value: "https://github.com/Coflnet/k8s" }
+                  - { name: pipeline_start, value: "{{"{{"}}workflow.creationTimestamp.RFC3339{{"}}"}}" }

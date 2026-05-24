@@ -1,3 +1,7 @@
 defaultNamespace: argo
 helm:
-  chart: ./chart
+  chart: argo-workflows
+  repo: https://argoproj.github.io/argo-helm
+  version: 1.0.14
+  valuesFiles:
+    - ./chart/values.yaml

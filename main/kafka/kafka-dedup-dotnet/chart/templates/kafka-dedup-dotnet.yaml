@@ -14,7 +14,9 @@ spec:
     metadata:
       labels:
         app: dedup-{{ .name }}
+        security.coflnet.com/k8s-api-access: "false"
     spec:
+      serviceAccountName: dedup-{{ .name }}
       imagePullSecrets:
       {{ toYaml $.Values.imagePullSecrets | nindent 8 }}
       containers:
@@ -37,6 +39,18 @@ spec:
         args: [ "--test" ]
         {{ end }}
         env:
+        - name: OPENBAO__ENABLED
+          value: "true"
+        - name: OPENBAO__OPTIONAL
+          value: "false"
+        - name: OPENBAO__ADDR
+          value: {{ $.Values.openbao.addr | default "http://openbao.openbao.svc:8200" | quote }}
+        - name: OPENBAO__MOUNT
+          value: {{ $.Values.openbao.mount | default "kv" | quote }}
+        - name: OPENBAO__PATH
+          value: {{ printf "kafka-dedup/%s" .name | quote }}
+        - name: OPENBAO__ROLE
+          value: {{ printf "kafka-dedup-%s" .name | quote }}
         - name: KAFKA_HOST
           value: {{ $.Values.kafka.host }}
         - name: REDIS_HOST
@@ -47,23 +61,6 @@ spec:
           value: {{ .targetTopic }}
         - name: BATCH_SIZE
           value: {{ .batchSize | quote }}
-        - name: KAFKA__BROKERS
-          valueFrom:
-            secretKeyRef:
-              name: redpanda
-              key: brokers
-        - name: KAFKA__USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: redpanda-credentials
-              key: username
-        
-        - name: KAFKA__PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: redpanda-credentials
-              key: password
-        
         - name: KAFKA__TLS__CA_LOCATION
           value: "/tls/cm/ca.crt"
         
@@ -94,6 +91,13 @@ spec:
             secretName: {{ .name }}
           {{ end }}
       {{ end }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dedup-{{ .name }}
+  labels:
+    app: dedup-{{ .name }}
 ---
 apiVersion: v1
 kind: Service

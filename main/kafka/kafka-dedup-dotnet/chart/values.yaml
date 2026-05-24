@@ -16,6 +16,10 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
+openbao:
+  addr: http://openbao.openbao.svc:8200
+  mount: kv
+
 podAnnotations: {}
 
 podSecurityContext: {}

@@ -33,56 +33,8 @@ envVars:
       fieldRef:
         fieldPath: status.hostIP
 
-  - name: STRIPE__KEY
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: stripe_key
-
-  - name: PAYPAL__ID
-    valueFrom:
-      secretKeyRef: 
-        name: secret
-        key: paypal_id
-
-  - name: PAYPAL__SECRET
-    valueFrom:
-      secretKeyRef: 
-        name: secret
-        key: paypal_secret
-
   - name: PAYPAL__IS_SANDBOX
     value: "false"
-
-  - name: DB_CONNECTION
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: connection_string_payment
-
-  - name: LEX_OFFICE_TOKEN
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: lex_office_token
-
-  - name: KAFKA__BROKERS
-    valueFrom:
-      secretKeyRef:
-        name: redpanda
-        key: brokers
-
-  - name: KAFKA__USERNAME
-    valueFrom:
-      secretKeyRef:
-        name: redpanda-credentials
-        key: username
-
-  - name: KAFKA__PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: redpanda-credentials
-        key: password
 
   - name: KAFKA__TLS__CA_LOCATION
     value: "/tls/cm/ca.crt"

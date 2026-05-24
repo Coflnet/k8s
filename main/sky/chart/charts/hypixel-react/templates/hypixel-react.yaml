@@ -23,7 +23,7 @@ spec:
           image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-          {{ toYaml .Values.envVars | nindent 12 }}
+          {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 12 }}
           ports:
           {{ toYaml .Values.ports | nindent 12 }}
           readinessProbe:
