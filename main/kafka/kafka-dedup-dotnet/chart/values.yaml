@@ -40,6 +40,8 @@ resources:
 
 kafka:
   host: k8-main-kafka-kafka
+  brokerSecret: redpanda
+  credentialsSecret: redpanda-credentials
 
 ports:
   - name: api

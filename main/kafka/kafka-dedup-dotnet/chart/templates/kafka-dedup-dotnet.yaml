@@ -53,6 +53,21 @@ spec:
           value: {{ printf "kafka-dedup-%s" .name | quote }}
         - name: KAFKA_HOST
           value: {{ $.Values.kafka.host }}
+        - name: KAFKA__BROKERS
+          valueFrom:
+            secretKeyRef:
+              name: {{ $.Values.kafka.brokerSecret }}
+              key: brokers
+        - name: KAFKA__USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ $.Values.kafka.credentialsSecret }}
+              key: username
+        - name: KAFKA__PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ $.Values.kafka.credentialsSecret }}
+              key: password
         - name: REDIS_HOST
           value: localhost
         - name: SOURCE_TOPIC

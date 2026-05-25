@@ -6,6 +6,7 @@ metadata:
 spec:
   args:
   - name: service-name
+  - name: pod-hash
   metrics:
   - name: sky-api-error
     interval: 1m
@@ -16,5 +17,5 @@ spec:
       prometheus:
         address: http://prometheus-kube-prometheus-prometheus.prometheus.svc.cluster.local:9090
         query: |
-          sum(rate(sky_api_error[5m]))
+          sum(rate(sky_api_error{pod=~"sky-api-{{ "{{args.pod-hash}}" }}-.*"}[5m]))
 {{ end }}

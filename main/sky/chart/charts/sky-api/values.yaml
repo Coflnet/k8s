@@ -81,6 +81,9 @@ canary:
         args:
           - name: service-name
             value: *canaryService
+          - name: pod-hash
+            valueFrom:
+              podTemplateHashValue: Latest
     - setWeight: 50
     - pause:
         duration: 5m
@@ -90,6 +93,9 @@ canary:
         args:
           - name: service-name
             value: *canaryService
+          - name: pod-hash
+            valueFrom:
+              podTemplateHashValue: Latest
     - setWeight: 100
     - pause:
         duration: 5m
@@ -99,6 +105,9 @@ canary:
         args:
           - name: service-name
             value: *canaryService
+          - name: pod-hash
+            valueFrom:
+              podTemplateHashValue: Latest
   maxUnavailable: 1
   canaryService: *canaryService
   stableService: *stableService
