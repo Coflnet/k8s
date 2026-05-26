@@ -1,7 +1,7 @@
 enabled: true
 image:
   repository: muehlhansfl/skyproxy
-  tag: 6a7f4a5-cockroach-fix-20260519
+  tag: bf76ab07-31ec-4cae-934d-eb96d8a4609b
   pullPolicy: IfNotPresent
 
 ports:
