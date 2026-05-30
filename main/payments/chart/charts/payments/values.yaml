@@ -21,6 +21,15 @@ openbao:
     credentialsKind: static
     refreshSeconds: 1800
 
+# Redpanda mTLS material (ca.crt, skyblock.crt, skyblock.key).
+# Default: mounted from the in-cluster `redpanda` Secret/ConfigMap (eu-cluster).
+# When openbao.enabled is true, the OpenBao agent renders the three files to
+# /tls/cm and /tls/secret from a shared kv/payment/redpanda entry instead, and
+# the in-cluster `redpanda` volumes are dropped.
+redpanda:
+  openbao:
+    enabled: false
+
 security:
   kubernetesApiServiceCidr: 10.43.0.1/32
 

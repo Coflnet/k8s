@@ -35,6 +35,20 @@ spec:
           {{`export {{ $key }}="$(printf '%s' '{{ $value | base64Encode }}' | base64 -d)"`}}
           {{`{{- end }}`}}
           {{`{{- end }}`}}
+        {{- if $.Values.redpanda.openbao.enabled }}
+        vault.hashicorp.com/agent-inject-secret-ca.crt: "kv/data/payment/redpanda"
+        vault.hashicorp.com/agent-inject-template-ca.crt: |
+          {{`{{- with secret "kv/data/payment/redpanda" -}}{{ index .Data.data "ca.crt" }}{{- end -}}`}}
+        vault.hashicorp.com/secret-volume-path-ca.crt: "/tls/cm"
+        vault.hashicorp.com/agent-inject-secret-skyblock.crt: "kv/data/payment/redpanda"
+        vault.hashicorp.com/agent-inject-template-skyblock.crt: |
+          {{`{{- with secret "kv/data/payment/redpanda" -}}{{ index .Data.data "skyblock.crt" }}{{- end -}}`}}
+        vault.hashicorp.com/secret-volume-path-skyblock.crt: "/tls/cm"
+        vault.hashicorp.com/agent-inject-secret-skyblock.key: "kv/data/payment/redpanda"
+        vault.hashicorp.com/agent-inject-template-skyblock.key: |
+          {{`{{- with secret "kv/data/payment/redpanda" -}}{{ index .Data.data "skyblock.key" }}{{- end -}}`}}
+        vault.hashicorp.com/secret-volume-path-skyblock.key: "/tls/secret"
+        {{- end }}
     spec:
       serviceAccountName: {{ $p.name }}
       automountServiceAccountToken: true
@@ -126,8 +140,10 @@ spec:
           readOnly: true
         {{ if $p.volumes }}
         {{ range $p.volumes }}
+        {{- if not (and $.Values.redpanda.openbao.enabled (eq .name "redpanda")) }}
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
+        {{- end }}
         {{ end }}
         {{ end }}
       volumes:
@@ -145,6 +161,7 @@ spec:
           emptyDir: {}
       {{ if $p.volumes }}
       {{ range $p.volumes }}
+        {{- if not (and $.Values.redpanda.openbao.enabled (eq .name "redpanda")) }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
           configMap:
@@ -153,6 +170,7 @@ spec:
           secret:
             secretName: {{ .name }}
           {{ end }}
+        {{- end }}
       {{ end }}
       {{ end }}
 ---

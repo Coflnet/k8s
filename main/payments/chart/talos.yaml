@@ -20,6 +20,11 @@ payments:
       mount: database
       credentialsKind: static
       refreshSeconds: 1800
+  # Redpanda mTLS cert/key/ca injected by OpenBao from kv/payment/redpanda
+  # instead of the in-cluster `redpanda` Secret/ConfigMap.
+  redpanda:
+    openbao:
+      enabled: true
   networkPolicy:
     cilium:
       enabled: true
