@@ -1,0 +1,22 @@
+{{ if .Values.enabled }}
+{{- if .Values.networkPolicy.cilium.enabled }}
+# Cilium equivalent of payments-allow-kube-api-for-labelled-operators-only.
+# Uses the reserved `kube-apiserver` entity so the policy follows the API
+# server endpoints automatically instead of a hardcoded ClusterIP.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: payments-allow-kube-api-for-labelled-operators-only
+spec:
+  endpointSelector:
+    matchLabels:
+      security.coflnet.com/k8s-api-access: "true"
+  egress:
+    - toEntities:
+        - kube-apiserver
+      toPorts:
+        - ports:
+            - { port: "443", protocol: TCP }
+            - { port: "6443", protocol: TCP }
+{{- end }}
+{{ end }}

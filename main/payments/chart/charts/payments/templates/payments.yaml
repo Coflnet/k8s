@@ -95,6 +95,18 @@ spec:
             value: {{ $.Values.openbao.tokenPath | default "/var/run/secrets/openbao-serviceaccount/token" | quote }}
           - name: SSL_CERT_FILE
             value: {{ $.Values.openbao.caBundlePath | default "/var/run/secrets/openbao-ca-bundle/ca-certificates.crt" | quote }}
+          {{- if $.Values.openbao.database.enabled }}
+          - name: OPENBAO__DB__ENABLED
+            value: "true"
+          - name: OPENBAO__DB__MOUNT
+            value: {{ $.Values.openbao.database.mount | default "database" | quote }}
+          - name: OPENBAO__DB__ROLE
+            value: {{ $p.dbRole | default (printf "payment-%s" $p.name) | quote }}
+          - name: OPENBAO__DB__CREDENTIALS_KIND
+            value: {{ $.Values.openbao.database.credentialsKind | default "static" | quote }}
+          - name: OPENBAO__DB__REFRESH_SECONDS
+            value: {{ $.Values.openbao.database.refreshSeconds | default "1800" | quote }}
+          {{- end }}
           {{- if $.Values.envVars }}
           {{ toYaml $.Values.envVars | nindent 10 }}
           {{- end }}

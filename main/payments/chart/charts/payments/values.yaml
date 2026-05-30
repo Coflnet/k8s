@@ -11,11 +11,25 @@ openbao:
   tokenPath: /var/run/secrets/openbao-serviceaccount/token
   caSecretName: openbao-ca
   caBundlePath: /var/run/secrets/openbao-ca-bundle/ca-certificates.crt
+  # Dynamic CockroachDB credentials via the OpenBao database secrets engine.
+  # Disabled by default; enabled per-cluster (e.g. Talos) through a values overlay.
+  # Uses a static role: stable username, OpenBao-rotated password supplied to
+  # Npgsql at runtime so the connection pool stays intact.
+  database:
+    enabled: false
+    mount: database
+    credentialsKind: static
+    refreshSeconds: 1800
 
 security:
   kubernetesApiServiceCidr: 10.43.0.1/32
 
 networkPolicy:
+  # On Cilium clusters (e.g. Talos) the kube-apiserver egress rule is expressed
+  # with the `kube-apiserver` entity instead of a hardcoded ClusterIP. Enable
+  # via a values overlay; leave false on plain NetworkPolicy clusters.
+  cilium:
+    enabled: false
   publicIngressNamespaces:
     - nginx-ingress
     - ingress-nginx

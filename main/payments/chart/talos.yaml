@@ -1,0 +1,34 @@
+# Talos (Hetzner) overlay for the payments umbrella chart.
+#
+# Differences vs. the eu-cluster defaults:
+#   - CockroachDB credentials are issued dynamically by OpenBao (static role:
+#     stable username, rotated password) instead of a static password baked
+#     into kv/payment/<svc>.
+#   - The kube-apiserver egress rule is expressed with the Cilium
+#     `kube-apiserver` entity instead of a hardcoded ClusterIP.
+#   - Ingress source IPs are matched via the ingress-controller namespace
+#     selector rather than hardcoded eu-cluster pod CIDRs.
+global:
+  imagePullSecrets:
+    - name: harbor
+
+payments:
+  enabled: true
+  openbao:
+    database:
+      enabled: true
+      mount: database
+      credentialsKind: static
+      refreshSeconds: 1800
+  networkPolicy:
+    cilium:
+      enabled: true
+    # Rely on the ingress-controller namespace selector instead of the
+    # eu-cluster pod CIDRs (which do not exist on Talos).
+    publicIngressCidrs: []
+
+accounting:
+  enabled: false
+
+product-provisioner:
+  enabled: false
