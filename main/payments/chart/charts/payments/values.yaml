@@ -11,6 +11,20 @@ openbao:
   tokenPath: /var/run/secrets/openbao-serviceaccount/token
   caSecretName: openbao-ca
   caBundlePath: /var/run/secrets/openbao-ca-bundle/ca-certificates.crt
+  # PEM of the OpenBao server CA the agent uses to verify the TLS connection.
+  # Default below is the eu-cluster OpenBao CA; override per-cluster (e.g. Talos)
+  # in a values overlay when that cluster's OpenBao uses a different CA.
+  caCert: |
+    -----BEGIN CERTIFICATE-----
+    MIIBbjCCARSgAwIBAgIUDE2ROzEN/BBUp7GMZF4v83avr0MwCgYIKoZIzj0EAwIw
+    FTETMBEGA1UEAxMKb3BlbmJhby1jYTAeFw0yNjA1MjMxNjA1MjZaFw0zNjA1MjAx
+    NjA1MjZaMBUxEzARBgNVBAMTCm9wZW5iYW8tY2EwWTATBgcqhkjOPQIBBggqhkjO
+    PQMBBwNCAATDnSEuaV/m9gRYxlCGZuhwF0sA2icuLMdNu26qim/0GSNNVm+g2kpo
+    3xGsXeOMKAx7d7xTQMmBfI1fXSsI+bS9o0IwQDAOBgNVHQ8BAf8EBAMCAqQwDwYD
+    VR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUBdKfeJtDwQFuK03M9mClDK+5yYUwCgYI
+    KoZIzj0EAwIDSAAwRQIgNDDCzesW5nARgwQqWLSywccgyudbpCvA03w6QtTpLhMC
+    IQDQnJ4nq+hNTAoQ1u6S4TX1igXeS0tjk4wZ1sESNG4JtA==
+    -----END CERTIFICATE-----
   # Dynamic CockroachDB credentials via the OpenBao database secrets engine.
   # Disabled by default; enabled per-cluster (e.g. Talos) through a values overlay.
   # Uses a static role: stable username, OpenBao-rotated password supplied to

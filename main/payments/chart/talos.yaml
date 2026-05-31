@@ -15,6 +15,20 @@ global:
 payments:
   enabled: true
   openbao:
+    # Talos OpenBao serves a different CA than eu-cluster (its TLS material was
+    # generated on Talos, not part of the restored raft backup). Override the
+    # default eu CA so the OpenBao agent can verify the Talos server cert.
+    caCert: |
+      -----BEGIN CERTIFICATE-----
+      MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
+      FTETMBEGA1UEAxMKb3BlbmJhby1jYTAeFw0yNjA1MzAwNjMwMDdaFw0zNjA1Mjcw
+      NjMwMDdaMBUxEzARBgNVBAMTCm9wZW5iYW8tY2EwWTATBgcqhkjOPQIBBggqhkjO
+      PQMBBwNCAATP+OVpqk8lnHealoOSbRZpInlL4ypSkvSCR0ksELx2Xg/eJJY3y9gj
+      tRrEp6OXd24Wwoy2L4V74FkfO+dkfUTko0IwQDAOBgNVHQ8BAf8EBAMCAqQwDwYD
+      VR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUTs+GuzkdJhBXyXXlwZI7Mn3pr8gwCgYI
+      KoZIzj0EAwIDRwAwRAIgA1l0MK0v3oIhoVgys1U/jdVZig/jp/SMhGJTilO25FkC
+      IDcNtGjLm4jxvXj9MrrNBwICv2XvSscsE/nc8Je3zE8D
+      -----END CERTIFICATE-----
     database:
       enabled: true
       mount: database

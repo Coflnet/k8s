@@ -6,14 +6,5 @@ metadata:
 type: Opaque
 stringData:
   ca.crt: |
-    -----BEGIN CERTIFICATE-----
-    MIIBbjCCARSgAwIBAgIUDE2ROzEN/BBUp7GMZF4v83avr0MwCgYIKoZIzj0EAwIw
-    FTETMBEGA1UEAxMKb3BlbmJhby1jYTAeFw0yNjA1MjMxNjA1MjZaFw0zNjA1MjAx
-    NjA1MjZaMBUxEzARBgNVBAMTCm9wZW5iYW8tY2EwWTATBgcqhkjOPQIBBggqhkjO
-    PQMBBwNCAATDnSEuaV/m9gRYxlCGZuhwF0sA2icuLMdNu26qim/0GSNNVm+g2kpo
-    3xGsXeOMKAx7d7xTQMmBfI1fXSsI+bS9o0IwQDAOBgNVHQ8BAf8EBAMCAqQwDwYD
-    VR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUBdKfeJtDwQFuK03M9mClDK+5yYUwCgYI
-    KoZIzj0EAwIDSAAwRQIgNDDCzesW5nARgwQqWLSywccgyudbpCvA03w6QtTpLhMC
-    IQDQnJ4nq+hNTAoQ1u6S4TX1igXeS0tjk4wZ1sESNG4JtA==
-    -----END CERTIFICATE-----
+    {{- .Values.openbao.caCert | nindent 4 }}
   {{ end }}
