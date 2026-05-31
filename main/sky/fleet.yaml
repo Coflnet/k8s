@@ -49,3 +49,9 @@ targetCustomizations:
       valuesFiles:
         - ./chart/us-spot-cluster.yaml
         - ./chart/us-linode.yaml
+
+  - name: talos-eu-hcloud
+    clusterName: talos-eu-hcloud
+    helm:
+      valuesFiles:
+        - ./chart/talos.yaml

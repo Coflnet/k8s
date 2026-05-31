@@ -1,0 +1,181 @@
+# Talos (talos-eu-hcloud) overlay for sky namespace.
+# Applied in addition to eu.yaml defaults via Fleet targetCustomization.
+#
+# HOW TO ENABLE:
+#   1. Create all prerequisite secrets listed below in the sky namespace on talos.
+#   2. Remove `enabled: false` from sub-charts you want to bring up.
+#   3. Commit, push; Fleet will deploy.
+#
+# ─── PREREQUISITE SECRETS (create before enabling any service) ───────────────
+#
+#   k8s Secret "secret":
+#     connection_live        MariaDB write DSN  (e.g. Server=...;Port=3307;...)
+#     connection_read_api    MariaDB read-only DSN
+#     jwt_secret_api         JWT signing secret (frontend services)
+#     jwt_secret_sniper      JWT signing secret (sky-bfcs / sniper)
+#     paid_api_access_rules  sky-api premium rules JSON
+#     gemini_api_key         Google Gemini API key (sky-api)
+#     player_state_password  ScyllaDB password (sky-player-state - reads from "secret")
+#
+#   k8s Secret "scylla-credentials":
+#     bazaar_password        ScyllaDB password for bazaar user
+#     bazaar_pfx_password    PFX passphrase for bazaar mTLS cert
+#     mod_password           ScyllaDB password for sky-mod-commands user
+#     mod_pfx_password       PFX passphrase for mod mTLS cert
+#     mayor_password         ScyllaDB password for sky-mayor user
+#     mayor_pfx_password     PFX passphrase for mayor mTLS cert
+#
+#   k8s ConfigMap "scylla-config":
+#     scylla_host            ScyllaDB contact points (comma-separated)
+#     scylla_bazaar_user     ScyllaDB username for sky-bazaar
+#     scylla_mod_user        ScyllaDB username for sky-mod-commands
+#     scylla_mayor_user      ScyllaDB username for sky-mayor
+#
+#   k8s Secret "redpanda" (key: skyblock.key — Redpanda mTLS private key)
+#   k8s Secret "redpanda-credentials" (keys: username, password)
+#   k8s ConfigMap "redpanda" (keys: ca.crt, skyblock.crt — Redpanda mTLS certs)
+#   k8s Secret "redpanda" (key: brokers — Redpanda broker addresses)
+#     NOTE: eu.yaml uses secretKeyRef for "brokers"; ensure the secret has that key.
+#
+#   k8s Secret "harbor" (type: kubernetes.io/dockerconfigjson — image pull secret)
+#   k8s ConfigMap "minio" (key: host)
+#   k8s Secret "minio" (keys: access_key, secret_key)
+#   k8s Secret "sniper-transfer-token" (key: sniper_transfer_token)
+#
+# ─── OPENBAO NOTE ────────────────────────────────────────────────────────────
+#
+#   Talos OpenBao uses TLS (https://openbao.openbao.svc:8200).
+#   The sky service templates hardcode http:// for OPENBAO__ADDR.
+#   Since OPENBAO__OPTIONAL=true, services fall back to k8s secrets gracefully.
+#   Long-term fix: parameterise OPENBAO__ADDR in the service templates so it
+#   can be overridden per cluster via values without replacing the whole
+#   global.envVars list (Helm merges objects but replaces arrays).
+#
+#   Until templates are updated, OpenBao integration will be silently skipped
+#   on talos for sky services. The ScyllaDB and MariaDB passwords will be
+#   managed by k8s secrets initially; see the OpenBao migration section below.
+#
+# ─── OPENBAO ROTATION (future) ───────────────────────────────────────────────
+#
+#   OpenBao can rotate MariaDB and ScyllaDB passwords automatically:
+#
+#   MariaDB (many sky services):
+#     Plugin: mysql-database-plugin
+#     Static role per service (stable username, rotated password)
+#     Inject password into k8s secret via External Secrets Operator, OR
+#     update templates to read from OpenBao agent sidecar (as payments does).
+#
+#   ScyllaDB (sky-bazaar, sky-mod-commands, sky-mayor, sky-player-state):
+#     Plugin: cassandra-database-plugin (ScyllaDB is Cassandra-protocol compatible)
+#     Requires mTLS: configure the connection with the existing .pfx cert.
+#     Same static-role pattern as MariaDB.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+
+global:
+  # Talos uses Cilium CNI, not Linkerd. Remove the Linkerd sidecar annotation.
+  podAnnotations: {}
+
+  # Keep global.secret / global.config disabled; secrets are created externally,
+  # not by the chart template.
+  secret:
+    enabled: false
+  config:
+    enabled: false
+
+# ─── Sub-charts: all disabled initially ──────────────────────────────────────
+# Enable one by one once the relevant secrets exist and connectivity is verified.
+
+sky-api:
+  enabled: false
+
+sky-auctions:
+  enabled: false
+
+sky-bazaar:
+  enabled: false
+
+sky-bazaar-flipper:
+  enabled: false
+
+sky-bfcs:
+  enabled: false
+
+sky-chat:
+  enabled: false
+
+sky-commands:
+  enabled: false
+
+sky-controller:
+  enabled: false
+
+sky-crafts:
+  enabled: false
+
+sky-event-broker:
+  enabled: false
+
+sky-filter:
+  enabled: false
+
+sky-flipper:
+  enabled: false
+
+sky-flip-tracker:
+  enabled: false
+
+sky-indexer:
+  enabled: false
+
+sky-items:
+  enabled: false
+
+sky-mayor:
+  enabled: false
+
+sky-mc-connect:
+  enabled: false
+
+sky-mod-commands:
+  enabled: false
+
+sky-player-name:
+  enabled: false
+
+sky-player-state:
+  enabled: false
+
+sky-profiles:
+  enabled: false
+
+sky-proxy:
+  enabled: false
+
+sky-referral:
+  enabled: false
+
+sky-settings:
+  enabled: false
+
+sky-sniper:
+  enabled: false
+
+sky-subscriptions:
+  enabled: false
+
+sky-trade:
+  enabled: false
+
+sky-updater:
+  enabled: false
+
+# Web frontends — only needed on eu-cluster; keep disabled on talos.
+crafatar:
+  enabled: false
+hypixel-react:
+  enabled: false
+necwebsite:
+  enabled: false
+deprecated:
+  enabled: false
