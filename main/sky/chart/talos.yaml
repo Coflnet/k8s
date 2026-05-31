@@ -130,6 +130,10 @@ sky-indexer:
 
 sky-items:
   enabled: true
+  rollout:
+    enabled: false
+  serviceMonitor:
+    enabled: false
 
 sky-mayor:
   enabled: false

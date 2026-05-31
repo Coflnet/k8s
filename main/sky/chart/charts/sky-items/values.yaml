@@ -1,6 +1,12 @@
 enabled: true
 replicaCount: 1
 
+rollout:
+  enabled: true
+
+serviceMonitor:
+  enabled: true
+
 image:
   repository: muehlhansfl/skyitems
   tag: 3cdeb1bc-cc62-4d25-b18e-10a814806962
