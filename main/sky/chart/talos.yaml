@@ -129,7 +129,7 @@ sky-indexer:
   enabled: false
 
 sky-items:
-  enabled: false
+  enabled: true
 
 sky-mayor:
   enabled: false
