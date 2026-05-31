@@ -9,9 +9,7 @@ targetCustomizations:
       valuesFiles:
         - ./chart/us.yaml
   - name: talos-eu-hcloud
-    clusterSelector:
-      matchLabels:
-        management.cattle.io/cluster-display-name: talos-eu-worker1
+    clusterName: talos-eu-hcloud
     helm:
       valuesFiles:
         - ./chart/talos.yaml
