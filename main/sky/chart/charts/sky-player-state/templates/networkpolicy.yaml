@@ -1,0 +1,27 @@
+{{ if .Values.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  policyTypes:
+    - Ingress
+  ingress:
+    # Allow inbound traffic on the app port (other pods, port-forward)
+    - ports:
+        - protocol: TCP
+          port: 8000
+    # Allow inbound Linkerd mTLS proxy connections (meshed peers)
+    - ports:
+        - protocol: TCP
+          port: 4143
+    # Allow Linkerd admin/diagnostics (readiness probes, metrics scraping)
+    - ports:
+        - protocol: TCP
+          port: 4191
+{{ end }}
