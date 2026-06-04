@@ -76,12 +76,44 @@ global:
   # Talos uses Cilium CNI, not Linkerd. Remove the Linkerd sidecar annotation.
   podAnnotations: {}
 
+  # Images are public on Docker Hub; no harbor pull secret needed on talos yet.
+  imagePullSecrets: []
+
+  # No redpanda volumes yet — secrets/configmaps not created on talos.
+  volumes: []
+
+  # Talos OpenBao uses TLS.
+  openbaoAddr: https://openbao.openbao.svc:8200
+
   # Keep global.secret / global.config disabled; secrets are created externally,
   # not by the chart template.
   secret:
     enabled: false
   config:
     enabled: false
+
+  # Override env vars: remove references to secrets that don't exist on talos yet.
+  # Redpanda/Kafka env vars will be added once the redpanda/redpanda-credentials
+  # secrets and the redpanda configmap are created.
+  envVars:
+    - name: RATE_LIMITER_REDIS_HOST
+      value: redis-service
+    - name: SETTINGS_REDIS_HOST
+      value: sky-settings-redis
+    - name: JAEGER_AGENT_HOST
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
+    - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
+    - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+      value: "http://jaeger-collector.observability:4317"
+
+  frontendEnvVars: []
+  minioEnvVars: []
+  kafkaTopics: []
 
 # ─── Sub-charts: all disabled initially ──────────────────────────────────────
 # Enable one by one once the relevant secrets exist and connectivity is verified.
@@ -134,6 +166,9 @@ sky-items:
     enabled: false
   serviceMonitor:
     enabled: false
+  # Override service-specific env vars: secrets are in OpenBao kv/sky/sky-items.
+  # The app reads DBCONNECTION and DB_CONNECTION from OpenBao at runtime.
+  envVars: []
 
 sky-mayor:
   enabled: false
