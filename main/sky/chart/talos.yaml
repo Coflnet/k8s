@@ -131,7 +131,7 @@ sky-indexer:
 sky-items:
   enabled: true
   rollout:
-    enabled: true
+    enabled: false
   serviceMonitor:
     enabled: false
 
