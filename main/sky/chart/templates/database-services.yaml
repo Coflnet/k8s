@@ -1,0 +1,72 @@
+{{- if .Values.global.databaseServices -}}
+{{- if .Values.global.databaseServices.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sky-database
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: database-proxy
+spec:
+  type: ClusterIP
+  ports:
+    - name: mysql
+      port: 3307
+      targetPort: 3307
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: items-database
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: database-proxy
+spec:
+  type: ClusterIP
+  ports:
+    - name: mysql
+      port: 3305
+      targetPort: 3305
+      protocol: TCP
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: sky-database
+  namespace: {{ .Release.Namespace }}
+  labels:
+    kubernetes.io/service-name: sky-database
+    app.kubernetes.io/component: database-proxy
+addressType: IPv4
+ports:
+  - name: mysql
+    port: 3307
+    protocol: TCP
+endpoints:
+  - addresses:
+    {{- range .Values.global.databaseServices.skyDatabaseEndpoints }}
+    - {{ . | quote }}
+    {{- end }}
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: items-database
+  namespace: {{ .Release.Namespace }}
+  labels:
+    kubernetes.io/service-name: items-database
+    app.kubernetes.io/component: database-proxy
+addressType: IPv4
+ports:
+  - name: mysql
+    port: 3305
+    protocol: TCP
+endpoints:
+  - addresses:
+    {{- range .Values.global.databaseServices.itemsDatabaseEndpoints }}
+    - {{ . | quote }}
+    {{- end }}
+{{- end }}
+{{- end }}

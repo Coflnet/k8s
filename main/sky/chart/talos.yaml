@@ -82,6 +82,18 @@ global:
   # No redpanda volumes yet — secrets/configmaps not created on talos.
   volumes: []
 
+  # Cilium-backed ClusterIP Services + EndpointSlices for MariaDB.
+  # Replaces the eu-cluster HAProxy (proxy namespace) which doesn't exist on talos.
+  # Cilium eBPF handles load balancing between the backend IPs with sub-μs latency.
+  databaseServices:
+    enabled: true
+    skyDatabaseEndpoints:
+      - "185.203.217.119"
+      - "194.163.151.190"
+    itemsDatabaseEndpoints:
+      - "185.203.217.119"
+      - "194.163.151.190"
+
   # Talos OpenBao uses TLS.
   openbaoAddr: https://openbao.openbao.svc:8200
 
