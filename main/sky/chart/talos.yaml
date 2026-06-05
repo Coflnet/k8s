@@ -144,6 +144,15 @@ global:
           fieldPath: status.hostIP
     - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
       value: "http://jaeger-collector.observability:4317"
+    # Kafka mTLS: TLS cert paths (mounted from redpanda secret+configmap).
+    # Credentials (brokers, username, password) come from OpenBao.
+    - name: KAFKA__TLS__CA_LOCATION
+      value: /tls/cm/ca.crt
+    - name: KAFKA__TLS__CERTIFICATE_LOCATION
+      value: /tls/cm/skyblock.crt
+    - name: KAFKA__TLS__KEY_LOCATION
+      value: /tls/secret/skyblock.key
+      value: "http://jaeger-collector.observability:4317"
 
   frontendEnvVars: []
   minioEnvVars: []
