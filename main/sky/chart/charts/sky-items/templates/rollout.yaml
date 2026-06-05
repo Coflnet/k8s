@@ -40,6 +40,10 @@ spec:
             value: {{ printf "sky/%s" .Chart.Name | quote }}
           - name: OPENBAO__ROLE
             value: {{ .Chart.Name | quote }}
+          {{- if $.Values.global.openbaoCACert }}
+          - name: OPENBAO__CACERT
+            value: /openbao/tls/ca.crt
+          {{- end }}
           {{ if .Values.envVars }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 10 }}
           {{ end }}
@@ -50,11 +54,21 @@ spec:
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
+        {{- if $.Values.global.openbaoCACert }}
+        - name: openbao-ca
+          mountPath: /openbao/tls
+          readOnly: true
+        {{- end }}
         {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
-      volumes: 
+      volumes:
+      {{- if $.Values.global.openbaoCACert }}
+      - name: openbao-ca
+        configMap:
+          name: openbao-ca
+      {{- end }}
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}

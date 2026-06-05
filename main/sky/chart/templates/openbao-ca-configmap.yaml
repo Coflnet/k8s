@@ -1,0 +1,12 @@
+{{- if .Values.global.openbaoCACert }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openbao-ca
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: openbao-ca
+data:
+  ca.crt: |
+{{ .Values.global.openbaoCACert | indent 4 }}
+{{- end }}

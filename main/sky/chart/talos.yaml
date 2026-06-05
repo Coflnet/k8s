@@ -97,6 +97,20 @@ global:
   # Talos OpenBao uses TLS.
   openbaoAddr: https://openbao.openbao.svc:8200
 
+  # OpenBao CA certificate for TLS validation (self-signed, not in system trust store).
+  # Mounted as ConfigMap → /openbao/tls/ca.crt → OPENBAO__CACERT env var.
+  openbaoCACert: |
+    -----BEGIN CERTIFICATE-----
+    MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
+    FTETMBEGA1UEAxMKb3BlbmJhby1jYTAeFw0yNjA1MzAwNjMwMDdaFw0zNjA1Mjcw
+    NjMwMDdaMBUxEzARBgNVBAMTCm9wZW5iYW8tY2EwWTATBgcqhkjOPQIBBggqhkjO
+    PQMBBwNCAATP+OVpqk8lnHealoOSbRZpInlL4ypSkvSCR0ksELx2Xg/eJJY3y9gj
+    tRrEp6OXd24Wowy2L4V74FkfO+dkfUTko0IwQDAOBgNVHQ8BAf8EBAMCAqQwDwYD
+    VR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUTs+GuzkdJhBXyXXlwZI3Mn3pr8gwCgYI
+    KoZIzj0EAwIDRwAwRAIgA1l0MK0v3oIhoVgys1U/jdVZig/jp/SMhGJTiO25FkC
+    IDcNtGjLm4jxvXj9MrrNBwICv2XvSscsE/nc8Je3zE8D
+    -----END CERTIFICATE-----
+
   # Keep global.secret / global.config disabled; secrets are created externally,
   # not by the chart template.
   secret:
