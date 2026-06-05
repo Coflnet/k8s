@@ -80,7 +80,15 @@ global:
   imagePullSecrets: []
 
   # No redpanda volumes yet — secrets/configmaps not created on talos.
-  volumes: []
+  volumes:
+    - mountName: redpanda-secret
+      mountPath: /tls/secret
+      name: redpanda
+      type: secret
+    - mountName: redpanda-cm
+      mountPath: /tls/cm
+      name: redpanda
+      type: configmap
 
   # Cilium-backed ClusterIP Services + EndpointSlices for MariaDB.
   # Replaces the eu-cluster HAProxy (proxy namespace) which doesn't exist on talos.
