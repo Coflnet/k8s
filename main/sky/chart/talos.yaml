@@ -195,6 +195,12 @@ sky-items:
   # Override service-specific env vars: secrets are in OpenBao kv/sky/sky-items.
   # The app reads DBCONNECTION and DB_CONNECTION from OpenBao at runtime.
   envVars: []
+  # Extended probe delays: OpenBao Kubernetes auth (TokenReview API call)
+  # can take 20-45s. Default 20s initialDelay is too tight.
+  livenessProbe:
+    initialDelaySeconds: 90
+  readinessProbe:
+    initialDelaySeconds: 90
 
 sky-mayor:
   enabled: false
