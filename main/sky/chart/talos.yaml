@@ -81,6 +81,10 @@ global:
 
   # No redpanda volumes yet — secrets/configmaps not created on talos.
   volumes:
+    - mountName: openbao-ca
+      mountPath: /openbao/tls
+      name: openbao-ca
+      type: configmap
     - mountName: redpanda-secret
       mountPath: /tls/secret
       name: redpanda

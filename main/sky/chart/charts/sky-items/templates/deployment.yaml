@@ -63,21 +63,11 @@ spec:
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
-        {{- if $.Values.global.openbaoCACert }}
-        - name: openbao-ca
-          mountPath: /openbao/tls
-          readOnly: true
-        {{- end }}
         {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
       volumes:
-      {{- if $.Values.global.openbaoCACert }}
-      - name: openbao-ca
-        configMap:
-          name: openbao-ca
-      {{- end }}
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap" }}
