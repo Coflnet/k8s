@@ -304,6 +304,11 @@ sky-mod-commands:
   serviceMonitor:
     enabled: true
   envVars:
+    - name: DBConnection
+      valueFrom:
+        secretKeyRef:
+          name: secret
+          key: connection_read_api
     - name: CASSANDRA__HOSTS
       valueFrom:
         configMapKeyRef:
