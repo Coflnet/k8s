@@ -149,13 +149,30 @@ global:
     - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
       value: "http://jaeger-collector.observability:4317"
     # Kafka mTLS: TLS cert paths (mounted from redpanda secret+configmap).
-    # Credentials (brokers, username, password) come from OpenBao.
+    # Brokers/credentials are in OpenBao AND as k8s secret refs for early Kafka init.
     - name: KAFKA__TLS__CA_LOCATION
       value: /tls/cm/ca.crt
     - name: KAFKA__TLS__CERTIFICATE_LOCATION
       value: /tls/cm/skyblock.crt
     - name: KAFKA__TLS__KEY_LOCATION
       value: /tls/secret/skyblock.key
+    - name: KAFKA__BROKERS
+      valueFrom:
+        secretKeyRef:
+          name: redpanda
+          key: brokers
+    - name: KAFKA__USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: redpanda-credentials
+          key: username
+    - name: KAFKA__PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: redpanda-credentials
+          key: password
+    - name: KAFKA__REPLICATION_FACTOR
+      value: "3"
 
   frontendEnvVars: []
   minioEnvVars: []
@@ -292,6 +309,7 @@ sky-mod-commands:
   readinessProbe:
     initialDelaySeconds: 90
   canary:
+    dynamicStableScale: false
     trafficRouting: ~
 
 sky-player-name:
@@ -339,18 +357,6 @@ sky-settings:
         secretKeyRef:
           name: scylla-credentials
           key: db-pfx-password
-    - name: OLD_CASSANDRA__HOSTS
-      value: "38.242.247.61"
-    - name: OLD_CASSANDRA__USER
-      valueFrom:
-        configMapKeyRef:
-          name: config
-          key: cassandra_user
-    - name: OLD_CASSANDRA__PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: secret
-          key: cassandra_password
   livenessProbe:
     initialDelaySeconds: 90
   readinessProbe:
