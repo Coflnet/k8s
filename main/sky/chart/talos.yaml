@@ -310,42 +310,7 @@ sky-crafts:
   enabled: false
 
 sky-event-broker:
-  enabled: true
-  envVars:
-    - name: DB_CONNECTION
-      valueFrom:
-        secretKeyRef:
-          name: secret
-          key: connection_eventmessages_database
-    - name: COCKROACH_DB_CONNECTION
-      valueFrom:
-        secretKeyRef:
-          name: secret
-          key: connection_cockroach_event_database
-    - name: FIREBASE_SENDER_ID
-      valueFrom:
-        secretKeyRef:
-          name: secret
-          key: firebase_sender_id
-    - name: FIREBASE_KEY
-      valueFrom:
-        secretKeyRef:
-          name: secret
-          key: firebase_key
-    - name: TOPICS__VERIFIED
-      valueFrom:
-        configMapKeyRef:
-          name: config
-          key: topic_verified
-    - name: TOPICS__TRANSACTIONS
-      valueFrom:
-        configMapKeyRef:
-          name: config
-          key: topic_transaction
-  livenessProbe:
-    initialDelaySeconds: 90
-  readinessProbe:
-    initialDelaySeconds: 90
+  enabled: false
 
 sky-filter:
   enabled: false
