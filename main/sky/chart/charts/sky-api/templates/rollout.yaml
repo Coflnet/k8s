@@ -73,5 +73,10 @@ spec:
       {{ end }}
   strategy:
     canary:
-    {{ toYaml .Values.canary | nindent 6 }}
+{{- if .Values.canary.trafficRouting }}
+{{ toYaml .Values.canary | nindent 6 }}
+{{- else }}
+{{- $canary := omit .Values.canary "trafficRouting" }}
+{{ toYaml $canary | nindent 6 }}
+{{- end }}
 {{ end }}

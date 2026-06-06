@@ -166,7 +166,7 @@ global:
 
 sky-api:
   enabled: true
-  rollout:
+  serviceMonitor:
     enabled: false
   envVars:
     - name: DONUT_API_BASE_URL
@@ -175,6 +175,21 @@ sky-api:
     initialDelaySeconds: 90
   readinessProbe:
     initialDelaySeconds: 90
+  canary:
+    steps:
+      - setWeight: 10
+      - pause:
+          duration: 3m
+      - setWeight: 50
+      - pause:
+          duration: 5m
+      - setWeight: 100
+      - pause:
+          duration: 5m
+    maxUnavailable: 1
+    canaryService: sky-api-canary-service
+    stableService: sky-api-stable-service
+    trafficRouting: ~
 
 sky-auctions:
   enabled: false
