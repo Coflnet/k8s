@@ -174,6 +174,56 @@ global:
     - name: KAFKA__REPLICATION_FACTOR
       value: "3"
 
+    ## base urls for service-to-service communication ##
+    - name: API_BASE_URL
+      value: http://sky-api:8000
+    - name: BAZAAR_BASE_URL
+      value: http://sky-bazaar:8000
+    - name: BAZAARFLIPPER_BASE_URL
+      value: http://sky-bazaar-flipper:8000
+    - name: ITEMS_BASE_URL
+      value: http://sky-items:8000
+    - name: MAYOR_BASE_URL
+      value: http://sky-mayor:8080
+    - name: PLAYERNAME_BASE_URL
+      value: http://sky-player-name:8000
+    - name: PLAYERNAME_URL
+      value: http://sky-player-name:8000
+    - name: REFERRAL_BASE_URL
+      value: http://sky-referral:8000
+    - name: SETTINGS_BASE_URL
+      value: http://sky-settings:8000
+    - name: SNIPER_BASE_URL
+      value: http://sky-sniper:8000
+    - name: INDEXER_BASE_URL
+      value: http://sky-indexer:8000
+    - name: SUBSCRIPTION_BASE_URL
+      value: http://sky-subscriptions:8000
+    - name: SKYFLIPPER_BASE_URL
+      value: http://sky-flipper:8000
+    - name: SKYCOMMANDS_BASE_URL
+      value: http://sky-commands:8008
+    - name: MOD_BASE_URL
+      value: http://sky-mod-commands:8000
+    - name: PAYMENTS_BASE_URL
+      value: http://sky-payments.payment:8000
+    - name: PROFILE_BASE_URL
+      value: http://sky-profiles:8000
+    - name: PLAYERSTATE_BASE_URL
+      value: http://sky-player-state:8000
+    - name: CRAFTS_BASE_URL
+      value: http://sky-crafts:8000
+    - name: UPDATER_BASE_URL
+      value: http://sky-updater:8000
+    - name: MCCONNECT_BASE_URL
+      value: http://sky-mc-connect:8000
+    - name: FLIPTRACKER_BASE_URL
+      value: http://sky-flip-tracker:8000
+    - name: CHAT_BASE_URL
+      value: http://sky-chat:8000
+    - name: PROXY_BASE_URL
+      value: http://sky-proxy:8000
+
   frontendEnvVars: []
   minioEnvVars: []
   kafkaTopics: []
@@ -260,7 +310,42 @@ sky-crafts:
   enabled: false
 
 sky-event-broker:
-  enabled: false
+  enabled: true
+  envVars:
+    - name: DB_CONNECTION
+      valueFrom:
+        secretKeyRef:
+          name: secret
+          key: connection_eventmessages_database
+    - name: COCKROACH_DB_CONNECTION
+      valueFrom:
+        secretKeyRef:
+          name: secret
+          key: connection_cockroach_event_database
+    - name: FIREBASE_SENDER_ID
+      valueFrom:
+        secretKeyRef:
+          name: secret
+          key: firebase_sender_id
+    - name: FIREBASE_KEY
+      valueFrom:
+        secretKeyRef:
+          name: secret
+          key: firebase_key
+    - name: TOPICS__VERIFIED
+      valueFrom:
+        configMapKeyRef:
+          name: config
+          key: topic_verified
+    - name: TOPICS__TRANSACTIONS
+      valueFrom:
+        configMapKeyRef:
+          name: config
+          key: topic_transaction
+  livenessProbe:
+    initialDelaySeconds: 90
+  readinessProbe:
+    initialDelaySeconds: 90
 
 sky-filter:
   enabled: false
