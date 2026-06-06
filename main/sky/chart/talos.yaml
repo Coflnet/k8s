@@ -167,7 +167,7 @@ global:
 sky-api:
   enabled: true
   serviceMonitor:
-    enabled: false
+    enabled: true
   envVars:
     - name: DONUT_API_BASE_URL
       value: "http://donutapi.donut.svc.cluster.local:8000"
@@ -180,9 +180,27 @@ sky-api:
       - setWeight: 10
       - pause:
           duration: 3m
+      - analysis:
+          templates:
+            - templateName: sky-api
+          args:
+            - name: service-name
+              value: sky-api-canary-service
+            - name: pod-hash
+              valueFrom:
+                podTemplateHashValue: Latest
       - setWeight: 50
       - pause:
           duration: 5m
+      - analysis:
+          templates:
+            - templateName: sky-api
+          args:
+            - name: service-name
+              value: sky-api-canary-service
+            - name: pod-hash
+              valueFrom:
+                podTemplateHashValue: Latest
       - setWeight: 100
       - pause:
           duration: 5m
