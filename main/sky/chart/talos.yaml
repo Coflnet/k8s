@@ -156,7 +156,6 @@ global:
       value: /tls/cm/skyblock.crt
     - name: KAFKA__TLS__KEY_LOCATION
       value: /tls/secret/skyblock.key
-      value: "http://jaeger-collector.observability:4317"
 
   frontendEnvVars: []
   minioEnvVars: []
@@ -166,7 +165,16 @@ global:
 # Enable one by one once the relevant secrets exist and connectivity is verified.
 
 sky-api:
-  enabled: false
+  enabled: true
+  rollout:
+    enabled: false
+  envVars:
+    - name: DONUT_API_BASE_URL
+      value: "http://donutapi.donut.svc.cluster.local:8000"
+  livenessProbe:
+    initialDelaySeconds: 90
+  readinessProbe:
+    initialDelaySeconds: 90
 
 sky-auctions:
   enabled: false
