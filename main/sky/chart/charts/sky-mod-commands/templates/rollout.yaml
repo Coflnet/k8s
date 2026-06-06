@@ -1,4 +1,4 @@
-{{ if .Values.enabled }}
+{{ if and .Values.enabled (or (not (hasKey .Values "rollout")) .Values.rollout.enabled) }}
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
@@ -40,13 +40,17 @@ spec:
           - name: OPENBAO__OPTIONAL
             value: "true"
           - name: OPENBAO__ADDR
-            value: http://openbao.openbao.svc:8200
+            value: {{ .Values.global.openbaoAddr | default "http://openbao.openbao.svc:8200" }}
           - name: OPENBAO__MOUNT
             value: kv
           - name: OPENBAO__PATH
             value: {{ printf "sky/%s" .Chart.Name | quote }}
           - name: OPENBAO__ROLE
             value: {{ .Chart.Name | quote }}
+          {{- if $.Values.global.openbaoCACert }}
+          - name: OPENBAO__CACERT
+            value: /openbao/tls/ca.crt
+          {{- end }}
           - name: REDIS_HOST
             value: {{ .Values.global.redis.name }}
           - name: REDIS_FLIP_INSTANCES__0 
@@ -89,5 +93,10 @@ spec:
       {{ end }}
   strategy:
     canary:
-    {{ toYaml .Values.canary | nindent 6 }}
+{{- if .Values.canary.trafficRouting }}
+{{ toYaml .Values.canary | nindent 6 }}
+{{- else }}
+{{- $canary := omit .Values.canary "trafficRouting" }}
+{{ toYaml $canary | nindent 6 }}
+{{- end }}
 {{ end }}

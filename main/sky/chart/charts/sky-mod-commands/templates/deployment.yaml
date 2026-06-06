@@ -1,13 +1,12 @@
-{{ if and .Values.enabled (or (not (hasKey .Values "rollout")) .Values.rollout.enabled) }}
-apiVersion: argoproj.io/v1alpha1
-kind: Rollout
+{{ if and .Values.enabled (hasKey .Values "rollout") (not .Values.rollout.enabled) }}
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: {{ .Chart.Name }}
   labels:
     app: {{ .Chart.Name }}
 spec:
   replicas: {{ .Values.replicaCount }}
-  progressDeadlineSeconds: 2592000
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
@@ -20,6 +19,13 @@ spec:
         {{ toYaml .Values.global.podAnnotations | nindent 8 }}
     spec:
       serviceAccountName: {{ .Chart.Name }}
+      topologySpreadConstraints:
+      - maxSkew: 2
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: {{ .Chart.Name }}
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       containers:
@@ -45,24 +51,35 @@ spec:
             value: /openbao/tls/ca.crt
           {{- end }}
           - name: REDIS_HOST
-            value: "{{ .Chart.Name }}-redis,syncTimeout=1000"
-          - name: IMGPROXY_BASE_URL
-            value: "http://{{ .Chart.Name }}-imgproxy:80"
+            value: {{ .Values.global.redis.name }}
+          - name: REDIS_FLIP_INSTANCES__0 
+            value: "sky-bfcs-redis,syncTimeout=1000"
+          - name: MOD_REDIS_HOST
+            value: {{ .Chart.Name }}-redis
           {{ if .Values.envVars }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 10 }}
           {{ end }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars) | nindent 10 }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.frontendEnvVars) | nindent 10 }}
         readinessProbe:
-          {{ toYaml .Values.readinessProbe | nindent 10 }}
+         {{ toYaml .Values.readinessProbe | nindent 10 }}
         resources:
-          {{ toYaml .Values.resources | nindent 10 }}
+         {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
         {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
+        - name: scylla-pfx
+          mountPath: /tls/scylla/secret/db.pfx
+          subPath: db.pfx
       volumes: 
+        - name: scylla-pfx
+          secret:
+            secretName: scylla-pfx
+            items:
+            - key: db.pfx
+              path: db.pfx
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
@@ -73,12 +90,4 @@ spec:
             secretName: {{ .name }}
           {{ end }}
       {{ end }}
-  strategy:
-    canary:
-{{- if .Values.canary.trafficRouting }}
-{{ toYaml .Values.canary | nindent 6 }}
-{{- else }}
-{{- $canary := omit .Values.canary "trafficRouting" }}
-{{ toYaml $canary | nindent 6 }}
-{{- end }}
 {{ end }}

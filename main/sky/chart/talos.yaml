@@ -225,7 +225,16 @@ sky-chat:
   enabled: false
 
 sky-commands:
-  enabled: false
+  enabled: true
+  serviceMonitor:
+    enabled: true
+  envVars: []
+  livenessProbe:
+    initialDelaySeconds: 90
+  readinessProbe:
+    initialDelaySeconds: 90
+  canary:
+    trafficRouting: ~
 
 sky-controller:
   enabled: false
@@ -271,7 +280,19 @@ sky-mc-connect:
   enabled: false
 
 sky-mod-commands:
-  enabled: false
+  enabled: true
+  # NOTE: Requires scylla-pfx k8s Secret and scylla-credentials Secret
+  # to exist in the sky namespace on talos for ScyllaDB mTLS.
+  # Also requires scylla-config ConfigMap for ScyllaDB host/user config.
+  serviceMonitor:
+    enabled: true
+  envVars: []
+  livenessProbe:
+    initialDelaySeconds: 90
+  readinessProbe:
+    initialDelaySeconds: 90
+  canary:
+    trafficRouting: ~
 
 sky-player-name:
   enabled: false

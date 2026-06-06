@@ -1,13 +1,12 @@
-{{ if and .Values.enabled (or (not (hasKey .Values "rollout")) .Values.rollout.enabled) }}
-apiVersion: argoproj.io/v1alpha1
-kind: Rollout
+{{ if and .Values.enabled (hasKey .Values "rollout") (not .Values.rollout.enabled) }}
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: {{ .Chart.Name }}
   labels:
     app: {{ .Chart.Name }}
 spec:
   replicas: {{ .Values.replicaCount }}
-  progressDeadlineSeconds: 2592000
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
@@ -62,7 +61,7 @@ spec:
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
-      volumes: 
+      volumes:
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
@@ -73,12 +72,4 @@ spec:
             secretName: {{ .name }}
           {{ end }}
       {{ end }}
-  strategy:
-    canary:
-{{- if .Values.canary.trafficRouting }}
-{{ toYaml .Values.canary | nindent 6 }}
-{{- else }}
-{{- $canary := omit .Values.canary "trafficRouting" }}
-{{ toYaml $canary | nindent 6 }}
-{{- end }}
 {{ end }}
