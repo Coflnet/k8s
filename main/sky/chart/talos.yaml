@@ -135,7 +135,7 @@ global:
   # secrets and the redpanda configmap are created.
   envVars:
     - name: RATE_LIMITER_REDIS_HOST
-      value: redis-service
+      value: sky-global-redis
     - name: SETTINGS_REDIS_HOST
       value: sky-settings-redis
     - name: JAEGER_AGENT_HOST
