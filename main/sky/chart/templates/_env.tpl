@@ -1,7 +1,7 @@
 {{- define "coflnet.envVars" -}}
 {{- $root := .root -}}
 {{- $env := .env | default list -}}
-{{- range $item := $env -}}
-{{- toYaml $item -}}
+{{- if $env -}}
+{{ toYaml $env -}}
 {{- end -}}
 {{- end -}}
