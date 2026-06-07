@@ -336,7 +336,18 @@ sky-flip-tracker:
   enabled: true
   serviceMonitor:
     enabled: false
+  # OpenBao disabled — app image does not support OPENBAO__CACERT for TLS.
+  # All creds provided via k8s secrets/env vars directly.
+  openbao:
+    enabled: false
   envVars:
+    - name: REDIS_HOST
+      value: "sky-global-redis"
+    - name: DB_CONNECTION
+      valueFrom:
+        secretKeyRef:
+          name: flip-tracker-db
+          key: connection
     - name: CASSANDRA__HOSTS
       valueFrom:
         configMapKeyRef:
