@@ -35,7 +35,7 @@ spec:
           - name: OPENBAO__OPTIONAL
             value: "true"
           - name: OPENBAO__ADDR
-            value: {{ .Values.global.openbaoAddr | quote }}
+            value: {{ .Values.global.openbaoAddr | default "http://openbao.openbao.svc:8200" | quote }}
           - name: OPENBAO__CACERT
             value: /openbao/tls/ca.crt
           - name: OPENBAO__MOUNT
