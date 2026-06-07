@@ -283,7 +283,14 @@ sky-bazaar:
   enabled: false
 
 sky-bazaar-flipper:
-  enabled: false
+  enabled: true
+  serviceMonitor:
+    enabled: false
+  envVars: []
+  livenessProbe:
+    initialDelaySeconds: 90
+  readinessProbe:
+    initialDelaySeconds: 90
 
 sky-bfcs:
   enabled: false
@@ -307,7 +314,14 @@ sky-controller:
   enabled: false
 
 sky-crafts:
-  enabled: false
+  enabled: true
+  serviceMonitor:
+    enabled: false
+  envVars: []
+  livenessProbe:
+    initialDelaySeconds: 120
+  readinessProbe:
+    initialDelaySeconds: 120
 
 sky-event-broker:
   enabled: false
