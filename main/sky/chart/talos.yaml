@@ -238,6 +238,11 @@ sky-api:
   envVars:
     - name: DONUT_API_BASE_URL
       value: "http://donutapi.donut.svc.cluster.local:8000"
+    - name: DBCONNECTION
+      valueFrom:
+        secretKeyRef:
+          name: sky-api-db
+          key: connection
   livenessProbe:
     initialDelaySeconds: 90
   readinessProbe:
