@@ -225,7 +225,22 @@ global:
       value: http://sky-proxy:8000
 
   frontendEnvVars: []
-  minioEnvVars: []
+  minioEnvVars:
+    - name: MINIO_HOST
+      valueFrom:
+        configMapKeyRef:
+          key: host
+          name: minio
+    - name: MINIO_SECRET
+      valueFrom:
+        secretKeyRef:
+          key: secret_key
+          name: minio
+    - name: MINIO_KEY
+      valueFrom:
+        secretKeyRef:
+          key: access_key
+          name: minio
   kafkaTopics: []
 
 # ─── Sub-charts: all disabled initially ──────────────────────────────────────
@@ -335,7 +350,21 @@ sky-filter:
   enabled: false
 
 sky-flipper:
-  enabled: false
+  enabled: true
+  serviceMonitor:
+    enabled: false
+  envVars:
+    - name: REDIS_HOST
+      value: "redis-service"
+    - name: DBConnection
+      valueFrom:
+        secretKeyRef:
+          name: sky-flipper-db
+          key: connection
+  livenessProbe:
+    initialDelaySeconds: 90
+  readinessProbe:
+    initialDelaySeconds: 90
 
 sky-flip-tracker:
   enabled: true
@@ -383,7 +412,21 @@ sky-flip-tracker:
     initialDelaySeconds: 90
 
 sky-indexer:
-  enabled: false
+  enabled: true
+  serviceMonitor:
+    enabled: false
+  envVars:
+    - name: DBConnection
+      valueFrom:
+        secretKeyRef:
+          name: sky-indexer-db
+          key: connection
+    - name: SKYCOMMANDS_HOST
+      value: "sky-commands.sky.svc.cluster.local"
+  livenessProbe:
+    initialDelaySeconds: 90
+  readinessProbe:
+    initialDelaySeconds: 90
 
 sky-items:
   enabled: true
@@ -402,7 +445,45 @@ sky-items:
     initialDelaySeconds: 90
 
 sky-mayor:
-  enabled: false
+  enabled: true
+  serviceMonitor:
+    enabled: false
+  envVars:
+    - name: GIN_MODE
+      value: release
+    - name: MONGO_URL
+      valueFrom:
+        secretKeyRef:
+          name: sky-mayor-db
+          key: mongo_url
+    - name: CASSANDRA__HOSTS
+      valueFrom:
+        configMapKeyRef:
+          name: scylla-config
+          key: scylla_host
+    - name: CASSANDRA__KEYSPACE
+      value: "sky_mayor"
+    - name: CASSANDRA__USER
+      valueFrom:
+        configMapKeyRef:
+          name: scylla-config
+          key: scylla_mayor_user
+    - name: CASSANDRA__PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: scylla-credentials
+          key: mayor_password
+    - name: CASSANDRA__X509Certificate_PATHS
+      value: /tls/scylla/secret/db.pfx
+    - name: CASSANDRA__X509Certificate_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: scylla-credentials
+          key: db-pfx-password
+  livenessProbe:
+    initialDelaySeconds: 90
+  readinessProbe:
+    initialDelaySeconds: 90
 
 sky-mc-connect:
   enabled: false
@@ -559,7 +640,42 @@ sky-trade:
   enabled: false
 
 sky-updater:
-  enabled: false
+  enabled: true
+  serviceMonitor:
+    enabled: false
+  envVars:
+    - name: SLOWDOWN_MS
+      value: "100"
+    - name: apiKey
+      valueFrom:
+        secretKeyRef:
+          name: sky-updater-db
+          key: api_key
+    - name: API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: sky-updater-db
+          key: flou_api_key
+    - name: TOPICS__MISSING_AUCTION
+      value: "sky-canceledauction-raw"
+    - name: TOPICS__SOLD_AUCTION
+      value: "sky-soldauction-raw"
+    - name: TOPICS__NEW_AUCTION
+      value: "sky-newauction-raw"
+    - name: TOPICS__AUCTION_ENDED
+      value: "sky-endedauction-raw"
+    - name: TOPICS__NEW_BID
+      value: "sky-newbid-raw"
+    - name: TOPICS__BAZAAR
+      value: "sky-bazaar-raw"
+    - name: TOPICS__AUCTION_CHECK
+      value: "sky-auction-checked"
+    - name: DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE
+      value: "false"
+  livenessProbe:
+    initialDelaySeconds: 120
+  readinessProbe:
+    initialDelaySeconds: 90
 
 # Web frontends — only needed on eu-cluster; keep disabled on talos.
 crafatar:
