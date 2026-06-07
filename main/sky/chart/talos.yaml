@@ -304,6 +304,8 @@ sky-bazaar:
   serviceMonitor:
     enabled: false
   envVars:
+    - name: KAFKA__CONSUMER_GROUP
+      value: "sky-bazaar-talos"
     - name: CASSANDRA__HOSTS
       valueFrom:
         configMapKeyRef:
