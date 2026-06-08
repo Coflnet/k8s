@@ -297,7 +297,41 @@ sky-api:
     trafficRouting: ~
 
 sky-auctions:
-  enabled: false
+  enabled: true
+  serviceMonitor:
+    enabled: false
+  envVars:
+    - name: CASSANDRA__HOSTS
+      valueFrom:
+        configMapKeyRef:
+          name: scylla-config
+          key: scylla_host
+    - name: CASSANDRA__USER
+      valueFrom:
+        configMapKeyRef:
+          name: scylla-config
+          key: auctions_username
+    - name: CASSANDRA__PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: scylla-credentials
+          key: auctions-password
+    - name: CASSANDRA__X509Certificate_PATHS
+      value: /tls/scylla/secret/db.pfx
+    - name: CASSANDRA__X509Certificate_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: scylla-credentials
+          key: db-pfx-password
+    - name: DBConnection
+      valueFrom:
+        secretKeyRef:
+          name: sky-auctions-db
+          key: connection
+  livenessProbe:
+    initialDelaySeconds: 90
+  readinessProbe:
+    initialDelaySeconds: 90
 
 sky-bazaar:
   enabled: true
@@ -349,7 +383,21 @@ sky-bfcs:
   enabled: false
 
 sky-chat:
-  enabled: false
+  enabled: true
+  serviceMonitor:
+    enabled: false
+  envVars:
+    - name: DB_CONNECTION
+      valueFrom:
+        secretKeyRef:
+          name: sky-chat-db
+          key: connection
+    - name: REDIS_HOST
+      value: "sky-settings-redis"
+  livenessProbe:
+    initialDelaySeconds: 90
+  readinessProbe:
+    initialDelaySeconds: 90
 
 sky-commands:
   enabled: true
@@ -519,7 +567,19 @@ sky-mayor:
     initialDelaySeconds: 90
 
 sky-mc-connect:
-  enabled: false
+  enabled: true
+  serviceMonitor:
+    enabled: false
+  envVars:
+    - name: DB_CONNECTION
+      valueFrom:
+        secretKeyRef:
+          name: sky-mc-connect-db
+          key: connection
+  livenessProbe:
+    initialDelaySeconds: 90
+  readinessProbe:
+    initialDelaySeconds: 90
 
 sky-mod-commands:
   enabled: true
@@ -623,10 +683,46 @@ sky-profiles:
   enabled: false
 
 sky-proxy:
-  enabled: false
+  enabled: true
+  serviceMonitor:
+    enabled: false
+  envVars:
+    - name: DB_CONNECTION
+      valueFrom:
+        secretKeyRef:
+          name: sky-proxy-db
+          key: connection
+    - name: TOPICS__NEW_AUCTION
+      value: "sky-newauction-raw"
+    - name: TOPICS__SOLD_AUCTION
+      value: "sky-soldauction-raw"
+    - name: TOPICS__NEW_BID
+      value: "sky-newbid-raw"
+  livenessProbe:
+    initialDelaySeconds: 90
+  readinessProbe:
+    initialDelaySeconds: 90
 
 sky-referral:
-  enabled: false
+  enabled: true
+  serviceMonitor:
+    enabled: false
+  envVars:
+    - name: DB_CONNECTION
+      valueFrom:
+        secretKeyRef:
+          name: sky-referral-db
+          key: connection
+    - name: PRODUCTS__REFERAL_BONUS
+      value: "referal_bonus"
+    - name: PRODUCTS__VERIFY_MC
+      value: "verify_mc"
+    - name: TOPICS__TRANSACTION
+      value: "sky-transactions"
+  livenessProbe:
+    initialDelaySeconds: 90
+  readinessProbe:
+    initialDelaySeconds: 90
 
 sky-settings:
   enabled: true
@@ -664,10 +760,57 @@ sky-settings:
     initialDelaySeconds: 90
 
 sky-sniper:
-  enabled: false
+  enabled: true
+  serviceMonitor:
+    enabled: false
+  nodeSelector: {}
+  envVars:
+    - name: DBConnection
+      valueFrom:
+        secretKeyRef:
+          name: sky-sniper-db
+          key: connection
+    - name: JWT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: sky-sniper-db
+          key: jwt_secret
+    - name: DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE
+      value: "false"
+  livenessProbe:
+    initialDelaySeconds: 90
+  readinessProbe:
+    initialDelaySeconds: 90
 
 sky-subscriptions:
-  enabled: false
+  enabled: true
+  serviceMonitor:
+    enabled: false
+  envVars:
+    - name: DB_CONNECTION
+      valueFrom:
+        secretKeyRef:
+          name: sky-subscriptions-db
+          key: connection
+    - name: DBConnection
+      valueFrom:
+        secretKeyRef:
+          name: sky-subscriptions-db
+          key: connection2
+    - name: FIREBASE_SENDER_ID
+      valueFrom:
+        secretKeyRef:
+          name: secret
+          key: firebase_sender_id
+    - name: FIREBASE_KEY
+      valueFrom:
+        secretKeyRef:
+          name: secret
+          key: firebase_key
+  livenessProbe:
+    initialDelaySeconds: 90
+  readinessProbe:
+    initialDelaySeconds: 90
 
 sky-trade:
   enabled: false
@@ -712,9 +855,23 @@ sky-updater:
 
 # Web frontends — only needed on eu-cluster; keep disabled on talos.
 crafatar:
-  enabled: false
+  enabled: true
+  envVars:
+    - name: REDIS_URL
+      value: "redis://sky-global-redis"
+    - name: CACHE_LOCAL
+      value: "36000"
+    - name: CACHE_BROWSER
+      value: "86000"
+    - name: EPHEMERAL_STORAGE
+      value: "true"
 hypixel-react:
-  enabled: false
+  enabled: true
+  envVars:
+    - name: COMMAND_ENDPOINT
+      value: "http://sky-commands:8008/command"
+    - name: API_ENDPOINT
+      value: "http://sky-api:8000/api"
 necwebsite:
   enabled: false
 deprecated:
