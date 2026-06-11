@@ -6,11 +6,11 @@ helm:
   valuesFiles:
     - ./chart/eu.yaml
 targetCustomizations:
-  - name: us-cluster
-    clusterName: us-cluster
+  - name: talos-cloudfanatic
+    clusterName: talos-cloudfanatic
     helm:
       valuesFiles:
-        - ./chart/us.yaml
+        - ./chart/talos-cloudfanatic.yaml
   - name: us-spot-cluster
     clusterName: us-spot-cluster
     helm:
