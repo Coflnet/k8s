@@ -155,6 +155,8 @@ sky-auctions:
   enabled: false
 sky-bazaar:
   enabled: false
+sky-bazaar-flipper:
+  enabled: false
 
 sky-bfcs:
   enabled: true
