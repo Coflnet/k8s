@@ -52,7 +52,7 @@ resources:
     memory: 1050Mi
   limits: 
     cpu: 2000m
-    memory: 1200Mi
+    memory: 1600Mi
 
 services:
   - sky-api
