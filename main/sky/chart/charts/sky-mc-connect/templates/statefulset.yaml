@@ -19,6 +19,7 @@ spec:
         app: {{ .Chart.Name }}
         security.coflnet.com/k8s-api-access: "false"
       annotations:
+        checksum/image: {{ .Values.image.tag | quote }}
         {{ toYaml .Values.global.podAnnotations | nindent 8 }}
     spec:
       serviceAccountName: {{ .Chart.Name }}
