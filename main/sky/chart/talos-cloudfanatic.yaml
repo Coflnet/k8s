@@ -151,11 +151,17 @@ hypixel-react:
 
 sky-api:
   enabled: false
+sky-auctions:
+  enabled: false
 sky-bazaar:
   enabled: false
 
 sky-bfcs:
   enabled: true
+  serviceMonitor:
+    enabled: false
+  metrics:
+    enabled: false
   replicaCount: 1
   strategy: RollingUpdate
   defaultEnvVarsEnabled: false
@@ -256,4 +262,13 @@ sky-trade:
 sky-updater:
   enabled: false
 sky-referral:
+  enabled: false
+
+sky-operator:
+  enabled: false
+crafatar:
+  enabled: false
+extra-chart:
+  enabled: false
+necwebsite:
   enabled: false

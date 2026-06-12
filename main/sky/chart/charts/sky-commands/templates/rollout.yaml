@@ -5,6 +5,8 @@ metadata:
   name: {{ .Chart.Name }}
   labels:
     app: {{ .Chart.Name }}
+  annotations:
+    fleet.cattle.io/ignore-drift: "true"
 spec:
   replicas: {{ .Values.replicaCount }}
   progressDeadlineSeconds: 2592000

@@ -395,16 +395,6 @@ sky-bfcs:
         secretKeyRef:
           name: sky-bfcs-secrets
           key: jwt_secret
-    - name: SNIPER_BASE_URL
-      value: http://sky-sniper:8000
-    - name: JAEGER_AGENT_HOST
-      valueFrom:
-        fieldRef:
-          fieldPath: status.hostIP
-    - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
-      valueFrom:
-        fieldRef:
-          fieldPath: status.hostIP
   livenessProbe:
     initialDelaySeconds: 90
   readinessProbe:

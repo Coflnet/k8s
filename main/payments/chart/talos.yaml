@@ -15,6 +15,7 @@ global:
 payments:
   enabled: true
   openbao:
+    agentEnabled: true
     # Talos OpenBao serves a different CA than eu-cluster (its TLS material was
     # generated on Talos, not part of the restored raft backup). Override the
     # default eu CA so the OpenBao agent can verify the Talos server cert.

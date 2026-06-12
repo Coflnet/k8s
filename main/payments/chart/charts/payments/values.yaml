@@ -4,6 +4,10 @@ maxUnavailable: 1
 enabled: true
 
 openbao:
+  # Set to true to inject the HashiCorp Vault agent init container for
+  # pre-populating secrets from OpenBao. Requires OpenBao k8s auth roles
+  # and kv secrets to exist. Disabled by default to prevent stuck pods.
+  agentEnabled: false
   addr: https://openbao.openbao.svc:8200
   mount: kv
   optional: "false"
