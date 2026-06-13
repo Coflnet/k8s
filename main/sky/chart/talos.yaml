@@ -594,7 +594,7 @@ sky-mayor:
     initialDelaySeconds: 90
 
 sky-mc-connect:
-  enabled: true
+  enabled: false # disabled to not consume twice
   serviceMonitor:
     enabled: false
   envVars:
