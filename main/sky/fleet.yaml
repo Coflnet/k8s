@@ -1,4 +1,24 @@
 defaultNamespace: sky
+
+# Argo Rollouts and Cilium EndpointSlice controllers modify resources at runtime.
+# Strip the fields they change so Fleet doesn't see phantom drift and block deploys.
+diff:
+  comparePatches:
+    - apiVersion: argoproj.io/v1alpha1
+      kind: Rollout
+      operations:
+        - op: remove
+          path: /status
+        - op: remove
+          path: /spec/strategy/canary/steps
+        - op: remove
+          path: /spec/template/metadata/annotations/rollouts.argoproj.io~1pod-template-hash
+    - apiVersion: discovery.k8s.io/v1
+      kind: EndpointSlice
+      operations:
+        - op: remove
+          path: /endpoints
+
 helm:
   chart: ./chart
   values:
