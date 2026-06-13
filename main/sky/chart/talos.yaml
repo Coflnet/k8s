@@ -655,6 +655,13 @@ sky-mod-commands:
         secretKeyRef:
           name: secret
           key: vps_secret
+    # Cloudfanatic (US) Redis for cross-cluster flip pub/sub.
+    # Password from redis-password secret on cloudfanatic, synced to redis-cloudfanatic secret here.
+    - name: REDIS_FLIP_INSTANCES__2
+      valueFrom:
+        secretKeyRef:
+          name: redis-cloudfanatic
+          key: connection
   livenessProbe:
     initialDelaySeconds: 90
   readinessProbe:
