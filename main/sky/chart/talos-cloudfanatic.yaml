@@ -106,15 +106,7 @@ global:
     - name: TRADE_BASE_URL
       value: http://sky-trade-eu-cluster:8000
 
-  volumes:
-    - mountName: redis-client-tls
-      mountPath: /tls/redis-client
-      name: redis-client-tls
-      type: secret
-    - mountName: redis-root-cas
-      mountPath: /tls/redis-root-cas
-      name: sky-bfcs-redis-root-cas
-      type: configmap
+  volumes: []
 
 # ─── Sub-charts ──────────────────────────────────────────────────────────────
 
@@ -163,52 +155,26 @@ sky-bfcs:
       value: http://jaeger-collector-eu-cluster.observability:4317
     - name: SNIPER_BASE_URL
       value: http://sky-sniper-eu-cluster:8000
-    # Redis TLS client cert paths (mounted from redis-client-tls secret).
-    # Code in Startup.cs / ModBackgroundService.cs reads these env vars.
-    - name: REDIS_CLIENT_CERT_PATH
-      value: /tls/redis-client/tls.crt
-    - name: REDIS_CLIENT_KEY_PATH
-      value: /tls/redis-client/tls.key
-    - name: REDIS_CLIENT_CA_PATH
-      value: /tls/redis-root-cas/combined-ca-bundle.crt
-    # Local Redis via TLS (mTLS enforced server-side).
-    # FLIP_REDIS_OPTIONS: used by SkyBFCS for the main publish connection.
+    # Local Redis via password auth (TLS deferred — see internal/infrastructure/pki.md).
     - name: FLIP_REDIS_OPTIONS
-      value: sky-bfcs-redis,ssl=true,syncTimeout=1000
+      value: sky-bfcs-redis,password=fDBiC9l571WaWtRJ+BpHQqkS0xhrGHhv,syncTimeout=1000
     - name: REDIS_HOST
-      value: sky-bfcs-redis,ssl=true,syncTimeout=1000
-    # Redis flip instances — local Redis via TLS.
-    # Instance 1: eu-cluster Redis (cross-cluster, pre-existing).
+      value: sky-bfcs-redis,password=fDBiC9l571WaWtRJ+BpHQqkS0xhrGHhv,syncTimeout=1000
+    # Redis flip instances.
     - name: REDIS_FLIP_INSTANCES__0
-      value: sky-bfcs-redis,ssl=true,syncTimeout=1000
+      value: sky-bfcs-redis,password=fDBiC9l571WaWtRJ+BpHQqkS0xhrGHhv,syncTimeout=1000
     - name: REDIS_FLIP_INSTANCES__1
       value: sky-bfcs-redis-eu-cluster
     - name: REDIS_FLIP_INSTANCES__2
-      value: sky-bfcs-redis,ssl=true,syncTimeout=1000
-  # Redis: TLS + mTLS + ACL, NodePort 31379 for cross-cluster access.
-  # PKI: Root CAs (offline) → Intermediate CA (per-cluster k8s Secret) → Leaf certs.
-  #
-  # One-time setup: ./scripts/redis-mtls-init.sh (creates root + intermediate CAs)
-  # Leaf cert rotation (~90 days): ./scripts/redis-mtls-issue.sh cloudfanatic server
-  #                               ./scripts/redis-mtls-issue.sh cloudfanatic client
-  #
-  # Secrets required (created by script, not by Fleet):
-  #   redis-tls              — server cert chain (leaf + intermediate)
-  #   redis-client-tls       — client cert chain (leaf + intermediate)
-  #   redis-intermediate-ca  — intermediate CA cert (for Redis to verify clients)
-  #   redis-acl              — ACL config (pub/sub only)
-  #
-  # Trust bundle (auto-deployed by chart from files/redis-mtls/):
-  #   sky-bfcs-redis-root-cas ConfigMap — both root CA certs
+      value: sky-bfcs-redis,password=fDBiC9l571WaWtRJ+BpHQqkS0xhrGHhv,syncTimeout=1000
+  # Redis: password auth, NodePort 31379 for cross-cluster access from talos-eu.
+  # Node IP: 23.158.232.23 → talos-eu sky-modcommands connects to 23.158.232.23:31379
+  # TODO: upgrade to TLS+mTLS (see scripts/redis-mtls-*.sh and internal/infrastructure/pki.md)
   redis:
     enabled: true
     serviceType: NodePort
     nodePort: 31379
-    tls:
-      enabled: true
-    acl:
-      enabled: true
-      configSecret: redis-acl
+    password: fDBiC9l571WaWtRJ+BpHQqkS0xhrGHhv
 
 sky-chat:
   enabled: false
