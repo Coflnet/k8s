@@ -1,0 +1,33 @@
+{{- /*
+  Redis mTLS PKI: Root CA → Intermediate CA → Leaf certs
+
+  Root CAs (offline, 2 for HA): physically stored outside any cluster.
+  Intermediate CAs: one per cluster, signed by both root CAs, k8s Secret redis-intermediate-ca.
+  Leaf certs: server + client, signed by intermediate CA, rotated every 90 days via script.
+
+  Trust model: services trust both root CAs.
+  Compromised cluster → revoke its intermediate CA; other clusters unaffected.
+*/ -}}
+{{- if .Values.enabled }}
+{{- $tls := .Values.redis.tls }}
+{{- if $tls.enabled }}
+---
+# Trust bundle ConfigMap containing both root CA certificates.
+# Mounted by services to validate the full chain: leaf ← intermediate ← root.
+# Updated only when root CAs rotate (rare — years).
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-redis-root-cas
+data:
+  root-ca-1.crt: |
+{{ $.Files.Get "files/redis-mtls/root-ca-1.crt" | nindent 4 }}
+  root-ca-2.crt: |
+{{ $.Files.Get "files/redis-mtls/root-ca-2.crt" | nindent 4 }}
+  # Combined bundle for services that expect a single CA file.
+  combined-ca-bundle.crt: |
+{{ $.Files.Get "files/redis-mtls/root-ca-1.crt" | nindent 4 }}
+{{ $.Files.Get "files/redis-mtls/root-ca-2.crt" | nindent 4 }}
+{{- end }}
+{{- end }}
+

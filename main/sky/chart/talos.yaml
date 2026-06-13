@@ -405,6 +405,9 @@ sky-bfcs:
     initialDelaySeconds: 90
   readinessProbe:
     initialDelaySeconds: 90
+  # The root CA trust bundle ConfigMap (sky-bfcs-redis-root-cas) is created
+  # by the chart from files/redis-mtls/root-ca-*.crt — deployed automatically.
+  redis: {}
 
 sky-chat:
   enabled: true

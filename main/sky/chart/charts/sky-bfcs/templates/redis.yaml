@@ -1,5 +1,7 @@
 {{ if .Values.enabled }}
 {{ if .Values.redis.enabled }}
+{{- $tls := .Values.redis.tls }}
+{{- $acl := .Values.redis.acl }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,6 +21,28 @@ spec:
       containers:
       - name: {{ .Chart.Name }}-redis
         image: redis:7.0.5
+        args:
+          {{- if $tls.enabled }}
+          - --port
+          - "0"
+          - --tls-port
+          - "6379"
+          - --tls-cert-file
+          - /tls/tls.crt
+          - --tls-key-file
+          - /tls/tls.key
+          - --tls-ca-cert-file
+          - /tls-ca/tls.crt
+          - --tls-auth-clients
+          - "yes"
+          {{- else if .Values.redis.password }}
+          - --requirepass
+          - {{ .Values.redis.password | quote }}
+          {{- end }}
+          {{- if $acl.enabled }}
+          - --aclfile
+          - /acl/acl.conf
+          {{- end }}
         ports:
         - containerPort: 6379
         resources:
@@ -26,6 +50,34 @@ spec:
           requests:
             memory: "200Mi"
             cpu: "50m"
+        volumeMounts:
+        {{- if $tls.enabled }}
+        - name: redis-tls
+          mountPath: /tls
+          readOnly: true
+        - name: redis-intermediate-ca
+          mountPath: /tls-ca
+          readOnly: true
+        {{- end }}
+        {{- if $acl.enabled }}
+        - name: redis-acl
+          mountPath: /acl
+          readOnly: true
+        {{- end }}
+      volumes:
+      {{- if $tls.enabled }}
+      - name: redis-tls
+        secret:
+          secretName: redis-tls
+      - name: redis-intermediate-ca
+        secret:
+          secretName: redis-intermediate-ca
+      {{- end }}
+      {{- if $acl.enabled }}
+      - name: redis-acl
+        secret:
+          secretName: {{ $acl.configSecret | default "redis-acl" }}
+      {{- end }}
 ---
 apiVersion: v1
 kind: Service
@@ -34,11 +86,16 @@ metadata:
   labels:
     mirror.linkerd.io/exported: "true"
 spec:
+  type: {{ .Values.redis.serviceType | default "ClusterIP" }}
   selector:
     app: {{ .Chart.Name }}-redis
   ports:
-    - protocol: TCP
+    - name: redis
+      protocol: TCP
       port: 6379
       targetPort: 6379
+      {{- if .Values.redis.nodePort }}
+      nodePort: {{ .Values.redis.nodePort }}
+      {{- end }}
 {{ end }}
 {{ end }}

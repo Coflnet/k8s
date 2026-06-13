@@ -1,0 +1,6 @@
+# Root CA 2 certificate — replace with your actual root CA cert (PEM format).
+# Generated via: scripts/redis-mtls-init.sh
+# Keep the private key OFFLINE (never in any cluster).
+-----BEGIN CERTIFICATE-----
+# PLACEHOLDER: Replace with actual root CA 2 certificate
+-----END CERTIFICATE-----

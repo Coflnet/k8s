@@ -41,29 +41,6 @@ global:
       value: sky-commands-redis
     - name: SETTINGS_REDIS_HOST
       value: sky-settings-redis-eu-cluster
-    - name: KAFKA__BROKERS
-      valueFrom:
-        secretKeyRef:
-          name: redpanda
-          key: brokers
-    - name: KAFKA__USERNAME
-      valueFrom:
-        secretKeyRef:
-          name: redpanda-credentials
-          key: username
-    - name: KAFKA__PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: redpanda-credentials
-          key: password
-    - name: KAFKA__TLS__CA_LOCATION
-      value: /tls/cm/ca.crt
-    - name: KAFKA__TLS__CERTIFICATE_LOCATION
-      value: /tls/cm/skyblock.crt
-    - name: KAFKA__TLS__KEY_LOCATION
-      value: /tls/secret/skyblock.key
-    - name: KAFKA__REPLICATION_FACTOR
-      value: "3"
     - name: JAEGER_AGENT_HOST
       valueFrom:
         fieldRef:
@@ -129,15 +106,14 @@ global:
     - name: TRADE_BASE_URL
       value: http://sky-trade-eu-cluster:8000
 
-  # Mount Kafka mTLS certs from redpanda secret+configmap.
   volumes:
-    - mountName: redpanda-secret
-      mountPath: /tls/secret
-      name: redpanda
+    - mountName: redis-client-tls
+      mountPath: /tls/redis-client
+      name: redis-client-tls
       type: secret
-    - mountName: redpanda-cm
-      mountPath: /tls/cm
-      name: redpanda
+    - mountName: redis-root-cas
+      mountPath: /tls/redis-root-cas
+      name: sky-bfcs-redis-root-cas
       type: configmap
 
 # ─── Sub-charts ──────────────────────────────────────────────────────────────
@@ -183,41 +159,56 @@ sky-bfcs:
       valueFrom:
         fieldRef:
           fieldPath: status.hostIP
+    - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+      value: http://jaeger-collector-eu-cluster.observability:4317
     - name: SNIPER_BASE_URL
       value: http://sky-sniper-eu-cluster:8000
-    - name: SNIPER_TRANSFER_TOKEN
-      valueFrom:
-        secretKeyRef:
-          name: sniper
-          key: transfer_token
+    # Redis TLS client cert paths (mounted from redis-client-tls secret).
+    # Code in Startup.cs / ModBackgroundService.cs reads these env vars.
+    - name: REDIS_CLIENT_CERT_PATH
+      value: /tls/redis-client/tls.crt
+    - name: REDIS_CLIENT_KEY_PATH
+      value: /tls/redis-client/tls.key
+    - name: REDIS_CLIENT_CA_PATH
+      value: /tls/redis-root-cas/combined-ca-bundle.crt
+    # Local Redis via TLS (mTLS enforced server-side).
+    # FLIP_REDIS_OPTIONS: used by SkyBFCS for the main publish connection.
+    - name: FLIP_REDIS_OPTIONS
+      value: sky-bfcs-redis,ssl=true,syncTimeout=1000
     - name: REDIS_HOST
-      value: sky-bfcs-redis,syncTimeout=1000
+      value: sky-bfcs-redis,ssl=true,syncTimeout=1000
+    # Redis flip instances — local Redis via TLS.
+    # Instance 1: eu-cluster Redis (cross-cluster, pre-existing).
     - name: REDIS_FLIP_INSTANCES__0
-      valueFrom:
-        secretKeyRef:
-          name: tfm-redis
-          key: tfm-1
+      value: sky-bfcs-redis,ssl=true,syncTimeout=1000
     - name: REDIS_FLIP_INSTANCES__1
       value: sky-bfcs-redis-eu-cluster
     - name: REDIS_FLIP_INSTANCES__2
-      value: sky-bfcs-redis
-    - name: REDIS_FLIP_INSTANCES__3
-      valueFrom:
-        secretKeyRef:
-          name: redis-edge
-          key: us_connection
-    - name: REDIS_FLIP_INSTANCES__4
-      valueFrom:
-        secretKeyRef:
-          name: redis-edge
-          key: linode_us_connection
-    - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-      value: http://jaeger-collector-eu-cluster.observability:4317
-    - name: FLIP_REDIS_OPTIONS
-      valueFrom:
-        secretKeyRef:
-          name: flip-redis
-          key: options
+      value: sky-bfcs-redis,ssl=true,syncTimeout=1000
+  # Redis: TLS + mTLS + ACL, NodePort 31379 for cross-cluster access.
+  # PKI: Root CAs (offline) → Intermediate CA (per-cluster k8s Secret) → Leaf certs.
+  #
+  # One-time setup: ./scripts/redis-mtls-init.sh (creates root + intermediate CAs)
+  # Leaf cert rotation (~90 days): ./scripts/redis-mtls-issue.sh cloudfanatic server
+  #                               ./scripts/redis-mtls-issue.sh cloudfanatic client
+  #
+  # Secrets required (created by script, not by Fleet):
+  #   redis-tls              — server cert chain (leaf + intermediate)
+  #   redis-client-tls       — client cert chain (leaf + intermediate)
+  #   redis-intermediate-ca  — intermediate CA cert (for Redis to verify clients)
+  #   redis-acl              — ACL config (pub/sub only)
+  #
+  # Trust bundle (auto-deployed by chart from files/redis-mtls/):
+  #   sky-bfcs-redis-root-cas ConfigMap — both root CA certs
+  redis:
+    enabled: true
+    serviceType: NodePort
+    nodePort: 31379
+    tls:
+      enabled: true
+    acl:
+      enabled: true
+      configSecret: redis-acl
 
 sky-chat:
   enabled: false
