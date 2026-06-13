@@ -79,6 +79,12 @@ global:
   # Images are public on Docker Hub; no harbor pull secret needed on talos yet.
   imagePullSecrets: []
 
+  # Ingress for sky.coflnet.com, sky-commands.coflnet.com, etc.
+  # On eu-cluster the ingress lives in deprecated sub-chart (enabled).
+  # On talos deprecated is disabled, so we deploy it from the parent chart.
+  ingress:
+    enabled: true
+
   # No redpanda volumes yet — secrets/configmaps not created on talos.
   volumes:
     - mountName: openbao-ca
