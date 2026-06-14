@@ -10,7 +10,7 @@ diff:
         - op: remove
           path: /status
         - op: remove
-          path: /spec/strategy/canary/steps
+          path: /spec/strategy/canary/dynamicStableScale
         - op: remove
           path: /spec/template/metadata/annotations/rollouts.argoproj.io~1pod-template-hash
     - apiVersion: discovery.k8s.io/v1
