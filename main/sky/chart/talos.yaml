@@ -144,6 +144,8 @@ global:
       value: sky-global-redis
     - name: SETTINGS_REDIS_HOST
       value: sky-settings-redis
+    - name: EVENTS_REDIS_HOST
+      value: sky-event-broker-redis
     - name: JAEGER_AGENT_HOST
       valueFrom:
         fieldRef:
