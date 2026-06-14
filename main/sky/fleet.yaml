@@ -18,6 +18,11 @@ diff:
       operations:
         - op: remove
           path: /endpoints
+    - apiVersion: v1
+      kind: Service
+      operations:
+        - op: remove
+          path: /spec/selector
 
 helm:
   chart: ./chart
