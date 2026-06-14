@@ -8,8 +8,14 @@ metadata:
     app: {{ . }}
     "mirror.linkerd.io/exported": "true"
 spec:
+  {{- if eq . $.Chart.Name }}
+  # Only the root service keeps a static selector. The canary/stable services are
+  # managed by Argo Rollouts (it owns .spec.selector and injects the
+  # rollouts-pod-template-hash), so they omit it to avoid Fleet server-side apply
+  # conflicts with the rollouts-controller.
   selector:
     app: {{ $.Chart.Name }}
+  {{- end }}
   ports:
     {{ toYaml $.Values.serivcePorts | nindent 4 }}
 ---

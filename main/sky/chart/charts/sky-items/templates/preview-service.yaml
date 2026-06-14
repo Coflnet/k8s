@@ -6,8 +6,8 @@ metadata:
   labels:
     app: {{ .Chart.Name }}
 spec:
-  selector:
-    app: {{ .Chart.Name }}
+  # .spec.selector is owned by Argo Rollouts (canary canaryService); omitted so
+  # Fleet's server-side apply does not conflict with the rollouts-controller.
   ports:
     {{ toYaml .Values.serivcePorts | nindent 4 }}
 ---

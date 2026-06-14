@@ -4,8 +4,9 @@ kind: Service
 metadata:
   name: {{ .Chart.Name }}
 spec:
-  selector:
-    app: {{ .Chart.Name }}
+  # .spec.selector is owned by Argo Rollouts (blueGreen activeService); it injects
+  # rollouts-pod-template-hash. Omitted here so Fleet's server-side apply does not
+  # conflict with the rollouts-controller. Do NOT re-add it.
   ports:
   - port: 80
     targetPort: 3000
