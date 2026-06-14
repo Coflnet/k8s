@@ -3,7 +3,7 @@ replicaCount: 3
 
 image:
   repository: muehlhansfl/skymodcommands
-  tag: museum-fix
+  tag: c717635ea9b5412d30610372f3c4c635f7ae1b08
   pullPolicy: IfNotPresent
 
 nameOverride: ""
