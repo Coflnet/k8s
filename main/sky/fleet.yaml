@@ -26,6 +26,17 @@ diff:
 
 helm:
   chart: ./chart
+  # Argo Rollouts' controller takes Update-ownership of atomic fields on the resources
+  # it manages: Rollout .spec.template.spec.containers and .spec.strategy.canary.steps
+  # (the embedded PodTemplateSpec/steps are atomic lists in the CRD), plus Service
+  # .spec.selector (it injects rollouts-pod-template-hash). Fleet v0.15.2 ships Helm v4,
+  # which defaults to server-side apply, so every reconcile fails with
+  # "conflict ... with rollouts-controller" and the deploy retries forever.
+  # `force: true` is the only fleet.yaml lever in v0.15.2 that disables SSA on upgrade
+  # (helmdeployer sets ForceReplace -> ServerSideApply=false -> client-side replace), so
+  # Fleet and the rollouts controller stop fighting over field ownership. The
+  # comparePatches above keep the controller's runtime mutations from registering as drift.
+  force: true
   values:
     clusterName: global.fleet.clusterLabels.management.cattle.io/cluster-display-name
   valuesFiles:
