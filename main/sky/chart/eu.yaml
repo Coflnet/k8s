@@ -151,7 +151,7 @@ global:
     # Logs go to Loki via its native OTLP endpoint (Loki 3.x).
     # Traces stay on Jaeger, logs go to Loki for independent storage and query.
     - name: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
-      value: "http://loki-scalable-gateway.loki:80/otlp"
+      value: "http://loki-scalable-read.loki:3100/otlp"
 
     ## base urls ##
     - name: API_BASE_URL
