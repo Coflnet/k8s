@@ -51,7 +51,7 @@ spec:
           - name: REDIS_HOST
             value: "{{ .Chart.Name }}-redis,syncTimeout=1000"
           - name: IS_MANAGER
-            value: "true"
+            value: "false"
           {{ if .Values.envVars }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 10 }}
           {{ end }}
