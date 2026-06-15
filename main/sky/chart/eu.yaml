@@ -148,10 +148,11 @@ global:
           fieldPath: status.hostIP
     - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
       value: "http://jaeger-collector.observability:4317"
-    # Logs go to Loki via its native OTLP endpoint (Loki 3.x).
-    # Traces stay on Jaeger, logs go to Loki for independent storage and query.
+    # Logs go to Loki via its native OTLP endpoint (Loki 3.x). The OTLP HttpProtobuf
+    # exporter sends to the URL as-is, so the full signal path /otlp/v1/logs is required.
+    # Targets the write component (distributor) directly; bypasses the single-replica gateway.
     - name: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
-      value: "http://loki-scalable-read.loki:3100/otlp"
+      value: "http://loki-scalable-write.loki:3100/otlp/v1/logs"
 
     ## base urls ##
     - name: API_BASE_URL
