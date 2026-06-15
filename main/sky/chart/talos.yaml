@@ -156,6 +156,10 @@ global:
           fieldPath: status.hostIP
     - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
       value: "http://jaeger-collector.observability:4317"
+    # OTEL collector for logs (routes to Loki via otlphttp/logs exporter).
+    # The collector listens on HTTP OTLP 0.0.0.0:4318, deployed by the opentelemetry-operator.
+    - name: OTEL_EXPORTER_OTLP_ENDPOINT
+      value: "http://otel-collector-collector.opentelemetry-operator-system:4318"
     # Kafka mTLS: TLS cert paths (mounted from redpanda secret+configmap).
     # Brokers/credentials are in OpenBao AND as k8s secret refs for early Kafka init.
     - name: KAFKA__TLS__CA_LOCATION
