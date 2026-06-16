@@ -23,8 +23,31 @@ spec:
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
         env:
+          {{ if .Values.global.envVars }}
+          {{ toYaml .Values.global.envVars | nindent 10 }}
+          {{ end }}
           {{ if .Values.envVars }}
           {{ toYaml .Values.envVars | nindent 10 }}
           {{ end }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
+        {{ if .Values.global.volumes }}
+        volumeMounts:
+        {{ range .Values.global.volumes }}
+        - name: {{ .mountName }}
+          mountPath: {{ .mountPath }}
+        {{ end }}
+        {{ end }}
+      {{ if .Values.global.volumes }}
+      volumes:
+      {{ range .Values.global.volumes }}
+        - name: {{ .mountName }}
+          {{ if eq .type "configmap" }}
+          configMap:
+            name: {{ .name }}
+          {{ else }}
+          secret:
+            secretName: {{ .name }}
+          {{ end }}
+      {{ end }}
+      {{ end }}

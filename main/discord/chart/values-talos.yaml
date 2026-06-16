@@ -1,0 +1,62 @@
+# Talos-specific overrides for discord-bot.
+# Discord is a Node.js app — it does NOT use OpenBao. All secrets come from k8s secrets/configmaps.
+#
+# Prerequisites (must exist in discord namespace before Fleet deploys):
+#   - Secret "secret": keys token, hypixel_api_key
+#   - ConfigMap "config": keys live_channel_id_bugreport, live_channel_id_suggestion,
+#     live_channel_id_support, client_id, discord_guild, channel_id_bot_commands
+#   Copy from eu-cluster: kubectl --context eu-cluster -n discord get secret secret -o yaml | ... | kt apply -f -
+
+global:
+  # No harbor registry on talos (public images)
+  imagePullSecrets: []
+  envVars: []
+  # Discord bot does not use Kafka — clear redpanda volumes from parent values.yaml
+  volumes: []
+
+# Sub-chart overrides
+discord-bot-node:
+  # API_ENDPOINT uses k8s DNS — sky-api is available on talos
+  envVars:
+    - name: TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: secret
+          key: token
+    - name: CHANNEL_ID_BUGREPORT
+      valueFrom:
+        configMapKeyRef:
+          name: config
+          key: live_channel_id_bugreport
+    - name: CHANNEL_ID_SUGGESTIONS
+      valueFrom:
+        configMapKeyRef:
+          name: config
+          key: live_channel_id_suggestion
+    - name: CHANNEL_ID_SUPPORT
+      valueFrom:
+        configMapKeyRef:
+          name: config
+          key: live_channel_id_support
+    - name: CLIENT_ID
+      valueFrom:
+        configMapKeyRef:
+          name: config
+          key: client_id
+    - name: GUILD_ID
+      valueFrom:
+        configMapKeyRef:
+          name: config
+          key: discord_guild
+    - name: CHANNEL_ID_BOT_COMMANDS
+      valueFrom:
+        configMapKeyRef:
+          key: channel_id_bot_commands
+          name: config
+    - name: API_ENDPOINT
+      value: http://sky-api.sky:8000/api
+    - name: API_KEY
+      valueFrom:
+        secretKeyRef:
+          key: hypixel_api_key
+          name: secret
