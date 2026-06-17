@@ -20,6 +20,8 @@ spec:
   ingress:
     - fromEntities:
         - ingress
+        - host
+        - remote-node
       toPorts:
         - ports:
             - { port: "8000", protocol: TCP }
