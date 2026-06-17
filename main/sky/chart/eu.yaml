@@ -241,3 +241,6 @@ sky-bfcs:
 
 sky-controller:
   enabled: true
+
+sky-auctions:
+  enabled: false
