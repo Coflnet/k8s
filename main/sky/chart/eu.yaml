@@ -244,3 +244,9 @@ sky-controller:
 
 sky-auctions:
   enabled: false
+
+sky-profiles:
+  enabled: false
+
+sky-proxy:
+  enabled: false
