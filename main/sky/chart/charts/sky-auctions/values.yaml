@@ -32,6 +32,10 @@ readinessProbe:
   periodSeconds: 3
 
 envVars:
+  - name: S3__BUCKET_NAME
+    value: "sky-auctions-archive"
+  - name: S3__ENABLED
+    value: "true"
   - name: CASSANDRA__HOSTS
     valueFrom:
       configMapKeyRef:
