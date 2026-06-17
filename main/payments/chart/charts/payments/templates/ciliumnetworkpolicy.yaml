@@ -1,5 +1,29 @@
 {{ if .Values.enabled }}
 {{- if .Values.networkPolicy.cilium.enabled }}
+# Allow the Cilium Gateway (native Envoy) to reach the public callback endpoint.
+#
+# On Talos the cluster ingress is the Cilium-native Gateway API instead of the
+# host-networked nginx DaemonSet. Cilium's Envoy edge proxy tags forwarded
+# traffic with the reserved `ingress` identity, so the backend can be locked
+# down to exactly that source instead of the previous host/remote-node bridge
+# (which had to trust whole nodes because host-networked nginx pods carried no
+# Cilium identity). Kubelet readiness probes still work via Cilium's implicit
+# localhost (`reserved:host`) allow.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: payments-allow-gateway-public-callback-ingress
+spec:
+  endpointSelector:
+    matchLabels:
+      security.coflnet.com/public-http: "true"
+  ingress:
+    - fromEntities:
+        - ingress
+      toPorts:
+        - ports:
+            - { port: "8000", protocol: TCP }
+---
 # Cilium equivalent of payments-allow-kube-api-for-labelled-operators-only.
 # Uses the reserved `kube-apiserver` entity so the policy follows the API
 # server endpoints automatically instead of a hardcoded ClusterIP.
