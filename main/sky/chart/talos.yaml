@@ -682,7 +682,6 @@ sky-mod-commands:
   readinessProbe:
     initialDelaySeconds: 90
   canary:
-    dynamicStableScale: false
     trafficRouting: ~
 
 sky-player-name:
