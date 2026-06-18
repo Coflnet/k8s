@@ -79,7 +79,7 @@ spec:
   failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
-      activeDeadlineSeconds: 50
+      activeDeadlineSeconds: 110
       backoffLimit: 0
       ttlSecondsAfterFinished: 120
       template:
@@ -124,26 +124,27 @@ spec:
                 - |
                   set -u
                   NS="$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)"
-                  PROBE_TIMEOUT="{{ .Values.global.ciliumEndpointSliceHealer.probeTimeoutSeconds | default 2 }}"
+                  PROBE_TIMEOUT="{{ .Values.global.ciliumEndpointSliceHealer.probeTimeoutSeconds | default 1 }}"
                   TAB="$(printf '\t')"
-                  # name<TAB>type<TAB>clusterIP<TAB>firstPort for every service
+                  READY=/tmp/ready-services.txt
+                  # One call: service-names that have at least one ready endpoint.
+                  kubectl get endpointslices -n "$NS" \
+                    -o jsonpath='{range .items[*]}{.metadata.labels.kubernetes\.io/service-name}{"\t"}{range .endpoints[*]}{.conditions.ready}{","}{end}{"\n"}{end}' 2>/dev/null \
+                    | awk -F"$TAB" '$2 ~ /true/ {print $1}' | sort -u > "$READY"
+                  # One call: name<TAB>type<TAB>clusterIP<TAB>firstPort for every service.
                   kubectl get svc -n "$NS" \
-                    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.type}{"\t"}{.spec.clusterIP}{"\t"}{.spec.ports[0].port}{"\n"}{end}' \
+                    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.type}{"\t"}{.spec.clusterIP}{"\t"}{.spec.ports[0].port}{"\n"}{end}' 2>/dev/null \
                     | while IFS="$TAB" read -r name type ip port; do
                         [ -z "$name" ] && continue
                         [ "$type" = "ClusterIP" ] || continue
                         [ -z "$ip" ] && continue
                         [ "$ip" = "None" ] && continue
                         [ -z "$port" ] && continue
-                        ready="$(kubectl get endpointslices -n "$NS" \
-                          -l "kubernetes.io/service-name=$name" \
-                          -o jsonpath='{range .items[*]}{range .endpoints[*]}{.conditions.ready}{"\n"}{end}{end}' 2>/dev/null \
-                          | grep -c true)"
-                        [ "${ready:-0}" -eq 0 ] && continue
+                        grep -qx "$name" "$READY" || continue
                         if nc -z -w "$PROBE_TIMEOUT" "$ip" "$port" 2>/dev/null; then
                           continue
                         fi
-                        echo "DESYNC: svc/$name $ip:$port has $ready ready endpoint(s) but VIP unreachable -> forcing Cilium resync"
+                        echo "DESYNC: svc/$name $ip:$port has ready endpoints but VIP unreachable -> forcing Cilium resync"
                         kubectl annotate endpointslices -n "$NS" \
                           -l "kubernetes.io/service-name=$name" \
                           "sky.coflnet.com/cilium-resync=$(date +%s)" --overwrite >/dev/null 2>&1 || true

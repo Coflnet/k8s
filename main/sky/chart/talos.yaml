@@ -120,7 +120,7 @@ global:
   ciliumEndpointSliceHealer:
     enabled: true
     schedule: "* * * * *"
-    probeTimeoutSeconds: 2
+    probeTimeoutSeconds: 1
 
   # Talos OpenBao uses TLS.
   openbaoAddr: https://openbao.openbao.svc:8200
