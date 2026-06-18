@@ -64,7 +64,10 @@ envVars:
         name: scylla-config
         key: scylla_host
   - name: SCYLLA__USER
-    value: sky_player_info
+    valueFrom:
+      configMapKeyRef:
+        name: scylla-config
+        key: player_state_user
   - name: SCYLLA__PASSWORD
     valueFrom:
       secretKeyRef:

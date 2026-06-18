@@ -38,10 +38,7 @@ envVars:
         name: scylla-config
         key: scylla_host
   - name: CASSANDRA__USER
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: sky_profile_cassandra_user
+    value: sky_player_info
   - name: CASSANDRA__PASSWORD
     valueFrom:
       secretKeyRef:
