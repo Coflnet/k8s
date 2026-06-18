@@ -49,6 +49,7 @@ endpoints:
     {{- range .Values.global.databaseServices.skyDatabaseEndpoints }}
     - {{ . | quote }}
     {{- end }}
+    conditions: {}
 ---
 apiVersion: discovery.k8s.io/v1
 kind: EndpointSlice
@@ -68,5 +69,6 @@ endpoints:
     {{- range .Values.global.databaseServices.itemsDatabaseEndpoints }}
     - {{ . | quote }}
     {{- end }}
+    conditions: {}
 {{- end }}
 {{- end }}
