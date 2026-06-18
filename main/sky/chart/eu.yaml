@@ -250,3 +250,5 @@ sky-profiles:
 
 sky-proxy:
   enabled: false
+sky-player-state:
+  enabled: false
