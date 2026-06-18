@@ -40,21 +40,7 @@ envVars:
         key: mongo_url
 
   # cassandra
-  - name: CASSANDRA__HOSTS
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: cassandra_host
-  - name: CASSANDRA__USER
-    valueFrom:
-      configMapKeyRef:
-        name: config
-        key: cassandra_user
-  - name: CASSANDRA__PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: cassandra_password
+
   - name: CASSANDRA__KEYSPACE
     value: sky_item_movement
 
@@ -68,11 +54,7 @@ envVars:
       configMapKeyRef:
         name: scylla-config
         key: player_state_user
-  - name: SCYLLA__PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: scylla-credentials
-        key: player_state_password
+#  - name: SCYLLA__PASSWORD # loaded from openbao
   - name: SCYLLA__X509Certificate_PATHS
     value: /tls/scylla/secret/db.pfx
   - name: SCYLLA__X509Certificate_PASSWORD
