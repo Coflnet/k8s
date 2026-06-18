@@ -9,7 +9,7 @@ metadata:
     fleet.cattle.io/ignore-drift: "true"
 spec:
   replicas: {{ .Values.replicaCount }}
-  progressDeadlineSeconds: 2592000
+  progressDeadlineSeconds: 600
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
