@@ -252,3 +252,5 @@ sky-proxy:
   enabled: false
 sky-player-state:
   enabled: false
+sky-sniper:
+  enabled: false
