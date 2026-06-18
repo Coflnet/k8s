@@ -112,6 +112,16 @@ global:
       - "185.203.217.119"
       - "194.163.151.190"
 
+  # Self-healing for the Cilium EndpointSlice->eBPF desync bug (1.19.x) that
+  # leaves ClusterIP services with zero backends -> 502s. A CronJob probes every
+  # ClusterIP VIP once a minute and bumps the EndpointSlice annotation to force
+  # an agent resync when a VIP with ready endpoints is unreachable.
+  # See templates/cilium-endpointslice-healer.yaml. Talos-only (Cilium CNI).
+  ciliumEndpointSliceHealer:
+    enabled: true
+    schedule: "* * * * *"
+    probeTimeoutSeconds: 2
+
   # Talos OpenBao uses TLS.
   openbaoAddr: https://openbao.openbao.svc:8200
 

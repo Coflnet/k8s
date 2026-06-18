@@ -1,0 +1,156 @@
+{{- if .Values.global.ciliumEndpointSliceHealer -}}
+{{- if .Values.global.ciliumEndpointSliceHealer.enabled }}
+# ─────────────────────────────────────────────────────────────────────────────
+# Cilium EndpointSlice resync healer
+#
+# WHY THIS EXISTS
+#   Cilium 1.19.x (kube-proxy-replacement, eBPF service LB) intermittently drops
+#   EndpointSlice *watch update* events. When that happens the agent keeps a
+#   stale, empty backend list for a Service even though its EndpointSlice has
+#   ready endpoints. The result is a ClusterIP with zero eBPF backends
+#   ((0) 0.0.0.0:0 [ClusterIP, non-routable]) -> hostNetwork nginx ingress gets
+#   EHOSTUNREACH -> HTTP 502 (e.g. sky.coflnet.com via the hypixel-react service).
+#
+#   It is triggered by EndpointSlice churn racing with the agent's k8s watcher
+#   reconnecting after `INTERNAL_ERROR; received from peer` (HTTP/2) resets, and
+#   mostly hits Argo Rollouts–managed services whose Services/slices are patched
+#   frequently. Restarting all Cilium agents fixes it, but that is disruptive and
+#   the desync recurs (observed ~hourly).
+#
+# WHAT THIS DOES
+#   Once a minute it probes every ClusterIP Service that has ready endpoints. If
+#   the Service VIP is unreachable (no eBPF backend) it bumps an annotation on the
+#   Service's EndpointSlices. The new resourceVersion forces every Cilium agent to
+#   re-process the slice and reprogram the backends — instantly and without a
+#   Cilium restart. Annotating a healthy slice is a harmless no-op, and healthy
+#   services are never touched because their VIP probe succeeds.
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cilium-endpointslice-healer
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: cilium-endpointslice-healer
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cilium-endpointslice-healer
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: cilium-endpointslice-healer
+rules:
+  - apiGroups: [""]
+    resources: ["services"]
+    verbs: ["get", "list"]
+  - apiGroups: ["discovery.k8s.io"]
+    resources: ["endpointslices"]
+    verbs: ["get", "list", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cilium-endpointslice-healer
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: cilium-endpointslice-healer
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cilium-endpointslice-healer
+subjects:
+  - kind: ServiceAccount
+    name: cilium-endpointslice-healer
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cilium-endpointslice-healer
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: cilium-endpointslice-healer
+spec:
+  schedule: {{ .Values.global.ciliumEndpointSliceHealer.schedule | default "* * * * *" | quote }}
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 30
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 50
+      backoffLimit: 0
+      ttlSecondsAfterFinished: 120
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/component: cilium-endpointslice-healer
+        spec:
+          serviceAccountName: cilium-endpointslice-healer
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: healer
+              image: {{ .Values.global.ciliumEndpointSliceHealer.image | default "alpine/k8s:1.30.13" | quote }}
+              imagePullPolicy: IfNotPresent
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop: ["ALL"]
+              env:
+                - name: HOME
+                  value: /tmp
+                - name: KUBECACHEDIR
+                  value: /tmp/.kube/cache
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 32Mi
+                limits:
+                  cpu: 100m
+                  memory: 64Mi
+              command: ["/bin/sh", "-c"]
+              args:
+                - |
+                  set -u
+                  NS="$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)"
+                  PROBE_TIMEOUT="{{ .Values.global.ciliumEndpointSliceHealer.probeTimeoutSeconds | default 2 }}"
+                  TAB="$(printf '\t')"
+                  # name<TAB>type<TAB>clusterIP<TAB>firstPort for every service
+                  kubectl get svc -n "$NS" \
+                    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.type}{"\t"}{.spec.clusterIP}{"\t"}{.spec.ports[0].port}{"\n"}{end}' \
+                    | while IFS="$TAB" read -r name type ip port; do
+                        [ -z "$name" ] && continue
+                        [ "$type" = "ClusterIP" ] || continue
+                        [ -z "$ip" ] && continue
+                        [ "$ip" = "None" ] && continue
+                        [ -z "$port" ] && continue
+                        ready="$(kubectl get endpointslices -n "$NS" \
+                          -l "kubernetes.io/service-name=$name" \
+                          -o jsonpath='{range .items[*]}{range .endpoints[*]}{.conditions.ready}{"\n"}{end}{end}' 2>/dev/null \
+                          | grep -c true)"
+                        [ "${ready:-0}" -eq 0 ] && continue
+                        if nc -z -w "$PROBE_TIMEOUT" "$ip" "$port" 2>/dev/null; then
+                          continue
+                        fi
+                        echo "DESYNC: svc/$name $ip:$port has $ready ready endpoint(s) but VIP unreachable -> forcing Cilium resync"
+                        kubectl annotate endpointslices -n "$NS" \
+                          -l "kubernetes.io/service-name=$name" \
+                          "sky.coflnet.com/cilium-resync=$(date +%s)" --overwrite >/dev/null 2>&1 || true
+                      done
+                  echo "healer run complete"
+          volumes:
+            - name: tmp
+              emptyDir: {}
+{{- end }}
+{{- end }}
