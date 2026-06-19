@@ -17,29 +17,57 @@ spec:
       labels:
         app: {{ .Chart.Name }}
     spec:
-      imagePullSecrets:
-      {{ toYaml .Values.imagePullSecrets | nindent 8 }}
+      serviceAccountName: {{ .Chart.Name }}
       containers:
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
+          # ── OpenBao configuration ──────────────────────────────────
+          - name: OPENBAO__ENABLED
+            value: {{ .Values.openbao.enabled | default true | quote }}
+          - name: OPENBAO__OPTIONAL
+            value: {{ .Values.openbao.optional | default true | quote }}
+          - name: OPENBAO__ADDR
+            value: {{ .Values.openbao.addr | default "http://openbao.openbao.svc:8200" }}
+          - name: OPENBAO__MOUNT
+            value: {{ .Values.openbao.mount | default "kv" }}
+          - name: OPENBAO__PATH
+            value: {{ printf "sky/%s" .Chart.Name | quote }}
+          - name: OPENBAO__ROLE
+            value: {{ .Values.openbao.role | default .Chart.Name | quote }}
+          {{ if .Values.openbao.caCert }}
+          - name: OPENBAO__CACERT
+            value: /openbao/tls/ca.crt
+          {{ end }}
+          # ── Application env vars ───────────────────────────────────
           {{ toYaml .Values.envVars | nindent 10 }}
+        readinessProbe:
+          {{ toYaml .Values.readinessProbe | nindent 10 }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
-        {{ range .Values.global.volumes }}
-        - name: {{ .mountName }}
+        {{ range .Values.volumes }}
+        - name: {{ .name }}
           mountPath: {{ .mountPath }}
+          {{ if .subPath }}
+          subPath: {{ .subPath }}
+          {{ end }}
         {{ end }}
-        - name: scylla-pfx
-          mountPath: /tls/scylla/secret/db.pfx
-          subPath: db.pfx
-      volumes: 
-        - name: scylla-pfx
-          secret:
-            secretName: scylla-pfx
-            items:
-            - key: db.pfx
-              path: db.pfx
+      volumes:
+      {{ range .Values.volumes }}
+      - name: {{ .name }}
+        {{ if eq .type "configmap" }}
+        configMap:
+          name: {{ .sourceName }}
+        {{ else if eq .type "secret" }}
+        secret:
+          secretName: {{ .sourceName }}
+          {{ if .subPath }}
+          items:
+          - key: {{ .subPath }}
+            path: {{ .subPath }}
+          {{ end }}
+        {{ end }}
+      {{ end }}

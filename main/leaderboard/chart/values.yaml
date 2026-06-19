@@ -1,11 +1,12 @@
-imagePullSecrets:
-  - name: harbor
+# Leaderboard service — standalone chart (namespace: leaderboard).
+# Deployed to both eu-cluster and talos-eu-hcloud via Fleet.
 
 replicaCount: 1
 
 strategy: RollingUpdate
 image:
   repository: muehlhansfl/leaderboard
+  # Updated automatically by CI (container-ci.yml) on push to main.
   tag: de0cd8aae4422b0bfbee69d38231dd4a3e965c1c
   pullPolicy: IfNotPresent
 
@@ -13,11 +14,10 @@ ports:
   - name: api
     containerPort: 8000
 
-resources: 
+resources:
   requests:
     cpu: 400m
     memory: 200Mi
-
 
 serivcePorts:
   - name: api
@@ -28,10 +28,22 @@ readinessProbe:
   httpGet:
     path: /metrics
     port: api
-  initialDelaySeconds: 20
+  initialDelaySeconds: 40
   periodSeconds: 3
 
-envVars: 
+# ── Cassandra (ScyllaDB) via CoflnetCore.AddCassandra() ──────────────────
+# Reads the CASSANDRA config section. KEYSPACE is mandatory (throws on null).
+# Host and credentials come from the shared scylla-config / scylla-credentials
+# k8s resources that already exist in the sky namespace on both clusters.
+# The leaderboard_user and leaderboard_password keys must be added to those
+# resources before deployment — see the checklist in fleet/fleet/leaderboard.yaml.
+#
+# OpenBao fallback: if OPENBAO__ENABLED=true and the OpenBao kv/sky/leaderboard
+# path is populated, the CASSANDRA__* env vars below act as k8s-secret fallback
+# (OpenBao takes precedence via AddOpenBaoFromEnvironment).
+
+envVars:
+  # ── Cassandra (ScyllaDB mTLS) ────────────────────────────────────────
   - name: CASSANDRA__HOSTS
     valueFrom:
       configMapKeyRef:
@@ -47,6 +59,8 @@ envVars:
       secretKeyRef:
         name: scylla-credentials
         key: leaderboard_password
+  - name: CASSANDRA__KEYSPACE
+    value: leaderboards
   - name: CASSANDRA__X509Certificate_PATHS
     value: /tls/scylla/secret/db.pfx
   - name: CASSANDRA__X509Certificate_PASSWORD
@@ -55,21 +69,81 @@ envVars:
         name: scylla-credentials
         key: db-pfx-password
 
-    ## copy pasted from global sky ## 
-    ### kafka ###
-  - name: KAFKA_HOST
-    value: k8-main-kafka-kafka.kafka.svc.cluster.local
-
+  # ── Redis (sidecar in same pod via redis.yaml) ──────────────────────
   - name: REDIS_HOST
     value: redis
 
+  # ── Kafka (mTLS) via CoflnetCore.AddKafka() ─────────────────────────
+  # Reads the KAFKA config section. The sky namespace redpanda secrets
+  # and configmaps already exist on both clusters.
+  - name: KAFKA__BROKERS
+    valueFrom:
+      secretKeyRef:
+        name: redpanda
+        key: brokers
+  - name: KAFKA__USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: redpanda-credentials
+        key: username
+  - name: KAFKA__PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: redpanda-credentials
+        key: password
+  - name: KAFKA__TLS__CA_LOCATION
+    value: /tls/cm/ca.crt
+  - name: KAFKA__TLS__CERTIFICATE_LOCATION
+    value: /tls/cm/skyblock.crt
+  - name: KAFKA__TLS__KEY_LOCATION
+    value: /tls/secret/skyblock.key
 
-    ## common jaeger env vars ##
-  - name: JAEGER_AGENT_HOST
-    valueFrom:
-      fieldRef:
-        fieldPath: status.hostIP
-  - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
-    valueFrom:
-      fieldRef:
-        fieldPath: status.hostIP
+  # ── OpenTelemetry ───────────────────────────────────────────────────
+  - name: OTEL_SERVICE_NAME
+    value: leaderboard
+  - name: JAEGER_SERVICE_NAME
+    value: leaderboard
+  - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+    value: "http://jaeger-collector.observability:4317"
+  - name: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
+    value: "http://loki-scalable-write.loki:3100/otlp/v1/logs"
+  - name: LOCATION
+    value: eu
+
+# ── OpenBao configuration ──────────────────────────────────────────────
+# These are rendered directly in the deployment template so they can use
+# Helm templating for the path (includes .Chart.Name).
+openbao:
+  enabled: true
+  optional: true
+  addr: "http://openbao.openbao.svc:8200"
+  mount: kv
+  # path is set in the deployment template via helm (sky/{{ .Chart.Name }})
+  role: leaderboard
+
+# ── Volumes ────────────────────────────────────────────────────────────
+volumes:
+  # Kafka mTLS certificates (from redpanda configmap/secret in sky namespace)
+  - name: kafka-ca
+    mountName: kafka-cert
+    mountPath: /tls/cm
+    type: configmap
+    sourceName: redpanda
+  - name: kafka-key
+    mountName: kafka-key
+    mountPath: /tls/secret
+    type: secret
+    sourceName: redpanda
+  # OpenBao CA certificate (for TLS verification, used when openbaoAddr is https)
+  - name: openbao-ca
+    mountName: openbao-tls
+    mountPath: /openbao/tls
+    type: configmap
+    sourceName: openbao-ca-cert
+  # ScyllaDB mTLS client certificate
+  - name: scylla-pfx
+    mountName: scylla-pfx
+    mountPath: /tls/scylla/secret/db.pfx
+    subPath: db.pfx
+    type: secret
+    sourceName: scylla-pfx

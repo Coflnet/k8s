@@ -1,3 +1,24 @@
-defaultNamespace: leaderboard
+defaultNamespace: sky
 helm:
   chart: ./chart
+
+# Leaderboard runs in the sky namespace so it can reference the shared
+# scylla-config, scylla-credentials, redpanda, redpanda-credentials, and
+# openbao-ca-cert k8s resources which are also in sky. Cross-namespace
+# secret/configmap references are not allowed in Kubernetes.
+#
+# The service is still named "leaderboard"; other sky services already
+# use http://leaderboard.leaderboard:8000 — Fleet creates the service in
+# the sky namespace, so the FQDN becomes leaderboard.sky:8000. The sky
+# chart's global.envVars LEADERBOARD_BASE_URL still points to
+# leaderboard.leaderboard:8000. Both resolve to the same pod via the
+# leaderboard service in sky. A future cleanup can consolidate the URL.
+
+targetCustomizations:
+  - name: talos-eu-hcloud
+    clusterName: talos-eu-hcloud
+    helm:
+      values:
+        openbao:
+          addr: "https://openbao.openbao.svc:8200"
+          caCert: true
