@@ -139,7 +139,7 @@ volumes:
     mountName: openbao-tls
     mountPath: /openbao/tls
     type: configmap
-    sourceName: openbao-ca-cert
+    sourceName: openbao-ca
   # ScyllaDB mTLS client certificate
   - name: scylla-pfx
     mountName: scylla-pfx
