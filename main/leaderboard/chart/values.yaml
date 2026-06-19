@@ -54,20 +54,13 @@ envVars:
       configMapKeyRef:
         name: scylla-config
         key: leaderboard_user
-  - name: CASSANDRA__PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: scylla-credentials
-        key: leaderboard_password
+  # CASSANDRA__PASSWORD intentionally omitted from k8s secrets.
+  # Provided at runtime by OpenBao from kv/sky/leaderboard.
+  # (OPENBAO__OPTIONAL=true — if unreachable, Cassandra init fails at runtime.)
   - name: CASSANDRA__KEYSPACE
     value: leaderboards
   - name: CASSANDRA__X509Certificate_PATHS
     value: /tls/scylla/secret/db.pfx
-  - name: CASSANDRA__X509Certificate_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: scylla-credentials
-        key: db-pfx-password
 
   # ── Redis (sidecar in same pod via redis.yaml) ──────────────────────
   - name: REDIS_HOST
