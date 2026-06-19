@@ -44,6 +44,9 @@ rules:
   - apiGroups: [""]
     resources: ["services"]
     verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
   - apiGroups: ["discovery.k8s.io"]
     resources: ["endpointslices"]
     verbs: ["get", "list", "patch"]
@@ -126,25 +129,42 @@ spec:
                   NS="$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)"
                   PROBE_TIMEOUT="{{ .Values.global.ciliumEndpointSliceHealer.probeTimeoutSeconds | default 1 }}"
                   TAB="$(printf '\t')"
-                  READY=/tmp/ready-services.txt
+                  READY=/tmp/ready-svcs.txt
+                  # One call: all running pod IPs in the namespace.
+                  RUNNING_IPS="$(kubectl get pods -n "$NS" --field-selector=status.phase=Running \
+                    -o jsonpath='{range .items[*]}{.status.podIP}{"\n"}{end}' 2>/dev/null | sort -u)"
                   # One call: service-names that have at least one ready endpoint.
+                  # Schema: svcName TAB readyComma...  (e.g., "hypixel-react	T,true,true")
                   kubectl get endpointslices -n "$NS" \
                     -o jsonpath='{range .items[*]}{.metadata.labels.kubernetes\.io/service-name}{"\t"}{range .endpoints[*]}{.conditions.ready}{","}{end}{"\n"}{end}' 2>/dev/null \
                     | awk -F"$TAB" '$2 ~ /true/ {print $1}' | sort -u > "$READY"
+                  # One call: endpoint IPs per service (to cross-check stale vs genuine desync).
+                  # Schema: "svcName IP1 IP2 ..."
+                  SLICE_IPS="$(kubectl get endpointslices -n "$NS" \
+                    -o jsonpath='{range .items[*]}{.metadata.labels.kubernetes\.io/service-name}{" "}{range .endpoints[*]}{.addresses[0]}{" "}{end}{"\n"}{end}' 2>/dev/null)"
                   # One call: name<TAB>type<TAB>clusterIP<TAB>firstPort for every service.
                   kubectl get svc -n "$NS" \
                     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.type}{"\t"}{.spec.clusterIP}{"\t"}{.spec.ports[0].port}{"\n"}{end}' 2>/dev/null \
                     | while IFS="$TAB" read -r name type ip port; do
                         [ -z "$name" ] && continue
                         [ "$type" = "ClusterIP" ] || continue
-                        [ -z "$ip" ] && continue
-                        [ "$ip" = "None" ] && continue
+                        [ -z "$ip" ] || [ "$ip" = "None" ] && continue
                         [ -z "$port" ] && continue
                         grep -qx "$name" "$READY" || continue
                         if nc -z -w "$PROBE_TIMEOUT" "$ip" "$port" 2>/dev/null; then
                           continue
                         fi
-                        echo "DESYNC: svc/$name $ip:$port has ready endpoints but VIP unreachable -> forcing Cilium resync"
+                        # Cross-check: does any slice endpoint IP for this service belong to a running pod?
+                        svc_ips="$(echo "$SLICE_IPS" | awk -v svc="$name" '($1 == svc) {for(i=2;i<=NF;i++) print $i}')"
+                        has_live=0
+                        for sip in $svc_ips; do
+                          echo "$RUNNING_IPS" | grep -qxF "$sip" && has_live=1 && break
+                        done
+                        if [ "$has_live" -eq 0 ]; then
+                          echo "STALE_SLICE: svc/$name $ip:$port has ready endpoints but all pods are dead — skip"
+                          continue
+                        fi
+                        echo "DESYNC: svc/$name $ip:$port has live endpoints but VIP unreachable -> forcing Cilium resync"
                         kubectl annotate endpointslices -n "$NS" \
                           -l "kubernetes.io/service-name=$name" \
                           "sky.coflnet.com/cilium-resync=$(date +%s)" --overwrite >/dev/null 2>&1 || true

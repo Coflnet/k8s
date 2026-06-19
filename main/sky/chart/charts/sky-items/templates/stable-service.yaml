@@ -1,4 +1,4 @@
-{{ if .Values.enabled }}
+{{- if and .Values.enabled (or (not (hasKey .Values "rollout")) .Values.rollout.enabled) }}
 # stable service
 apiVersion: v1
 kind: Service
@@ -12,4 +12,4 @@ spec:
   ports:
     {{ toYaml .Values.serivcePorts | nindent 4 }}
 ---
-{{ end }}
+{{- end }}
