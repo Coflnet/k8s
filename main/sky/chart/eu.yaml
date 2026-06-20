@@ -254,3 +254,5 @@ sky-player-state:
   enabled: false
 sky-sniper:
   enabled: false
+sky-mcconnect:
+  enabled: false
