@@ -19,7 +19,6 @@ spec:
         {{ toYaml .Values.global.podAnnotations | nindent 8 }}
     spec:
       serviceAccountName: {{ .Chart.Name }}
-      automountServiceAccountToken: false
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       securityContext:

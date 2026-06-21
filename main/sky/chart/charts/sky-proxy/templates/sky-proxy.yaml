@@ -29,7 +29,6 @@ spec:
   {{- end }}
     spec:
       serviceAccountName: {{ .Chart.Name }}
-      automountServiceAccountToken: false
       {{- with .Values.global }}
       {{- if .imagePullSecrets }}
       imagePullSecrets:

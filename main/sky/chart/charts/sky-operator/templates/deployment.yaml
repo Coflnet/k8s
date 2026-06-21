@@ -20,7 +20,6 @@ spec:
     spec:
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
-      automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
         seccompProfile:

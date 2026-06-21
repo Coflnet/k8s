@@ -21,7 +21,6 @@ spec:
         {{ toYaml .Values.global.podAnnotations | nindent 8 }}
     spec:
       imagePullSecrets:
-      automountServiceAccountToken: false
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       securityContext:
         runAsNonRoot: true

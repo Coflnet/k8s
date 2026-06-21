@@ -22,7 +22,6 @@ spec:
         {{ toYaml .Values.global.podAnnotations | nindent 8 }}
     spec:
       serviceAccountName: {{ .Chart.Name }}
-      automountServiceAccountToken: false
       topologySpreadConstraints:
       - maxSkew: 2
         topologyKey: kubernetes.io/hostname

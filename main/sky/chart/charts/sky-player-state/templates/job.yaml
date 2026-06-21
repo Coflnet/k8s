@@ -19,7 +19,6 @@ spec:
         security.coflnet.com/k8s-api-access: "false"
     spec:
       serviceAccountName: {{ .Chart.Name }}
-      automountServiceAccountToken: false
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 12 }}
       securityContext:
