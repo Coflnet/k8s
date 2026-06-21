@@ -77,6 +77,8 @@ spec:
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
+        - name: tmp
+          mountPath: /tmp
       volumes: 
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
@@ -88,6 +90,8 @@ spec:
             secretName: {{ .name }}
           {{ end }}
       {{ end }}
+      - name: tmp
+        emptyDir: {}
   strategy:
     canary:
 {{- if .Values.canary.trafficRouting }}
