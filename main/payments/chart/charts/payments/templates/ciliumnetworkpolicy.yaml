@@ -19,6 +19,7 @@ spec:
       security.coflnet.com/public-http: "true"
   ingress:
     - fromEntities:
+        - cluster
         - ingress
         - host
         - remote-node
