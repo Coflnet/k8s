@@ -720,11 +720,6 @@ sky-player-state:
         configMapKeyRef:
           name: scylla-config
           key: player_state_user
-    - name: SCYLLA__PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: scylla-credentials
-          key: player_state_password
     - name: SCYLLA__X509Certificate_PATHS
       value: /tls/scylla/secret/db.pfx
     - name: SCYLLA__X509Certificate_PASSWORD
@@ -733,9 +728,9 @@ sky-player-state:
           name: scylla-credentials
           key: db-pfx-password
   livenessProbe:
-    initialDelaySeconds: 90
+    initialDelaySeconds: 15
   readinessProbe:
-    initialDelaySeconds: 90
+    initialDelaySeconds: 10
 
 sky-profiles:
   enabled: true
