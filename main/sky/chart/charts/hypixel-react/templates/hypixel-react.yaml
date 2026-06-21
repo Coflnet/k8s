@@ -18,39 +18,8 @@ spec:
     spec:
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
-      securityContext:
-        seccompProfile:
-          type: RuntimeDefault
-      initContainers:
-        - name: chown-next
-          image: busybox:1.36
-          command: ["chown", "-R", "65532:65532", "/opt/app/.next"]
-          securityContext:
-            runAsUser: 0
-            capabilities:
-              add: ["CHOWN", "DAC_OVERRIDE"]
-              drop: ["ALL"]
-          volumeMounts:
-            - name: next-cache
-              mountPath: /opt/app/.next/cache
-      volumes:
-        - name: next-cache
-          emptyDir: {}
       containers:
         - name: {{ .Chart.Name }}
-          securityContext:
-            allowPrivilegeEscalation: false
-            privileged: false
-            runAsNonRoot: true
-            runAsUser: 65532
-            capabilities:
-              drop:
-                - ALL
-            seccompProfile:
-              type: RuntimeDefault
-          volumeMounts:
-            - name: next-cache
-              mountPath: /opt/app/.next/cache
           image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
