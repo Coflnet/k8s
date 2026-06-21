@@ -15,9 +15,20 @@ spec:
       labels:
         app: {{ .Chart.Name }}-redis
     spec:
+      automountServiceAccountToken: false
       containers:
       - name: {{ .Chart.Name }}-redis
         image: redis:7.0.5
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          runAsUser: 999
+          capabilities:
+            drop:
+              - ALL
+          seccompProfile:
+            type: RuntimeDefault
         ports:
         - containerPort: 6379
         resources:

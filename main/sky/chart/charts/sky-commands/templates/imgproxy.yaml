@@ -16,10 +16,20 @@ spec:
         app: {{ .Chart.Name }}-imgproxy
         security.coflnet.com/k8s-api-access: "false"
     spec:
+      automountServiceAccountToken: false
       serviceAccountName: {{ .Chart.Name }}
       containers:
       - name: {{ .Chart.Name }}-imgproxy
         image: darthsim/imgproxy:v3.12
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+          seccompProfile:
+            type: RuntimeDefault
         ports:
           - containerPort: 8080
             name: http
