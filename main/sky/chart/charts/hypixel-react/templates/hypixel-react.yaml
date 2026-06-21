@@ -22,6 +22,9 @@ spec:
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
+      volumes:
+        - name: next-cache
+          emptyDir: {}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -34,6 +37,9 @@ spec:
                 - ALL
             seccompProfile:
               type: RuntimeDefault
+          volumeMounts:
+            - name: next-cache
+              mountPath: /opt/app/.next/cache
           image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
