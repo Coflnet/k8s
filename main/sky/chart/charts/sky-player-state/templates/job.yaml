@@ -19,10 +19,24 @@ spec:
         security.coflnet.com/k8s-api-access: "false"
     spec:
       serviceAccountName: {{ .Chart.Name }}
+      automountServiceAccountToken: false
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 12 }}
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
        - name: {{ .Chart.Name }}
+         securityContext:
+           allowPrivilegeEscalation: false
+           runAsNonRoot: true
+           runAsUser: 1000
+           capabilities:
+             drop:
+               - ALL
+           seccompProfile:
+             type: RuntimeDefault
          image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
          ports:
           {{ toYaml .Values.ports | nindent 10 }}

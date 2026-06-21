@@ -22,8 +22,22 @@ spec:
     spec:
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
       - name: {{ .Chart.Name }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 1000
+          capabilities:
+            drop:
+              - ALL
+          seccompProfile:
+            type: RuntimeDefault
         image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
         ports:
            {{ toYaml .Values.ports | nindent 10 }}

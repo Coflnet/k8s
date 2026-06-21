@@ -22,12 +22,26 @@ spec:
         {{ toYaml .Values.global.podAnnotations | nindent 8 }}
     spec:
       serviceAccountName: {{ .Chart.Name }}
+      automountServiceAccountToken: false
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       nodeSelector:
       {{ toYaml .Values.nodeSelector | nindent 8 }}
       containers:
       - name: "{{ .Chart.Name }}-manager"
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 1000
+          capabilities:
+            drop:
+              - ALL
+          seccompProfile:
+            type: RuntimeDefault
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag  }}"
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
