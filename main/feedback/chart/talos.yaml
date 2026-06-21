@@ -1,0 +1,96 @@
+# Talos (talos-eu-hcloud) overlay for feedback service.
+#
+# Differences vs. eu-cluster:
+#   - No harbor registry (public images)
+#   - Kafka uses external hostname (no k8-main-kafka service on talos)
+#   - Security hardening: runAsNonRoot, readOnlyRootFilesystem, no automount token
+#   - ServiceMonitor gated (Prometheus not yet deployed on talos)
+#   - Ingress disabled (Cilium Gateway API replaces nginx)
+
+# ── Remove Harbor imagePullSecret ───────────────────────────────────────
+imagePullSecrets: []
+
+# ── Pod security ────────────────────────────────────────────────────────
+podLabels:
+  security.coflnet.com/k8s-api-access: "false"
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  capabilities:
+    drop:
+      - ALL
+  seccompProfile:
+    type: RuntimeDefault
+automountServiceAccountToken: false
+
+# ── Service account ─────────────────────────────────────────────────────
+serviceAccount:
+  create: true
+  name: feedback
+
+# ── Talos-specific env overrides ────────────────────────────────────────
+envVars:
+  # MongoDB host (same external MongoDB, connection string from k8s Secret)
+  - name: MONGO_HOST
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: mongo_host
+
+  # CockroachDB connection (from k8s Secret)
+  - name: COCKROACH_CONNECTION
+    valueFrom:
+      secretKeyRef:
+        key: cockroach_connection
+        name: secret
+
+  # Kafka — external hostname (NOT k8-main-kafka which is eu-cluster only)
+  # This must be updated to the actual external Kafka broker address
+  - name: KAFKA_HOST
+    value: "195.201.61.153:9092,195.201.61.227:9092,195.201.60.99:9092"
+
+  - name: DISCORD_BOT_BASE_URL
+    value: "http://discord-discord-discord-bot.discord:8080"
+
+  - name: WEBHOOK_URL
+    valueFrom:
+      secretKeyRef:
+        key: webhook_url
+        name: secret
+
+# ── Probes (OpenBao auth takes 20-45s) ──────────────────────────────────
+readinessProbe:
+  httpGet:
+    path: /metrics
+    port: metrics
+  initialDelaySeconds: 30
+  periodSeconds: 5
+livenessProbe:
+  httpGet:
+    path: /metrics
+    port: metrics
+  initialDelaySeconds: 45
+  periodSeconds: 10
+
+# ── Gate ServiceMonitor (CRD not installed until Prometheus is deployed) ─
+serviceMonitor:
+  enabled: false
+
+# ── Ingress via Cilium Gateway API (no nginx) ────────────────────────────
+ingress:
+  enabled: false
+
+# ── Resources ────────────────────────────────────────────────────────────
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 300m
+    memory: 256Mi
