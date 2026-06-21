@@ -87,6 +87,6 @@ spec:
             secretName: {{ .name }}
           {{ end }}
       {{ end }}
-      - name: tmp
-        emptyDir: {}
+        - name: tmp
+          emptyDir: {}
 {{ end }}

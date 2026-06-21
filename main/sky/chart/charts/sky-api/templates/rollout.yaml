@@ -90,8 +90,8 @@ spec:
             secretName: {{ .name }}
           {{ end }}
       {{ end }}
-      - name: tmp
-        emptyDir: {}
+        - name: tmp
+          emptyDir: {}
   strategy:
     canary:
 {{- if .Values.canary.trafficRouting }}
