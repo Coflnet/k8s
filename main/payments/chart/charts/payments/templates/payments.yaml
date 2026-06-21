@@ -53,10 +53,18 @@ spec:
         {{- end }}
     spec:
       serviceAccountName: {{ $p.name }}
-      automountServiceAccountToken: true
+      automountServiceAccountToken: {{ $.Values.automountServiceAccountToken | default false }}
+      {{- with $.Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       initContainers:
       - name: openbao-ca-bundle
         image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+        {{- with $.Values.initContainerSecurityContext }}
+        securityContext:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
         command: ["/bin/sh", "-ec"]
         args:
           - |
@@ -87,6 +95,10 @@ spec:
       containers:
       - name: {{ $p.name }}
         image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+        {{- with $.Values.containerSecurityContext }}
+        securityContext:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
         command: ["/bin/sh", "-ec"]
         args:
           - |
