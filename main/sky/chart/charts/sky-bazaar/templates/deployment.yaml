@@ -91,7 +91,9 @@ spec:
         - name: scylla-pfx
           mountPath: /tls/scylla/secret/db.pfx
           subPath: db.pfx
-      volumes: 
+      volumes:
+        - name: tmp
+          emptyDir: {}
         - name: scylla-pfx
           secret:
             secretName: scylla-pfx
