@@ -32,6 +32,7 @@ spec:
       - name: {{ .Chart.Name }}
         securityContext:
           allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
           runAsNonRoot: true
           runAsUser: 1000
           capabilities:
@@ -70,6 +71,8 @@ spec:
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
+        - name: tmp
+          mountPath: /tmp
         {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
@@ -78,6 +81,8 @@ spec:
           mountPath: /tls/scylla/secret/db.pfx
           subPath: db.pfx
       volumes:
+        - name: tmp
+          emptyDir: {}
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
