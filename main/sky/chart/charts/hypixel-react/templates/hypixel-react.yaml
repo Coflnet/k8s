@@ -35,7 +35,7 @@ spec:
       activeService: {{ .Chart.Name }}
       previewService: {{ .Chart.Name }}-preview
       autoPromotionEnabled: true
-      autoPromotionSeconds: 300
-      scaleDownDelaySeconds: 120
-      previewReplicaCount: 1
+      autoPromotionSeconds: {{ .Values.autoPromotionSeconds | default 300 }}
+      scaleDownDelaySeconds: {{ .Values.scaleDownDelaySeconds | default 30 }}
+      previewReplicaCount: {{ .Values.previewReplicaCount | default 1 }}
 {{ end }}
