@@ -76,7 +76,15 @@ metadata:
     app.kubernetes.io/component: cilium-endpointslice-healer
 spec:
   schedule: {{ .Values.global.ciliumEndpointSliceHealer.schedule | default "* * * * *" | quote }}
-  concurrencyPolicy: Forbid
+  # Replace (not Forbid): if a job ever wedges (e.g. a Job stuck in
+  # SuccessCriteriaMet that never finalizes to Complete, so it lingers in the
+  # CronJob's .status.active), Forbid would refuse to schedule any further runs
+  # and the healer silently dies — exactly what happened on 2026-06-21, leaving
+  # the cluster unprotected for 5 days until Cilium desynced sky.coflnet.com.
+  # Replace deletes the lingering active job each tick, so the healer is
+  # self-healing and a single stuck job can never permanently halt it. Runs are
+  # idempotent and finish in seconds, so replacing an "active" job is safe.
+  concurrencyPolicy: Replace
   startingDeadlineSeconds: 30
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 3
