@@ -84,6 +84,12 @@ global:
   # On talos deprecated is disabled, so we deploy it from the parent chart.
   ingress:
     enabled: true
+    # Talos runs Cilium (eBPF kube-proxy replacement) + hostNetwork nginx. The
+    # Service ClusterIP eBPF backend map desyncs to zero backends on Argo Rollouts
+    # selector flips, 502-ing sky.coflnet.com. Disable service-upstream so nginx
+    # routes directly to pod endpoints and never depends on that map. Safe here:
+    # canary trafficRouting is ~ (null), no service mesh, no Service-VIP NetworkPolicies.
+    serviceUpstream: false
 
   # No redpanda volumes yet — secrets/configmaps not created on talos.
   volumes:

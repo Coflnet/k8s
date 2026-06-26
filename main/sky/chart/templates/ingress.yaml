@@ -7,7 +7,22 @@ metadata:
   namespace: sky
   annotations:
       kubernetes.io/ingress.class: "nginx"
+      # service-upstream forces nginx to route through the Service ClusterIP, whose
+      # Cilium eBPF backend map intermittently desyncs to zero backends on Argo
+      # Rollouts selector flips (blueGreen activeService / canary), causing
+      # hostNetwork nginx -> EHOSTUNREACH -> 502 (e.g. sky.coflnet.com via
+      # hypixel-react). Removing it makes nginx load-balance straight to pod
+      # endpoints from its own (reliable) EndpointSlice watch, bypassing the bug.
+      # Defaults ON to preserve behavior; set global.ingress.serviceUpstream: false
+      # per-cluster to disable. Only safe where Argo nginx trafficRouting is unused.
+      {{- if ne (toString .Values.global.ingress.serviceUpstream) "false" }}
       nginx.ingress.kubernetes.io/service-upstream: "true"
+      {{- end }}
+      # Peak EWMA: route each request to the lowest-latency pod instead of plain
+      # round-robin, so a slow/degraded node automatically receives less traffic.
+      # Only has effect when nginx balances pod endpoints directly (service-upstream
+      # off); a no-op when routing to a single ClusterIP upstream.
+      nginx.ingress.kubernetes.io/load-balance: "ewma"
       nginx.ingress.kubernetes.io/client-body-buffer-size: 1M
       cert-manager.io/cluster-issuer: letsencrypt-prod
       nginx.ingress.kubernetes.io/ssl-redirect: "false"
