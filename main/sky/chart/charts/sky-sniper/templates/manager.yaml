@@ -83,7 +83,9 @@ spec:
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
-      volumes: 
+        - name: tmp
+          mountPath: /tmp
+      volumes:
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
@@ -94,6 +96,8 @@ spec:
             secretName: {{ .name }}
           {{ end }}
       {{ end }}
+        - name: tmp
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
