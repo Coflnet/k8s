@@ -256,3 +256,9 @@ sky-sniper:
   enabled: false
 sky-mc-connect:
   enabled: false
+
+# Producing moved to talos (see talos.yaml sky-updater). Left enabled here it ran a
+# second producer into the *-raw topics (3 replicas via the chart default), so eu and
+# talos were both writing sky-bazaar-raw. Disabled so talos is the sole producer.
+sky-updater:
+  enabled: false
