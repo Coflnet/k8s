@@ -49,10 +49,10 @@ ports:
 resources:
   requests:
     cpu: 800m
-    memory: 1050Mi
+    memory: 1250Mi
   limits: 
     cpu: 2000m
-    memory: 1600Mi
+    memory: 2000Mi
 
 services:
   - sky-api
