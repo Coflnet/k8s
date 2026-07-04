@@ -93,9 +93,11 @@ canary:
       rootService: *mainService
       trafficSplitName: *trafficSplit
 
+# waits until the pod has warmed its downstream dependencies (redis + sky-settings)
+# so fresh pods only receive connections once setup is fast; see StartupWarmupService
 readinessProbe:
   httpGet:
-    path: /metrics
+    path: /health/ready
     port: 8000
   initialDelaySeconds: 20
   periodSeconds: 3
