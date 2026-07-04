@@ -74,10 +74,15 @@ spec:
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
+        - name: tmp
+          mountPath: /tmp
         - name: scylla-pfx
           mountPath: /tls/scylla/secret/db.pfx
           subPath: db.pfx
       volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 256Mi
         - name: scylla-pfx
           secret:
             secretName: scylla-pfx
