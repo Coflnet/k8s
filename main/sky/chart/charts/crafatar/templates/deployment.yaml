@@ -56,7 +56,18 @@ spec:
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
-      volumes: 
+        # crafatar caches downloaded images to ./images/* relative to its
+        # workdir (/home/app/crafatar); with a read-only root filesystem these
+        # writes fail with EACCES. Mount a writable emptyDir per subdirectory
+        # (subPath lets kubelet create each dir, which the app itself does not).
+        {{ range $dir := list "skins" "faces" "helms" "renders" "capes" }}
+        - name: images-cache
+          mountPath: /home/app/crafatar/images/{{ $dir }}
+          subPath: {{ $dir }}
+        {{ end }}
+        - name: tmp
+          mountPath: /tmp
+      volumes:
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
@@ -67,4 +78,8 @@ spec:
             secretName: {{ .name }}
           {{ end }}
       {{ end }}
+        - name: images-cache
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
 {{ end }}
