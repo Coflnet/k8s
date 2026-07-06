@@ -69,7 +69,7 @@ spec:
             value: /openbao/tls/ca.crt
           {{- end }}
           - name: REDIS_HOST
-            value: {{ .Values.global.redis.name }}
+            value: {{ (.Values.global.redis | default dict).name | default "sky-global-redis" }}
           - name: REDIS_FLIP_INSTANCES__0 
             value: "sky-bfcs-redis,syncTimeout=1000"
           - name: MOD_REDIS_HOST

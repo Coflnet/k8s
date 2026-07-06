@@ -62,7 +62,7 @@ spec:
             value: /openbao/tls/ca.crt
           {{ end }}
           - name: REDIS_HOST
-            value: {{ .Values.global.redis.name }}
+            value: {{ (.Values.global.redis | default dict).name | default "sky-global-redis" }}
           {{ if .Values.envVars }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 10 }}
           {{ end }}
