@@ -296,9 +296,9 @@ sky-api:
           name: sky-api-db
           key: connection
   livenessProbe:
-    initialDelaySeconds: 90
+    initialDelaySeconds: 30
   readinessProbe:
-    initialDelaySeconds: 90
+    initialDelaySeconds: 30
   canary:
     steps:
       - setWeight: 10
