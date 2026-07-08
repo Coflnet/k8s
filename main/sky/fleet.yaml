@@ -91,3 +91,9 @@ targetCustomizations:
     helm:
       valuesFiles:
         - ./chart/talos.yaml
+
+  - name: talos-linode
+    clusterName: talos-linode
+    helm:
+      valuesFiles:
+        - ./chart/talos-linode.yaml

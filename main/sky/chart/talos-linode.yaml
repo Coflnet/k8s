@@ -1,4 +1,4 @@
-# Talos Cloudfanatic overlay (single-node, replaces us-cluster).
+# Talos Linode overlay (single-node, replaces us-linode).
 # No OpenBao — all creds via k8s secrets.
 # Cilium CNI — no Linkerd sidecar.
 
@@ -143,7 +143,7 @@ sky-bfcs:
     tls:
       enabled: true
     nginx: false
-    host: sky-us.coflnet.com
+    host: us-linode.coflnet.com
   envVars:
     - name: JAEGER_AGENT_HOST
       valueFrom:
@@ -159,27 +159,26 @@ sky-bfcs:
       value: http://sky-sniper-eu-cluster:8000
     # Local Redis via password auth (TLS deferred — see internal/infrastructure/pki.md).
     - name: FLIP_REDIS_OPTIONS
-      value: sky-bfcs-redis,password=fDBiC9l571WaWtRJ+BpHQqkS0xhrGHhv,syncTimeout=1000
+      value: sky-bfcs-redis,password=aFeFLKKrhruu5BsozBDxc/LfBv0oHuG0,syncTimeout=1000
     - name: REDIS_HOST
-      value: sky-bfcs-redis,password=fDBiC9l571WaWtRJ+BpHQqkS0xhrGHhv,syncTimeout=1000
+      value: sky-bfcs-redis,password=aFeFLKKrhruu5BsozBDxc/LfBv0oHuG0,syncTimeout=1000
     # Redis flip instances.
     - name: REDIS_FLIP_INSTANCES__0
-      value: sky-bfcs-redis,password=fDBiC9l571WaWtRJ+BpHQqkS0xhrGHhv,syncTimeout=1000
-    # Talos Linode Redis for cross-cluster flip pub/sub.
-    # Password from redis-password secret on talos-linode, synced to redis-talos-linode secret here.
+      value: sky-bfcs-redis,password=aFeFLKKrhruu5BsozBDxc/LfBv0oHuG0,syncTimeout=1000
+    # Cloudfanatic (US) Redis for cross-cluster flip pub/sub.
+    # Password from redis-password secret on cloudfanatic, synced to redis-cloudfanatic secret here.
     - name: REDIS_FLIP_INSTANCES__1
       valueFrom:
         secretKeyRef:
-          name: redis-talos-linode
+          name: redis-cloudfanatic
           key: connection
-  # Redis: password auth, NodePort 31379 for cross-cluster access from talos-eu.
-  # Node IP: 23.158.232.23 → talos-eu sky-modcommands connects to 23.158.232.23:31379
+  # Redis: password auth, NodePort 31379 for cross-cluster access from talos-eu / talos-cloudfanatic.
   # TODO: upgrade to TLS+mTLS (see scripts/redis-mtls-*.sh and internal/infrastructure/pki.md)
   redis:
     enabled: true
     serviceType: NodePort
     nodePort: 31379
-    password: fDBiC9l571WaWtRJ+BpHQqkS0xhrGHhv
+    password: aFeFLKKrhruu5BsozBDxc/LfBv0oHuG0
 
 sky-chat:
   enabled: false

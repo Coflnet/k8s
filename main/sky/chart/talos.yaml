@@ -693,6 +693,13 @@ sky-mod-commands:
         secretKeyRef:
           name: redis-cloudfanatic
           key: connection
+    # Talos Linode Redis for cross-cluster flip pub/sub.
+    # Password from redis-password secret on talos-linode, synced to redis-talos-linode secret here.
+    - name: REDIS_FLIP_INSTANCES__3
+      valueFrom:
+        secretKeyRef:
+          name: redis-talos-linode
+          key: connection
   livenessProbe:
     initialDelaySeconds: 90
   readinessProbe:
