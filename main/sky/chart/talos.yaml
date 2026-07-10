@@ -419,6 +419,12 @@ sky-bazaar-flipper:
 sky-bfcs:
   enabled: true
   externalMinio: true
+  # sky-bfcs is only a secondary instance on talos-eu, so trim its CPU request here.
+  # The 1400m subchart default stays for the non-eu clusters where sky-bfcs is the
+  # primary, time-critical workload (brief spikes, must not be starved).
+  resources:
+    requests:
+      cpu: 400m
   envVars:
     - name: REDIS_HOST
       value: sky-bfcs-redis,syncTimeout=1000

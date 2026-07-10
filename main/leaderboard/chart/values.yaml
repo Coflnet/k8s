@@ -16,8 +16,12 @@ ports:
 
 resources:
   requests:
-    cpu: 400m
+    cpu: 50m
     memory: 200Mi
+  # Low-priority service: cap CPU so its occasional heavy spikes (peaks ~1.8 cores)
+  # can't starve more important workloads. It throttles during those spikes by design.
+  limits:
+    cpu: 300m
 
 serivcePorts:
   - name: api

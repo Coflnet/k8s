@@ -14,7 +14,7 @@ ports:
 
 resources:
   requests:
-    cpu: 100m
+    cpu: 50m
     memory: 300Mi
   limits:
     cpu: 250m

@@ -1,8 +1,22 @@
 enabled: true
+# Steady state is a single instance: sky-items collides on DB writes and runs
+# slower with 2 concurrent instances. The rollout's maxSurge: 1 / maxUnavailable: 0
+# (see templates/rollout.yaml) briefly surges to 2 during a version rollout so the
+# new pod is healthy before the old one is terminated - never a zero-instance gap.
 replicaCount: 1
 
 rollout:
   enabled: true
+
+# PodDisruptionBudget: refuses voluntary disruption (node drain, host upgrade)
+# that would take the sole pod below minAvailable: 1. Note this only blocks
+# eviction - it does NOT surge a replacement first - so a node drain targeting
+# this pod will stall/fail rather than silently dropping to zero instances.
+# To drain that node without downtime, scale to 2 first, let the new pod go
+# Ready, drain, then scale back to 1.
+pdb:
+  enabled: true
+  minAvailable: 1
 
 serviceMonitor:
   enabled: true
