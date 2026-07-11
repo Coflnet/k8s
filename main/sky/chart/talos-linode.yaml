@@ -135,7 +135,8 @@ sky-bfcs:
   metrics:
     enabled: false
   replicaCount: 1
-  strategy: RollingUpdate
+  # not enough RAM to run 2 so replace in place instead of surging.
+  strategy: Recreate
   defaultEnvVarsEnabled: false
   externalMinio: true
   ingress:
