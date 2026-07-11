@@ -67,11 +67,14 @@ targetCustomizations:
     helm:
       valuesFiles:
         - ./chart/us-spot-cluster.yaml
+  # us-data-wagon was reinstalled as a Talos cluster; Rancher/Fleet still knows it
+  # by its original registered cluster name "us-data-wagon" (not "talos-datawagon" —
+  # that's only a local kubectl context alias).
   - name: us-data-wagon
     clusterName: us-data-wagon
     helm:
       valuesFiles:
-        - ./chart/us-spot-cluster.yaml
+        - ./chart/talos-datawagon.yaml
   - name: us-vultr-high-performance
     clusterName: us-vultr-high-performance
     helm:
@@ -97,9 +100,3 @@ targetCustomizations:
     helm:
       valuesFiles:
         - ./chart/talos-linode.yaml
-
-  - name: talos-datawagon
-    clusterName: talos-datawagon
-    helm:
-      valuesFiles:
-        - ./chart/talos-datawagon.yaml
