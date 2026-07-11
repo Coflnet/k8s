@@ -173,6 +173,13 @@ sky-bfcs:
         secretKeyRef:
           name: redis-cloudfanatic
           key: connection
+    # Talos Datawagon Redis for cross-cluster flip pub/sub.
+    # Password from redis-password secret on talos-datawagon, synced to redis-talos-datawagon secret here.
+    - name: REDIS_FLIP_INSTANCES__2
+      valueFrom:
+        secretKeyRef:
+          name: redis-talos-datawagon
+          key: connection
   # Redis: password auth, NodePort 31379 for cross-cluster access from talos-eu / talos-cloudfanatic.
   # TODO: upgrade to TLS+mTLS (see scripts/redis-mtls-*.sh and internal/infrastructure/pki.md)
   redis:

@@ -97,3 +97,9 @@ targetCustomizations:
     helm:
       valuesFiles:
         - ./chart/talos-linode.yaml
+
+  - name: talos-datawagon
+    clusterName: talos-datawagon
+    helm:
+      valuesFiles:
+        - ./chart/talos-datawagon.yaml
