@@ -195,8 +195,6 @@ sky-crafts:
   enabled: false
 sky-event-broker:
   enabled: false
-sky-filter:
-  enabled: false
 sky-flip-tracker:
   enabled: false
 sky-flipper:

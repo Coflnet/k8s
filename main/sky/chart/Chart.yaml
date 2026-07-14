@@ -38,8 +38,6 @@ dependencies:
     version: "0.1.0" 
   - name: sky-event-broker
     version: "0.1.0" 
-  - name: sky-filter
-    version: "0.1.0" 
   - name: sky-flipper
     version: "0.1.0" 
   - name: sky-flip-tracker

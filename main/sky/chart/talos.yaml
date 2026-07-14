@@ -493,10 +493,7 @@ sky-crafts:
     initialDelaySeconds: 120
 
 sky-event-broker:
-  enabled: false
-
-sky-filter:
-  enabled: false
+  enabled: true
 
 sky-flipper:
   enabled: true

@@ -88,9 +88,6 @@ sky-crafts:
 sky-event-broker:
   enabled: false
 
-sky-filter:
-  enabled: false
-
 sky-flip-tracker:
   enabled: false
 
