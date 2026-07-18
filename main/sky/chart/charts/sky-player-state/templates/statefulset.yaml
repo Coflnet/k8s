@@ -1,15 +1,24 @@
 {{ if .Values.enabled }}
+# StatefulSet (not Deployment) so each replica gets a stable ordinal hostname
+# (sky-player-state-0/1/2). The task aggregate writer keys its cassandra rows on
+# instanceId = Environment.MachineName; with a Deployment that was a fresh random
+# pod name every rollout, so task_bucket_aggregates day partitions accumulated a new
+# writer id per deploy and the merge-read eventually stalled. Stable ordinals bound the
+# writer cardinality to replicaCount.
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Chart.Name }}
   labels:
     app: {{ .Chart.Name }}
 spec:
   replicas: {{ .Values.replicaCount }}
-  strategy:
+  serviceName: {{ .Chart.Name }}
+  # StatefulSet RollingUpdate replaces one ordinal at a time in reverse order, which also
+  # gives kafka a clean single-consumer handoff per pod instead of a surge of new members.
+  podManagementPolicy: OrderedReady
+  updateStrategy:
     type: {{ .Values.strategy }}
-  progressDeadlineSeconds: 2592000
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
@@ -75,7 +84,7 @@ spec:
         - name: scylla-pfx
           mountPath: /tls/scylla/secret/db.pfx
           subPath: db.pfx
-      volumes: 
+      volumes:
         - name: scylla-pfx
           secret:
             secretName: scylla-pfx
