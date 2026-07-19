@@ -295,6 +295,14 @@ sky-api:
         secretKeyRef:
           name: sky-api-db
           key: connection
+    # Whitelist IPv4 loopback so `kubectl port-forward` sessions (which the pod
+    # sees as source 127.0.0.1) are exempt from rate limiting, just like in-cluster
+    # pod traffic (10.0.0.0/8). appsettings.json already lists ::1/10 but the IPv4
+    # loopback range was missing, so local debugging against a forwarded sky-api
+    # got rate-limited/blocked. Appends index 4 to IpRateLimiting:IpWhitelist
+    # (indices 0-3 are defined in appsettings.json).
+    - name: IpRateLimiting__IpWhitelist__4
+      value: "127.0.0.0/8"
   livenessProbe:
     initialDelaySeconds: 30
   readinessProbe:
