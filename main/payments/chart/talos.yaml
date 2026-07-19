@@ -22,7 +22,7 @@ payments:
   containerSecurityContext:
     allowPrivilegeEscalation: false
     runAsNonRoot: true
-    runAsUser: 1000
+    runAsUser: 1654
     capabilities:
       drop:
         - ALL
@@ -30,8 +30,9 @@ payments:
       type: RuntimeDefault
   initContainerSecurityContext:
     allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
     runAsNonRoot: true
-    runAsUser: 1000
+    runAsUser: 1654
     capabilities:
       drop:
         - ALL

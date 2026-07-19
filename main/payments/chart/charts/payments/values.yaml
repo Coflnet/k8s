@@ -15,6 +15,10 @@ openbao:
   tokenPath: /var/run/secrets/openbao-serviceaccount/token
   caSecretName: openbao-ca
   caBundlePath: /var/run/secrets/openbao-ca-bundle/ca-certificates.crt
+  caCertPath: /var/run/secrets/openbao-ca/ca.crt
+  # Shell-capable image used only to create the legacy SSL_CERT_FILE bundle.
+  # Keep this independent from the chiseled Payments application image.
+  caBundleImage: mcr.microsoft.com/dotnet/runtime-deps:10.0-noble
   # PEM of the OpenBao server CA the agent uses to verify the TLS connection.
   # Default below is the eu-cluster OpenBao CA; override per-cluster (e.g. Talos)
   # in a values overlay when that cluster's OpenBao uses a different CA.

@@ -58,9 +58,13 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      # Build a conventional trust bundle for the pre-migration image. This
+      # deliberately uses a shell-capable runtime-deps image; the Payments
+      # application image remains chiseled and has no shell dependency.
       initContainers:
       - name: openbao-ca-bundle
-        image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+        image: {{ $.Values.openbao.caBundleImage | default "mcr.microsoft.com/dotnet/runtime-deps:10.0-noble" | quote }}
+        imagePullPolicy: IfNotPresent
         {{- with $.Values.initContainerSecurityContext }}
         securityContext:
           {{- toYaml . | nindent 10 }}
@@ -69,17 +73,17 @@ spec:
         args:
           - |
             bundle=""
-            for candidate in /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt; do
+            for candidate in /etc/ssl/certs/ca-certificates.crt /etc/ssl/cert.pem /etc/pki/tls/certs/ca-bundle.crt; do
               if [ -s "$candidate" ]; then
                 bundle="$candidate"
                 break
               fi
             done
-            if [ -n "$bundle" ]; then
-              cat "$bundle" /openbao-ca/ca.crt > /openbao-bundle/ca-certificates.crt
-            else
-              cp /openbao-ca/ca.crt /openbao-bundle/ca-certificates.crt
+            if [ -z "$bundle" ]; then
+              echo "system CA bundle not found" >&2
+              exit 1
             fi
+            cat "$bundle" /openbao-ca/ca.crt > /openbao-bundle/ca-certificates.crt
         volumeMounts:
           - name: openbao-ca
             mountPath: /openbao-ca
@@ -99,11 +103,6 @@ spec:
         securityContext:
           {{- toYaml . | nindent 10 }}
         {{- end }}
-        command: ["/bin/sh", "-ec"]
-        args:
-          - |
-            . /var/run/secrets/openbao/payment.env
-            exec dotnet Payments.dll --hostBuilder:reloadConfigOnChange=false
         ports:
            {{ toYaml $.Values.ports | nindent 10 }}
         env:
@@ -121,8 +120,12 @@ spec:
             value: {{ $.Values.openbao.optional | default "false" | quote }}
           - name: OPENBAO__TOKEN_PATH
             value: {{ $.Values.openbao.tokenPath | default "/var/run/secrets/openbao-serviceaccount/token" | quote }}
+          # Legacy provider uses the combined system/OpenBao trust bundle.
           - name: SSL_CERT_FILE
             value: {{ $.Values.openbao.caBundlePath | default "/var/run/secrets/openbao-ca-bundle/ca-certificates.crt" | quote }}
+          # Coflnet.Core and the database password provider load this CA directly.
+          - name: OPENBAO__CACERT
+            value: {{ $.Values.openbao.caCertPath | default "/var/run/secrets/openbao-ca/ca.crt" | quote }}
           {{- if $.Values.openbao.database.enabled }}
           - name: OPENBAO__DB__ENABLED
             value: "true"
@@ -148,6 +151,9 @@ spec:
         volumeMounts:
         - name: openbao-token
           mountPath: {{ trimSuffix "/token" ($.Values.openbao.tokenPath | default "/var/run/secrets/openbao-serviceaccount/token") | quote }}
+          readOnly: true
+        - name: openbao-ca
+          mountPath: {{ dir ($.Values.openbao.caCertPath | default "/var/run/secrets/openbao-ca/ca.crt") | quote }}
           readOnly: true
         - name: openbao-ca-bundle
           mountPath: {{ dir ($.Values.openbao.caBundlePath | default "/var/run/secrets/openbao-ca-bundle/ca-certificates.crt") | quote }}
