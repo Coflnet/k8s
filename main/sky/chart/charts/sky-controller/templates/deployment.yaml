@@ -48,13 +48,17 @@ spec:
           - name: OPENBAO__OPTIONAL
             value: "true"
           - name: OPENBAO__ADDR
-            value: http://openbao.openbao.svc:8200
+            value: {{ .Values.global.openbaoAddr | default "http://openbao.openbao.svc:8200" }}
           - name: OPENBAO__MOUNT
             value: kv
           - name: OPENBAO__PATH
             value: {{ printf "sky/%s" .Chart.Name | quote }}
           - name: OPENBAO__ROLE
             value: {{ .Chart.Name | quote }}
+          {{- if .Values.global.openbaoCACert }}
+          - name: OPENBAO__CACERT
+            value: /openbao/tls/ca.crt
+          {{- end }}
           {{ if .Values.envVars }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 10 }}
           {{ end }}

@@ -36,18 +36,6 @@ spec:
           - containerPort: 9000
             name: metrics
         env:
-          - name: OPENBAO__ENABLED
-            value: "true"
-          - name: OPENBAO__OPTIONAL
-            value: "true"
-          - name: OPENBAO__ADDR
-            value: http://openbao.openbao.svc:8200
-          - name: OPENBAO__MOUNT
-            value: kv
-          - name: OPENBAO__PATH
-            value: {{ printf "sky/%s" .Chart.Name | quote }}
-          - name: OPENBAO__ROLE
-            value: {{ .Chart.Name | quote }}
           - name: IMGPROXY_ALLOWED_SOURCES
             value: "https://sky.shiiyu.moe/,https://skycrypt.coflnet.com,https://mc-heads.net/,https://crafatar.com/,https://static.coflnet.com/,https://sky.coflnet.com"
           - name: IMGPROXY_MAX_ANIMATION_FRAMES
