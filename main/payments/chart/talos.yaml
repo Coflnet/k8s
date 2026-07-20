@@ -91,6 +91,10 @@ payments:
   networkPolicy:
     cilium:
       enabled: true
+    # Exact, additive path to the tailnet proxy for the secrets cluster. This
+    # changes only NetworkPolicy and does not roll the Payments Deployments.
+    tailscaleOpenbaoEgress:
+      enabled: true
     # Rely on the ingress-controller namespace selector instead of the
     # eu-cluster pod CIDRs (which do not exist on Talos).
     publicIngressCidrs: []

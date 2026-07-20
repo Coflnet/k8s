@@ -8,6 +8,11 @@ openbao:
   # pre-populating secrets from OpenBao. Requires OpenBao k8s auth roles
   # and kv secrets to exist. Disabled by default to prevent stuck pods.
   agentEnabled: false
+  # Keep both unset for the source cluster's default Kubernetes auth behavior.
+  # A cutover overlay can set authPath (application) and agentAuthPath
+  # (injector annotation) without changing the current rendered pod template.
+  authPath: ""
+  agentAuthPath: ""
   addr: https://openbao.openbao.svc:8200
   mount: kv
   optional: "false"
@@ -69,6 +74,10 @@ networkPolicy:
   # via a values overlay; leave false on plain NetworkPolicy clusters.
   cilium:
     enabled: false
+  tailscaleOpenbaoEgress:
+    enabled: false
+    namespace: tailscale
+    podNameLabel: tailscale-secrets-egress
   publicIngressNamespaces:
     - nginx-ingress
     - ingress-nginx

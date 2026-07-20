@@ -24,6 +24,9 @@ spec:
         {{- if $.Values.openbao.agentEnabled }}
         vault.hashicorp.com/agent-inject: "true"
         vault.hashicorp.com/role: {{ printf "payment-%s" $p.name | quote }}
+        {{- with $.Values.openbao.agentAuthPath }}
+        vault.hashicorp.com/auth-path: {{ . | quote }}
+        {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "openbao-token"
         vault.hashicorp.com/tls-secret: {{ $.Values.openbao.caSecretName | default "openbao-ca" | quote }}
         vault.hashicorp.com/ca-cert: "/vault/tls/ca.crt"
@@ -112,6 +115,10 @@ spec:
             value: {{ $.Values.openbao.addr | default "https://openbao.openbao.svc:8200" | quote }}
           - name: OPENBAO__ROLE
             value: {{ printf "payment-%s" $p.name | quote }}
+          {{- with $.Values.openbao.authPath }}
+          - name: OPENBAO__AUTH_PATH
+            value: {{ . | quote }}
+          {{- end }}
           - name: OPENBAO__MOUNT
             value: {{ $.Values.openbao.mount | default "kv" | quote }}
           - name: OPENBAO__PATH

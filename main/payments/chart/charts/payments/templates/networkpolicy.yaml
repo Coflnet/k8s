@@ -95,6 +95,17 @@ spec:
               app.kubernetes.io/name: openbao
       ports:
         - { protocol: TCP, port: 8200 }
+    {{- if $.Values.networkPolicy.tailscaleOpenbaoEgress.enabled }}
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: {{ $.Values.networkPolicy.tailscaleOpenbaoEgress.namespace | quote }}
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: {{ $.Values.networkPolicy.tailscaleOpenbaoEgress.podNameLabel | quote }}
+      ports:
+        - { protocol: TCP, port: 8200 }
+    {{- end }}
     - to:
         - namespaceSelector:
             matchLabels:
