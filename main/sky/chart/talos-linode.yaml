@@ -1,5 +1,7 @@
 # Talos Linode overlay (single-node, replaces us-linode).
-# No OpenBao — all creds via k8s secrets.
+# sky-bfcs is the first production canary for the dedicated OpenBao cluster;
+# existing Kubernetes/env fallbacks remain until its OpenBao load receipt is
+# verified, then they can be removed in a separate reviewed change.
 # Cilium CNI — no Linkerd sidecar.
 
 global:
@@ -8,6 +10,30 @@ global:
 
   # Public images on Docker Hub.
   imagePullSecrets: []
+
+  # Dedicated secrets-cluster access through the Fleet-owned HA Tailscale
+  # egress Service. JWT validation is offline against talos-linode's public OIDC
+  # issuer, so OpenBao never needs access to this cluster's API server.
+  openbaoAddr: https://openbao-secrets.openbao.svc:8200
+  openbaoAuthPath: jwt-talos-linode
+  openbaoTLSServerName: openbao.openbao.svc.cluster.local
+  openbaoCACert: |
+    -----BEGIN CERTIFICATE-----
+    MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
+    FTETMBEGA1UEAxMKb3BlbmJhby1jYTAeFw0yNjA1MzAwNjMwMDdaFw0zNjA1Mjcw
+    NjMwMDdaMBUxEzARBgNVBAMTCm9wZW5iYW8tY2EwWTATBgcqhkjOPQIBBggqhkjO
+    PQMBBwNCAATP+OVpqk8lnHealoOSbRZpInlL4ypSkvSCR0ksELx2Xg/eJJY3y9gj
+    tRrEp6OXd24Wwoy2L4V74FkfO+dkfUTko0IwQDAOBgNVHQ8BAf8EBAMCAqQwDwYD
+    VR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUTs+GuzkdJhBXyXXlwZI7Mn3pr8gwCgYI
+    KoZIzj0EAwIDRwAwRAIgA1l0MK0v3oIhoVgys1U/jdVZig/jp/SMhGJTilO25FkC
+    IDcNtGjLm4jxvXj9MrrNBwICv2XvSscsE/nc8Je3zE8D
+    -----END CERTIFICATE-----
+
+  volumes:
+    - mountName: openbao-ca
+      mountPath: /openbao/tls
+      name: openbao-ca
+      type: configmap
 
   redis:
     enabled: false
@@ -108,8 +134,6 @@ global:
     - name: AUCTIONS_BASE_URL
       value: http://sky-auctions-eu-cluster:8000
 
-  volumes: []
-
 # ─── Sub-charts ──────────────────────────────────────────────────────────────
 
 deprecated:
@@ -130,6 +154,9 @@ sky-bazaar-flipper:
 
 sky-bfcs:
   enabled: true
+  # First rollout keeps current values as fallbacks. Set false only after the
+  # OpenBao load receipt and runtime logs have been verified.
+  openbaoOptional: true
   serviceMonitor:
     enabled: false
   metrics:

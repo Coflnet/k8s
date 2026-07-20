@@ -1,6 +1,7 @@
 enabled: true
 defaultEnvVarsEnabled: true
 replicaCount: 1
+openbaoOptional: true
 
 strategy: RollingUpdate
 
