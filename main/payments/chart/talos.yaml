@@ -59,6 +59,30 @@ payments:
       mount: database
       credentialsKind: static
       refreshSeconds: 1800
+      # Prepared but deliberately disabled. Enable only after the four exact
+      # ClusterIssuers are Ready and CockroachDB trusts the shared root.
+      mtls:
+        enabled: false
+        rootCA: |
+          -----BEGIN CERTIFICATE-----
+          MIIDJjCCAg6gAwIBAgIRANT0y3Zf7+5XjnWpgrM3DukwDQYJKoZIhvcNAQELBQAw
+          KzESMBAGA1UEChMJQ29ja3JvYWNoMRUwEwYDVQQDEwxDb2Nrcm9hY2ggQ0EwHhcN
+          MjIwODI4MTYzMjIzWhcNMzIwOTA1MTYzMjIzWjArMRIwEAYDVQQKEwlDb2Nrcm9h
+          Y2gxFTATBgNVBAMTDENvY2tyb2FjaCBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEP
+          ADCCAQoCggEBALamt1rCT6Hxmi1L7EZ34Q7DMGfEftYwAQyUVRrGoUpUGx6euCvI
+          fij98iZIBN/3F+UQUQf1ShmqeeMOXOMIg7a0jMOBIViMMrKwYtT8HShnFx7EIeNM
+          mXpS4hTmJlx8aOMvLzJvYYZ81coog5na3o6GSSr3cbHwU/itYop46ZUA+4Ky6BNG
+          TE2bRJVXzpT56W4UA/N+cTCt1vYyvKmpkXogzVteSx4Qp4wuOeM/wkcRD5OT4kWD
+          gSIMcQwnGVRp0bEfRbIeXmSmmzWaT/JARTA3hs2d2ZTlz9wfPnPw0HytTay6hmjg
+          /wqwLnM3SPpYe4Qaz/fjXx8XqNFAvTAMZGsCAwEAAaNFMEMwDgYDVR0PAQH/BAQD
+          AgLkMBIGA1UdEwEB/wQIMAYBAf8CAQEwHQYDVR0OBBYEFKOZBcqjYtZecCuWnOm6
+          BVwHA3DjMA0GCSqGSIb3DQEBCwUAA4IBAQBvtgKIS9GcvyQfRa9JxeUUYK6AwRDv
+          Ynw6a1ti7ArIEA1rvBYTxK3WW/XtGF/0peKyvP16Omx3/qdW9fmHY02PRu7wp0Mv
+          a73jB6+RESmunzT+kcxMqrEzN5AXVl+BUYz4Sk2tmQDlRp3ouw52V6EGKZMntVbB
+          BVODozxNf1O8noa44xto4Ag8fXFHmq7p/nblda8KaYOk8xvkgxk4uHi0WH1hNCcg
+          Sp1warQfb39AWuVomfiZoO6k1f//HHXW9fmjNzFSUVcRBZmfEh+8g5RLUHmKCRHB
+          wNaiOvKCI+jMcmr2pR/bwDxQAadw5AxqKYx9MCUCWr100cAVyKOrCt+O
+          -----END CERTIFICATE-----
   # Redpanda mTLS cert/key/ca injected by OpenBao from kv/payment/redpanda
   # instead of the in-cluster `redpanda` Secret/ConfigMap.
   redpanda:

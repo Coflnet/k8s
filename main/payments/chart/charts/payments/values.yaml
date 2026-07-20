@@ -42,6 +42,14 @@ openbao:
     mount: database
     credentialsKind: static
     refreshSeconds: 1800
+    # Additive CockroachDB client mTLS. Password rotation remains active while
+    # this is enabled, so cert-password authentication has a rollback path.
+    mtls:
+      enabled: false
+      rootCAConfigMapName: cockroachdb-server-ca
+      rootCAPath: /var/run/secrets/cockroachdb-server-ca/ca.crt
+      clientMountPath: /var/run/secrets/cockroachdb-client
+      rootCA: ""
 
 # Redpanda mTLS material (ca.crt, skyblock.crt, skyblock.key).
 # Default: mounted from the in-cluster `redpanda` Secret/ConfigMap (eu-cluster).

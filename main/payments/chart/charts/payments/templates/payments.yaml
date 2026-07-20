@@ -137,6 +137,16 @@ spec:
             value: {{ $.Values.openbao.database.credentialsKind | default "static" | quote }}
           - name: OPENBAO__DB__REFRESH_SECONDS
             value: {{ $.Values.openbao.database.refreshSeconds | default "1800" | quote }}
+          {{- if $.Values.openbao.database.mtls.enabled }}
+          - name: OPENBAO__DB__MTLS__ENABLED
+            value: "true"
+          - name: OPENBAO__DB__MTLS__CLIENT_CERT_PATH
+            value: {{ printf "%s/tls.crt" ($.Values.openbao.database.mtls.clientMountPath | default "/var/run/secrets/cockroachdb-client") | quote }}
+          - name: OPENBAO__DB__MTLS__CLIENT_KEY_PATH
+            value: {{ printf "%s/tls.key" ($.Values.openbao.database.mtls.clientMountPath | default "/var/run/secrets/cockroachdb-client") | quote }}
+          - name: OPENBAO__DB__MTLS__ROOT_CERT_PATH
+            value: {{ $.Values.openbao.database.mtls.rootCAPath | default "/var/run/secrets/cockroachdb-server-ca/ca.crt" | quote }}
+          {{- end }}
           {{- end }}
           {{- if $.Values.envVars }}
           {{ toYaml $.Values.envVars | nindent 10 }}
@@ -158,6 +168,14 @@ spec:
         - name: openbao-ca-bundle
           mountPath: {{ dir ($.Values.openbao.caBundlePath | default "/var/run/secrets/openbao-ca-bundle/ca-certificates.crt") | quote }}
           readOnly: true
+        {{- if and $.Values.openbao.database.enabled $.Values.openbao.database.mtls.enabled }}
+        - name: cockroachdb-client-tls
+          mountPath: {{ $.Values.openbao.database.mtls.clientMountPath | default "/var/run/secrets/cockroachdb-client" | quote }}
+          readOnly: true
+        - name: cockroachdb-server-ca
+          mountPath: {{ dir ($.Values.openbao.database.mtls.rootCAPath | default "/var/run/secrets/cockroachdb-server-ca/ca.crt") | quote }}
+          readOnly: true
+        {{- end }}
         {{ if $p.volumes }}
         {{ range $p.volumes }}
         {{- if not (and $.Values.redpanda.openbao.enabled (eq .name "redpanda")) }}
@@ -179,6 +197,14 @@ spec:
             secretName: {{ $.Values.openbao.caSecretName | default "openbao-ca" | quote }}
         - name: openbao-ca-bundle
           emptyDir: {}
+        {{- if and $.Values.openbao.database.enabled $.Values.openbao.database.mtls.enabled }}
+        - name: cockroachdb-client-tls
+          secret:
+            secretName: {{ printf "%s-cockroachdb-client-tls" $p.name | quote }}
+        - name: cockroachdb-server-ca
+          configMap:
+            name: {{ $.Values.openbao.database.mtls.rootCAConfigMapName | default "cockroachdb-server-ca" | quote }}
+        {{- end }}
       {{ if $p.volumes }}
       {{ range $p.volumes }}
         {{- if not (and $.Values.redpanda.openbao.enabled (eq .name "redpanda")) }}
