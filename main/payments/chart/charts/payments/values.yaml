@@ -89,7 +89,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/payments
-  tag: 0673ab59851762dbbaa7a6ae6ca9aa089ca0277b
+  tag: 2b569a70b817394bf98031ce65269325e1635858
   pullPolicy: IfNotPresent
 
 ports:
