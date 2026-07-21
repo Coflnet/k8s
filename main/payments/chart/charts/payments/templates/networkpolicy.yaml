@@ -103,8 +103,6 @@ spec:
           podSelector:
             matchLabels:
               app.kubernetes.io/name: {{ $.Values.networkPolicy.tailscaleOpenbaoEgress.podNameLabel | quote }}
-      ports:
-        - { protocol: TCP, port: 8200 }
     {{- end }}
     - to:
         - namespaceSelector:
