@@ -80,6 +80,22 @@ spec:
               value: {{ printf "sky/%s" .Chart.Name | quote }}
             - name: OPENBAO__ROLE
               value: {{ .Chart.Name | quote }}
+            {{- if .Values.global.openbaoAuthPath }}
+            - name: OPENBAO__AUTH_PATH
+              value: {{ .Values.global.openbaoAuthPath | quote }}
+            - name: OPENBAO__TOKEN_PATH
+              value: /var/run/secrets/kubernetes.io/serviceaccount/token
+            {{- if .Values.global.openbaoTLSServerName }}
+            - name: OPENBAO__TLS_SERVER_NAME
+              value: {{ .Values.global.openbaoTLSServerName | quote }}
+            {{- end }}
+            - name: OPENBAO__REQUEST_TIMEOUT_SECONDS
+              value: "5"
+            - name: OPENBAO__STARTUP_RETRY_SECONDS
+              value: "90"
+            - name: OPENBAO__RETRY_DELAY_SECONDS
+              value: "2"
+            {{- end }}
             {{- if $.Values.global.openbaoCACert }}
             - name: OPENBAO__CACERT
               value: /openbao/tls/ca.crt

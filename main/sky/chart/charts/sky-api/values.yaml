@@ -1,5 +1,9 @@
 enabled: true
 
+# Keep the reusable chart backward-compatible; production Talos overrides this
+# to false so missing signing material blocks readiness instead of serving 401s.
+openbaoOptional: true
+
 replicaCount: 3
 
 image:

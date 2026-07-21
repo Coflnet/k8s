@@ -130,6 +130,10 @@ global:
 
   # Talos OpenBao uses TLS.
   openbaoAddr: https://openbao.openbao.svc:8200
+  # Authenticate against the dedicated secrets cluster without giving OpenBao
+  # token-review access to this cluster's Kubernetes API.
+  openbaoAuthPath: jwt-talos-eu
+  openbaoTLSServerName: openbao.openbao.svc.cluster.local
 
   # OpenBao CA certificate for TLS validation (self-signed, not in system trust store).
   # Mounted as ConfigMap → /openbao/tls/ca.crt → OPENBAO__CACERT env var.
@@ -285,6 +289,9 @@ global:
 
 sky-api:
   enabled: true
+  # JWT signing material is mandatory in production.  A pod must not become
+  # Ready and serve only 401s when OpenBao authentication or loading fails.
+  openbaoOptional: false
   serviceMonitor:
     enabled: true
   envVars:
