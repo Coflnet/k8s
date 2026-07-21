@@ -13,3 +13,4 @@ targetCustomizations:
     helm:
       valuesFiles:
         - ./chart/talos.yaml
+        - ./chart/talos-openbao-secrets-cutover.yaml
