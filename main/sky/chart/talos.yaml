@@ -649,6 +649,13 @@ sky-mod-commands:
   serviceMonitor:
     enabled: true
   envVars:
+    # HypixelContext is also constructed directly by UserService and therefore
+    # reads this OS environment variable instead of IConfiguration/OpenBao.
+    - name: DBConnection
+      valueFrom:
+        secretKeyRef:
+          name: secret
+          key: connection_read_api
     - name: CHAT_API_KEY
       valueFrom:
         secretKeyRef:
