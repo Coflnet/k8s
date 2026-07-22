@@ -379,11 +379,6 @@ sky-auctions:
         secretKeyRef:
           name: scylla-credentials
           key: db-pfx-password
-    - name: DBConnection
-      valueFrom:
-        secretKeyRef:
-          name: sky-auctions-db
-          key: connection
   livenessProbe:
     initialDelaySeconds: 90
   readinessProbe:
@@ -406,18 +401,8 @@ sky-bazaar:
         configMapKeyRef:
           name: scylla-config
           key: scylla_bazaar_user
-    - name: CASSANDRA__PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: scylla-credentials
-          key: bazaar_password
     - name: CASSANDRA__X509Certificate_PATHS
       value: /tls/scylla/secret/db.pfx
-    - name: CASSANDRA__X509Certificate_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: scylla-credentials
-          key: db-pfx-password
     - name: CASSANDRA__KEYSPACE
       value: "bazaar_quickstatus"
   livenessProbe:
@@ -664,35 +649,6 @@ sky-mod-commands:
   serviceMonitor:
     enabled: true
   envVars:
-    - name: DBConnection
-      valueFrom:
-        secretKeyRef:
-          name: secret
-          key: connection_read_api
-    - name: CASSANDRA__HOSTS
-      valueFrom:
-        configMapKeyRef:
-          name: scylla-config
-          key: scylla_host
-    - name: CASSANDRA__USER
-      valueFrom:
-        configMapKeyRef:
-          name: scylla-config
-          key: scylla_mod_user
-    - name: CASSANDRA__PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: scylla-credentials
-          key: mod_password
-    - name: CASSANDRA__KEYSPACE
-      value: "sky_mod"
-    - name: CASSANDRA__X509Certificate_PATHS
-      value: /tls/scylla/secret/db.pfx
-    - name: CASSANDRA__X509Certificate_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: scylla-credentials
-          key: db-pfx-password
     - name: CHAT_API_KEY
       valueFrom:
         secretKeyRef:
@@ -772,16 +728,6 @@ sky-profiles:
         configMapKeyRef:
           name: scylla-config
           key: scylla_host
-    - name: CASSANDRA__USER
-      valueFrom:
-        configMapKeyRef:
-          name: config
-          key: sky_profile_cassandra_user
-    - name: CASSANDRA__PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: secret
-          key: sky_profile_cassandra_password
     - name: CASSANDRA__KEYSPACE
       value: sky_player_info
     - name: CASSANDRA__X509Certificate_PATHS
