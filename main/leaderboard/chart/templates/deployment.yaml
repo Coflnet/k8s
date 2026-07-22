@@ -18,6 +18,12 @@ spec:
         app: {{ .Chart.Name }}
     spec:
       serviceAccountName: {{ .Chart.Name }}
+      {{- if .Values.openbao.tokenAudience }}
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 999
+        fsGroupChangePolicy: OnRootMismatch
+      {{- end }}
       containers:
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
@@ -38,7 +44,7 @@ spec:
           - name: OPENBAO__ENABLED
             value: {{ .Values.openbao.enabled | default true | quote }}
           - name: OPENBAO__OPTIONAL
-            value: {{ .Values.openbao.optional | default true | quote }}
+            value: {{ .Values.openbao.optional | quote }}
           - name: OPENBAO__ADDR
             value: {{ .Values.openbao.addr | default "http://openbao.openbao.svc:8200" }}
           - name: OPENBAO__MOUNT
@@ -47,6 +53,22 @@ spec:
             value: {{ printf "sky/%s" .Chart.Name | quote }}
           - name: OPENBAO__ROLE
             value: {{ .Values.openbao.role | default .Chart.Name | quote }}
+          - name: OPENBAO__AUTH_PATH
+            value: {{ .Values.openbao.authPath | default "kubernetes" | quote }}
+          {{- if .Values.openbao.tokenAudience }}
+          - name: OPENBAO__TOKEN_PATH
+            value: /var/run/secrets/openbao/token
+          {{- if .Values.openbao.tlsServerName }}
+          - name: OPENBAO__TLS_SERVER_NAME
+            value: {{ .Values.openbao.tlsServerName | quote }}
+          {{- end }}
+          - name: OPENBAO__REQUEST_TIMEOUT_SECONDS
+            value: "5"
+          - name: OPENBAO__STARTUP_RETRY_SECONDS
+            value: "90"
+          - name: OPENBAO__RETRY_DELAY_SECONDS
+            value: "2"
+          {{- end }}
           {{ if .Values.openbao.caCert }}
           - name: OPENBAO__CACERT
             value: /openbao/tls/ca.crt
@@ -58,6 +80,11 @@ spec:
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
+        {{- if .Values.openbao.tokenAudience }}
+        - name: openbao-workload-token
+          mountPath: /var/run/secrets/openbao
+          readOnly: true
+        {{- end }}
         {{ range .Values.volumes }}
         - name: {{ .name }}
           mountPath: {{ .mountPath }}
@@ -66,6 +93,16 @@ spec:
           {{ end }}
         {{ end }}
       volumes:
+      {{- if .Values.openbao.tokenAudience }}
+      - name: openbao-workload-token
+        projected:
+          defaultMode: 0440
+          sources:
+            - serviceAccountToken:
+                audience: {{ .Values.openbao.tokenAudience | quote }}
+                expirationSeconds: 600
+                path: token
+      {{- end }}
       {{ range .Values.volumes }}
       - name: {{ .name }}
         {{ if eq .type "configmap" }}

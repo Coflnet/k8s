@@ -22,3 +22,7 @@ targetCustomizations:
         openbao:
           addr: "https://openbao.openbao.svc:8200"
           caCert: true
+          authPath: jwt-talos-eu
+          tokenAudience: openbao
+          tlsServerName: openbao.openbao.svc.cluster.local
+          optional: false

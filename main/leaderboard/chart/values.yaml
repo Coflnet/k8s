@@ -1,4 +1,4 @@
-# Leaderboard service — standalone chart (namespace: leaderboard).
+# Leaderboard service — standalone chart deployed into the sky namespace.
 # Deployed to both eu-cluster and talos-eu-hcloud via Fleet.
 
 replicaCount: 1
@@ -120,6 +120,9 @@ openbao:
   optional: true
   addr: "http://openbao.openbao.svc:8200"
   mount: kv
+  authPath: kubernetes
+  tokenAudience: ""
+  tlsServerName: ""
   # path is set in the deployment template via helm (sky/{{ .Chart.Name }})
   role: leaderboard
 
