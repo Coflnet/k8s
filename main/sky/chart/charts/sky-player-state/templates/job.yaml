@@ -19,10 +19,16 @@ spec:
         security.coflnet.com/k8s-api-access: "false"
     spec:
       serviceAccountName: {{ .Chart.Name }}
+      {{- if $.Values.global.openbaoAuthPath }}
+      automountServiceAccountToken: false
+      {{- end }}
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 12 }}
       securityContext:
         runAsNonRoot: true
+        {{- if $.Values.global.openbaoAuthPath }}
+        fsGroup: 1000
+        {{- end }}
         seccompProfile:
           type: RuntimeDefault
       containers:
@@ -45,7 +51,7 @@ spec:
           - name: OPENBAO__ENABLED
             value: "true"
           - name: OPENBAO__OPTIONAL
-            value: "true"
+            value: {{ ternary "false" "true" (not (empty $.Values.global.openbaoAuthPath)) | quote }}
           - name: OPENBAO__ADDR
             value: {{ .Values.global.openbaoAddr | default "http://openbao.openbao.svc:8200" }}
           - name: OPENBAO__MOUNT
@@ -54,6 +60,22 @@ spec:
             value: {{ printf "sky/%s" .Chart.Name | quote }}
           - name: OPENBAO__ROLE
             value: {{ .Chart.Name | quote }}
+          {{- if $.Values.global.openbaoAuthPath }}
+          - name: OPENBAO__AUTH_PATH
+            value: {{ $.Values.global.openbaoAuthPath | quote }}
+          - name: OPENBAO__TOKEN_PATH
+            value: /var/run/secrets/openbao/token
+          {{- if $.Values.global.openbaoTLSServerName }}
+          - name: OPENBAO__TLS_SERVER_NAME
+            value: {{ $.Values.global.openbaoTLSServerName | quote }}
+          {{- end }}
+          - name: OPENBAO__REQUEST_TIMEOUT_SECONDS
+            value: "5"
+          - name: OPENBAO__STARTUP_RETRY_SECONDS
+            value: "90"
+          - name: OPENBAO__RETRY_DELAY_SECONDS
+            value: "2"
+          {{- end }}
           {{- if .Values.global.openbaoCACert }}
           - name: OPENBAO__CACERT
             value: /openbao/tls/ca.crt
@@ -61,9 +83,9 @@ spec:
           - name: REDIS_HOST
             value: "{{ .Chart.Name }}-redis"
          {{ if .Values.envVars }}
-         {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 10 }}
+         {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars "excludeNames" (ternary (list "Mongo__ConnectionString") (list) (not (empty $.Values.global.openbaoAuthPath)))) | nindent 10 }}
          {{ end }}
-         {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars) | nindent 10 }}
+         {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars "excludeNames" (ternary (list "KAFKA__BROKERS" "KAFKA__USERNAME" "KAFKA__PASSWORD") (list) (not (empty $.Values.global.openbaoAuthPath)))) | nindent 10 }}
           - name: MIGRATOR
             value: "true"
          readinessProbe:
@@ -71,6 +93,11 @@ spec:
          resources:
          {{ toYaml .Values.resources | nindent 10 }}
          volumeMounts:
+         {{- if $.Values.global.openbaoAuthPath }}
+           - name: openbao-workload-token
+             mountPath: /var/run/secrets/openbao
+             readOnly: true
+         {{- end }}
        {{ range .Values.global.volumes }}
            - name: {{ .mountName }}
              mountPath: {{ .mountPath }}
@@ -79,20 +106,30 @@ spec:
              mountPath: /tls/scylla/secret/db.pfx
              subPath: db.pfx
       volumes:
-       - name: scylla-pfx
-         secret:
-           secretName: scylla-pfx
-           items:
-             - key: db.pfx
-               path: db.pfx
+      {{- if $.Values.global.openbaoAuthPath }}
+        - name: openbao-workload-token
+          projected:
+            defaultMode: 0440
+            sources:
+              - serviceAccountToken:
+                  audience: openbao
+                  expirationSeconds: 600
+                  path: token
+      {{- end }}
+        - name: scylla-pfx
+          secret:
+            secretName: scylla-pfx
+            items:
+              - key: db.pfx
+                path: db.pfx
       {{ range $.Values.global.volumes }}
-       - name: {{ .mountName }}
-         {{ if eq .type "configmap"  }}
-         configMap:
-           name: {{ .name }}
-         {{ else}}
-         secret:
-           secretName: {{ .name }}
-         {{ end }}
+        - name: {{ .mountName }}
+          {{ if eq .type "configmap"  }}
+          configMap:
+            name: {{ .name }}
+          {{ else}}
+          secret:
+            secretName: {{ .name }}
+          {{ end }}
       {{ end }}
 {{ end }}
