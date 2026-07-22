@@ -470,11 +470,6 @@ sky-chat:
   serviceMonitor:
     enabled: false
   envVars:
-    - name: DB_CONNECTION
-      valueFrom:
-        secretKeyRef:
-          name: sky-chat-db
-          key: connection
     - name: REDIS_HOST
       value: "sky-settings-redis"
   livenessProbe:
@@ -827,11 +822,6 @@ sky-referral:
   serviceMonitor:
     enabled: false
   envVars:
-    - name: DB_CONNECTION
-      valueFrom:
-        secretKeyRef:
-          name: sky-referral-db
-          key: connection
     - name: PRODUCTS__REFERAL_BONUS
       value: "referal_bonus"
     - name: PRODUCTS__VERIFY_MC
