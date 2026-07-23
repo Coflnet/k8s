@@ -1,0 +1,9 @@
+{{- if and .Values.enabled .Values.opensearchCACert }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-opensearch-ca
+data:
+  ca.crt: |
+{{ .Values.opensearchCACert | nindent 4 }}
+{{- end }}

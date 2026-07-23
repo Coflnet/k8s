@@ -90,6 +90,12 @@ spec:
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
+        {{- if .Values.opensearchCACert }}
+        - name: opensearch-ca
+          mountPath: /etc/sky-api/opensearch-ca.crt
+          subPath: ca.crt
+          readOnly: true
+        {{- end }}
         {{- if .Values.global.openbaoAuthPath }}
         - name: openbao-workload-token
           mountPath: /var/run/secrets/openbao
@@ -102,6 +108,11 @@ spec:
         - name: tmp
           mountPath: /tmp
       volumes: 
+      {{- if .Values.opensearchCACert }}
+        - name: opensearch-ca
+          configMap:
+            name: {{ .Chart.Name }}-opensearch-ca
+      {{- end }}
       {{- if .Values.global.openbaoAuthPath }}
         - name: openbao-workload-token
           projected:

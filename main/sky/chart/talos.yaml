@@ -292,6 +292,36 @@ sky-api:
   # JWT signing material is mandatory in production.  A pod must not become
   # Ready and serve only 401s when OpenBao authentication or loading fails.
   openbaoOptional: false
+  opensearchCACert: |
+    -----BEGIN CERTIFICATE-----
+    MIIFBzCCAu+gAwIBAgIRALx0/ofkuTSCmIGLk+8jMwQwDQYJKoZIhvcNAQELBQAw
+    HTEbMBkGA1UEAxMSb3BlbnNlYXJjaC1jbHVzdGVyMB4XDTI2MDYxMzEzNTY1MFoX
+    DTM2MDYxMzEzNTY1MFowHTEbMBkGA1UEAxMSb3BlbnNlYXJjaC1jbHVzdGVyMIIC
+    IjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAx7Cyb77mWRwoMXzkJLOm2X+X
+    gtmRuhtQqjjxS1cT7a7/aysk38nBfJsCtAAih3fcImLkmWLNxBUdVSOCd1xMjZb3
+    2T6E4frcyxOv+CT9iO4ppLvaI/D4fehs36yPlK0tWp8WfBbv8YepgNyiUuQDZMTD
+    5ou7e0EtTjgzImnXSMmN0SacfTUd6NUp5upc6/HrdnezljChazkEbGc/FLPaVNzs
+    lpc9RsJCTCo1c2weegml7kA4fzTloVTwkVKL4T11deRUFJv99X2Qepqpaxw02zER
+    ovPI0cnErJr6ZhT6CdU3rOqbW5td1GVLQ8iHm0aIECTgon49AgvuMuYwCk2jfscn
+    X8q4r7+0vVpaudnprBJeggvrqLJ1KXQcfOLSthpZ0kfQNanxNGoXbfhWRb8z4NBv
+    CIKbojXGOewf2CDxJurfKuuPQwrLXI5E0fIc78d3ITKyaD2iIk11jLWJ+LC/MCh8
+    0Bx+CptFwt2s6z4tDIsRMMx5Hb3bfOJXXmgzVoeQFxw7Qt6qCNJ+GWssv2CCBpaK
+    QwOORc/JSAHD/gsbt1JvjV/kQkGN3d+10ricNQTasZaIsYEyO8wy6I+0pkp6+k/P
+    qxD6+3S24s3fyygDVcHmjmmHVUIBMtxxaYPpZVv1LsFMHFS+SdTz9/Z+drn7oBWq
+    ouaXwNjLygGy8wDR1HsCAwEAAaNCMEAwDgYDVR0PAQH/BAQDAgGGMA8GA1UdEwEB
+    /wQFMAMBAf8wHQYDVR0OBBYEFNocmjtuxF/NlHenLJSYP1GhoMwlMA0GCSqGSIb3
+    DQEBCwUAA4ICAQCheGlsdlvXmWQKCR3RPXX9RbD/7J7N0E9qH5Q4uJ8yDjEc0Cn1
+    VUh4sxNDwEa7rpy/Da4Zt5crgOz9AAsoAE/sAhyTrtPKRZg8FcTdahVk/IYGeb8l
+    A81v78a1XiKoXTKti2869/wFeLIuO9yoSy3XN2f7EIkvEa3jLGpvWqVfPRFRK+yd
+    xA14x+Zn/feL7iq0X8mzzNbMNK4be80CEzxiRMEMvjvPIy08o18rkeumYGHLTTcw
+    KsvlCtsWdJBMhA6GIyOSo9ODrKUOE4n75njWdGCbdb9TZkWe+LZcExR/9z6CvVbQ
+    3uqm8qmfwcuUbaj3ykpWHPHBz3gdo9y21SJL2mfEh1J7Y0W/YIQ8PrqdI+6ATlf0
+    2h+ZmWjgeofIj9FAe9XyJfcWRhsZhm2/yuxRAlV8Dpv1+gas1tizpy7gfDzI1jFL
+    ODLgAkU5uuDFrynPiqSh3ra0EcmLLkj33AGBDJuhvCxYMWBjeL8KJ4+RhupZdxi8
+    Nrutga3jZwdftRJH315GFsbqCzbPSCz5Y/9eXWgmhqpzq8jEtBl/0rbTteftnhYn
+    D4Jt6kDuTWkHAIW6qyO/7ADxjJoJbx7lbSr+r79F/fwuP0ZR8wXM6Y0jvA15nZLx
+    eL/oRAI67CXP3bzNYxqD6dbEWDM6bs41aiR7HeX/9yFOvfIpVfhgn6ckSA==
+    -----END CERTIFICATE-----
   serviceMonitor:
     enabled: true
   envVars:
@@ -313,6 +343,8 @@ sky-api:
       value: "32"
     - name: AI_CONVERSATION_TTL_HOURS
       value: "24"
+    - name: OPENSEARCH_CA_CERT_PATH
+      value: "/etc/sky-api/opensearch-ca.crt"
     - name: DBCONNECTION
       valueFrom:
         secretKeyRef:

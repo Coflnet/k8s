@@ -4,6 +4,8 @@ enabled: true
 # to false so missing signing material blocks readiness instead of serving 401s.
 openbaoOptional: true
 
+opensearchCACert: ""
+
 replicaCount: 3
 
 image:
