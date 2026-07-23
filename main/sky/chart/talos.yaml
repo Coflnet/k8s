@@ -297,6 +297,22 @@ sky-api:
   envVars:
     - name: DONUT_API_BASE_URL
       value: "http://donutapi.donut.svc.cluster.local:8000"
+    - name: DEEPSEEK_MODEL
+      value: "deepseek-v4-flash"
+    - name: DEEPSEEK_THINKING
+      value: "true"
+    - name: DEEPSEEK_MAX_TOKENS
+      value: "4096"
+    - name: EMBEDDING_API_URL
+      value: "http://skycofl-embeddings.sky.svc.cluster.local:8080/v1/embeddings"
+    - name: EMBEDDING_MODEL
+      value: "BAAI/bge-small-en-v1.5"
+    - name: EMBEDDING_DIMENSIONS
+      value: "384"
+    - name: EMBEDDING_BATCH_SIZE
+      value: "32"
+    - name: AI_CONVERSATION_TTL_HOURS
+      value: "24"
     - name: DBCONNECTION
       valueFrom:
         secretKeyRef:
