@@ -799,6 +799,8 @@ sky-profiles:
 
 sky-proxy:
   enabled: true
+  nodeSelector:
+    kubernetes.io/hostname: eu-worker1
   serviceMonitor:
     enabled: false
   envVars:

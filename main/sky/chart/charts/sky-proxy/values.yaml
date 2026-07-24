@@ -1,4 +1,5 @@
 enabled: true
+nodeSelector: {}
 image:
   repository: muehlhansfl/skyproxy
   tag: 1f1d82ee9c87e52843160bdaa11dbce8f95ed135
