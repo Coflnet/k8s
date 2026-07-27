@@ -46,6 +46,11 @@ spec:
           - /tls-ca/tls.crt
           - --tls-auth-clients
           - "yes"
+          {{- else if .Values.redis.passwordSecret }}
+          # Kubernetes expands $(VAR) in args from the container's own env, so the
+          # password reaches redis-server without ever being written to Git.
+          - --requirepass
+          - $(REDIS_PASSWORD)
           {{- else if .Values.redis.password }}
           - --requirepass
           - {{ .Values.redis.password | quote }}
@@ -54,6 +59,14 @@ spec:
           - --aclfile
           - /acl/acl.conf
           {{- end }}
+        {{- if .Values.redis.passwordSecret }}
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.redis.passwordSecret.name }}
+              key: {{ .Values.redis.passwordSecret.key | default "password" }}
+        {{- end }}
         ports:
         - containerPort: 6379
         resources:

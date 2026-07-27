@@ -157,35 +157,29 @@ sky-bfcs:
       value: http://jaeger-collector-eu-cluster.observability:4317
     - name: SNIPER_BASE_URL
       value: http://sky-sniper-eu-cluster:8000
-    # Local Redis via password auth (TLS deferred — see internal/infrastructure/pki.md).
+    # No local Redis here: the flip mesh has exactly two instances, on talos-linode
+    # and talos-cloudfanatic, both reached over their NodePort. All credentials come
+    # from the sky-bfcs-redis-auth Secret (see scripts/rotate-bfcs-redis.sh).
     - name: FLIP_REDIS_OPTIONS
-      value: sky-bfcs-redis,password=+CHARO4AhE4XmzVy3doZFk+StV/8QuY+,syncTimeout=1000
-    - name: REDIS_HOST
-      value: sky-bfcs-redis,password=+CHARO4AhE4XmzVy3doZFk+StV/8QuY+,syncTimeout=1000
-    # Redis flip instances.
+      valueFrom:
+        secretKeyRef:
+          name: sky-bfcs-redis-auth
+          key: connection
+    # Consumes from every instance in the mesh: SkyBFCS embeds SkyModCommands, whose
+    # ModBackgroundService.SubscribeToRedisSnipes subscribes to each entry here.
+    # Keep the indices contiguous from 0 - they bind as a string[].
     - name: REDIS_FLIP_INSTANCES__0
-      value: sky-bfcs-redis,password=+CHARO4AhE4XmzVy3doZFk+StV/8QuY+,syncTimeout=1000
-    # Cloudfanatic (US) Redis for cross-cluster flip pub/sub.
-    # Password from redis-password secret on cloudfanatic, synced to redis-cloudfanatic secret here.
+      valueFrom:
+        secretKeyRef:
+          name: sky-bfcs-redis-auth
+          key: linode
     - name: REDIS_FLIP_INSTANCES__1
       valueFrom:
         secretKeyRef:
-          name: redis-cloudfanatic
-          key: connection
-    # Talos Linode Redis for cross-cluster flip pub/sub.
-    # Password from redis-password secret on talos-linode, synced to redis-talos-linode secret here.
-    - name: REDIS_FLIP_INSTANCES__2
-      valueFrom:
-        secretKeyRef:
-          name: redis-talos-linode
-          key: connection
-  # Redis: password auth, NodePort 31379 for cross-cluster access from talos-cloudfanatic / talos-linode.
-  # TODO: upgrade to TLS+mTLS (see scripts/redis-mtls-*.sh and internal/infrastructure/pki.md)
+          name: sky-bfcs-redis-auth
+          key: cloudfanatic
   redis:
-    enabled: true
-    serviceType: NodePort
-    nodePort: 31379
-    password: +CHARO4AhE4XmzVy3doZFk+StV/8QuY+
+    enabled: false
 
 sky-chat:
   enabled: false
