@@ -10,6 +10,7 @@ metadata:
 spec:
   replicas: {{ .Values.replicaCount }}
   progressDeadlineSeconds: 600
+  progressDeadlineAbort: true
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
@@ -102,6 +103,10 @@ spec:
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.frontendEnvVars) | nindent 10 }}
         readinessProbe:
           {{ toYaml .Values.readinessProbe | nindent 10 }}
+        {{- if .Values.livenessProbe }}
+        livenessProbe:
+          {{ toYaml .Values.livenessProbe | nindent 10 }}
+        {{- end }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
@@ -137,24 +142,10 @@ spec:
       {{ end }}
   strategy:
     canary:
-      steps:
-      - setWeight: 10
-      - pause: 
-          duration: 5m
-      - setWeight: 50
-      - pause:
-          duration: 2m
-      - setWeight: 100
-      - pause:
-          duration: 2m
-      # Never take a stable pod down before its replacement is Ready (surge up,
-      # then scale down) so availability never dips below replicaCount.
-      maxUnavailable: 0
-      maxSurge: 1
-      canaryService: {{ .Chart.Name }}-preview
-      stableService: {{ .Chart.Name }}-stable
-      trafficRouting:
-        smi:
-          rootService: {{ .Chart.Name }}
-          trafficSplitName: {{ .Chart.Name }}-traffic-split
+{{- if .Values.canary.trafficRouting }}
+{{ toYaml .Values.canary | nindent 6 }}
+{{- else }}
+{{- $canary := omit .Values.canary "trafficRouting" }}
+{{ toYaml $canary | nindent 6 }}
+{{- end }}
 {{ end }}

@@ -1,0 +1,50 @@
+{{ if and .Values.enabled (or (not (hasKey .Values "rollout")) .Values.rollout.enabled) }}
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: {{ .Chart.Name }}
+spec:
+  args:
+    - name: pod-hash
+  metrics:
+    # Share of the candidate's HTTP responses that are 5xx. Needs
+    # app.UseHttpMetrics() in SkyItems' Startup.cs - until that ships the series
+    # does not exist and the query evaluates to 0/1 = 0, i.e. this metric passes.
+    # Every query here fails open on purpose: a broken scrape must never wedge
+    # deploys, it may only fail to catch a bad version.
+    - name: candidate-error-ratio
+      interval: 1m
+      count: 3
+      successCondition: result[0] < 0.05
+      failureLimit: 1
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.prometheus.svc.cluster.local:9090
+          query: |
+            (sum(rate(http_requests_received_total{
+              namespace="{{ .Release.Namespace }}",
+              pod=~"{{ .Chart.Name }}-{{ "{{args.pod-hash}}" }}-.*",
+              code=~"5.."
+            }[2m])) or vector(0))
+            /
+            clamp_min(sum(rate(http_requests_received_total{
+              namespace="{{ .Release.Namespace }}",
+              pod=~"{{ .Chart.Name }}-{{ "{{args.pod-hash}}" }}-.*"
+            }[2m])) or vector(1), 0.01)
+    # Crash loop / OOM kill of the candidate. Sourced from kube-state-metrics, so
+    # this one works today without any change to the service.
+    - name: candidate-restarts
+      interval: 1m
+      count: 3
+      successCondition: result[0] < 1
+      failureLimit: 0
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.prometheus.svc.cluster.local:9090
+          query: |
+            max(kube_pod_container_status_restarts_total{
+              namespace="{{ .Release.Namespace }}",
+              container="{{ .Chart.Name }}",
+              pod=~"{{ .Chart.Name }}-{{ "{{args.pod-hash}}" }}-.*"
+            }) or vector(0)
+{{ end }}

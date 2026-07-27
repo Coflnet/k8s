@@ -620,9 +620,11 @@ sky-indexer:
 sky-items:
   enabled: true
   rollout:
-    enabled: false
+    enabled: true
+  # Required by the rollout's error analysis - the candidate's 5xx ratio is read
+  # from Prometheus, which needs /metrics scraped.
   serviceMonitor:
-    enabled: false
+    enabled: true
   # Override service-specific env vars: secrets are in OpenBao kv/sky/sky-items.
   # The app reads DBCONNECTION and DB_CONNECTION from OpenBao at runtime.
   envVars: []

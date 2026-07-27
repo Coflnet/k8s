@@ -1,8 +1,8 @@
 enabled: true
 # Steady state is a single instance: sky-items collides on DB writes and runs
-# slower with 2 concurrent instances. The rollout's maxSurge: 1 / maxUnavailable: 0
-# (see templates/rollout.yaml) briefly surges to 2 during a version rollout so the
-# new pod is healthy before the old one is terminated - never a zero-instance gap.
+# slower with 2 concurrent instances. During a version rollout it runs 2 for the
+# length of the analysis window (~3 min, see canary below) so the candidate takes
+# real traffic and its error rate can be judged before the old pod is retired.
 replicaCount: 1
 
 rollout:
@@ -39,6 +39,34 @@ serivcePorts:
   - name: api
     port: 8000
     targetPort: 8000
+
+analysisTemplate: &analysisTemplate sky-items
+canaryService: &canaryService sky-items-preview
+stableService: &stableService sky-items-stable
+canary:
+  # No trafficRouting: this cluster has no service mesh and no SMI TrafficSplit
+  # CRD, so weight is a replica ratio, not a traffic share. Both pods sit behind
+  # the sky-items Service and split requests roughly evenly - which is precisely
+  # what makes the candidate's error rate measurable.
+  #
+  # setWeight: 50 with replicaCount 1 resolves to stable = ceil(1 * 0.5) = 1 and
+  # candidate = ceil(1 * 0.5) = 1, so the known-good pod is never scaled down.
+  # A failed analysis then aborts by deleting the candidate alone: instant
+  # rollback, no downtime, no revert commit. setWeight: 100 would resolve stable
+  # to 0 and retire the good pod before the candidate has proven itself.
+  steps:
+    - setWeight: 50
+    - analysis:
+        templates:
+          - templateName: *analysisTemplate
+        args:
+          - name: pod-hash
+            valueFrom:
+              podTemplateHashValue: Latest
+  maxSurge: 1
+  maxUnavailable: 0
+  canaryService: *canaryService
+  stableService: *stableService
 
 readinessProbe:
   httpGet:
