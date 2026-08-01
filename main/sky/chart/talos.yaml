@@ -327,12 +327,6 @@ sky-api:
   envVars:
     - name: DONUT_API_BASE_URL
       value: "http://donutapi.donut.svc.cluster.local:8000"
-    - name: DEEPSEEK_MODEL
-      value: "deepseek-v4-flash"
-    - name: DEEPSEEK_THINKING
-      value: "true"
-    - name: DEEPSEEK_MAX_TOKENS
-      value: "4096"
     - name: EMBEDDING_API_URL
       value: "http://skycofl-embeddings.sky.svc.cluster.local:8080/v1/embeddings"
     - name: EMBEDDING_MODEL
@@ -480,6 +474,27 @@ sky-bfcs:
   envVars:
     - name: REDIS_HOST
       value: sky-bfcs-redis,syncTimeout=1000
+    # Publishes into the CloudFanatic instance: this cluster hosts no member of
+    # the flip mesh, and SkyBFCS builds a single multiplexer from this key.
+    # Without it Startup.cs logs "keeping flips internal" and EU's flips never
+    # leave the cluster.
+    - name: FLIP_REDIS_OPTIONS
+      valueFrom:
+        secretKeyRef:
+          name: sky-bfcs-redis-auth
+          key: connection
+    # Consumes from both mesh instances, same as every other sky-bfcs.
+    # Keep the indices contiguous from 0 - they bind as a string[].
+    - name: REDIS_FLIP_INSTANCES__0
+      valueFrom:
+        secretKeyRef:
+          name: sky-bfcs-redis-auth
+          key: linode
+    - name: REDIS_FLIP_INSTANCES__1
+      valueFrom:
+        secretKeyRef:
+          name: sky-bfcs-redis-auth
+          key: cloudfanatic
     - name: SNIPER_TRANSFER_TOKEN
       valueFrom:
         secretKeyRef:
