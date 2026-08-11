@@ -86,7 +86,7 @@ spec:
           - name: REDIS_HOST
             value: "{{ .Chart.Name }}-redis,syncTimeout=1000"
           {{ if .Values.envVars }}
-          {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars "excludeNames" (ternary (list "DB_CONNECTION" "COCKROACH_DB_CONNECTION") (list) (not (empty $.Values.global.openbaoAuthPath)))) | nindent 10 }}
+          {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars "excludeNames" (ternary (list "DB_CONNECTION" "COCKROACH_DB_CONNECTION" "SMTP_HOST" "SMTP_USER" "SMTP_PASSWORD") (list) (not (empty $.Values.global.openbaoAuthPath)))) | nindent 10 }}
           {{ end }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars "excludeNames" (ternary (list "KAFKA__BROKERS" "KAFKA__USERNAME" "KAFKA__PASSWORD") (list) (not (empty $.Values.global.openbaoAuthPath)))) | nindent 10 }}
         readinessProbe:

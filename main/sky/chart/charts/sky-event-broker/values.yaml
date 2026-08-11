@@ -53,6 +53,19 @@ envVars:
       configMapKeyRef:
         name: config
         key: topic_transaction
+
+  - name: TOPICS__PAYMENTS
+    value: sky-payments
+
+  - name: LEGAL_MANIFEST_URL
+    value: https://coflnet.com/legal/manifest.json
+
+  - name: SMTP_PORT
+    value: "587"
+
+  - name: SMTP_FROM
+    value: noreply@coflnet.com
+
   - name: FIREBASE_SENDER_ID
     valueFrom:
       secretKeyRef:
