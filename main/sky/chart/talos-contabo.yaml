@@ -1,0 +1,43 @@
+# Talos Contabo edge overlay. The shared talos-datawagon values file supplies
+# the no-local-Redis edge baseline; this file contains only Contabo differences.
+
+sky-bfcs:
+  strategy: Recreate
+  ingress:
+    enabled: false
+    tls:
+      enabled: false
+    nginx: false
+    host: us-contabo.coflnet.com
+  envVars:
+    - name: JAEGER_AGENT_HOST
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
+    - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
+    - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+      value: http://jaeger-collector-eu-cluster.observability:4317
+    - name: SNIPER_BASE_URL
+      value: http://sky-sniper-eu-cluster:8000
+    # Contabo hosts no Redis member. Publish every locally produced flip to the
+    # existing Talos Linode Redis endpoint from sky-bfcs-redis-auth.
+    - name: FLIP_REDIS_OPTIONS
+      valueFrom:
+        secretKeyRef:
+          name: sky-bfcs-redis-auth
+          key: linode
+    - name: REDIS_FLIP_INSTANCES__0
+      valueFrom:
+        secretKeyRef:
+          name: sky-bfcs-redis-auth
+          key: linode
+    - name: REDIS_FLIP_INSTANCES__1
+      valueFrom:
+        secretKeyRef:
+          name: sky-bfcs-redis-auth
+          key: cloudfanatic
+  redis:
+    enabled: false

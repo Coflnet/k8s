@@ -100,3 +100,10 @@ targetCustomizations:
     helm:
       valuesFiles:
         - ./chart/talos-linode.yaml
+
+  - name: talos-contabo
+    clusterName: talos-contabo
+    helm:
+      valuesFiles:
+        - ./chart/talos-datawagon.yaml
+        - ./chart/talos-contabo.yaml
