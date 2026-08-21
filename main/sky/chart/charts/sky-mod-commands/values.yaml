@@ -50,7 +50,23 @@ resources:
     cpu: 500m
     memory: 2200Mi
   limits:
-    memory: 3Gi
+    memory: 4Gi
+
+diagnostics:
+  enabled: true
+  image:
+    repository: mcr.microsoft.com/dotnet/monitor
+    tag: "10.0.3@sha256:f4d9709b09339162d07604068bd7159661bd899cd22fcbabad856d979076d2a5"
+    pullPolicy: IfNotPresent
+  workingSetThresholdMb: 2400
+  artifactsSizeLimit: 7Gi
+  resources:
+    requests:
+      cpu: 50m
+      memory: 32Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
 
 services:
   - sky-mod-commands
@@ -140,8 +156,6 @@ envVars:
         key: linode_us_connection
   - name: REDIS_FLIP_INSTANCES__1
     value: sky-bfcs-redis-eu-cluster
-  - name: DONUT_FLIP_REDIS_HOST
-    value: sky-bfcs-redis.sky
 ## cassandra conn
   - name: CASSANDRA__HOSTS
     valueFrom:
@@ -165,4 +179,3 @@ envVars:
       secretKeyRef:
         name: scylla-credentials
         key: db-pfx-password
-

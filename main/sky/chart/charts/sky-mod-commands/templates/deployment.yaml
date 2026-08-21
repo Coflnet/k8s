@@ -93,6 +93,11 @@ spec:
             value: "sky-bfcs-redis,syncTimeout=1000"
           - name: MOD_REDIS_HOST
             value: {{ .Chart.Name }}-redis
+          - name: FLEET_INSTANCE_COUNT
+            value: {{ .Values.replicaCount | quote }}
+          - name: DOTNET_GCHeapCount
+            value: "4"
+          {{ include "sky-mod-commands.diagnosticsAppEnv" . | nindent 10 }}
           {{ if .Values.envVars }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 10 }}
           {{ end }}
@@ -115,6 +120,8 @@ spec:
         - name: scylla-pfx
           mountPath: /tls/scylla/secret/db.pfx
           subPath: db.pfx
+        {{ include "sky-mod-commands.diagnosticsAppVolumeMount" . | nindent 8 }}
+      {{ include "sky-mod-commands.diagnosticsContainer" . | nindent 6 }}
       volumes:
       {{- if $.Values.global.openbaoAuthPath }}
         - name: openbao-workload-token
@@ -132,6 +139,7 @@ spec:
             items:
             - key: db.pfx
               path: db.pfx
+      {{ include "sky-mod-commands.diagnosticsVolumes" . | nindent 8 }}
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
