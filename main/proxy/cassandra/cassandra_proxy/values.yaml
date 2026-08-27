@@ -275,7 +275,8 @@ hostAliases: []
 ## @param podLabels Extra labels for haproxy pods
 ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 ##
-podLabels: {}
+podLabels:
+  security.coflnet.com/k8s-api-access: "false"
 ## @param podAnnotations Annotations for haproxy pods
 ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 ##
