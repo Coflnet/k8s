@@ -1,6 +1,6 @@
 global:
   imagePullSecrets: 
-  - name: harbor
+  - name: regcred
 
   envVars:
 
@@ -41,4 +41,3 @@ global:
     type: configmap
     mountName: redpanda-cm
     name: redpanda
-

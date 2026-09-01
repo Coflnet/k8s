@@ -8,7 +8,7 @@
 #   Copy from eu-cluster: kubectl --context eu-cluster -n discord get secret secret -o yaml | ... | kt apply -f -
 
 global:
-  # No harbor registry on talos (public images)
+  # No registry pull secret on talos (public images)
   imagePullSecrets: []
   envVars: []
   # Discord bot does not use Kafka — clear redpanda volumes from parent values.yaml

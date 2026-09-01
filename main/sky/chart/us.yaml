@@ -1,6 +1,6 @@
 global:
   imagePullSecrets:
-    - name: harbor
+    - name: regcred
 
   redis:
     enabled: false

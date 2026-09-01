@@ -1,4 +1,3 @@
 global:
   imagePullSecrets: 
-  - name: harbor
-
+  - name: regcred

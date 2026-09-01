@@ -1,13 +1,13 @@
 # Talos (talos-eu-hcloud) overlay for feedback service.
 #
 # Differences vs. eu-cluster:
-#   - No harbor registry (public images)
+#   - No registry pull secret (public images)
 #   - Kafka uses external hostname (no k8-main-kafka service on talos)
 #   - Security hardening: runAsNonRoot, readOnlyRootFilesystem, no automount token
 #   - ServiceMonitor gated (Prometheus not yet deployed on talos)
 #   - Ingress disabled (Cilium Gateway API replaces nginx)
 
-# ── Remove Harbor imagePullSecret ───────────────────────────────────────
+# ── Remove the imagePullSecret ──────────────────────────────────────────
 imagePullSecrets: []
 
 # ── Pod security ────────────────────────────────────────────────────────

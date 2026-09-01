@@ -4,8 +4,8 @@ replicaCount: 1
 strategy: RollingUpdate
 
 image:
-  repository: harbor.flou.dev/coflnet/sky-operator
-  tag: demo
+  repository: muehlhansfl/sky-operator
+  tag: "v2.0.0@sha256:3dd6b89fe714550e4cadc8a8b5f65b66ef48cb7cad3e29ab6f03680ca12842ce"
   pullPolicy: IfNotPresent
 
 ports:

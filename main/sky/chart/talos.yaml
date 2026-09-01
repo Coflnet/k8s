@@ -37,7 +37,7 @@
 #   k8s Secret "redpanda" (key: brokers — Redpanda broker addresses)
 #     NOTE: eu.yaml uses secretKeyRef for "brokers"; ensure the secret has that key.
 #
-#   k8s Secret "harbor" (type: kubernetes.io/dockerconfigjson — image pull secret)
+#   k8s Secret "regcred" (type: kubernetes.io/dockerconfigjson — Docker Hub pull secret)
 #   k8s ConfigMap "minio" (key: host)
 #   k8s Secret "minio" (keys: access_key, secret_key)
 #   k8s Secret "sniper-transfer-token" (key: sniper_transfer_token)
@@ -76,7 +76,7 @@ global:
   # Talos uses Cilium CNI, not Linkerd. Remove the Linkerd sidecar annotation.
   podAnnotations: {}
 
-  # Images are public on Docker Hub; no harbor pull secret needed on talos yet.
+  # Images are public on Docker Hub; no pull secret needed on talos yet.
   imagePullSecrets: []
 
   # Ingress for sky.coflnet.com, sky-commands.coflnet.com, etc.

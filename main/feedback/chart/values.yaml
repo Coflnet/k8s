@@ -3,7 +3,7 @@ replicaCount: 1
 strategy: RollingUpdate
 
 imagePullSecrets:
-  - name: harbor
+  - name: regcred
 image:
   repository: muehlhansfl/feedback
   tag: 8e5080d5-3996-48b7-a677-35321bc7c343

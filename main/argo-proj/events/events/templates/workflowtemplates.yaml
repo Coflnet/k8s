@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: build-harbor-image
+  name: build-dockerhub-image
   namespace: argo
   labels:
     workflows.argoproj.io/container-runtime-executor: emissary
@@ -27,7 +27,7 @@ spec:
       value: ci
       effect: NoSchedule
   templates:
-    - name: build-harbor-image
+    - name: build-dockerhub-image
       inputs:
         parameters:
           - { name: app_repo }
@@ -84,8 +84,8 @@ spec:
             esac
 
             IMAGE_REF="$CONTAINER_IMAGE"
-            case "$IMAGE_REF" in harbor.flou.dev/*) ;; *) IMAGE_REF="harbor.flou.dev/$IMAGE_REF" ;; esac
-            case "$IMAGE_REF" in harbor.flou.dev/coflnet/*) ;; *) echo "refusing non-Coflnet image: $IMAGE_REF" >&2; exit 45 ;; esac
+            case "$IMAGE_REF" in docker.io/*) ;; *) IMAGE_REF="docker.io/$IMAGE_REF" ;; esac
+            case "$IMAGE_REF" in docker.io/muehlhansfl/*) ;; *) echo "refusing non-Coflnet image: $IMAGE_REF" >&2; exit 45 ;; esac
             case "$IMAGE_REF$CONTAINER_TAG" in *[!a-zA-Z0-9_./:-]*|*..*|*//*) echo "refusing unsafe image/tag" >&2; exit 46 ;; esac
 
             . /var/run/secrets/openbao/build.env
@@ -142,7 +142,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: push-harbor-image
+  name: push-dockerhub-image
   namespace: argo
   labels:
     security.coflnet.com/k8s-api-access: "false"
@@ -158,7 +158,7 @@ spec:
     seccompProfile:
       type: RuntimeDefault
   templates:
-    - name: push-harbor-image
+    - name: push-dockerhub-image
       inputs:
         parameters:
           - { name: container_image }
@@ -182,8 +182,8 @@ spec:
         args:
           - |
             IMAGE_REF="$CONTAINER_IMAGE"
-            case "$IMAGE_REF" in harbor.flou.dev/*) ;; *) IMAGE_REF="harbor.flou.dev/$IMAGE_REF" ;; esac
-            case "$IMAGE_REF" in harbor.flou.dev/coflnet/*) ;; *) echo "refusing non-Coflnet image: $IMAGE_REF" >&2; exit 49 ;; esac
+            case "$IMAGE_REF" in docker.io/*) ;; *) IMAGE_REF="docker.io/$IMAGE_REF" ;; esac
+            case "$IMAGE_REF" in docker.io/muehlhansfl/*) ;; *) echo "refusing non-Coflnet image: $IMAGE_REF" >&2; exit 49 ;; esac
             case "$IMAGE_REF:$CONTAINER_TAG" in *[!a-zA-Z0-9_./:-]*|*..*|*//*) echo "refusing unsafe image/tag" >&2; exit 50 ;; esac
             test -s /workspace/image.tar
             . /var/run/secrets/openbao/promote.env
@@ -265,8 +265,8 @@ spec:
         tasks:
           - name: build
             templateRef:
-              name: build-harbor-image
-              template: build-harbor-image
+              name: build-dockerhub-image
+              template: build-dockerhub-image
             arguments:
               parameters:
                 - { name: app_repo, value: "{{ $open }}workflow.parameters.app_repo{{ $close }}" }
@@ -278,8 +278,8 @@ spec:
           - name: push
             depends: build
             templateRef:
-              name: push-harbor-image
-              template: push-harbor-image
+              name: push-dockerhub-image
+              template: push-dockerhub-image
             arguments:
               parameters:
                 - { name: container_image, value: "{{ $open }}workflow.parameters.container_image{{ $close }}" }
@@ -303,8 +303,8 @@ spec:
         tasks:
           - name: build
             templateRef:
-              name: build-harbor-image
-              template: build-harbor-image
+              name: build-dockerhub-image
+              template: build-dockerhub-image
             arguments:
               parameters:
                 - { name: app_repo, value: "{{ $open }}workflow.parameters.app_repo{{ $close }}" }
@@ -316,8 +316,8 @@ spec:
           - name: push
             depends: build
             templateRef:
-              name: push-harbor-image
-              template: push-harbor-image
+              name: push-dockerhub-image
+              template: push-dockerhub-image
             arguments:
               parameters:
                 - { name: container_image, value: "{{ $open }}workflow.parameters.container_image{{ $close }}" }

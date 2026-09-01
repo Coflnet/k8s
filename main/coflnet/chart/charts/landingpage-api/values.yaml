@@ -3,7 +3,7 @@ replicaCount: 2
 strategy: RollingUpdate
 
 imagePullSecrets: 
-  - name: harbor
+  - name: regcred
 image:
   repository: muehlhansfl/landingpageapi
   tag: 552ec810-f126-45c5-9d86-ebf3126bcb5f

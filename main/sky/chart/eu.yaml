@@ -1,6 +1,6 @@
 global:
   imagePullSecrets:
-    - name: harbor
+    - name: regcred
 
   config:
     enabled: true

@@ -2,7 +2,7 @@ replicaCount: 1
 strategy: RollingUpdate
 
 imagePullSecrets: 
-- name: harbor
+- name: regcred
 
 serviceAccount:
   name: static-s3

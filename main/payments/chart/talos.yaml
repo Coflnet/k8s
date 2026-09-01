@@ -10,7 +10,7 @@
 #     selector rather than hardcoded eu-cluster pod CIDRs.
 global:
   imagePullSecrets:
-    - name: harbor
+    - name: regcred
 
 payments:
   enabled: true
