@@ -1,7 +1,7 @@
 {{- define "sky-mod-commands.diagnosticsAppEnv" -}}
 {{- if .Values.diagnostics.enabled }}
 - name: DOTNET_DiagnosticPorts
-  value: /diag/dotnet-monitor.sock
+  value: /diag/dotnet-monitor.sock,nosuspend
 {{- end }}
 {{- end }}
 
