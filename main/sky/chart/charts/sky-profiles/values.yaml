@@ -5,7 +5,7 @@ strategy: RollingUpdate
 
 image:
   repository: muehlhansfl/skyprofiles
-  tag: 4048b5d2af0ba02065acda2fcf46b5e06b1dd74c
+  tag: 4048b5d2af0ba02065acda2fcf46b5e06b1dd74c@sha256:6051777a7c17408567f201cb9ef205c71cf8c04212975a896e0bf288e6729187
   pullPolicy: IfNotPresent
 
 ports:

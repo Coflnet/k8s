@@ -15467,7 +15467,7 @@ spec:
               fieldPath: metadata.namespace
         - name: OPERATOR_NAME
           value: jaeger-operator
-        image: quay.io/jaegertracing/jaeger-operator:1.49.0
+        image: quay.io/jaegertracing/jaeger-operator:1.49.0@sha256:44f79ab543df2ed0e1a5896c819eb6e2c9452814ea409deca25470ff04cc60e8
         livenessProbe:
           httpGet:
             path: /healthz
@@ -15503,7 +15503,7 @@ spec:
         - --upstream=http://127.0.0.1:8383/
         - --logtostderr=true
         - --v=0
-        image: registry.k8s.io/kubebuilder/kube-rbac-proxy:v0.13.1
+        image: registry.k8s.io/kubebuilder/kube-rbac-proxy:v0.13.1@sha256:d4883d7c622683b3319b5e6b3a7edfbf2594c18060131a8bf64504805f875522
         name: kube-rbac-proxy
         ports:
         - containerPort: 8443

@@ -5,7 +5,7 @@ revisionHistoryLimit: 5
 
 image:
   repository: ekwav/crafatar
-  tag: latest
+  tag: latest@sha256:421d11385d37589cd7ea8bf79367d857790b6a5d2e20f6401e0becfc29def47e
   pullPolicy: IfNotPresent
 
 ports:

@@ -20,7 +20,7 @@ spec:
       serviceAccountName: {{ .Chart.Name }}
       containers:
       - name: {{ .Chart.Name }}-imgproxy
-        image: darthsim/imgproxy:v3.12
+        image: darthsim/imgproxy:v3.12@sha256:8ea7fdedf0784c8067c6479c6b7e34bb0be648b747ee5883fb9ceb03a692fe50
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false

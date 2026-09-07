@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: redis
-        image: valkey/valkey:7.2
+        image: valkey/valkey:7.2@sha256:cbfcb3772ceb0f87ba2bfb2948a3339659696538e9456c0da23edc99fdefb70a
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false
