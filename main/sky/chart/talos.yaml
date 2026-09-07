@@ -553,6 +553,7 @@ sky-crafts:
     initialDelaySeconds: 120
 
 sky-event-broker:
+  openbaoOnly: true
   enabled: true
 
 sky-flipper:
@@ -573,6 +574,7 @@ sky-flipper:
     initialDelaySeconds: 90
 
 sky-flip-tracker:
+  openbaoOnly: true
   enabled: true
   serviceMonitor:
     enabled: false
@@ -618,6 +620,7 @@ sky-flip-tracker:
     initialDelaySeconds: 90
 
 sky-indexer:
+  openbaoOnly: true
   enabled: true
   serviceMonitor:
     enabled: false
@@ -764,6 +767,7 @@ sky-player-name:
     initialDelaySeconds: 90
 
 sky-player-state:
+  openbaoOnly: true
   enabled: true
   # NOTE: Requires scylla-pfx k8s Secret to exist in the sky namespace on talos
   # for ScyllaDB mTLS (mounted directly by deployment template).
@@ -793,6 +797,7 @@ sky-player-state:
     initialDelaySeconds: 10
 
 sky-profiles:
+  openbaoOnly: true
   enabled: true
   serviceMonitor:
     enabled: false
@@ -817,6 +822,7 @@ sky-profiles:
     initialDelaySeconds: 90
 
 sky-proxy:
+  openbaoOnly: true
   enabled: true
   strategy:
     type: Recreate
@@ -858,6 +864,7 @@ sky-referral:
     initialDelaySeconds: 90
 
 sky-settings:
+  openbaoOnly: true
   enabled: true
   # NOTE: Uses scylla-pfx, scylla-credentials, scylla-config for ScyllaDB mTLS.
   # These k8s secrets/ConfigMaps were copied from eu-cluster to talos.
@@ -893,6 +900,7 @@ sky-settings:
     initialDelaySeconds: 90
 
 sky-sniper:
+  openbaoOnly: true
   enabled: true
   serviceMonitor:
     enabled: false
@@ -916,6 +924,7 @@ sky-sniper:
     initialDelaySeconds: 90
 
 sky-subscriptions:
+  openbaoOnly: true
   enabled: true
   serviceMonitor:
     enabled: false
@@ -949,6 +958,7 @@ sky-trade:
   enabled: false
 
 sky-updater:
+  openbaoOnly: true
   enabled: true
   serviceMonitor:
     enabled: false

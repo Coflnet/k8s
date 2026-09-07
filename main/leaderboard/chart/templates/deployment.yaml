@@ -16,6 +16,7 @@ spec:
     metadata:
       labels:
         app: {{ .Chart.Name }}
+        security.coflnet.com/k8s-api-access: "false"
     spec:
       serviceAccountName: {{ .Chart.Name }}
       {{- if .Values.openbao.tokenAudience }}
@@ -74,7 +75,11 @@ spec:
             value: /openbao/tls/ca.crt
           {{ end }}
           # ── Application env vars ───────────────────────────────────
-          {{ toYaml .Values.envVars | nindent 10 }}
+          {{- range .Values.envVars }}
+          {{- if not (and $.Values.openbao.authPath (not $.Values.openbao.optional) (hasKey (.valueFrom | default dict) "secretKeyRef")) }}
+          {{- toYaml (list .) | nindent 10 }}
+          {{- end }}
+          {{- end }}
         readinessProbe:
           {{ toYaml .Values.readinessProbe | nindent 10 }}
         resources:
