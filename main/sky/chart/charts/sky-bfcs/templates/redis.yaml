@@ -111,6 +111,10 @@ metadata:
     mirror.linkerd.io/exported: "true"
 spec:
   type: {{ .Values.redis.serviceType | default "ClusterIP" }}
+  {{- if eq (.Values.redis.serviceType | default "ClusterIP") "NodePort" }}
+  # Keep the original peer address for the reviewed cross-cluster ingress rules.
+  externalTrafficPolicy: Local
+  {{- end }}
   selector:
     app: {{ .Chart.Name }}-redis
   ports:
