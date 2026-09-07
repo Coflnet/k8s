@@ -111,8 +111,8 @@ global:
   # Cilium eBPF handles load balancing between the backend IPs with sub-μs latency.
   databaseServices:
     enabled: true
+    # The retired .119 Sky database no longer listens on TCP/3307.
     skyDatabaseEndpoints:
-      - "185.203.217.119"
       - "194.163.151.190"
     itemsDatabaseEndpoints:
       - "185.203.217.119"
