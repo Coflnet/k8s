@@ -4,7 +4,8 @@
 {{- $excludeNames := .excludeNames | default list -}}
 {{- $filtered := list -}}
 {{- range $item := $env -}}
-{{- if not (has $item.name $excludeNames) -}}
+{{- $fromSecret := hasKey ($item.valueFrom | default dict) "secretKeyRef" -}}
+{{- if and (not (has $item.name $excludeNames)) (not (and ($root.Values.openbaoOnly | default false) $fromSecret)) -}}
 {{- $filtered = append $filtered $item -}}
 {{- end -}}
 {{- end -}}

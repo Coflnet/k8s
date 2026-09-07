@@ -391,6 +391,8 @@ sky-api:
     trafficRouting: ~
 
 sky-auctions:
+  # Every former Secret environment key has been verified in this workload's KV leaf.
+  openbaoOnly: true
   enabled: true
   serviceMonitor:
     enabled: false
