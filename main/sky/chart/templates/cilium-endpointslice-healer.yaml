@@ -19,7 +19,7 @@
 #
 # WHAT THIS DOES
 #   Once a minute it probes every ClusterIP Service that has ready endpoints. If
-#   the Service VIP is unreachable (no eBPF backend) it bumps an annotation on the
+#   the Service VIP is unreachable but a ready backend accepts TCP, it bumps an annotation on the
 #   Service's EndpointSlices. The new resourceVersion forces every Cilium agent to
 #   re-process the slice and reprogram the backends — instantly and without a
 #   Cilium restart. Annotating a healthy slice is a harmless no-op, and healthy
@@ -146,14 +146,13 @@ spec:
                   kubectl get endpointslices -n "$NS" \
                     -o jsonpath='{range .items[*]}{.metadata.labels.kubernetes\.io/service-name}{"\t"}{range .endpoints[*]}{.conditions.ready}{","}{end}{"\n"}{end}' 2>/dev/null \
                     | awk -F"$TAB" '$2 ~ /true/ {print $1}' | sort -u > "$READY"
-                  # One call: endpoint IPs per service (to cross-check stale vs genuine desync).
-                  # Schema: "svcName IP1 IP2 ..."
-                  SLICE_IPS="$(kubectl get endpointslices -n "$NS" \
-                    -o jsonpath='{range .items[*]}{.metadata.labels.kubernetes\.io/service-name}{" "}{range .endpoints[*]}{.addresses[0]}{" "}{end}{"\n"}{end}' 2>/dev/null)"
+                  # Ready addresses and named target ports stay paired per slice.
+                  SLICE_TARGETS="$(kubectl get endpointslices -n "$NS" \
+                    -o jsonpath='{range .items[*]}{.metadata.labels.kubernetes\.io/service-name}{"\t"}{range .ports[*]}{.name}{"="}{.port}{","}{end}{"\t"}{range .endpoints[?(@.conditions.ready==true)]}{.addresses[0]}{" "}{end}{"\n"}{end}' 2>/dev/null)"
                   # One call: name<TAB>type<TAB>clusterIP<TAB>firstPort for every service.
                   kubectl get svc -n "$NS" \
-                    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.type}{"\t"}{.spec.clusterIP}{"\t"}{.spec.ports[0].port}{"\n"}{end}' 2>/dev/null \
-                    | while IFS="$TAB" read -r name type ip port; do
+                    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.type}{"\t"}{.spec.clusterIP}{"\t"}{.spec.ports[0].port}{"\t"}{.spec.ports[0].name}{"\n"}{end}' 2>/dev/null \
+                    | while IFS="$TAB" read -r name type ip port port_name; do
                         [ -z "$name" ] && continue
                         [ "$type" = "ClusterIP" ] || continue
                         [ -z "$ip" ] || [ "$ip" = "None" ] && continue
@@ -163,7 +162,7 @@ spec:
                           continue
                         fi
                         # Cross-check: does any slice endpoint IP for this service belong to a running pod?
-                        svc_ips="$(echo "$SLICE_IPS" | awk -v svc="$name" '($1 == svc) {for(i=2;i<=NF;i++) print $i}')"
+                        svc_ips="$(echo "$SLICE_TARGETS" | awk -F"$TAB" -v svc="$name" '($1 == svc) {print $3}')"
                         has_live=0
                         for sip in $svc_ips; do
                           echo "$RUNNING_IPS" | grep -qxF "$sip" && has_live=1 && break
@@ -172,7 +171,25 @@ spec:
                           echo "STALE_SLICE: svc/$name $ip:$port has ready endpoints but all pods are dead — skip"
                           continue
                         fi
-                        echo "DESYNC: svc/$name $ip:$port has live endpoints but VIP unreachable -> forcing Cilium resync"
+                        # Policy denial or an unresponsive backend is not evidence of LB desync.
+                        direct_live="$(printf '%s\n' "$SLICE_TARGETS" | awk -F"$TAB" -v svc="$name" -v pname="$port_name" '
+                          $1 == svc {
+                            n=split($2, ports, ","); m=split($3, ips, " ");
+                            for(i=1;i<=n;i++) {
+                              split(ports[i], p, "=");
+                              if(p[1]==pname && p[2]!="")
+                                for(j=1;j<=m;j++) if(ips[j]!="") print ips[j], p[2];
+                            }
+                          }' | while read -r backend target_port; do
+                            if nc -z -w "$PROBE_TIMEOUT" "$backend" "$target_port" 2>/dev/null; then
+                              echo yes; break
+                            fi
+                          done)"
+                        if [ "$direct_live" != "yes" ]; then
+                          echo "BACKEND_UNREACHABLE: svc/$name VIP and ready backends fail TCP probes — skip"
+                          continue
+                        fi
+                        echo "DESYNC: svc/$name $ip:$port has a reachable ready backend but VIP unreachable -> forcing Cilium resync"
                         kubectl annotate endpointslices -n "$NS" \
                           -l "kubernetes.io/service-name=$name" \
                           "sky.coflnet.com/cilium-resync=$(date +%s)" --overwrite >/dev/null 2>&1 || true
