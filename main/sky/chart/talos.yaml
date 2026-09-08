@@ -125,6 +125,7 @@ global:
   # See templates/cilium-endpointslice-healer.yaml. Talos-only (Cilium CNI).
   ciliumEndpointSliceHealer:
     enabled: true
+    image: alpine/k8s:1.30.13@sha256:3ac15bcb3e6f959336928f536f9e25056e5503c4037bb00ff7ecf0f97fdb1681
     schedule: "* * * * *"
     probeTimeoutSeconds: 1
 
