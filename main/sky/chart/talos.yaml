@@ -90,6 +90,11 @@ global:
     # routes directly to pod endpoints and never depends on that map. Safe here:
     # canary trafficRouting is ~ (null), no service mesh, no Service-VIP NetworkPolicies.
     serviceUpstream: false
+    descriptionAffinity:
+      enabled: true
+      hosts:
+        - sky.coflnet.com
+        - sky-commands.coflnet.com
 
   # No redpanda volumes yet — secrets/configmaps not created on talos.
   volumes:
@@ -177,6 +182,18 @@ global:
           fieldPath: status.hostIP
     - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
       value: "http://jaeger-collector.observability:4317"
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    - name: POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+    - name: NODE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
     # Logs go to Loki via its native OTLP endpoint (Loki 3.x). The OTLP HttpProtobuf
     # exporter sends to the URL as-is, so the full signal path /otlp/v1/logs is required.
     # Targets the write component (distributor) directly; bypasses the single-replica gateway.
@@ -326,8 +343,14 @@ sky-api:
   serviceMonitor:
     enabled: true
   envVars:
-    - name: DONUT_API_BASE_URL
-      value: "http://donutapi.donut.svc.cluster.local:8000"
+    - name: DESCRIPTION_SETTINGS_TIMEOUT_MS
+      value: "750"
+    - name: DESCRIPTION_ACCOUNT_TIMEOUT_MS
+      value: "250"
+    - name: DESCRIPTION_SNIPER_TIMEOUT_MS
+      value: "1000"
+    - name: SNIPER_TIMEOUT_MS
+      value: "900"
     - name: EMBEDDING_API_URL
       value: "http://skycofl-embeddings.sky.svc.cluster.local:8080/v1/embeddings"
     - name: EMBEDDING_MODEL
@@ -547,7 +570,14 @@ sky-crafts:
   enabled: true
   serviceMonitor:
     enabled: false
-  envVars: []
+  resources:
+    requests:
+      memory: 512Mi
+    limits:
+      memory: 1Gi
+  envVars:
+    - name: DOTNET_GCHeapHardLimitPercent
+      value: "3C" # 60% in hexadecimal; leave room for memory outside the GC heap.
   livenessProbe:
     initialDelaySeconds: 120
   readinessProbe:
@@ -867,6 +897,8 @@ sky-referral:
 sky-settings:
   openbaoOnly: true
   enabled: true
+  serviceMonitor:
+    enabled: true
   # NOTE: Uses scylla-pfx, scylla-credentials, scylla-config for ScyllaDB mTLS.
   # These k8s secrets/ConfigMaps were copied from eu-cluster to talos.
   # DB connection and Kafka creds come from OpenBao kv/sky/sky-settings.
@@ -904,8 +936,13 @@ sky-sniper:
   openbaoOnly: true
   enabled: true
   serviceMonitor:
-    enabled: false
+    enabled: true
   nodeSelector: {}
+  resources:
+    limits:
+      memory: 6Gi
+  worker:
+    replicaCount: 3
   envVars:
     - name: DBConnection
       valueFrom:
