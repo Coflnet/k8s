@@ -11,6 +11,36 @@ payments:
       {
       "products": [
       {
+        "slug": "premium-slots",
+        "title": "Premium slot",
+        "description": "Purchaser-owned capacity; only the purchaser can assign, revoke, extend or refund slots.",
+        "cost": 1800,
+        "ownershipSeconds": 2592000,
+        "type": "SERVICE",
+        "slotCount": 1,
+        "slotTier": "premium"
+      },
+      {
+        "slug": "premium_plus-slot-weeks",
+        "title": "Premium+ slot, 4 weeks",
+        "description": "Purchaser-owned capacity; only the purchaser can assign, revoke, extend or refund slots.",
+        "cost": 9000,
+        "ownershipSeconds": 2419200,
+        "type": "SERVICE",
+        "slotCount": 1,
+        "slotTier": "premium_plus"
+      },
+      {
+        "slug": "premium_plus-slots-4",
+        "title": "Premium+ 4 slots, 4 weeks",
+        "description": "Purchaser-owned capacity; only the purchaser can assign, revoke, extend or refund slots.",
+        "cost": 27000,
+        "ownershipSeconds": 2419200,
+        "type": "SERVICE",
+        "slotCount": 4,
+        "slotTier": "premium_plus"
+      },
+      {
       "slug": "advent-calendar",
       "title": "Advent calendar",
       "description": "Extra perks for the advent calendar",
@@ -378,6 +408,32 @@ payments:
       "ProviderSlug": "lemonsqueezy",
       "ownershipSeconds": 7776000,
       "type": "SERVICE"
+      },
+      {
+      "slug": "l_prem_plus-slots-4",
+      "title": "Premium+ 4 slots, 4 weeks",
+      "description": "Four purchaser-owned Premium+ slots renewing every 4 weeks; assignments are preserved on renewal.",
+      "cost": 27000,
+      "price": 99.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 2419200,
+      "type": "SERVICE",
+      "slotCount": 4,
+      "slotTier": "premium_plus"
+      },
+      {
+      "slug": "l_premium-slots-4",
+      "title": "Premium 4 slots, 4 weeks",
+      "description": "Four purchaser-owned Premium slots renewing every 4 weeks; assignments are preserved on renewal.",
+      "cost": 7200,
+      "price": 29.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 2419200,
+      "type": "SERVICE",
+      "slotCount": 4,
+      "slotTier": "premium"
       },
       {
       "slug": "l_prem_plus-quarter",

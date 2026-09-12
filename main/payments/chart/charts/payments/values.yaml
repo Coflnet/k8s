@@ -245,6 +245,8 @@ payments:
         value: "3"
       - name: lemonsqueezy__SUBSCRIPTION_VARIANT_ID
         value: "502893"
+      - name: lemonsqueezy__SUBSCRIPTION_VARIANTS
+        value: '{"l_premium":502893,"l_prem_plus":1277645,"l_premium-slots-4":2118396,"l_prem_plus-slots-4":1278931}'
 
     volumes:
       - name: redpanda
