@@ -231,16 +231,6 @@ spec:
             name: sky-commands
             port:
               number: 8008
-  - host: sky-mod.flou.dev
-    http:
-      paths:
-      - path: /
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: sky-mod-commands
-            port:
-              number: 8008
   - host: sky-mod.coflnet.com
     http:
       paths:
