@@ -103,4 +103,4 @@ accounting:
   enabled: false
 
 product-provisioner:
-  enabled: false
+  enabled: true
