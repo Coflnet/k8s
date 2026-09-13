@@ -18,6 +18,12 @@ spec:
       annotations:
         "linkerd.io/inject": disabled
     spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1654
+        seccompProfile:
+          type: RuntimeDefault
       {{ if $.Values.global }}
       {{ if $.Values.global.imagePullSecrets }}
       imagePullSecrets:
@@ -27,6 +33,11 @@ spec:
       containers:
       - name: {{ $p.name }}
         image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
         volumeMounts:
         - mountPath: /app/products.json
           name: config-volume
