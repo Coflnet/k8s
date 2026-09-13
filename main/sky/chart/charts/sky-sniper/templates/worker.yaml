@@ -36,6 +36,13 @@ spec:
           type: RuntimeDefault
       nodeSelector:
       {{ toYaml .Values.nodeSelector | nindent 8 }}
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: "{{ .Chart.Name }}-worker"
       containers:
       - name: "{{ .Chart.Name }}"
         securityContext:

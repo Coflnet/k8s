@@ -1,0 +1,32 @@
+{{- $global := .Values.global | default dict -}}
+{{- $ingress := get $global "ingress" | default dict -}}
+{{- $affinity := get $ingress "descriptionAffinity" | default dict -}}
+{{- if and (get $ingress "enabled" | default false) (get $affinity "enabled" | default false) }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sky-api-description-affinity
+  namespace: sky
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/service-upstream: "false"
+    # conId keeps clients behind the same NAT distinct; remote_addr also gives
+    # old clients without conId a stable key instead of concentrating them on
+    # the empty-key backend. Only affected keys move when replicas change.
+    nginx.ingress.kubernetes.io/upstream-hash-by: "${http_conid}|${remote_addr}"
+spec:
+  ingressClassName: nginx
+  rules:
+  {{- range (get $affinity "hosts" | default list) }}
+    - host: {{ . | quote }}
+      http:
+        paths:
+          - path: /api/mod/description/modifications
+            pathType: Prefix
+            backend:
+              service:
+                name: sky-api
+                port:
+                  number: 8000
+  {{- end }}
+{{- end }}

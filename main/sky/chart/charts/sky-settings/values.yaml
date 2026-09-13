@@ -1,6 +1,9 @@
 enabled: true
 replicaCount: 3
 
+serviceMonitor:
+  enabled: false
+
 strategy: RollingUpdate
 
 image:
