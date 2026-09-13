@@ -13,7 +13,7 @@ metadata:
     # conId keeps clients behind the same NAT distinct; remote_addr also gives
     # old clients without conId a stable key instead of concentrating them on
     # the empty-key backend. Only affected keys move when replicas change.
-    nginx.ingress.kubernetes.io/upstream-hash-by: "${http_conid}|${remote_addr}"
+    nginx.ingress.kubernetes.io/upstream-hash-by: "$http_conid$remote_addr"
 spec:
   ingressClassName: nginx
   rules:
