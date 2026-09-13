@@ -860,7 +860,7 @@ sky-proxy:
   nodeSelector:
     kubernetes.io/hostname: eu-worker1
   serviceMonitor:
-    enabled: false
+    enabled: true
   envVars:
     - name: DB_CONNECTION
       valueFrom:
