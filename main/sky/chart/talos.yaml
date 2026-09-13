@@ -593,7 +593,7 @@ sky-flipper:
     enabled: false
   envVars:
     - name: REDIS_HOST
-      value: "redis-service"
+      value: "redis"
     - name: DBConnection
       valueFrom:
         secretKeyRef:
