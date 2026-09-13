@@ -21,6 +21,16 @@ payments:
         "slotTier": "premium"
       },
       {
+        "slug": "premium-slots-4",
+        "title": "Premium 4 slots, 30 days",
+        "description": "Four purchaser-owned Premium slots for 30 days; assign each slot to a friend.",
+        "cost": 6000,
+        "ownershipSeconds": 2592000,
+        "type": "SERVICE",
+        "slotCount": 4,
+        "slotTier": "premium"
+      },
+      {
         "slug": "premium_plus-slot-weeks",
         "title": "Premium+ slot, 4 weeks",
         "description": "Purchaser-owned capacity; only the purchaser can assign, revoke, extend or refund slots.",
