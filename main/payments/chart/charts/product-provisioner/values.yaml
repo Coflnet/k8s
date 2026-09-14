@@ -433,6 +433,32 @@ payments:
       "slotTier": "premium_plus"
       },
       {
+      "slug": "l_prem_plus-slots",
+      "title": "Premium+ single slot, 4 weeks",
+      "description": "One purchaser-owned Premium+ slot at the normal subscription price. Assign or cancel this slot subscription from Account > Purchased slots; access continues through the paid period.",
+      "cost": 8500,
+      "price": 35.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 2419200,
+      "type": "SERVICE",
+      "slotCount": 1,
+      "slotTier": "premium_plus"
+      },
+      {
+      "slug": "l_premium-slots",
+      "title": "Premium single slot, 4 weeks",
+      "description": "One purchaser-owned Premium slot at the normal subscription price. Assign or cancel this slot subscription from Account > Purchased slots; access continues through the paid period.",
+      "cost": 1800,
+      "price": 9.69,
+      "currencyCode": "eur",
+      "ProviderSlug": "lemonsqueezy",
+      "ownershipSeconds": 2419200,
+      "type": "SERVICE",
+      "slotCount": 1,
+      "slotTier": "premium"
+      },
+      {
       "slug": "l_premium-slots-4",
       "title": "Premium 4 slots, 4 weeks",
       "description": "Four purchaser-owned Premium slots renewing every 4 weeks; assignments are preserved on renewal.",
