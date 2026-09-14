@@ -111,6 +111,8 @@ spec:
         resources:
          {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
+        - name: response-tmp
+          mountPath: /tmp
         {{- if $.Values.global.openbaoAuthPath }}
         - name: openbao-workload-token
           mountPath: /var/run/secrets/openbao
@@ -126,6 +128,9 @@ spec:
         {{ include "sky-mod-commands.diagnosticsAppVolumeMount" . | nindent 8 }}
       {{ include "sky-mod-commands.diagnosticsContainer" . | nindent 6 }}
       volumes:
+        - name: response-tmp
+          emptyDir:
+            sizeLimit: 256Mi
       {{- if $.Values.global.openbaoAuthPath }}
         - name: openbao-workload-token
           projected:
