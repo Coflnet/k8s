@@ -7,6 +7,11 @@ metadata:
     app: {{ .Chart.Name }}-redis
 spec:
   replicas: 1
+  {{- if .Values.redis.persistence.enabled }}
+  strategy:
+    type: Recreate # A single Redis process owns the RWO snapshot volume.
+    rollingUpdate: null
+  {{- end }}
   selector:
     matchLabels:
       app: {{ .Chart.Name }}-redis
@@ -16,9 +21,30 @@ spec:
         app: {{ .Chart.Name }}-redis
     spec:
       automountServiceAccountToken: false
+      {{- if .Values.redis.persistence.enabled }}
+      securityContext:
+        fsGroup: 999
+        fsGroupChangePolicy: OnRootMismatch
+      {{- end }}
       containers:
       - name: {{ .Chart.Name }}-redis
         image: redis:7.0.5@sha256:dfeb5451fce377ab47c5bb6b6826592eea534279354bbfc3890c0b5e9b57c763
+        {{- if .Values.redis.persistence.enabled }}
+        args:
+          - --dir
+          - /data
+          - --save
+          - "5 1"
+          - --appendonly
+          - "no"
+          - --maxmemory
+          - {{ .Values.redis.maxmemory | quote }}
+          - --maxmemory-policy
+          - noeviction
+        volumeMounts:
+          - name: data
+            mountPath: /data
+        {{- end }}
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false
@@ -36,6 +62,30 @@ spec:
           requests:
             memory: "200Mi"
             cpu: "50m"
+      {{- if .Values.redis.persistence.enabled }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ .Chart.Name }}-redis
+      {{- end }}
+{{- if .Values.redis.persistence.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Chart.Name }}-redis
+  annotations:
+    helm.sh/resource-policy: keep
+spec:
+  accessModes:
+    - ReadWriteOnce
+  {{- with .Values.redis.persistence.storageClassName }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.redis.persistence.size }}
+{{- end }}
 ---
 apiVersion: v1
 kind: Service

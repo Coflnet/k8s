@@ -76,3 +76,11 @@ envVars:
       secretKeyRef:
         name: secret
         key: firebase_key
+
+# Optional small Redis persistence for notifications and Bazaar snapshots.
+redis:
+  persistence:
+    enabled: false
+    size: 90Mi
+    storageClassName: ""
+  maxmemory: 32mb

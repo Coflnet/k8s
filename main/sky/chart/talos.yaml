@@ -586,6 +586,11 @@ sky-crafts:
 sky-event-broker:
   openbaoOnly: true
   enabled: true
+  redis:
+    persistence:
+      enabled: true
+      size: 90Mi
+      storageClassName: longhorn-encrypted
 
 sky-flipper:
   enabled: true
