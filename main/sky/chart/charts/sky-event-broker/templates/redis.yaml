@@ -79,6 +79,12 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  {{- /* Helm replacement updates must preserve the dynamically assigned binding. */}}
+  {{- with (lookup "v1" "PersistentVolumeClaim" .Release.Namespace (printf "%s-redis" .Chart.Name)) }}
+  {{- with .spec.volumeName }}
+  volumeName: {{ . | quote }}
+  {{- end }}
+  {{- end }}
   {{- with .Values.redis.persistence.storageClassName }}
   storageClassName: {{ . | quote }}
   {{- end }}
