@@ -81,6 +81,7 @@ envVars:
 redis:
   persistence:
     enabled: false
-    size: 90Mi
+    size: 200M
     storageClassName: ""
-  maxmemory: 32mb
+  # Leave room for the current and replacement RDB files during background saves.
+  maxmemory: 50mb

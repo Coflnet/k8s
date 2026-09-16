@@ -27,20 +27,21 @@ serivcePorts:
     port: 8000
     targetPort: 8000
 
+# Start checking immediately; /ready remains the gate for database health.
 readinessProbe:
   httpGet:
     path: /ready
     port: api
-  initialDelaySeconds: 20
+  initialDelaySeconds: 0
   periodSeconds: 3
 startupProbe:
   httpGet:
     path: /ready
     port: api
-  initialDelaySeconds: 20
-  periodSeconds: 10
+  initialDelaySeconds: 0
+  periodSeconds: 3
   timeoutSeconds: 2
-  failureThreshold: 90
+  failureThreshold: 300 # Preserve the existing 15-minute startup failure budget.
 livenessProbe:
   httpGet:
     path: /ready

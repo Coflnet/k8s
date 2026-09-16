@@ -475,8 +475,6 @@ sky-bazaar:
       value: "bazaar_quickstatus"
   livenessProbe:
     initialDelaySeconds: 180
-  readinessProbe:
-    initialDelaySeconds: 90
 
 sky-bazaar-flipper:
   enabled: true
@@ -589,7 +587,7 @@ sky-event-broker:
   redis:
     persistence:
       enabled: true
-      size: 90Mi
+      size: 200M
       storageClassName: longhorn-encrypted
 
 sky-flipper:
