@@ -10,7 +10,7 @@ rollingUpdate:
   maxUnavailable: 1
 image:
   repository: muehlhansfl/skybazaar
-  tag: 6da4528e0c2a436fbd1f951f96a48165488d9168@sha256:634a80bcf5447451585089095701ef84dab9c1a0ab96e0d053c3e0c983a70c62
+  tag: 7e985c5819f515a1ae262bcffcfee6d6cdcfec43@sha256:5ccde77dc0e331d4846a951985054f03a7e043b9066523394ac174e5971febfa
   pullPolicy: IfNotPresent
 
 ports:
