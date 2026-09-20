@@ -107,6 +107,16 @@ spec:
     - to:
         - namespaceSelector:
             matchLabels:
+              kubernetes.io/metadata.name: loki
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: loki-scalable
+              app.kubernetes.io/component: write
+      ports:
+        - { protocol: TCP, port: 3100 }
+    - to:
+        - namespaceSelector:
+            matchLabels:
               kubernetes.io/metadata.name: kafka
       ports:
         - { protocol: TCP, port: 9092 }
