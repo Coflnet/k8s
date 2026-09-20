@@ -69,6 +69,27 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
+  name: payments-allow-loki-egress
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: payments
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: loki
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: loki-scalable
+              app.kubernetes.io/component: write
+      ports:
+        - { protocol: TCP, port: 3100 }
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
   name: payments-allow-platform-egress
 spec:
   podSelector:
@@ -104,16 +125,6 @@ spec:
             matchLabels:
               app.kubernetes.io/name: {{ $.Values.networkPolicy.tailscaleOpenbaoEgress.podNameLabel | quote }}
     {{- end }}
-    - to:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: loki
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: loki-scalable
-              app.kubernetes.io/component: write
-      ports:
-        - { protocol: TCP, port: 3100 }
     - to:
         - namespaceSelector:
             matchLabels:
