@@ -1,5 +1,6 @@
 {{ if .Values.global.ingress }}
 {{ if .Values.global.ingress.enabled }}
+{{- $descriptionAffinity := .Values.global.ingress.descriptionAffinity | default dict }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -234,6 +235,15 @@ spec:
   - host: sky-mod.coflnet.com
     http:
       paths:
+{{ if not (and ($descriptionAffinity.enabled | default false) (has "sky-mod.coflnet.com" ($descriptionAffinity.hosts | default list))) }}
+      - path: /api/mod/description/modifications
+        pathType: Exact
+        backend:
+          service:
+            name: sky-api
+            port:
+              number: 8000
+{{ end }}
       - path: /
         pathType: ImplementationSpecific
         backend:

@@ -95,6 +95,7 @@ global:
       hosts:
         - sky.coflnet.com
         - sky-commands.coflnet.com
+        - sky-mod.coflnet.com
 
   # No redpanda volumes yet — secrets/configmaps not created on talos.
   volumes:

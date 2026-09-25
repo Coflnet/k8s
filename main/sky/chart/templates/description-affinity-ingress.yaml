@@ -22,7 +22,7 @@ spec:
       http:
         paths:
           - path: /api/mod/description/modifications
-            pathType: Prefix
+            pathType: Exact
             backend:
               service:
                 name: sky-api
