@@ -27,6 +27,7 @@ readinessProbe:
     path: /api/index.html
     port: api
   initialDelaySeconds: 20
+  timeoutSeconds: 5
   periodSeconds: 3
 
 livenessProbe:
@@ -34,6 +35,7 @@ livenessProbe:
     path: /api/index.html
     port: api
   initialDelaySeconds: 120
+  timeoutSeconds: 5
   periodSeconds: 10
   failureThreshold: 30
 

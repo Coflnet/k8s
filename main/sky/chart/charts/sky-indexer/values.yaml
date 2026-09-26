@@ -30,7 +30,8 @@ readinessProbe:
     path: /api/index.html
     port: api
   initialDelaySeconds: 20
-  periodSeconds: 3
+  timeoutSeconds: 5
+  periodSeconds: 10
 
 envVars:
   - name: DBConnection

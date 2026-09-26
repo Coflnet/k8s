@@ -17,7 +17,7 @@ resources:
     cpu: 10m
     memory: 200Mi
   limits:
-    cpu: 80m
+    cpu: 250m
     memory: 512Mi
 
 serivcePorts:
@@ -30,7 +30,8 @@ readinessProbe:
     path: /api/index.html
     port: api
   initialDelaySeconds: 30
-  periodSeconds: 3
+  timeoutSeconds: 5
+  periodSeconds: 10
 
 envVars:
   - name: DB_CONNECTION

@@ -35,6 +35,7 @@ readinessProbe:
     path: /api/index.html
     port: api
   initialDelaySeconds: 20
+  timeoutSeconds: 5
   periodSeconds: 3
 
 envVars:

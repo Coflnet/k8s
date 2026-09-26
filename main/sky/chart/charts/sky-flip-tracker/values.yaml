@@ -33,6 +33,7 @@ readinessProbe:
     path: /api/index.html
     port: api
   initialDelaySeconds: 15
+  timeoutSeconds: 5
   periodSeconds: 3
 livenessProbe:
   httpGet:

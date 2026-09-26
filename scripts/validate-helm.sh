@@ -34,9 +34,49 @@ validate_values() {
 import sys, yaml
 
 docs = sys.stdin.read()
+
+# Swagger UI (/api/index.html) is slow to answer under CPU pressure (JIT, GC,
+# OpenBao token reload, metrics scrape). Kubernetes default timeoutSeconds is 1,
+# which is not enough headroom - probes must declare timeoutSeconds >= 5.
+def check_probe_timeouts(doc, source):
+    errors = 0
+    name = (doc.get("metadata") or {}).get("name", "?")
+    kind = doc.get("kind", "?")
+
+    def walk(node):
+        nonlocal errors
+        if isinstance(node, dict):
+            containers = node.get("containers")
+            if isinstance(containers, list):
+                for container in containers:
+                    if not isinstance(container, dict):
+                        continue
+                    for probe_kind in ("readinessProbe", "livenessProbe", "startupProbe"):
+                        probe = container.get(probe_kind)
+                        if not isinstance(probe, dict):
+                            continue
+                        path = ((probe.get("httpGet") or {}).get("path"))
+                        if path != "/api/index.html":
+                            continue
+                        timeout = probe.get("timeoutSeconds")
+                        if not isinstance(timeout, (int, float)) or timeout < 5:
+                            errors += 1
+                            print(f"\033[31mFAIL\033[0m: {kind}/{name} ({source}) "
+                                  f"{probe_kind} on /api/index.html has "
+                                  f"timeoutSeconds={timeout!r}, need >= 5")
+            for value in node.values():
+                walk(value)
+        elif isinstance(node, list):
+            for item in node:
+                walk(item)
+
+    walk(doc)
+    return errors
+
 # Split on YAML document separators, keeping the Source comments for context
 parts = docs.split("---")
 errors = 0
+probe_errors = 0
 valid = 0
 
 for i, part in enumerate(parts):
@@ -55,8 +95,11 @@ for i, part in enumerate(parts):
     try:
         # Parse as YAML (ignore the Source comment line)
         yaml_content = "\n".join(l for l in part.split("\n") if not l.startswith("#"))
-        list(yaml.safe_load_all(yaml_content))
+        docs_parsed = list(yaml.safe_load_all(yaml_content))
         valid += 1
+        for doc in docs_parsed:
+            if isinstance(doc, dict):
+                probe_errors += check_probe_timeouts(doc, source)
     except yaml.YAMLError as e:
         errors += 1
         print(f"\033[31mFAIL\033[0m: {source}")
@@ -73,10 +116,10 @@ for i, part in enumerate(parts):
             print(f"  {str(e)[:200]}")
         print()
 
-if errors == 0:
+if errors == 0 and probe_errors == 0:
     print(f"\033[32mAll {valid} manifests valid ✅\033[0m")
 else:
-    print(f"\033[31m{errors} error(s), {valid} valid\033[0m")
+    print(f"\033[31m{errors} YAML error(s), {probe_errors} probe timeout error(s), {valid} valid\033[0m")
     sys.exit(1)
 '
     return $?

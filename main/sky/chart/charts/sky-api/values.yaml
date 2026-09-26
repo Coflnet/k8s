@@ -127,6 +127,7 @@ readinessProbe:
     path: /api/index.html
     port: 8000
   initialDelaySeconds: 20
+  timeoutSeconds: 5
   periodSeconds: 3
 livenessProbe:
   httpGet:
