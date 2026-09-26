@@ -26,6 +26,22 @@ resources:
     memory: 4Gi
     cpu: 1200m
 
+diagnostics:
+  enabled: true
+  image:
+    repository: mcr.microsoft.com/dotnet/monitor
+    tag: "10.0.3@sha256:f4d9709b09339162d07604068bd7159661bd899cd22fcbabad856d979076d2a5"
+    pullPolicy: IfNotPresent
+  workingSetThresholdMb: 3300
+  artifactsSizeLimit: 7Gi
+  resources:
+    requests:
+      cpu: 50m
+      memory: 32Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+
 services:
   - sky-commands
   - sky-commands-canary-service

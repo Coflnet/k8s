@@ -87,6 +87,7 @@ spec:
             value: "{{ .Chart.Name }}-redis,syncTimeout=1000"
           - name: IMGPROXY_BASE_URL
             value: "http://{{ .Chart.Name }}-imgproxy:80"
+          {{ include "sky-commands.diagnosticsAppEnv" . | nindent 10 }}
           {{ if .Values.envVars }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 10 }}
           {{ end }}
@@ -101,6 +102,8 @@ spec:
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
+        - name: tmp
+          mountPath: /tmp
         {{- if $.Values.global.openbaoAuthPath }}
         - name: openbao-workload-token
           mountPath: /var/run/secrets/openbao
@@ -110,7 +113,12 @@ spec:
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
+        {{ include "sky-commands.diagnosticsAppVolumeMount" . | nindent 8 }}
+      {{ include "sky-commands.diagnosticsContainer" . | nindent 6 }}
       volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 256Mi
       {{- if $.Values.global.openbaoAuthPath }}
         - name: openbao-workload-token
           projected:
@@ -121,6 +129,7 @@ spec:
                   expirationSeconds: 600
                   path: token
       {{- end }}
+      {{ include "sky-commands.diagnosticsVolumes" . | nindent 8 }}
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
