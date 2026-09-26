@@ -164,6 +164,15 @@ sky-bfcs:
   replicaCount: 1
   # not enough RAM to run 2 so replace in place instead of surging.
   strategy: Recreate
+  # Measured 2026-09-26: 1.8-2.0Gi working set, 140-510m CPU on a 4 vCPU /
+  # 7.3Gi node; the chart default (1400m / 9Gi limit) alone put the node at
+  # 172% memory limits.
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 3Gi
+    limits:
+      memory: 5Gi
   defaultEnvVarsEnabled: false
   externalMinio: true
   ingress:
