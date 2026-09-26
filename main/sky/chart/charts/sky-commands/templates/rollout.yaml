@@ -94,6 +94,10 @@ spec:
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.frontendEnvVars) | nindent 10 }}
         readinessProbe:
           {{ toYaml .Values.readinessProbe | nindent 10 }}
+        {{- if .Values.livenessProbe }}
+        livenessProbe:
+          {{ toYaml .Values.livenessProbe | nindent 10 }}
+        {{- end }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:

@@ -87,6 +87,10 @@ spec:
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars "excludeNames" (ternary (list "KAFKA__BROKERS" "KAFKA__USERNAME" "KAFKA__PASSWORD") (list) (not (empty $.Values.global.openbaoAuthPath)))) | nindent 10 }}
         readinessProbe:
           {{ toYaml .Values.readinessProbe | nindent 10 }}
+        {{- if .Values.livenessProbe }}
+        livenessProbe:
+          {{ toYaml .Values.livenessProbe | nindent 10 }}
+        {{- end }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:

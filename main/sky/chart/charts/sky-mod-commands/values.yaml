@@ -123,6 +123,7 @@ livenessProbe:
     port: 8000
   initialDelaySeconds: 180
   failureThreshold: 6
+  timeoutSeconds: 5
   periodSeconds: 10
 
 envVars:

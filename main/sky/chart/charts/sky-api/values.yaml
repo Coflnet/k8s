@@ -134,6 +134,7 @@ livenessProbe:
     port: 8000
   initialDelaySeconds: 120
   failureThreshold: 6
+  timeoutSeconds: 5
   periodSeconds: 10
 envVars: 
   - name: GOOGLE_GEMINI_API_KEY
