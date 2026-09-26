@@ -72,3 +72,21 @@ dependencies:
     version: "0.1.0" 
   - name: deprecated
     version: "0.1.0" 
+  - name: sky-operator
+    version: "0.1.0"
+  - name: sky-player-state
+    version: "0.1.0"
+  - name: sky-auctions
+    version: "0.1.0"
+  - name: sky-controller
+    version: "0.1.0"
+  - name: sky-mayor
+    version: "0.1.0"
+  - name: edge-redis
+    version: "1.0.0"
+  - name: extra-chart
+    version: "0.1.0"
+  - name: sky-trade
+    version: "0.1.0"
+  - name: sky-bazaar-flipper
+    version: "0.1.0"
