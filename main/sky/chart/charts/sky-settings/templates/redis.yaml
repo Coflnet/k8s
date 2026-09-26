@@ -32,12 +32,12 @@ spec:
         ports:
         - containerPort: 6379
         resources:
-          limits: 
+          limits:
             memory: "400Mi"
             cpu: "200m"
           requests:
-            memory: "400Mi"
-            cpu: "200m"
+            memory: "64Mi"
+            cpu: "50m"
 ---
 apiVersion: v1
 kind: Service
