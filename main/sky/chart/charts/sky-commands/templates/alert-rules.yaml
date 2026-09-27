@@ -1,0 +1,23 @@
+{{ if .Values.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    release: prometheus
+    app: kube-prometheus-stack
+  name: sky-commands-icon-canary
+spec:
+  groups:
+    - name: "{{ .Chart.Name }}.rules"
+      rules:
+        - alert: IconCanaryFailing
+          for: 30m
+          labels:
+            severity: warning
+            project: skyblock
+          expr: 'sky_icon_canary_ok == 0'
+          annotations:
+            summary: "Item icon pipeline broken for source {{`{{`}} $labels.source {{`}}`}}"
+            description: "sky-commands' icon canary has been unable to resolve a known icon through PreviewService/imgproxy for source {{`{{`}} $labels.source {{`}}`}} for 30m straight. Likely causes: imgproxy IMGPROXY_ALLOWED_SOURCES/SSRF source-address config, crafatar down, or the static mirror unreachable."
+---
+{{ end }}

@@ -20,7 +20,10 @@ spec:
       serviceAccountName: {{ .Chart.Name }}
       containers:
       - name: {{ .Chart.Name }}-imgproxy
-        image: darthsim/imgproxy:v3.12@sha256:8ea7fdedf0784c8067c6479c6b7e34bb0be648b747ee5883fb9ceb03a692fe50
+        # v3.31.4 is the latest v3.x stable (imgproxy 4.x is a separate major line we're
+        # intentionally not adopting here yet). Digest resolved via
+        # `docker buildx imagetools inspect darthsim/imgproxy:v3.31.4`.
+        image: darthsim/imgproxy@sha256:73c5dda13199745b0d2d00e4149d4a589c5b2e205dbf335ca05eca8276b54712
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false
@@ -36,12 +39,34 @@ spec:
           - containerPort: 9000
             name: metrics
         env:
+          # NOTE: every host here must end in a trailing "/" (or be a bare scheme like
+          # "s3://"). IMGPROXY_ALLOWED_SOURCES does a plain string-prefix match, so an
+          # entry without a trailing slash (e.g. "https://sky.coflnet.com") also matches
+          # attacker-controlled hosts like "https://sky.coflnet.com.evil.example/..." -
+          # verified locally against v3.31.4 (request proceeded to DNS-resolve the fake
+          # host instead of being rejected by the allowlist).
           - name: IMGPROXY_ALLOWED_SOURCES
-            value: "http://crafatar:3000/,https://mc-heads.net/,https://crafatar.com/,https://static.coflnet.com/,https://sky.coflnet.com"
+            value: "http://crafatar:3000/,https://mc-heads.net/,https://crafatar.com/,https://static.coflnet.com/,https://sky.coflnet.com/"
           - name: IMGPROXY_MAX_ANIMATION_FRAMES
             value: "140"
           - name: IMGPROXY_PROMETHEUS_BIND
             value: ":9000"
+          # SSRF source-address guards, added in imgproxy v3.15 (didn't exist in v3.12,
+          # which had no such protection at all). Set explicitly - even though they
+          # currently match imgproxy's own defaults - so a future default change upstream
+          # shows up as a diff here instead of silently changing our behavior, and so the
+          # icon canary (see PreviewService's IconCanaryService) has a config-level
+          # contract to alert against.
+          - name: IMGPROXY_ALLOW_LOOPBACK_SOURCE_ADDRESSES
+            value: "false"
+          - name: IMGPROXY_ALLOW_LINK_LOCAL_SOURCE_ADDRESSES
+            value: "false"
+          - name: IMGPROXY_ALLOW_PRIVATE_SOURCE_ADDRESSES
+            # crafatar (http://crafatar:3000/) is an in-cluster ClusterIP, i.e. a private
+            # (10.0.0.0/8 or similar) address. imgproxy's own default is already "true",
+            # but we pin it so a future upstream default flip (as happened for loopback/
+            # link-local addresses in v3.15) can't silently start 404ing all skull icons.
+            value: "true"
         resources:
           requests:
             memory: "140Mi"
