@@ -76,6 +76,9 @@ metadata:
   name: {{ .Chart.Name }}-redis
   annotations:
     helm.sh/resource-policy: keep
+    {{- if eq .Values.redis.persistence.storageClassName "longhorn-encrypted" }}
+    storage.coflnet.com/desired-longhorn-replicas: "2"
+    {{- end }}
 spec:
   accessModes:
     - ReadWriteOnce
