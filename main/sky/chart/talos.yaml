@@ -76,6 +76,19 @@ global:
   redisUpgrade:
     routes:
       sky-api-redis: persistent-v1
+      sky-auctions-redis: persistent-v1
+      sky-commands-redis: persistent-v1
+      sky-global-redis: persistent-v1
+      sky-mc-connect-redis: persistent-v1
+      sky-mod-commands-redis: persistent-v1
+      sky-player-name-redis: persistent-v1
+      sky-player-state-redis: persistent-v1
+      sky-profiles-redis: persistent-v1
+      sky-proxy-redis: persistent-v1
+      sky-settings-redis: persistent-v1
+      sky-sniper-redis: persistent-v1
+    retired:
+      sky-api-redis: true
   # Talos uses Cilium CNI, not Linkerd. Remove the Linkerd sidecar annotation.
   podAnnotations: {}
 
@@ -1074,7 +1087,51 @@ deprecated:
 redisUpgrade:
   networks:
     - name: sky-api-redis
+    - name: sky-auctions-redis
+    - name: sky-commands-redis
+    - name: sky-global-redis
+    - name: sky-mc-connect-redis
+    - name: sky-mod-commands-redis
+    - name: sky-player-name-redis
+    - name: sky-player-state-redis
+    - name: sky-profiles-redis
+    - name: sky-proxy-redis
+    - name: sky-settings-redis
+    - name: sky-sniper-redis
   candidates:
     - name: sky-api-redis
+      route: persistent-v1
+      storageClassName: longhorn-encrypted
+    - name: sky-auctions-redis
+      route: persistent-v1
+      storageClassName: longhorn-encrypted
+    - name: sky-commands-redis
+      route: persistent-v1
+      storageClassName: longhorn-encrypted
+    - name: sky-global-redis
+      route: persistent-v1
+      storageClassName: longhorn-encrypted
+    - name: sky-mc-connect-redis
+      route: persistent-v1
+      storageClassName: longhorn-encrypted
+    - name: sky-mod-commands-redis
+      route: persistent-v1
+      storageClassName: longhorn-encrypted
+    - name: sky-player-name-redis
+      route: persistent-v1
+      storageClassName: longhorn-encrypted
+    - name: sky-player-state-redis
+      route: persistent-v1
+      storageClassName: longhorn-encrypted
+    - name: sky-profiles-redis
+      route: persistent-v1
+      storageClassName: longhorn-encrypted
+    - name: sky-proxy-redis
+      route: persistent-v1
+      storageClassName: longhorn-encrypted
+    - name: sky-settings-redis
+      route: persistent-v1
+      storageClassName: longhorn-encrypted
+    - name: sky-sniper-redis
       route: persistent-v1
       storageClassName: longhorn-encrypted
