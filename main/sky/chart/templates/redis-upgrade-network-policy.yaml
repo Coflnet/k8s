@@ -1,0 +1,27 @@
+{{- range (.Values.redisUpgrade | default dict).networks }}
+{{- $name := required "redisUpgrade.networks[].name is required" .name }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ $name }}-upgrade-replication
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ $name }}
+  policyTypes: [Ingress, Egress]
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: {{ $name }}
+    ports:
+    - {protocol: TCP, port: 6379}
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: {{ $name }}
+    ports:
+    - {protocol: TCP, port: 6379}
+{{- end }}

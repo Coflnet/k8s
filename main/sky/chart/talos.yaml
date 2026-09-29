@@ -73,6 +73,9 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 global:
+  redisUpgrade:
+    routes:
+      sky-api-redis: persistent-v1
   # Talos uses Cilium CNI, not Linkerd. Remove the Linkerd sidecar annotation.
   podAnnotations: {}
 
@@ -1066,3 +1069,12 @@ necwebsite:
   enabled: false
 deprecated:
   enabled: false
+
+# Replicate before promotion; the upgrade helper gates client routing.
+redisUpgrade:
+  networks:
+    - name: sky-api-redis
+  candidates:
+    - name: sky-api-redis
+      route: persistent-v1
+      storageClassName: longhorn-encrypted

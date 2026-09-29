@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{ .Chart.Name }}-redis
 spec:
-  replicas: 1
+  replicas: {{ if index ((.Values.global.redisUpgrade | default dict).retired | default dict) (printf "%s-redis" .Chart.Name) }}0{{ else }}1{{ end }}
   selector:
     matchLabels:
       app: {{ .Chart.Name }}-redis
@@ -46,6 +46,9 @@ metadata:
 spec:
   selector:
     app: {{ .Chart.Name }}-redis
+    {{- with index ((.Values.global.redisUpgrade | default dict).routes | default dict) (printf "%s-redis" .Chart.Name) }}
+    redis-route: {{ . | quote }}
+    {{- end }}
   ports:
     - protocol: TCP
       port: 6379

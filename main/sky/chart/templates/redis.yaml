@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{ .Values.global.redis.name }}
 spec:
-  replicas: 1
+  replicas: {{ if index ((.Values.global.redisUpgrade | default dict).retired | default dict) .Values.global.redis.name }}0{{ else }}1{{ end }}
   selector:
     matchLabels:
       app: {{ .Values.global.redis.name }}
@@ -43,6 +43,9 @@ metadata:
 spec:
   selector:
     app: {{ .Values.global.redis.name }}
+    {{- with index ((.Values.global.redisUpgrade | default dict).routes | default dict) .Values.global.redis.name }}
+    redis-route: {{ . | quote }}
+    {{- end }}
   ports:
     - protocol: TCP
       port: 6379
