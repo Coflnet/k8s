@@ -89,6 +89,17 @@ global:
       sky-sniper-redis: persistent-v1
     retired:
       sky-api-redis: true
+      sky-auctions-redis: true
+      sky-commands-redis: true
+      sky-global-redis: true
+      sky-mc-connect-redis: true
+      sky-mod-commands-redis: true
+      sky-player-name-redis: true
+      sky-player-state-redis: true
+      sky-profiles-redis: true
+      sky-proxy-redis: true
+      sky-settings-redis: true
+      sky-sniper-redis: true
   # Talos uses Cilium CNI, not Linkerd. Remove the Linkerd sidecar annotation.
   podAnnotations: {}
 
