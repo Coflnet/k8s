@@ -23,7 +23,7 @@ metadata:
       # round-robin, so a slow/degraded node automatically receives less traffic.
       # Only has effect when nginx balances pod endpoints directly (service-upstream
       # off); a no-op when routing to a single ClusterIP upstream.
-      nginx.ingress.kubernetes.io/load-balance: "ewma"
+      nginx.ingress.kubernetes.io/load-balance: {{ .Values.global.ingress.loadBalance | default "ewma" | quote }}
       nginx.ingress.kubernetes.io/client-body-buffer-size: 1M
       cert-manager.io/cluster-issuer: letsencrypt-prod
       nginx.ingress.kubernetes.io/ssl-redirect: "false"
