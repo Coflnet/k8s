@@ -27,6 +27,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $name }}-upgrade
+  {{- if .disableAutomaticRdb }}
+  annotations:
+    redis.coflnet.com/disable-automatic-rdb: "true"
+  {{- end }}
 spec:
   replicas: 1
   strategy:

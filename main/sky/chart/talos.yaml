@@ -1116,6 +1116,7 @@ redisUpgrade:
     - name: sky-sniper-redis
   candidates:
     - name: sky-api-redis
+      disableAutomaticRdb: true
       route: persistent-v1
       storageClassName: longhorn-encrypted
     - name: sky-auctions-redis
