@@ -4,8 +4,8 @@ replicaCount: 2
 revisionHistoryLimit: 5
 
 image:
-  repository: ekwav/crafatar
-  tag: latest@sha256:421d11385d37589cd7ea8bf79367d857790b6a5d2e20f6401e0becfc29def47e
+  repository: muehlhansfl/crafatar
+  tag: b84ced0ae79d9d5d98ed9e015942637e984fde80@sha256:ccf103e2be8e488a1d543aa466d1e7e7660ef551fd5cb43e0f54cee0266de42b
   pullPolicy: IfNotPresent
 
 ports:
@@ -39,7 +39,7 @@ envVars:
   - name: CACHE_BROWSER
     value: "86000"
   - name: EPHEMERAL_STORAGE
-    value: "true"
+    value: "false"
 ingress:
   enabled: false
   host: sky.coflnet.com

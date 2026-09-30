@@ -1081,7 +1081,7 @@ crafatar:
     - name: CACHE_BROWSER
       value: "86000"
     - name: EPHEMERAL_STORAGE
-      value: "true"
+      value: "false"
 hypixel-react:
   enabled: true
   envVars:
