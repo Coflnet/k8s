@@ -775,6 +775,11 @@ sky-mc-connect:
 
 sky-mod-commands:
   enabled: true
+  resources:
+    requests:
+      memory: 4Gi
+    limits:
+      memory: 6Gi
   # NOTE: Requires scylla-pfx k8s Secret and scylla-credentials Secret
   # to exist in the sky namespace on talos for ScyllaDB mTLS.
   # Also requires scylla-config ConfigMap for ScyllaDB host/user config.
