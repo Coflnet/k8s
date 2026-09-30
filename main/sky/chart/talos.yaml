@@ -117,7 +117,6 @@ global:
     # routes directly to pod endpoints and never depends on that map. Safe here:
     # canary trafficRouting is ~ (null), no service mesh, no Service-VIP NetworkPolicies.
     serviceUpstream: false
-    loadBalance: round_robin
     descriptionAffinity:
       enabled: true
       hosts:
