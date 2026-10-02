@@ -129,6 +129,8 @@ sky-bazaar-flipper:
   enabled: false
 
 sky-bfcs:
+  image:
+    tag: 31226c6ad3c400432cafe8d1e1c9c34e77a768ef@sha256:64ff6cdc263fbd277b97b0c5be8d5e45042d2fe59e19ba9e6703fa64ee2c6b0f
   enabled: true
   serviceMonitor:
     enabled: false
