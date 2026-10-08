@@ -53,6 +53,11 @@ envVars:
       secretKeyRef:
         name: secret
         key: connection_tracker_database
+  - name: DBReadOnlyConnection
+    valueFrom:
+      secretKeyRef:
+        name: secret
+        key: connection_read_secondary
   - name: CASSANDRA__HOSTS
     valueFrom:
       configMapKeyRef:

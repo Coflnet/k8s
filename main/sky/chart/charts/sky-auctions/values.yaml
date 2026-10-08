@@ -63,3 +63,8 @@ envVars:
       secretKeyRef:
         key: connection_live
         name: secret
+  - name: DBReadOnlyConnection
+    valueFrom:
+      secretKeyRef:
+        key: connection_read_secondary
+        name: secret
