@@ -21,7 +21,7 @@ resources:
     memory: 350Mi
   limits:
     cpu: 800m
-    memory: 800Mi
+    memory: 1200Mi
 
 serivcePorts:
   - name: api
