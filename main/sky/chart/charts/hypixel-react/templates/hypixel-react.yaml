@@ -26,7 +26,9 @@ spec:
             allowPrivilegeEscalation: false
             privileged: false
             runAsNonRoot: true
-            runAsUser: 999
+            # the image owns /opt/app as distroless nonroot (65532), another uid cannot write the prerender cache
+            runAsUser: 65532
+            runAsGroup: 65532
             capabilities:
               drop:
                 - ALL

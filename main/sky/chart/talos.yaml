@@ -982,6 +982,14 @@ sky-sniper:
   resources:
     limits:
       memory: 6Gi
+  master:
+    # the manager keeps the full lookups plus the retrain work in one heap and ran into its limit
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 4Gi
+      limits:
+        memory: 8Gi
   worker:
     replicaCount: 3
   envVars:
