@@ -1136,6 +1136,8 @@ redisUpgrade:
     - name: sky-global-redis
       route: persistent-v1
       storageClassName: longhorn-encrypted
+      # Leave room for the live AOF, RDB snapshot and temporary persistence files.
+      storageSize: 4Gi
     - name: sky-mc-connect-redis
       route: persistent-v1
       storageClassName: longhorn-encrypted
