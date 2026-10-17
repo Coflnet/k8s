@@ -89,6 +89,9 @@ spec:
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 3
   jobTemplate:
+    metadata:
+      labels:
+        security.coflnet.com/k8s-api-access: "true"
     spec:
       activeDeadlineSeconds: 110
       backoffLimit: 0
@@ -97,6 +100,7 @@ spec:
         metadata:
           labels:
             app.kubernetes.io/component: cilium-endpointslice-healer
+            security.coflnet.com/k8s-api-access: "true"
         spec:
           serviceAccountName: cilium-endpointslice-healer
           restartPolicy: Never
