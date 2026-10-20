@@ -501,6 +501,36 @@ sky-bazaar:
       value: /tls/scylla/secret/db.pfx
     - name: CASSANDRA__KEYSPACE
       value: "bazaar_quickstatus"
+    # S3 cold tier (Cloudflare R2) for 5-minute history older than
+    # RETENTION_HOT_DAYS. This list replaces the chart's envVars, so the block
+    # from charts/sky-bazaar/values.yaml is repeated here. S3__ACCESS_KEY and
+    # S3__SECRET_KEY come from OpenBao kv/sky/sky-bazaar (set with
+    # SkyBazaar/scripts/set-r2-openbao-secrets.sh); the service reads them at
+    # startup. Talos is the only cluster running sky-bazaar, so it is the single
+    # archive sweeper. Flip order: ENABLED (sweep, no deletion) -> verify S3
+    # reads -> DELETE_ARCHIVED=true -> DROP_LEGACY_TABLE=true once.
+    - name: S3__ENABLED
+      value: "true"
+    - name: S3__ENDPOINT
+      value: "https://fd03721f31d7dccb9201acb6d9840d6d.eu.r2.cloudflarestorage.com"
+    - name: S3__REGION
+      value: "auto"
+    - name: S3__BUCKET
+      value: "skybazaar-cold"
+    - name: S3__USE_PATH_STYLE
+      value: "true"
+    - name: HISTORY_ARCHIVE__ENABLED
+      value: "true"
+    - name: HISTORY_ARCHIVE__RETENTION_HOT_DAYS
+      value: "30"
+    - name: HISTORY_ARCHIVE__DELETE_ARCHIVED
+      value: "false"
+    - name: HISTORY_ARCHIVE__DELETE_MARGIN_DAYS
+      value: "31"
+    - name: HISTORY_ARCHIVE__MAX_DELETES_PER_SWEEP
+      value: "0"
+    - name: HISTORY_ARCHIVE__DROP_LEGACY_TABLE
+      value: "false"
   livenessProbe:
     initialDelaySeconds: 180
 

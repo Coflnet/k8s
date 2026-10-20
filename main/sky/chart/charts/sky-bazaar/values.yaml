@@ -79,6 +79,58 @@ envVars:
   - name: CASSANDRA__KEYSPACE
     value: "bazaar_quickstatus"
 
+  # S3 cold-tier archive for 5-min history >30 days.
+  # Non-secret values are inlined here so they are versioned in git.
+  # Cluster value files that set their own envVars replace this whole list,
+  # so they have to repeat this block (see talos.yaml).
+  - name: S3__ENABLED
+    value: "false"
+  # No default: has to be set before S3__ENABLED is flipped.
+  - name: S3__ENDPOINT
+    value: ""
+  - name: S3__REGION
+    value: "auto"
+  - name: S3__BUCKET
+    value: "skybazaar-cold"
+  - name: S3__USE_PATH_STYLE
+    value: "true"
+  # Credentials are optional so a missing skybazaar-s3 secret can not keep the
+  # pod from starting; OpenBao clusters supply them from kv sky/sky-bazaar.
+  - name: S3__ACCESS_KEY
+    valueFrom:
+      secretKeyRef:
+        name: skybazaar-s3
+        key: S3__ACCESS_KEY
+        optional: true
+  - name: S3__SECRET_KEY
+    valueFrom:
+      secretKeyRef:
+        name: skybazaar-s3
+        key: S3__SECRET_KEY
+        optional: true
+  # Archive background sweep - leave disabled until S3 reads are
+  # confirmed working in production. Flip to "true" to start writing
+  # cold blocks; flip DROP_LEGACY_TABLE to "true" only after the
+  # QuickStatusMin contents have been observed in S3.
+  - name: HISTORY_ARCHIVE__ENABLED
+    value: "false"
+  - name: HISTORY_ARCHIVE__RETENTION_HOT_DAYS
+    value: "30"
+  - name: HISTORY_ARCHIVE__DROP_LEGACY_TABLE
+    value: "false"
+  # Trim QuickStatusMin15Day after a 30-day block is archived AND verified in
+  # S3. Flip order: ENABLED=true (full sweep, deletion off) -> wait for the
+  # Redis key bazaar_archive:v2:sweep_complete and S3 read hits in Prometheus
+  # -> DELETE_ARCHIVED=true -> DROP_LEGACY_TABLE=true once. Only buckets older
+  # than RETENTION_HOT_DAYS + DELETE_MARGIN_DAYS (never < 61 days) are deleted.
+  - name: HISTORY_ARCHIVE__DELETE_ARCHIVED
+    value: "false"
+  - name: HISTORY_ARCHIVE__DELETE_MARGIN_DAYS
+    value: "31"
+  # 0 = unlimited; set e.g. "200" to pace the first backlog trim.
+  - name: HISTORY_ARCHIVE__MAX_DELETES_PER_SWEEP
+    value: "0"
+
 migrationEnvVars:
 
   # overwrite the kafka consumer group
@@ -163,5 +215,17 @@ migrationEnvVars:
     value: "30"
   - name: HISTORY_ARCHIVE__DROP_LEGACY_TABLE
     value: "false"
+  # Trim QuickStatusMin15Day after a 30-day block is archived AND verified in
+  # S3. Flip order: ENABLED=true (full sweep, deletion off) -> wait for the
+  # Redis key bazaar_archive:v2:sweep_complete and S3 read hits in Prometheus
+  # -> DELETE_ARCHIVED=true -> DROP_LEGACY_TABLE=true once. Only buckets older
+  # than RETENTION_HOT_DAYS + DELETE_MARGIN_DAYS (never < 61 days) are deleted.
+  - name: HISTORY_ARCHIVE__DELETE_ARCHIVED
+    value: "false"
+  - name: HISTORY_ARCHIVE__DELETE_MARGIN_DAYS
+    value: "31"
+  # 0 = unlimited; set e.g. "200" to pace the first backlog trim.
+  - name: HISTORY_ARCHIVE__MAX_DELETES_PER_SWEEP
+    value: "0"
   
 
