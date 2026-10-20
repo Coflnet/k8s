@@ -521,6 +521,11 @@ sky-bazaar:
       value: "true"
     - name: HISTORY_ARCHIVE__ENABLED
       value: "true"
+    # Let the order-ledger full scan (OrderBookService.Load) finish before the
+    # sweep adds read load to Scylla; the scan timed out repeatedly with the
+    # default 60 s delay.
+    - name: HISTORY_ARCHIVE__START_DELAY_SECONDS
+      value: "1800"
     - name: HISTORY_ARCHIVE__RETENTION_HOT_DAYS
       value: "30"
     - name: HISTORY_ARCHIVE__DELETE_ARCHIVED
