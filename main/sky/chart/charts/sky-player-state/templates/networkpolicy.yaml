@@ -12,16 +12,31 @@ spec:
   policyTypes:
     - Ingress
   ingress:
-    # Allow inbound traffic on the app port (other pods, port-forward)
-    - ports:
+    # Callers on the app port: sky pods (sky-api, sky-crafts, sky-flip-tracker,
+    # sky-mod-commands, sky-bfcs, sky-indexer), the Bazaar Pro API, the
+    # diagnostics gateway and the Prometheus scrape. Kubelet probes come from
+    # the pod's own node and need no rule.
+    - from:
+        - podSelector: {}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: skyblock-bz
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: bazaarproapi
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: observability
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: coflnet-observability-gateway
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: prometheus
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: prometheus
+      ports:
         - protocol: TCP
           port: 8000
-    # Allow inbound Linkerd mTLS proxy connections (meshed peers)
-    - ports:
-        - protocol: TCP
-          port: 4143
-    # Allow Linkerd admin/diagnostics (readiness probes, metrics scraping)
-    - ports:
-        - protocol: TCP
-          port: 4191
 {{ end }}
