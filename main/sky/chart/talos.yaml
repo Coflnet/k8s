@@ -110,7 +110,11 @@ global:
   # On eu-cluster the ingress lives in deprecated sub-chart (enabled).
   # On talos deprecated is disabled, so we deploy it from the parent chart.
   ingress:
-    enabled: true
+    # Retired on talos-eu-hcloud: every public hostname is served through the
+    # Gateway API (HTTPRoutes in the fleet repo, gateway-api/) and ingress-nginx
+    # is being removed. Only this overlay is changed, other clusters keep their
+    # nginx Ingress. Gates sky-ingress and sky-api-description-affinity only.
+    enabled: false
     # Talos runs Cilium (eBPF kube-proxy replacement) + hostNetwork nginx. The
     # Service ClusterIP eBPF backend map desyncs to zero backends on Argo Rollouts
     # selector flips, 502-ing sky.coflnet.com. Disable service-upstream so nginx

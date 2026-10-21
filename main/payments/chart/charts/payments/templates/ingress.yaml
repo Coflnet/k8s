@@ -1,5 +1,5 @@
 {{ range $p := .Values.payments }}
-{{ if $p.ingress.enabled }}
+{{ if and $p.ingress.enabled (not $.Values.ingressRetired) }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
