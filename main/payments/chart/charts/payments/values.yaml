@@ -3,6 +3,11 @@ maxUnavailable: 1
 
 enabled: true
 
+# Set true to render no Ingress objects at all, regardless of the per-entry
+# ingress.enabled flags in the payments list below. Lets a cluster overlay
+# retire ingress-nginx without having to override the list. Off by default.
+ingressRetired: false
+
 openbao:
   # Set to true to inject the HashiCorp Vault agent init container for
   # pre-populating secrets from OpenBao. Requires OpenBao k8s auth roles
