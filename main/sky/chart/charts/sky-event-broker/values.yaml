@@ -84,5 +84,10 @@ redis:
     enabled: false
     size: 200M
     storageClassName: ""
-  # Leave room for the current and replacement RDB files during background saves.
+  # Leave room for the current and replacement RDB files during background saves:
+  # persistence.size must be at least ~2x maxmemory. With noeviction a full
+  # Redis rejects every write (publications fail with OOM), so size it for the
+  # peak: ~600 user snapshots of up to 1 MiB plus ~100k fill-dedupe keys.
   maxmemory: 50mb
+  # Container memory request; keep it above maxmemory plus fragmentation (~1.4x).
+  memoryRequest: 200Mi

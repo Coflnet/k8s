@@ -64,7 +64,7 @@ spec:
         resources:
           limits: {}
           requests:
-            memory: "200Mi"
+            memory: {{ .Values.redis.memoryRequest | quote }}
             cpu: "50m"
       {{- if .Values.redis.persistence.enabled }}
       volumes:

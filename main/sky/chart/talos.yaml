@@ -538,6 +538,10 @@ sky-bazaar:
       value: "31"
     - name: HISTORY_ARCHIVE__MAX_DELETES_PER_SWEEP
       value: "0"
+    # 3 products in flight: ~3x sweep throughput with little extra Scylla read
+    # pressure; eu-worker1 has ~8 cores spare. Raise to 4 only if p99 stays flat.
+    - name: HISTORY_ARCHIVE__PARALLEL_PRODUCTS
+      value: "3"
     - name: HISTORY_ARCHIVE__DROP_LEGACY_TABLE
       value: "false"
   livenessProbe:
@@ -652,9 +656,15 @@ sky-event-broker:
   openbaoOnly: true
   enabled: true
   redis:
+    # 50mb filled up on 2026-10-22 (sky-bazaar restart republished every user's
+    # order snapshot; the nightly peak already reached ~80 MiB) and noeviction
+    # then rejected all Bazaar publications with OOM.
+    maxmemory: 256mb
+    memoryRequest: 384Mi
     persistence:
       enabled: true
-      size: 200M
+      # longhorn-encrypted allows online expansion; 2x maxmemory for RDB saves.
+      size: 1Gi
       storageClassName: longhorn-encrypted
 
 sky-flipper:
