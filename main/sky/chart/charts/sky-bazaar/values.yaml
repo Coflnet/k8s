@@ -130,6 +130,10 @@ envVars:
   # 0 = unlimited; set e.g. "200" to pace the first backlog trim.
   - name: HISTORY_ARCHIVE__MAX_DELETES_PER_SWEEP
     value: "0"
+  # Products archived concurrently (1 = sequential); the sweep node has spare
+  # cores and the per-product circuit breaker still applies per worker.
+  - name: HISTORY_ARCHIVE__PARALLEL_PRODUCTS
+    value: "3"
 
 migrationEnvVars:
 
@@ -227,5 +231,9 @@ migrationEnvVars:
   # 0 = unlimited; set e.g. "200" to pace the first backlog trim.
   - name: HISTORY_ARCHIVE__MAX_DELETES_PER_SWEEP
     value: "0"
+  # Products archived concurrently (1 = sequential); the sweep node has spare
+  # cores and the per-product circuit breaker still applies per worker.
+  - name: HISTORY_ARCHIVE__PARALLEL_PRODUCTS
+    value: "3"
   
 
