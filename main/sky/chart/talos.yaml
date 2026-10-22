@@ -486,6 +486,13 @@ sky-auctions:
 
 sky-bazaar:
   enabled: true
+  resources:
+    limits:
+      # Single replica serves the API and runs the R2 archive sweep. Without a limit the
+      # Server GC sized itself from the 64 GiB node: working set grew ~170 MiB/h while the
+      # live managed heap stayed under 1 GiB (2026-10-22). The cgroup limit caps the GC heap
+      # at 75% of it so freed blob buffers are returned promptly.
+      memory: 4Gi
   serviceMonitor:
     # scraped for the sky_bazaar_archive_* / sky_bazaar_blob_* R2 archive metrics (port api/8000 is allowed from ns prometheus by eu-sky-services)
     enabled: true
