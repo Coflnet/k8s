@@ -487,7 +487,8 @@ sky-auctions:
 sky-bazaar:
   enabled: true
   serviceMonitor:
-    enabled: false
+    # scraped for the sky_bazaar_archive_* / sky_bazaar_blob_* R2 archive metrics (port api/8000 is allowed from ns prometheus by eu-sky-services)
+    enabled: true
   envVars:
     - name: KAFKA__CONSUMER_GROUP
       value: "sky-bazaar-talos"
@@ -734,7 +735,8 @@ sky-indexer:
   openbaoOnly: true
   enabled: true
   serviceMonitor:
-    enabled: false
+    # scraped for the sky_indexer_archive_* auction archive metrics
+    enabled: true
   # The auction archive job holds one part (<= 50k auctions) plus its read-back
   # copy and a 256 MB blob cache on top of the indexer's normal ~550 Mi.
   resources:
