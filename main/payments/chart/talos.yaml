@@ -117,8 +117,11 @@ payments:
     # changes only NetworkPolicy and does not roll the Payments Deployments.
     tailscaleOpenbaoEgress:
       enabled: true
-    # Rely on the ingress-controller namespace selector instead of the
-    # eu-cluster pod CIDRs (which do not exist on Talos).
+    # ingress-nginx is gone from talos-eu: no ingress-controller namespace may
+    # reach the public-http pods. The Envoy proxies get their own, narrower
+    # policies next to each HTTPRoute in the fleet repo (gateway-api/ane/*).
+    # With both lists empty the chart renders no payments-allow-public-callback-ingress.
+    publicIngressNamespaces: []
     publicIngressCidrs: []
 
 accounting:

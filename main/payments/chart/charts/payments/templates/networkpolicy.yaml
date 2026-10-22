@@ -21,6 +21,9 @@ spec:
   policyTypes: [Egress]
   egress: []
 ---
+{{- /* An empty "from" list would allow every source, so render the policy only when a source exists.
+     Gateway API clusters grant the proxy its own policy next to each HTTPRoute (fleet repo). */}}
+{{- if or $.Values.networkPolicy.publicIngressNamespaces $.Values.networkPolicy.publicIngressCidrs }}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -43,6 +46,7 @@ spec:
         {{- end }}
       ports:
         - { protocol: TCP, port: 8000 }
+{{- end }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
