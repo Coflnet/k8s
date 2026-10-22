@@ -44,3 +44,13 @@ envVars:
       configMapKeyRef:
         name: config
         key: commands_host
+  # Auction archive (SkyIndexer README "Auction archive"), everything off by default.
+  # Flip order per cluster overlay: S3__* + ARCHIVE__ENABLED=true (archive only, no
+  # deletion) -> verify blobs, archived_months and sky_indexer_archive_* metrics ->
+  # ARCHIVE__DELETE_MARIADB=true -> OPTIMIZE TABLE by an operator.
+  - name: S3__ENABLED
+    value: "false"
+  - name: ARCHIVE__ENABLED
+    value: "false"
+  - name: ARCHIVE__DELETE_MARIADB
+    value: "false"

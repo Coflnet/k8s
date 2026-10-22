@@ -735,6 +735,15 @@ sky-indexer:
   enabled: true
   serviceMonitor:
     enabled: false
+  # The auction archive job holds one part (<= 50k auctions) plus its read-back
+  # copy and a 256 MB blob cache on top of the indexer's normal ~550 Mi.
+  resources:
+    requests:
+      cpu: 150m
+      memory: 700Mi
+    limits:
+      cpu: 500m
+      memory: 1500Mi
   envVars:
     - name: DBConnection
       valueFrom:
@@ -743,6 +752,27 @@ sky-indexer:
           key: connection
     - name: SKYCOMMANDS_HOST
       value: "sky-commands.sky.svc.cluster.local"
+    # Auction archive to R2 (bucket shared with sky-auctions). Credentials
+    # S3__ACCESS_KEY / S3__SECRET_KEY come from OpenBao kv/sky/sky-indexer
+    # (copied from kv/sky/sky-auctions). Flip order: ARCHIVE__ENABLED (archive,
+    # no deletion) -> verify blobs + sky_indexer_archive_* metrics ->
+    # ARCHIVE__DELETE_MARIADB=true -> OPTIMIZE TABLE by an operator.
+    - name: S3__ENABLED
+      value: "true"
+    - name: S3__ENDPOINT
+      value: "https://fd03721f31d7dccb9201acb6d9840d6d.eu.r2.cloudflarestorage.com"
+    - name: S3__REGION
+      value: "auto"
+    - name: S3__BUCKET
+      value: "sky-auctions-archive"
+    - name: S3__USE_PATH_STYLE
+      value: "true"
+    - name: ARCHIVE__ENABLED
+      value: "true"
+    - name: ARCHIVE__DELETE_MARIADB
+      value: "false"
+    - name: ARCHIVE__START_DELAY_SECONDS
+      value: "600"
   livenessProbe:
     initialDelaySeconds: 90
   readinessProbe:
