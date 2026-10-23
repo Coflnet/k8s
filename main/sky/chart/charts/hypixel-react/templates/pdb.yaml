@@ -1,0 +1,16 @@
+{{ if and .Values.enabled .Values.pdb.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  maxUnavailable: {{ .Values.pdb.maxUnavailable }}
+  # A crash-looping or unready pod must never make a node drain wait forever.
+  unhealthyPodEvictionPolicy: AlwaysAllow
+  # Matches active and preview ReplicaSets of the blueGreen Rollout (both carry app=<name>).
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+{{ end }}

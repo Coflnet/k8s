@@ -12,21 +12,58 @@ ports:
   - name: web
     containerPort: 3000
 
+# Observed 7d max working set 1.35 GB per pod (Prometheus, 2026-10-23); limit is about 2x.
+# No CPU limit: peak was 0.47 core per pod and a limit would only throttle SSR latency.
 resources:
   requests:
     cpu: 150m
     memory: 500Mi
+  limits:
+    memory: 2800Mi
+
+# The image is distroless/nonroot. Next writes ISR output into .next/server/app and its fetch cache
+# into .next/cache; both are emptyDirs (server is seeded from the image by an init container).
+readOnlyRootFilesystem: true
+
+pdb:
+  enabled: true
+  maxUnavailable: 1
 
 serivcePorts:
   - name: web
     port: 3000
     targetPort: 3000
 
+# Readiness renders the home page end to end (SSR plus sky-api), so a backend outage takes the pod out of
+# the Service. Liveness and startup must not depend on backends: /api/version is a force-dynamic route that
+# only returns APP_VERSION, answers 200 solely for the Host below (the internal Service name) and otherwise 404.
 readinessProbe:
   httpGet:
     path: /
     port: web
   initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 6
+  timeoutSeconds: 5
+
+startupProbe:
+  httpGet:
+    path: /api/version
+    port: web
+    httpHeaders:
+      - name: Host
+        value: hypixel-react.sky.svc.cluster.local
+  periodSeconds: 2
+  failureThreshold: 30
+  timeoutSeconds: 3
+
+livenessProbe:
+  httpGet:
+    path: /api/version
+    port: web
+    httpHeaders:
+      - name: Host
+        value: hypixel-react.sky.svc.cluster.local
   periodSeconds: 10
   failureThreshold: 6
   timeoutSeconds: 5

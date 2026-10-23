@@ -15,9 +15,52 @@ spec:
     metadata:
       labels:
         app: {{ .Chart.Name }}
+        # SSR frontend: no Kubernetes API access, no OpenBao use. The label opts the pod into the
+        # Kyverno workload-api-access contract (restricted pod, no SA token) and the openbao-ca
+        # injection; it is satisfied by automountServiceAccountToken: false below.
+        security.coflnet.com/k8s-api-access: "false"
     spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
+      {{- if .Values.readOnlyRootFilesystem }}
+      initContainers:
+        # Next writes ISR output in place into .next/server/app/*.html|rsc|meta, so .next/server must be
+        # writable but keep the build output: copy it (about 25 MB) into an emptyDir before start.
+        # The image is distroless (no shell); /nodejs/bin/node is its entrypoint.
+        - name: seed-next-server
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/nodejs/bin/node"]
+          args:
+            - -e
+            - "require('fs').cpSync('/opt/app/.next/server', '/seed/server', {recursive: true})"
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+          volumeMounts:
+            - name: next-server
+              mountPath: /seed/server
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
@@ -25,6 +68,9 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             privileged: false
+            {{- if .Values.readOnlyRootFilesystem }}
+            readOnlyRootFilesystem: true
+            {{- end }}
             runAsNonRoot: true
             # the image owns /opt/app as distroless nonroot (65532), another uid cannot write the prerender cache
             runAsUser: 65532
@@ -38,10 +84,33 @@ spec:
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 12 }}
           ports:
           {{ toYaml .Values.ports | nindent 12 }}
+          startupProbe:
+          {{ toYaml .Values.startupProbe | nindent 12 }}
           readinessProbe:
           {{ toYaml .Values.readinessProbe | nindent 12 }}
+          livenessProbe:
+          {{ toYaml .Values.livenessProbe | nindent 12 }}
           resources:
           {{ toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.readOnlyRootFilesystem }}
+          volumeMounts:
+            - name: next-server
+              mountPath: /opt/app/.next/server
+            - name: next-cache
+              mountPath: /opt/app/.next/cache
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: next-server
+          emptyDir:
+            sizeLimit: 512Mi
+        - name: next-cache
+          emptyDir:
+            sizeLimit: 256Mi
+        - name: tmp
+          emptyDir:
+            sizeLimit: 64Mi
+          {{- end }}
   strategy:
     blueGreen:
       activeService: {{ .Chart.Name }}
