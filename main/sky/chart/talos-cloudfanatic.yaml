@@ -139,9 +139,9 @@ sky-bfcs:
   defaultEnvVarsEnabled: false
   externalMinio: true
   ingress:
-    enabled: true
+    enabled: false
     tls:
-      enabled: true
+      enabled: false
     nginx: false
     host: sky-us.coflnet.com
   envVars:
