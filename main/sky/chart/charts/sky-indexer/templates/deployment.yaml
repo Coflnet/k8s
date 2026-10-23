@@ -99,6 +99,10 @@ spec:
           mountPath: /var/run/secrets/openbao
           readOnly: true
         {{- end }}
+        # The archive job spills blobs over 5 MiB to Path.GetTempPath() while compressing them; the root
+        # filesystem is read-only, so /tmp needs a writable emptyDir (same as sky-auctions).
+        - name: tmp
+          mountPath: /tmp
         {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
@@ -114,6 +118,8 @@ spec:
                   expirationSeconds: 600
                   path: token
       {{- end }}
+        - name: tmp
+          emptyDir: {}
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
