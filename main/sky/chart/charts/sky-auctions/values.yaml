@@ -36,6 +36,9 @@ envVars:
     value: "sky-auctions-archive"
   - name: S3__ENABLED
     value: "true"
+  # Auction archive phase 2 (Scylla -> R2 sweep, SkyAuctions MIGRATION.md "Phase 2 (v2 blobs)"); needs DBConnection, enabled per cluster
+  - name: ARCHIVE__ENABLED
+    value: "false"
   - name: CASSANDRA__HOSTS
     valueFrom:
       configMapKeyRef:

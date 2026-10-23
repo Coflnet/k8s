@@ -451,12 +451,23 @@ sky-auctions:
   openbaoOnly: true
   enabled: true
   serviceMonitor:
-    enabled: false
+    # scraped for the sky_auctions_archive_* / sky_auctions_blob_* Scylla sweep metrics (port api/8000, as sky-bazaar and sky-indexer)
+    enabled: true
   envVars:
     - name: S3__BUCKET_NAME
       value: "sky-auctions-archive"
     - name: S3__ENABLED
       value: "true"
+    # Auction archive phase 2: add Scylla-only rows of 2019-07..2021-03 to the v2 R2 archive after SkyIndexer (phase 1)
+    # sealed each month; SkyIndexer imports the R2 manifests into MariaDB. No deletion. Reads MariaDB only (DBConnection
+    # from OpenBao kv/sky/sky-auctions, a read-only user is enough), markers in SETTINGS_REDIS_HOST (sky-settings-redis).
+    # Roll out after a SkyIndexer image that has the import worker and the ArchiveScyllaAt migration.
+    - name: ARCHIVE__ENABLED
+      value: "true"
+    - name: ARCHIVE__OLDEST_MONTH
+      value: "2019-07"
+    - name: ARCHIVE__NEWEST_MONTH
+      value: "2021-03"
     - name: CASSANDRA__HOSTS
       valueFrom:
         configMapKeyRef:
