@@ -28,6 +28,8 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false
+          # redis snapshots to its default dir /data, mounted as an emptyDir below.
+          readOnlyRootFilesystem: true
           runAsNonRoot: true
           runAsUser: 999
           capabilities:
@@ -73,11 +75,15 @@ spec:
         ports:
         - containerPort: 6379
         resources:
-          limits: {}
+          # 7d max working set 15Mi (2026-10-25).
+          limits:
+            memory: "256Mi"
           requests:
             memory: "64Mi"
             cpu: "50m"
         volumeMounts:
+        - name: data
+          mountPath: /data
         {{- if $tls.enabled }}
         - name: redis-tls
           mountPath: /tls
@@ -92,6 +98,8 @@ spec:
           readOnly: true
         {{- end }}
       volumes:
+      - name: data
+        emptyDir: {}
       {{- if $tls.enabled }}
       - name: redis-tls
         secret:

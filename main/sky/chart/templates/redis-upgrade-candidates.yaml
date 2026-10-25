@@ -66,6 +66,8 @@ spec:
           chmod 600 /data/redis.conf
         securityContext:
           allowPrivilegeEscalation: false
+          # Only /data (PVC) is written: redis.conf, RDB and AOF.
+          readOnlyRootFilesystem: true
           runAsNonRoot: true
           runAsUser: 999
           capabilities:
@@ -94,6 +96,7 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false
+          readOnlyRootFilesystem: true
           runAsNonRoot: true
           runAsUser: 999
           capabilities:
@@ -106,6 +109,8 @@ spec:
           requests:
             memory: {{ .memoryRequest | default "256Mi" }}
             cpu: 50m
+          limits:
+            memory: {{ .memoryLimit | default "512Mi" }}
         volumeMounts:
         - name: data
           mountPath: /data

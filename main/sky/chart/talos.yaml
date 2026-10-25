@@ -1249,6 +1249,8 @@ redisUpgrade:
       storageClassName: longhorn-encrypted
       # Leave room for the live AOF, RDB snapshot and temporary persistence files.
       storageSize: 4Gi
+      # 7d max working set 443Mi (2026-10-25); the default limit is 512Mi.
+      memoryLimit: 1Gi
     - name: sky-mc-connect-redis
       route: persistent-v1
       storageClassName: longhorn-encrypted
