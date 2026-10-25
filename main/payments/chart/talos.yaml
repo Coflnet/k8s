@@ -43,6 +43,8 @@ payments:
       type: RuntimeDefault
   containerSecurityContext:
     allowPrivilegeEscalation: false
+    # Image sets HOME=TMPDIR=/tmp (emptyDir in the chart); the app writes nowhere else.
+    readOnlyRootFilesystem: true
     runAsNonRoot: true
     runAsUser: 1654
     capabilities:
