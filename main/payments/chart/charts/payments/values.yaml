@@ -3,6 +3,10 @@ maxUnavailable: 1
 
 enabled: true
 
+# Hypixel only: the template never selects other payment applications.
+monitoring:
+  enabled: false
+
 # Set true to render no Ingress objects at all, regardless of the per-entry
 # ingress.enabled flags in the payments list below. Lets a cluster overlay
 # retire ingress-nginx without having to override the list. Off by default.

@@ -50,7 +50,17 @@ spec:
         image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
+          {{- if .Values.profitMetrics.enabled }}
+          - {name: private-profit, containerPort: 9092}
+          {{- end }}
         env:
+          {{- if .Values.profitMetrics.enabled }}
+          - {name: ProfitMetrics__Enabled, value: "true"}
+          - {name: ProfitMetrics__Port, value: "9092"}
+          - {name: ProfitMetrics__CoverageStartUtc, value: {{ .Values.profitMetrics.coverageStartUtc | quote }}}
+          - {name: ProfitMetrics__MaximumRowsPerDay, value: {{ .Values.profitMetrics.maximumRowsPerDay | quote }}}
+          - {name: ProfitMetrics__LookbackDays, value: {{ .Values.profitMetrics.lookbackDays | quote }}}
+          {{- end }}
           - name: OPENBAO__ENABLED
             value: "true"
           - name: OPENBAO__OPTIONAL

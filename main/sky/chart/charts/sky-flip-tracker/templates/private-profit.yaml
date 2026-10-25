@@ -1,0 +1,54 @@
+{{- if and .Values.enabled .Values.profitMetrics.enabled }}
+{{- if not (regexMatch "^[0-9]{4}-[0-9]{2}-[0-9]{2}T00:00:00Z$" .Values.profitMetrics.coverageStartUtc) }}
+{{- fail "Set the shared reviewed profitMetrics.coverageStartUtc UTC midnight after every writer has the projection image" }}
+{{- end }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}-profit
+  labels:
+    app: {{ .Chart.Name }}-profit
+    maintenance.coflnet.com/drain-policy: block
+  annotations:
+    maintenance.coflnet.com/max-downtime-seconds: "0"
+spec:
+  selector: {app: {{ .Chart.Name }}}
+  ports: [{name: private-profit, port: 9092, targetPort: private-profit}]
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Chart.Name }}-profit
+  labels: {release: prometheus}
+spec:
+  selector:
+    matchLabels: {app: {{ .Chart.Name }}-profit}
+  endpoints: [{port: private-profit, path: /metrics, interval: 60s, scrapeTimeout: 45s}]
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ .Chart.Name }}-private-profit
+spec:
+  endpointSelector:
+    matchLabels: {app: {{ .Chart.Name }}}
+  ingress:
+    - fromEndpoints:
+        - matchLabels: {io.kubernetes.pod.namespace: prometheus, app.kubernetes.io/name: prometheus}
+      toPorts:
+        - ports: [{port: "9092", protocol: TCP}]
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: prometheus-allow-{{ .Chart.Name }}-profit
+  namespace: prometheus
+spec:
+  endpointSelector:
+    matchLabels: {app.kubernetes.io/name: prometheus}
+  egress:
+    - toEndpoints:
+        - matchLabels: {io.kubernetes.pod.namespace: {{ .Release.Namespace }}, app: {{ .Chart.Name }}}
+      toPorts:
+        - ports: [{port: "9092", protocol: TCP}]
+{{- end }}

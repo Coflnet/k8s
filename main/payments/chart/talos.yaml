@@ -14,6 +14,8 @@ global:
 
 payments:
   enabled: true
+  monitoring:
+    enabled: true
   # Public hostnames are served through the Gateway API (HTTPRoutes in the
   # fleet repo); ingress-nginx is being retired on this cluster.
   ingressRetired: true

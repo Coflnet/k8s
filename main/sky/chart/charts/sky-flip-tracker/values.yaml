@@ -4,6 +4,13 @@ replicaCount: 2
 migration:
   enabled: false
 
+# Activate only after all writers use the corrected-profit projection image.
+profitMetrics:
+  enabled: false
+  coverageStartUtc: ""
+  maximumRowsPerDay: 100000
+  lookbackDays: 8
+
 strategy: RollingUpdate
 
 image:
