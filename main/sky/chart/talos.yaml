@@ -712,6 +712,9 @@ sky-flipper:
     initialDelaySeconds: 90
 
 sky-flip-tracker:
+  profitMetrics:
+    enabled: true
+    coverageStartUtc: "2026-10-26T00:00:00Z"
   openbaoOnly: true
   enabled: true
   serviceMonitor:
