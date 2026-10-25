@@ -27,6 +27,8 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false
+          # Stateless; libvips spills large images to TMPDIR (/tmp emptyDir below).
+          readOnlyRootFilesystem: true
           runAsNonRoot: true
           capabilities:
             drop:
@@ -71,6 +73,16 @@ spec:
           requests:
             memory: "140Mi"
             cpu: "10m"
+          # 7d max working set 90Mi (2026-10-25); headroom for large images.
+          limits:
+            memory: "512Mi"
+        volumeMounts:
+          - name: tmp
+            mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 256Mi
 ---
 apiVersion: v1
 kind: Service

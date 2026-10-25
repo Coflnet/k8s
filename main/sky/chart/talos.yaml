@@ -567,6 +567,10 @@ sky-bazaar:
     initialDelaySeconds: 180
 
 sky-bazaar-flipper:
+  resources:
+    # 7d max working set 690Mi over 16 pods (2026-10-25); limit = 2.2x.
+    limits:
+      memory: 1536Mi
   enabled: true
   serviceMonitor:
     enabled: false
@@ -672,6 +676,10 @@ sky-crafts:
     initialDelaySeconds: 120
 
 sky-event-broker:
+  resources:
+    # 7d max working set 505Mi (2026-10-25); limit = 2x.
+    limits:
+      memory: 1Gi
   openbaoOnly: true
   enabled: true
   redis:
@@ -1184,6 +1192,10 @@ sky-updater:
 
 # Web frontends — only needed on eu-cluster; keep disabled on talos.
 crafatar:
+  resources:
+    # 7d max working set 2080Mi (2026-10-25, node heap grows over days); limit = 1.9x.
+    limits:
+      memory: 4Gi
   enabled: true
   envVars:
     - name: REDIS_URL
