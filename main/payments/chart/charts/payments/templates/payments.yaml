@@ -197,10 +197,9 @@ spec:
         {{- end }}
         {{ end }}
         {{ end }}
+      # Kyverno autogen (project-openbao-token-for-no-api-workloads) moves
+      # openbao-token to the front of volumes; keep it first so live matches git.
       volumes:
-        - name: tmp
-          emptyDir:
-            sizeLimit: 128Mi
         - name: openbao-token
           projected:
             sources:
@@ -208,6 +207,9 @@ spec:
                   audience: {{ $.Values.openbao.tokenAudience | default "openbao" | quote }}
                   expirationSeconds: 3600
                   path: token
+        - name: tmp
+          emptyDir:
+            sizeLimit: 128Mi
         - name: openbao-ca
           secret:
             secretName: {{ $.Values.openbao.caSecretName | default "openbao-ca" | quote }}
