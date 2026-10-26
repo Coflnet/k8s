@@ -773,7 +773,9 @@ sky-indexer:
       cpu: 150m
       memory: 700Mi
     limits:
-      cpu: 500m
+      # 800m since 2026-10-26: the pod sat at its 500m limit after the active-auction
+      # explorer deploy and the MariaDB->R2 archive pace dropped from ~5.4M to ~1.5M rows/h.
+      cpu: 800m
       memory: 3000Mi
   envVars:
     - name: DBConnection
