@@ -7,7 +7,7 @@ strategy: RollingUpdate
 image:
   repository: muehlhansfl/leaderboard
   # Updated automatically by CI (container-ci.yml) on push to main.
-  tag: de0cd8aae4422b0bfbee69d38231dd4a3e965c1c@sha256:8ea487031be30caaa584a14ce0d9e8444c5de412e48eb45e85041d65f4090f72
+  tag: c84774a0571294d6343701b62708011160edfd18@sha256:3730f802b2f98ecc8988446d6dc3e26f8ad30e0d5350a8de97f0d277a18734ac
   pullPolicy: IfNotPresent
 
 ports:
