@@ -1,0 +1,142 @@
+{{- if (.Values.valkeyHandoff | default dict).enabled }}
+{{- range .Values.valkeyHandoff.candidates }}
+{{- $name := required "redisUpgrade.candidates[].name is required" .name }}
+{{- $tlsConfig := ($.Values.global | default dict).redisOptionalTls | default dict }}
+{{- $tls := and $tlsConfig.enabled (has $name ($tlsConfig.services | default list)) }}
+{{- $route := required "redisUpgrade.candidates[].route is required" .route }}
+{{- $class := required "redisUpgrade.candidates[].storageClassName is required" .storageClassName }}
+{{- if ne $name "redis" }}{{ fail "Only the reviewed leaderboard Valkey uses this handoff" }}{{ end }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $name }}-upgrade
+  annotations:
+    helm.sh/resource-policy: keep
+    storage.coflnet.com/desired-longhorn-replicas: "2"
+spec:
+  accessModes: [ReadWriteOnce]
+  {{- with (lookup "v1" "PersistentVolumeClaim" $.Release.Namespace (printf "%s-upgrade" $name)) }}
+  {{- with .spec.volumeName }}
+  volumeName: {{ . | quote }}
+  {{- end }}
+  {{- end }}
+  storageClassName: {{ $class | quote }}
+  resources:
+    requests:
+      storage: {{ .storageSize | default "1Gi" }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}-upgrade
+  {{- if .disableAutomaticRdb }}
+  annotations:
+    redis.coflnet.com/disable-automatic-rdb: "true"
+  {{- end }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      redis-upgrade-candidate: {{ $name }}
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: redis
+      labels:
+        app: {{ $name }}
+        redis-upgrade-candidate: {{ $name }}
+        redis-route: {{ $route | quote }}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 999
+      initContainers:
+      - name: redis-config
+        image: {{ .image | default "valkey/valkey:7.2@sha256:cbfcb3772ceb0f87ba2bfb2948a3339659696538e9456c0da23edc99fdefb70a" }}
+        command: [sh, -ec]
+        args:
+        - |
+          if [ ! -e /data/redis.conf ]; then
+            umask 077
+            {
+              printf 'dir /data\nprotected-mode no\nsave 5 1\nappendonly yes\nappendfsync everysec\nreplicaof 127.0.0.1 1\naclfile /data/users.acl\n'
+            } > /data/redis.conf
+          fi
+          if [ ! -e /data/users.acl ]; then
+            printf 'user default on nopass ~* &* +@all\n' > /data/users.acl
+          fi
+          chmod 600 /data/users.acl
+          test -s /data/redis.conf
+          chmod 600 /data/redis.conf
+        securityContext:
+          allowPrivilegeEscalation: false
+          # Only /data (PVC) is written: redis.conf, RDB and AOF.
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 999
+          capabilities:
+            drop: [ALL]
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      containers:
+      - name: redis
+        image: {{ .image | default "valkey/valkey:7.2@sha256:cbfcb3772ceb0f87ba2bfb2948a3339659696538e9456c0da23edc99fdefb70a" }}
+        args:
+        - /data/redis.conf
+        {{- if $tls }}
+        {{- include "coflnet.redisOptionalTls.args" . | nindent 8 }}
+        {{- end }}
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -ec
+            - 'test -f /data/active && test "$(redis-cli --raw ROLE | head -1)" = master'
+          periodSeconds: 2
+          failureThreshold: 1
+        livenessProbe:
+          exec:
+            command: [sh, -ec, 'test "$(redis-cli --raw PING)" = PONG']
+          periodSeconds: 10
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 999
+          capabilities:
+            drop: [ALL]
+          seccompProfile:
+            type: RuntimeDefault
+        ports:
+        - containerPort: 6379
+        resources:
+          requests:
+            memory: {{ .memoryRequest | default "256Mi" }}
+            cpu: 50m
+          limits:
+            memory: {{ .memoryLimit | default "512Mi" }}
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        {{- if $tls }}
+        {{- include "coflnet.redisOptionalTls.mount" . | nindent 8 }}
+        {{- end }}
+      {{- if $tls }}
+      {{- include "coflnet.redisOptionalTls.reloader" (dict "serverName" (printf "%s.%s.svc.cluster.local" $name $.Release.Namespace)) | nindent 6 }}
+      {{- end }}
+      volumes:
+      {{- if $tls }}
+      {{- include "coflnet.redisOptionalTls.volume" (dict "name" $name "config" $tlsConfig) | nindent 6 }}
+      {{- end }}
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ $name }}-upgrade
+{{- end }}
+{{- end }}

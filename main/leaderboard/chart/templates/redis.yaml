@@ -1,4 +1,5 @@
 {{- $tlsConfig := (.Values.global | default dict).redisOptionalTls | default dict }}
+{{- $upgrade := (.Values.global | default dict).redisUpgrade | default dict }}
 {{- $tls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has "redis" (dig "listenerServices" ($tlsConfig.services | default list) $tlsConfig)) }}
 apiVersion: apps/v1
 kind: Deployment
@@ -7,7 +8,7 @@ metadata:
   labels:
     app: redis
 spec:
-  replicas: 1
+  replicas: {{ if index ($upgrade.retired | default dict) "redis" }}0{{ else }}1{{ end }}
   selector:
     matchLabels:
       app: redis
@@ -54,6 +55,9 @@ metadata:
 spec:
   selector:
     app: redis
+    {{- with index ($upgrade.routes | default dict) "redis" }}
+    redis-route: {{ . | quote }}
+    {{- end }}
   ports:
     - protocol: TCP
       port: 6379

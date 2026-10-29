@@ -1,0 +1,8 @@
+valkeyHandoff:
+  enabled: true
+  candidates:
+    - name: redis
+      route: persistent-v1
+      storageClassName: longhorn-encrypted
+      memoryLimit: 512Mi
+      memoryRequest: 128Mi
