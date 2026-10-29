@@ -1,7 +1,7 @@
 {{- range (.Values.redisUpgrade | default dict).candidates }}
 {{- $name := required "redisUpgrade.candidates[].name is required" .name }}
 {{- $tlsConfig := ($.Values.global | default dict).redisOptionalTls | default dict }}
-{{- $tls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has $name (dig "listenerServices" ($tlsConfig.services | default list) $tlsConfig)) }}
+{{- $tls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has $name (dig "listenerServices" ($tlsConfig.services | default list) $tlsConfig)) (not (has $name ($tlsConfig.externalReloaderServices | default list))) }}
 {{- $route := required "redisUpgrade.candidates[].route is required" .route }}
 {{- $class := required "redisUpgrade.candidates[].storageClassName is required" .storageClassName }}
 {{- if or (eq $name "sky-event-broker-redis") (eq $name "sky-bfcs-redis") }}{{ fail "Broker and BFCS do not use replica handoff" }}{{ end }}

@@ -1,0 +1,107 @@
+{{- $config := (.Values.global | default dict).redisOptionalTls | default dict }}
+{{- if and $config.enabled $config.listenersEnabled }}
+{{- range $name := $config.externalReloaderServices | default list }}
+{{- if not (has $name (list "sky-global-redis" "sky-mod-commands-redis" "sky-settings-redis" "sky-sniper-redis")) }}
+{{- fail "External TLS renewal is approved only for the four durable Pub/Sub Redis candidates" }}
+{{- end }}
+{{- if not (has $name (dig "listenerServices" ($config.services | default list) $config)) }}
+{{- fail "External Redis TLS renewal requires the matching optional TLS Service" }}
+{{- end }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ $name }}-tls-renewal
+spec:
+  schedule: '*/15 * * * *'
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 120
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 60
+      backoffLimit: 0
+      ttlSecondsAfterFinished: 300
+      template:
+        metadata:
+          labels:
+            app: {{ $name }}-tls-renewal
+        spec:
+          restartPolicy: Never
+          automountServiceAccountToken: false
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 999
+            runAsGroup: 999
+            fsGroup: 999
+            fsGroupChangePolicy: OnRootMismatch
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchLabels:
+                    redis-upgrade-candidate: {{ $name }}
+                topologyKey: kubernetes.io/hostname
+          containers:
+          - name: tls-renewal
+            image: python:3.13-alpine@sha256:8bcfa47b04b853a17aaf909362b847b2112fd6ec4105ea553ef9a43bafbb5916
+            command: [python3, -B, /reload/external-updater.py]
+            env:
+            - name: REDIS_HOST
+              value: {{ printf "%s.%s.svc.cluster.local" $name $.Release.Namespace | quote }}
+            - name: REDIS_TLS_SERVER_NAME
+              value: {{ printf "%s.%s.svc.cluster.local" $name $.Release.Namespace | quote }}
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: [ALL]}
+              seccompProfile: {type: RuntimeDefault}
+            resources:
+              requests: {cpu: 5m, memory: 16Mi}
+              limits: {cpu: 100m, memory: 32Mi}
+            volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: redis-optional-tls
+              mountPath: /optional-tls
+              readOnly: true
+            - name: redis-tls-reloader
+              mountPath: /reload
+              readOnly: true
+          volumes:
+          - name: data
+            persistentVolumeClaim:
+              claimName: {{ $name }}-upgrade
+          {{- include "coflnet.redisOptionalTls.volume" (dict "name" $name "config" $config) | nindent 10 }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ $name }}-tls-renewal
+spec:
+  podSelector: {matchLabels: {app: {{ $name }}-tls-renewal}}
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress:
+  - to:
+    - podSelector: {matchLabels: {redis-upgrade-candidate: {{ $name }}}}
+    ports: [{protocol: TCP, port: 6379}, {protocol: TCP, port: 6380}]
+  - to:
+    - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: kube-system}}
+      podSelector: {matchLabels: {k8s-app: kube-dns}}
+    ports: [{protocol: UDP, port: 53}, {protocol: TCP, port: 53}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ $name }}-tls-renewal-backend
+spec:
+  podSelector: {matchLabels: {redis-upgrade-candidate: {{ $name }}}}
+  policyTypes: [Ingress]
+  ingress:
+  - from:
+    - podSelector: {matchLabels: {app: {{ $name }}-tls-renewal}}
+    ports: [{protocol: TCP, port: 6379}, {protocol: TCP, port: 6380}]
+{{- end }}
+{{- end }}

@@ -26,4 +26,13 @@ global:
     - sky-mc-connect-redis
     - sky-player-name-redis
     - sky-player-state-redis
+    - sky-global-redis
+    - sky-mod-commands-redis
+    - sky-settings-redis
+    - sky-sniper-redis
+    externalReloaderServices:
+    - sky-global-redis
+    - sky-mod-commands-redis
+    - sky-settings-redis
+    - sky-sniper-redis
     clusterIdentity: talos-eu
