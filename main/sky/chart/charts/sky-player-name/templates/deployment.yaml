@@ -126,14 +126,14 @@ spec:
         {{ end }}
       volumes:
       {{- if (.Values.pki | default dict).applicationEnabled }}
-      - name: pki-client
-        secret: {secretName: sky-player-name-client, defaultMode: 0440}
-      - name: pki-server
-        secret: {secretName: sky-player-name-server, defaultMode: 0440}
-      - name: pki-trust
-        configMap: {name: sky-player-name-pki-trust}
-      - name: pki-home
-        emptyDir: {medium: Memory, sizeLimit: 16Mi}
+        - name: pki-client
+          secret: {secretName: sky-player-name-client, defaultMode: 0440}
+        - name: pki-server
+          secret: {secretName: sky-player-name-server, defaultMode: 0440}
+        - name: pki-trust
+          configMap: {name: sky-player-name-pki-trust}
+        - name: pki-home
+          emptyDir: {medium: Memory, sizeLimit: 16Mi}
       {{- end }}
       {{- if $.Values.global.openbaoAuthPath }}
         - name: openbao-workload-token
