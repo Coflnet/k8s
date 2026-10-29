@@ -29,6 +29,8 @@ spec:
   template:
     metadata:
       labels: {app: redis-tls-frontend}
+      annotations:
+        checksum/frontend-config: {{ printf "%s%s" (.Files.Get "files/redis-tls-frontend.conf") (.Files.Get "files/redis-tls-frontend-reload.sh") | sha256sum }}
     spec:
       automountServiceAccountToken: false
       securityContext:
