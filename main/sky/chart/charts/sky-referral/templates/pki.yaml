@@ -1,0 +1,67 @@
+{{- if .Values.pki.enabled }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sky-referral-certificates
+automountServiceAccountToken: false
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: sky-referral-certificates
+rules:
+- apiGroups: ['']
+  resources: [serviceaccounts/token]
+  resourceNames: [sky-referral-certificates]
+  verbs: [create]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sky-referral-certificates
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: sky-referral-certificates}
+subjects:
+- {kind: ServiceAccount, name: cert-manager, namespace: cert-manager}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sky-referral-pki-trust
+data:
+  mariadb-ca.crt: |
+{{ required "pki.rootCaBundle is required" .Values.pki.rootCaBundle | indent 4 }}
+{{- range .Values.pki.certificates }}
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ .name }}
+spec:
+  vault:
+    server: https://openbao.openbao.svc:8200
+    path: pki_int/sign/{{ .name }}
+    caBundle: {{ required "pki.listenerCaBundle is required" $.Values.pki.listenerCaBundle | b64enc | quote }}
+    auth:
+      kubernetes:
+        mountPath: /v1/auth/jwt-talos-eu
+        role: cert-manager-issuer-sky-{{ .name }}
+        serviceAccountRef:
+          name: sky-referral-certificates
+          audiences: [{{ printf "vault://sky/%s" .name | quote }}]
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .name }}
+spec:
+  secretName: {{ .name }}
+  duration: 24h
+  renewBefore: 8h
+  privateKey: {algorithm: ECDSA, size: 384, rotationPolicy: Always}
+  issuerRef: {name: {{ .name }}, kind: Issuer}
+  commonName: {{ .commonName }}
+  dnsNames:
+{{ toYaml .dnsNames | indent 2 }}
+  usages: {{ toJson .usages }}
+{{- end }}
+{{- end }}

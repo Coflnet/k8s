@@ -102,6 +102,7 @@ targetCustomizations:
         - ./chart/settings-pki-eu.yaml
         - ./chart/profiles-pki-eu.yaml
         - ./chart/bazaar-pki-eu.yaml
+        - ./chart/referral-pki-eu.yaml
 
   - name: talos-linode
     clusterName: talos-linode

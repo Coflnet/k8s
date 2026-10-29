@@ -45,3 +45,9 @@ envVars:
     value: "verify_mc"
   - name: TOPICS__TRANSACTION
     value: sky-transactions
+
+# EU external SQL identity issuance and application use are separate phases.
+pki:
+  enabled: false
+  applicationEnabled: false
+  readinessEnabled: false
