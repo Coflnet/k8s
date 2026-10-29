@@ -1,7 +1,7 @@
 # Public certificates only. Enable application use after issuance and the Core-backed image are verified.
 pki:
   enabled: true
-  applicationEnabled: false
+  applicationEnabled: true
   rootCaBundle: |
     -----BEGIN CERTIFICATE-----
     MIIB7zCCAXSgAwIBAgIUHiabVzU7uVeszIY2O8ihUrQ5DwgwCgYIKoZIzj0EAwMw
