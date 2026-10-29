@@ -2,7 +2,7 @@ bfcsSharedRedis:
   enabled: true
 global:
   bfcsSharedRedis:
-    consumersEnabled: false
+    consumersEnabled: true
     publisherRevision: ""
 sky-mod-commands:
   canary:

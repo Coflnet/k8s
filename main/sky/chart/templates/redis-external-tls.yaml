@@ -1,8 +1,10 @@
 {{- $config := (.Values.global | default dict).redisOptionalTls | default dict }}
 {{- if and $config.enabled $config.listenersEnabled }}
 {{- range $name := $config.externalReloaderServices | default list }}
-{{- if not (has $name (list "sky-global-redis" "sky-mod-commands-redis" "sky-settings-redis" "sky-sniper-redis")) }}
-{{- fail "External TLS renewal is approved only for the four durable Pub/Sub Redis candidates" }}
+{{- $runtime := eq $name "sky-event-broker-redis" }}
+{{- $selector := ternary (dict "app" $name) (dict "redis-upgrade-candidate" $name) $runtime }}
+{{- if not (has $name (list "sky-global-redis" "sky-mod-commands-redis" "sky-settings-redis" "sky-sniper-redis" "sky-event-broker-redis")) }}
+{{- fail "External TLS renewal is approved only for the four durable Pub/Sub candidates and event broker" }}
 {{- end }}
 {{- if not (has $name (dig "listenerServices" ($config.services | default list) $config)) }}
 {{- fail "External Redis TLS renewal requires the matching optional TLS Service" }}
@@ -13,16 +15,17 @@ kind: CronJob
 metadata:
   name: {{ $name }}-tls-renewal
 spec:
-  schedule: '*/15 * * * *'
+  # Event broker has no native config file: re-enable TLS after natural restarts.
+  schedule: {{ ternary "* * * * *" "*/15 * * * *" $runtime | quote }}
   concurrencyPolicy: Forbid
-  startingDeadlineSeconds: 120
+  startingDeadlineSeconds: {{ ternary 30 120 $runtime }}
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
-      activeDeadlineSeconds: 60
+      activeDeadlineSeconds: {{ ternary 45 60 $runtime }}
       backoffLimit: 0
-      ttlSecondsAfterFinished: 300
+      ttlSecondsAfterFinished: {{ ternary 30 300 $runtime }}
       template:
         metadata:
           labels:
@@ -40,8 +43,7 @@ spec:
             podAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
               - labelSelector:
-                  matchLabels:
-                    redis-upgrade-candidate: {{ $name }}
+                  matchLabels: {{ $selector | toJson }}
                 topologyKey: kubernetes.io/hostname
           containers:
           - name: tls-renewal
@@ -54,6 +56,10 @@ spec:
               value: {{ printf "%s-tls.%s.svc.cluster.local" $name $.Release.Namespace | quote }}
             - name: REDIS_TLS_SERVER_NAME
               value: {{ printf "%s.%s.svc.cluster.local" $name $.Release.Namespace | quote }}
+            {{- if $runtime }}
+            - name: REDIS_TLS_RECONCILE_RUNTIME
+              value: "true"
+            {{- end }}
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -74,7 +80,7 @@ spec:
           volumes:
           - name: data
             persistentVolumeClaim:
-              claimName: {{ $name }}-upgrade
+              claimName: {{ ternary $name (printf "%s-upgrade" $name) $runtime }}
           {{- include "coflnet.redisOptionalTls.volume" (dict "name" $name "config" $config) | nindent 10 }}
 ---
 apiVersion: networking.k8s.io/v1
@@ -87,7 +93,7 @@ spec:
   ingress: []
   egress:
   - to:
-    - podSelector: {matchLabels: {redis-upgrade-candidate: {{ $name }}}}
+    - podSelector: {matchLabels: {{ $selector | toJson }}}
     ports: [{protocol: TCP, port: 6379}, {protocol: TCP, port: 6380}]
   - to:
     - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: kube-system}}
@@ -99,7 +105,7 @@ kind: NetworkPolicy
 metadata:
   name: {{ $name }}-tls-renewal-backend
 spec:
-  podSelector: {matchLabels: {redis-upgrade-candidate: {{ $name }}}}
+  podSelector: {matchLabels: {{ $selector | toJson }}}
   policyTypes: [Ingress]
   ingress:
   - from:

@@ -1,4 +1,4 @@
-"""Render the four external renewers without changing any existing workload."""
+"""Render four durable renewers and event runtime reconciliation without changing workloads."""
 import copy
 from pathlib import Path
 import subprocess
@@ -8,6 +8,8 @@ import yaml
 
 CHART = Path(__file__).resolve().parents[2] / 'main/sky/chart'
 SERVICES = {'sky-global-redis', 'sky-mod-commands-redis', 'sky-settings-redis', 'sky-sniper-redis'}
+EVENT_BROKER = 'sky-event-broker-redis'
+ALL_EXTERNAL = SERVICES | {EVENT_BROKER}
 
 
 def render(values):
@@ -28,7 +30,7 @@ class ExternalRedisTLS(unittest.TestCase):
         cls.active = render(active)
         previous = copy.deepcopy(active)
         config = previous['global']['redisOptionalTls']
-        config['listenerServices'] = [name for name in config['listenerServices'] if name not in SERVICES]
+        config['listenerServices'] = [name for name in config['listenerServices'] if name not in ALL_EXTERNAL]
         config['externalReloaderServices'] = []
         cls.previous = render(previous)
 
@@ -37,7 +39,7 @@ class ExternalRedisTLS(unittest.TestCase):
             with self.subTest(resource=key):
                 self.assertEqual(self.active[key], obj)
         jobs = {name for kind, name in self.active.keys() - self.previous.keys() if kind == 'CronJob'}
-        self.assertEqual(jobs, {name + '-tls-renewal' for name in SERVICES})
+        self.assertEqual(jobs, {name + '-tls-renewal' for name in ALL_EXTERNAL})
 
     def test_workers_are_bounded_and_share_only_the_matching_pvc_node(self):
         for name in SERVICES:
@@ -52,6 +54,27 @@ class ExternalRedisTLS(unittest.TestCase):
             affinity = pod['affinity']['podAffinity']['requiredDuringSchedulingIgnoredDuringExecution']
             self.assertEqual(affinity, [{'labelSelector': {'matchLabels': {'redis-upgrade-candidate': name}},
                                          'topologyKey': 'kubernetes.io/hostname'}])
+
+    def test_event_worker_reconciles_runtime_on_the_existing_pvc_without_recreate(self):
+        job = self.active['CronJob', EVENT_BROKER + '-tls-renewal']['spec']
+        self.assertEqual(job['schedule'], '* * * * *')
+        self.assertEqual(job['concurrencyPolicy'], 'Forbid')
+        spec = job['jobTemplate']['spec']
+        self.assertEqual(spec['activeDeadlineSeconds'], 45)
+        self.assertEqual(spec['ttlSecondsAfterFinished'], 30)
+        self.assertEqual(spec['backoffLimit'], 0)
+        pod = spec['template']['spec']
+        self.assertFalse(pod['automountServiceAccountToken'])
+        self.assertEqual(pod['restartPolicy'], 'Never')
+        self.assertEqual(pod['volumes'][0]['persistentVolumeClaim']['claimName'], EVENT_BROKER)
+        affinity = pod['affinity']['podAffinity']['requiredDuringSchedulingIgnoredDuringExecution']
+        self.assertEqual(affinity, [{'labelSelector': {'matchLabels': {'app': EVENT_BROKER}},
+                                   'topologyKey': 'kubernetes.io/hostname'}])
+        environment = {value['name']: value.get('value') for value in pod['containers'][0]['env']}
+        self.assertEqual(environment['REDIS_TLS_RECONCILE_RUNTIME'], 'true')
+        self.assertEqual(environment['REDIS_TLS_HOST'], EVENT_BROKER + '-tls.sky.svc.cluster.local')
+        self.assertEqual(self.active['Deployment', EVENT_BROKER]['spec']['template'],
+                         self.previous['Deployment', EVENT_BROKER]['spec']['template'])
 
 
 if __name__ == '__main__':

@@ -32,7 +32,9 @@ global:
     - sky-sniper-redis
     - sky-profiles-redis
     - sky-proxy-redis
+    - sky-event-broker-redis
     externalReloaderServices:
+    - sky-event-broker-redis
     - sky-global-redis
     - sky-mod-commands-redis
     - sky-settings-redis

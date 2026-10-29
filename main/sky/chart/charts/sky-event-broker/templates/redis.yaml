@@ -1,7 +1,7 @@
 {{ if .Values.enabled }}
 {{- $name := printf "%s-redis" .Chart.Name }}
 {{- $tlsConfig := (.Values.global | default dict).redisOptionalTls | default dict }}
-{{- $tls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has $name (dig "listenerServices" ($tlsConfig.services | default list) $tlsConfig)) }}
+{{- $tls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has $name (dig "listenerServices" ($tlsConfig.services | default list) $tlsConfig)) (not (has $name ($tlsConfig.externalReloaderServices | default list))) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
