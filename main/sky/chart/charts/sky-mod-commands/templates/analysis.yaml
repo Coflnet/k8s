@@ -6,6 +6,7 @@ metadata:
 spec:
   args:
   - name: service-name
+  - name: latest-hash
   metrics:
   - name: sky-sent_flips
     interval: 3m
@@ -16,5 +17,5 @@ spec:
       prometheus:
         address: http://prometheus-kube-prometheus-prometheus.prometheus.svc.cluster.local:9090
         query: |
-          sum(increase(sky_mod_flips_purchased[5m]))
+          sum(increase(sky_mod_sent_flips{namespace="{{ .Release.Namespace }}",pod=~"{{ .Chart.Name }}-{{ "{{args.latest-hash}}" }}-.*"}[5m]))
 {{ end }}

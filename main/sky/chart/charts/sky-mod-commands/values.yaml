@@ -101,6 +101,9 @@ canary:
         args:
           - name: service-name
             value: *canaryService
+          - name: latest-hash
+            valueFrom:
+              podTemplateHashValue: Latest
   maxUnavailable: 1
   canaryService: *canaryService
   stableService: *stableService
