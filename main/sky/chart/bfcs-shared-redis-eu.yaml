@@ -4,3 +4,7 @@ global:
   bfcsSharedRedis:
     consumersEnabled: false
     publisherRevision: ""
+sky-mod-commands:
+  canary:
+    maxUnavailable: 0
+    maxSurge: 1
