@@ -1,6 +1,11 @@
 enabled: true
 replicaCount: 1
 
+# Client identity issuance is separate from application preparation.
+pki:
+  enabled: false
+  applicationEnabled: false
+
 migration:
   enabled: false
 
