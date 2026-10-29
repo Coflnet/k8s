@@ -54,14 +54,19 @@ with context.wrap_socket(socket.socket(),server_hostname='redis.sky.svc.cluster.
   try:
    command('docker','run','-d','--name',name,'--network','none','--read-only','--user',f'{os.getuid()}:{os.getgid()}','--mount',mount,'--env',f'REDIS_PASSWORD={password}',image,server,'--port','6379','--save','','--appendonly','no','--requirepass',password,'--tls-port','6380','--tls-cert-file','/optional-tls/tls.crt','--tls-key-file','/optional-tls/tls.key','--tls-ca-cert-file','/optional-tls/ca.crt','--tls-auth-clients','optional')
    names.append(name)
-   command('docker','run','-d','--name',watcher,'--network',f'container:{name}','--read-only','--user',f'{os.getuid()}:{os.getgid()}','--mount',mount,'--env',f'REDIS_PASSWORD={password}',PYTHON,'python3','-B','/optional-tls/reloader.py')
+   command('docker','run','-d','--name',watcher,'--network',f'container:{name}','--read-only','--user',f'{os.getuid()}:{os.getgid()}','--mount',mount,'--env',f'REDIS_PASSWORD={password}','--env','REDIS_TLS_SERVER_NAME=redis.sky.svc.cluster.local',PYTHON,'python3','-B','/optional-tls/reloader.py')
    names.append(watcher)
    before=command('docker','exec',watcher,'python3','-B','/optional-tls/probe.py').strip()
+   command('docker','exec',watcher,'python3','-B','/optional-tls/reloader.py','--check')
    plain=command('docker','exec',name,'sh','-ec',f'REDISCLI_AUTH="$REDIS_PASSWORD" {cli} PING').strip()
    assert plain=='PONG',plain
    denied=command('docker','exec',name,cli,'PING').strip()
    assert denied.startswith('NOAUTH'),denied
+   command('docker','kill','--signal=STOP',watcher)
    (root/'..data_tmp').symlink_to('g102');(root/'..data_tmp').replace(root/'..data')
+   stale=subprocess.run(['docker','exec',watcher,'python3','-B','/optional-tls/reloader.py','--check'],capture_output=True,text=True,timeout=15)
+   assert stale.returncode!=0 and 'stale TLS certificate' in stale.stderr, stale.stderr
+   command('docker','kill','--signal=CONT',watcher)
    # Wait on the actual reload event from the container log stream, bounded.
    logs=subprocess.Popen(['docker','logs','--follow',watcher],stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
    try:
@@ -72,7 +77,8 @@ with context.wrap_socket(socket.socket(),server_hostname='redis.sky.svc.cluster.
     logs.terminate();logs.wait(timeout=5)
    after=command('docker','exec',watcher,'python3','-B','/optional-tls/probe.py').strip()
    assert before!=after
-   results.append({'image':image,'plaintext_authenticated':'PONG','plaintext_without_password':'NOAUTH','tls_without_client_certificate':'PONG','event_driven_certificate_rotation':'verified','restarts':0})
+   command('docker','exec',watcher,'python3','-B','/optional-tls/reloader.py','--check')
+   results.append({'image':image,'plaintext_authenticated':'PONG','plaintext_without_password':'NOAUTH','tls_without_client_certificate':'PONG','event_driven_certificate_rotation':'verified','listener_freshness_probe':'rejects-stale-accepts-current','restarts':0})
   finally:
    for name in reversed(names): subprocess.run(['docker','rm','-f',name],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
 if len(sys.argv)>2: Path(sys.argv[2]).write_text(json.dumps(results,indent=2)+'\n')

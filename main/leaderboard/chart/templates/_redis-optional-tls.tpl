@@ -47,14 +47,28 @@
       drop: [ALL]
     seccompProfile:
       type: RuntimeDefault
-  {{- with .passwordSecret }}
   env:
+  - name: REDIS_TLS_SERVER_NAME
+    value: {{ .serverName | quote }}
+  {{- with .passwordSecret }}
   - name: REDIS_PASSWORD
     valueFrom:
       secretKeyRef:
         name: {{ .name }}
         key: {{ .key | default "password" }}
   {{- end }}
+  startupProbe:
+    exec:
+      command: [python3, -B, /reload/reloader.py, --check]
+    periodSeconds: 2
+    timeoutSeconds: 5
+    failureThreshold: 60
+  livenessProbe:
+    exec:
+      command: [python3, -B, /reload/reloader.py, --check]
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
   resources:
     requests: {cpu: 5m, memory: 16Mi}
     limits: {cpu: 100m, memory: 32Mi}

@@ -1,7 +1,7 @@
 {{ if .Values.enabled }}
 {{- $name := printf "%s-redis" .Chart.Name }}
 {{- $tlsConfig := (.Values.global | default dict).redisOptionalTls | default dict }}
-{{- $tls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has $name ($tlsConfig.services | default list)) }}
+{{- $tls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has $name (dig "listenerServices" ($tlsConfig.services | default list) $tlsConfig)) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -86,7 +86,7 @@ spec:
             memory: {{ .Values.redis.memoryRequest | quote }}
             cpu: "50m"
       {{- if $tls }}
-      {{- include "coflnet.redisOptionalTls.reloader" dict | nindent 6 }}
+      {{- include "coflnet.redisOptionalTls.reloader" (dict "serverName" (printf "%s.%s.svc.cluster.local" $name $.Release.Namespace)) | nindent 6 }}
       {{- end }}
       {{- if or .Values.redis.persistence.enabled $tls }}
       volumes:

@@ -18,5 +18,9 @@ global:
     - sky-sniper-redis
     - sky-event-broker-redis
     - sky-bfcs-redis
-    listenersEnabled: false
+    listenersEnabled: true
+    listenerServices:
+    - sky-api-redis
+    - sky-auctions-redis
+    - sky-commands-redis
     clusterIdentity: talos-eu

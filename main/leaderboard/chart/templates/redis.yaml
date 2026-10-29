@@ -1,5 +1,5 @@
 {{- $tlsConfig := (.Values.global | default dict).redisOptionalTls | default dict }}
-{{- $tls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has "redis" ($tlsConfig.services | default list)) }}
+{{- $tls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has "redis" (dig "listenerServices" ($tlsConfig.services | default list) $tlsConfig)) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -42,7 +42,7 @@ spec:
         ports:
         - containerPort: 6379
       {{- if $tls }}
-      {{- include "coflnet.redisOptionalTls.reloader" dict | nindent 6 }}
+      {{- include "coflnet.redisOptionalTls.reloader" (dict "serverName" (printf "%s.%s.svc.cluster.local" "redis" $.Release.Namespace)) | nindent 6 }}
       volumes:
       {{- include "coflnet.redisOptionalTls.volume" (dict "name" "redis" "config" $tlsConfig) | nindent 6 }}
       {{- end }}

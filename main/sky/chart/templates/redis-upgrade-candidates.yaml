@@ -1,7 +1,7 @@
 {{- range (.Values.redisUpgrade | default dict).candidates }}
 {{- $name := required "redisUpgrade.candidates[].name is required" .name }}
 {{- $tlsConfig := ($.Values.global | default dict).redisOptionalTls | default dict }}
-{{- $tls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has $name ($tlsConfig.services | default list)) }}
+{{- $tls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has $name (dig "listenerServices" ($tlsConfig.services | default list) $tlsConfig)) }}
 {{- $route := required "redisUpgrade.candidates[].route is required" .route }}
 {{- $class := required "redisUpgrade.candidates[].storageClassName is required" .storageClassName }}
 {{- if or (eq $name "sky-event-broker-redis") (eq $name "sky-bfcs-redis") }}{{ fail "Broker and BFCS do not use replica handoff" }}{{ end }}
@@ -124,7 +124,7 @@ spec:
         {{- include "coflnet.redisOptionalTls.mount" . | nindent 8 }}
         {{- end }}
       {{- if $tls }}
-      {{- include "coflnet.redisOptionalTls.reloader" dict | nindent 6 }}
+      {{- include "coflnet.redisOptionalTls.reloader" (dict "serverName" (printf "%s.%s.svc.cluster.local" $name $.Release.Namespace)) | nindent 6 }}
       {{- end }}
       volumes:
       {{- if $tls }}

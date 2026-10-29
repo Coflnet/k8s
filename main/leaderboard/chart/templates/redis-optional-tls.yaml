@@ -29,12 +29,16 @@ spec:
   - {{ . }}-tls.{{ $.Release.Namespace }}.svc.cluster.local
   - {{ . }}.{{ $.Release.Namespace }}.{{ required "global.redisOptionalTls.clusterIdentity is required" $config.clusterIdentity }}.coflnet.internal
   usages: [digital signature, server auth]
-{{- if $config.listenersEnabled }}
+{{- if and $config.listenersEnabled (has . (dig "listenerServices" $config.services $config)) }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ . }}-tls
+  labels:
+    maintenance.coflnet.com/drain-policy: block
+  annotations:
+    maintenance.coflnet.com/max-downtime-seconds: "0"
 spec:
   selector:
     app: {{ . }}

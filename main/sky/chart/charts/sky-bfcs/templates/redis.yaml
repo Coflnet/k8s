@@ -2,7 +2,7 @@
 {{ if .Values.redis.enabled }}
 {{- $name := printf "%s-redis" .Chart.Name }}
 {{- $tlsConfig := (.Values.global | default dict).redisOptionalTls | default dict }}
-{{- $optionalTls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has $name ($tlsConfig.services | default list)) }}
+{{- $optionalTls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has $name (dig "listenerServices" ($tlsConfig.services | default list) $tlsConfig)) }}
 {{- $tls := .Values.redis.tls }}
 {{- if and $optionalTls $tls.enabled }}{{ fail "optional TLS cannot override existing BFCS TLS-only mode" }}{{ end }}
 {{- $acl := .Values.redis.acl }}
@@ -112,7 +112,7 @@ spec:
         {{- include "coflnet.redisOptionalTls.mount" . | nindent 8 }}
         {{- end }}
       {{- if $optionalTls }}
-      {{- include "coflnet.redisOptionalTls.reloader" (dict "passwordSecret" .Values.redis.passwordSecret) | nindent 6 }}
+      {{- include "coflnet.redisOptionalTls.reloader" (dict "passwordSecret" .Values.redis.passwordSecret "serverName" (printf "%s.%s.svc.cluster.local" $name $.Release.Namespace)) | nindent 6 }}
       {{- end }}
       volumes:
       {{- if $optionalTls }}
