@@ -4,7 +4,7 @@ sky-player-name:
     initialDelaySeconds: 5
   pki:
     enabled: true
-    applicationEnabled: true
+    applicationEnabled: false
     revision: playername-pki-20261029
     rootCaBundle: |
       -----BEGIN CERTIFICATE-----
