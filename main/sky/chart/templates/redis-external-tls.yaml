@@ -50,6 +50,8 @@ spec:
             env:
             - name: REDIS_HOST
               value: {{ printf "%s.%s.svc.cluster.local" $name $.Release.Namespace | quote }}
+            - name: REDIS_TLS_HOST
+              value: {{ printf "%s-tls.%s.svc.cluster.local" $name $.Release.Namespace | quote }}
             - name: REDIS_TLS_SERVER_NAME
               value: {{ printf "%s.%s.svc.cluster.local" $name $.Release.Namespace | quote }}
             securityContext:
