@@ -20,6 +20,9 @@ spec:
         security.coflnet.com/k8s-api-access: "false"
       annotations:
         {{ toYaml .Values.global.podAnnotations | nindent 8 }}
+        {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+        security.coflnet.com/pki-revision: {{ .Values.pki.revision | quote }}
+        {{- end }}
     spec:
       serviceAccountName: {{ .Chart.Name }}
       {{- if $.Values.global.openbaoAuthPath }}
@@ -29,7 +32,7 @@ spec:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       securityContext:
         runAsNonRoot: true
-        {{- if $.Values.global.openbaoAuthPath }}
+        {{- if or $.Values.global.openbaoAuthPath (and .Values.pki.enabled .Values.pki.applicationEnabled) }}
         fsGroup: 1000
         {{- end }}
         seccompProfile:
@@ -50,7 +53,16 @@ spec:
         image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
+          {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+          - {name: https, containerPort: 8443}
+          {{- end }}
         env:
+          {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+          {{- range $name, $value := .Values.pki.env }}
+          - name: {{ $name }}
+            value: {{ $value | quote }}
+          {{- end }}
+          {{- end }}
           - name: OPENBAO__ENABLED
             value: "true"
           - name: OPENBAO__OPTIONAL
@@ -90,6 +102,10 @@ spec:
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
+        {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+        - {name: pki-server, mountPath: /pki/server, readOnly: true}
+        - {name: pki-trust, mountPath: /pki/trust, readOnly: true}
+        {{- end }}
         {{- if $.Values.global.openbaoAuthPath }}
         - name: openbao-workload-token
           mountPath: /var/run/secrets/openbao
@@ -100,6 +116,12 @@ spec:
           mountPath: {{ .mountPath }}
         {{ end }}
       volumes:
+      {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+        - name: pki-server
+          secret: {secretName: sky-crafts-server, defaultMode: 0440}
+        - name: pki-trust
+          configMap: {name: sky-crafts-pki-trust}
+      {{- end }}
       {{- if $.Values.global.openbaoAuthPath }}
         - name: openbao-workload-token
           projected:

@@ -98,6 +98,7 @@ targetCustomizations:
         - ./chart/bfcs-shared-redis-eu.yaml
         - ./chart/playername-pki-eu.yaml
         - ./chart/mayor-pki-eu.yaml
+        - ./chart/crafts-pki-eu.yaml
 
   - name: talos-linode
     clusterName: talos-linode
