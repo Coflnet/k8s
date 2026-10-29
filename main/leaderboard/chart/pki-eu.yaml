@@ -1,0 +1,116 @@
+# Public certificates only. Enable application use after issuance and the Core-backed image are verified.
+pki:
+  enabled: true
+  applicationEnabled: false
+  rootCaBundle: |
+    -----BEGIN CERTIFICATE-----
+    MIIB7zCCAXSgAwIBAgIUHiabVzU7uVeszIY2O8ihUrQ5DwgwCgYIKoZIzj0EAwMw
+    NTEhMB8GA1UEAwwYQ29mbG5ldCBJbnRlcm5hbCBSb290IENBMRAwDgYDVQQKDAdD
+    b2ZsbmV0MB4XDTI2MDcyMDIwNDIxN1oXDTM2MDcxNzIwNDIxN1owNTEhMB8GA1UE
+    AwwYQ29mbG5ldCBJbnRlcm5hbCBSb290IENBMRAwDgYDVQQKDAdDb2ZsbmV0MHYw
+    EAYHKoZIzj0CAQYFK4EEACIDYgAETSbRhSFLZeXf60Uv7P/E5BWyVwhYXWwBpR7S
+    WuAdCWRExq7E1QRmo484Zrtr6UlkTAzS0DAq2zggBcp1hQyvIUBrCn/TO6JNjdde
+    exWeoahXw+XGMkObmbRJHT5xtsU/o0UwQzASBgNVHRMBAf8ECDAGAQH/AgEBMA4G
+    A1UdDwEB/wQEAwIBBjAdBgNVHQ4EFgQUoVgcsk/ZkIkNHEyXnMi7BFErBlEwCgYI
+    KoZIzj0EAwMDaQAwZgIxAMfHYvIGbgyOXRCw0eTfN4xzNJ62MqfC+8+AzdoSm9nM
+    HHruulsMgVPkPJjJtzrdCgIxAPmVl1a1SSySB+/dkp6u+Lb/Y0SJ03Y26HQvIt1S
+    AfQEYz7xazS4XJ3nIbGpy3MxSg==
+    -----END CERTIFICATE-----
+  scyllaCaBundle: |
+    -----BEGIN CERTIFICATE-----
+    MIIGGzCCBAOgAwIBAgIUSmVwtAECp8T/t6Idz5Mj9MRpAl8wDQYJKoZIhvcNAQEL
+    BQAwgZwxCzAJBgNVBAYTAkRFMRAwDgYDVQQIDAdCYXZhcmlhMRMwEQYDVQQHDApE
+    aW5nb2xmaW5nMRQwEgYDVQQKDAtDb2ZsbmV0IExMQzEQMA4GA1UECwwHQ29mbG5l
+    dDEWMBQGA1UEAwwNc2N5bGxhLWNsaWVudDEmMCQGCSqGSIb3DQEJARYXbXVlaGxo
+    YW5zLmZAY29mbG5ldC5jb20wHhcNMjMwODAyMTg0OTE5WhcNMzMwNzMwMTg0OTE5
+    WjCBnDELMAkGA1UEBhMCREUxEDAOBgNVBAgMB0JhdmFyaWExEzARBgNVBAcMCkRp
+    bmdvbGZpbmcxFDASBgNVBAoMC0NvZmxuZXQgTExDMRAwDgYDVQQLDAdDb2ZsbmV0
+    MRYwFAYDVQQDDA1zY3lsbGEtY2xpZW50MSYwJAYJKoZIhvcNAQkBFhdtdWVobGhh
+    bnMuZkBjb2ZsbmV0LmNvbTCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIB
+    ANVA3iH17Ly2Hmib43SOz6CKQ0fBsfnfLhwwxRtxAE2Ca2K8Pju4gn6oHM0sNGC0
+    lLYUFGSUqzpokAOFEWbDBa8rqnXdKdawOn1UAZhyAxwh8ja1KB8Ke3u5VGDojJTd
+    1Kiu8yKet/Nd3D90SRYskyEOOQNy2ZlUMX9kng36Kol4oC4Q4Ya6bmXpD7rspupB
+    h4zRRc5MR3Q17BnTTQk5iYCnlxK1x6EPcv01bdl3PBJDO+IWRohkLs3CPAJZvtOj
+    vzWlcTREjwH5Xd2T1+AZ5AAoLO4o/mnwRaOzODfPJZLE+RUIumSVRhLeFFKzbXCk
+    iEg9DGKLlZAi/WRol0rrfBHfAkf3BhHorvRmvZTSBDcRsqNmXMaGXL6rqt5Pf8De
+    h5d2t5ROcsoaP59Pg6Lrfc7p5mMSWJnEjRhGeIftbQPLaOG4q+nvogFJFVahl2bb
+    MXtGZwQ1JgKiqOmpL1zfXq3NgDCXG4Wd2UsFc8P4B0hdIUJ90IdUP69aNyCigdjc
+    oqsX56VnJvnnurv6F9iNPLeH3NqnBPJbTeLKnyUEuz54zgPTj1/tSfyJORZbpjdQ
+    7cDhwUs0zFtsCmpMAwmy2YKNhvIYKuKduQrvt3Fd6HuRaatP5jEjo+LDhyMWBv+r
+    +ymNE6szPsfC4nt+RKGStXKCBPm0P5i1atsKsMUrQggxAgMBAAGjUzBRMB0GA1Ud
+    DgQWBBRpgqQT0fZCoghByWPgeps+10ff/TAfBgNVHSMEGDAWgBRpgqQT0fZCoghB
+    yWPgeps+10ff/TAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4ICAQCg
+    2lpIVaSmNAa1+g0dDayHB6Od/rtrRXFcPFSmYE136+FnwHsUnAU1cJT+1JK2mq5/
+    CIENnR6fvfa+6aRzNMZb1YexVOaSZoBCli7JRfVDQD9VMb8NK7liL+bZD9RDerf2
+    MHUsfYTQcv4tPogCJt/to50v5u6TItQNrrg9mUv7NDO1xWJ5ssW0P9dtDzmASCC2
+    LC71BvhZ8Mmj3LCwchsFsoO/3eGg81Z8RFO17rhmm3VSoJPo2W2cKijahHWiWTXE
+    RzR83aMY+TLuSHKNoIF6IOdSdinsUDPQyYTj8rlycGHJJ0HB6UqCMn0T6Sq5aSko
+    pZST1uUn8D62K7axkoj4h+VZY0vqsJBsFDB/uYoagepM2NqcWNqMJjXk2XBNg7QU
+    AoWlDIgIvRgMelo6oYdZ9l+ddo82uYoXP2GOSrR8akgKex6XZ/ETESzBoFcE9oNB
+    OhfXy76Y0T3AEcQR4OUQRtoErVy2/mNkDqRmaFS3+q3xnfPkZTYVGEoixkLc5Tca
+    EU87IlIx6QiVhBn5M8L1YIQEaTqyEMGCQNfuf0BLwMOoncs80k0FObN/g/xqtTPT
+    pmEmFoW8Y/tDWuEfLGohAOkiz4ZbVFE1DNChkrXFa9b1Q6KBpFYBvacY5FE3G9qE
+    bVGc8iTjpJTIYFx/2XHexpWfsU/6duB6Y8jQj9sHmw==
+    -----END CERTIFICATE-----
+    -----BEGIN CERTIFICATE-----
+    MIIB7zCCAXSgAwIBAgIUHiabVzU7uVeszIY2O8ihUrQ5DwgwCgYIKoZIzj0EAwMw
+    NTEhMB8GA1UEAwwYQ29mbG5ldCBJbnRlcm5hbCBSb290IENBMRAwDgYDVQQKDAdD
+    b2ZsbmV0MB4XDTI2MDcyMDIwNDIxN1oXDTM2MDcxNzIwNDIxN1owNTEhMB8GA1UE
+    AwwYQ29mbG5ldCBJbnRlcm5hbCBSb290IENBMRAwDgYDVQQKDAdDb2ZsbmV0MHYw
+    EAYHKoZIzj0CAQYFK4EEACIDYgAETSbRhSFLZeXf60Uv7P/E5BWyVwhYXWwBpR7S
+    WuAdCWRExq7E1QRmo484Zrtr6UlkTAzS0DAq2zggBcp1hQyvIUBrCn/TO6JNjdde
+    exWeoahXw+XGMkObmbRJHT5xtsU/o0UwQzASBgNVHRMBAf8ECDAGAQH/AgEBMA4G
+    A1UdDwEB/wQEAwIBBjAdBgNVHQ4EFgQUoVgcsk/ZkIkNHEyXnMi7BFErBlEwCgYI
+    KoZIzj0EAwMDaQAwZgIxAMfHYvIGbgyOXRCw0eTfN4xzNJ62MqfC+8+AzdoSm9nM
+    HHruulsMgVPkPJjJtzrdCgIxAPmVl1a1SSySB+/dkp6u+Lb/Y0SJ03Y26HQvIt1S
+    AfQEYz7xazS4XJ3nIbGpy3MxSg==
+    -----END CERTIFICATE-----
+  listenerCaBundle: |
+    -----BEGIN CERTIFICATE-----
+    MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
+    FTETMBEGA1UEAxMKb3BlbmJhby1jYTAeFw0yNjA1MzAwNjMwMDdaFw0zNjA1Mjcw
+    NjMwMDdaMBUxEzARBgNVBAMTCm9wZW5iYW8tY2EwWTATBgcqhkjOPQIBBggqhkjO
+    PQMBBwNCAATP+OVpqk8lnHealoOSbRZpInlL4ypSkvSCR0ksELx2Xg/eJJY3y9gj
+    tRrEp6OXd24Wwoy2L4V74FkfO+dkfUTko0IwQDAOBgNVHQ8BAf8EBAMCAqQwDwYD
+    VR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUTs+GuzkdJhBXyXXlwZI7Mn3pr8gwCgYI
+    KoZIzj0EAwIDRwAwRAIgA1l0MK0v3oIhoVgys1U/jdVZig/jp/SMhGJTilO25FkC
+    IDcNtGjLm4jxvXj9MrrNBwICv2XvSscsE/nc8Je3zE8D
+    -----END CERTIFICATE-----
+  certificates:
+  - name: leaderboard-client
+    commonName: leaderboard.sky.talos-eu.clients.coflnet.internal
+    dnsNames:
+    - leaderboard.sky.talos-eu.clients.coflnet.internal
+    usages:
+    - digital signature
+    - client auth
+  - name: leaderboard-server
+    commonName: leaderboard.sky.svc.cluster.local
+    dnsNames:
+    - leaderboard
+    - leaderboard.sky
+    - leaderboard.sky.svc
+    - leaderboard.sky.svc.cluster.local
+    - leaderboard.leaderboard
+    - leaderboard.leaderboard.svc
+    - leaderboard.leaderboard.svc.cluster.local
+    - leaderboard-eu-cluster.leaderboard
+    - leaderboard-eu-cluster.leaderboard.svc
+    - leaderboard-eu-cluster.leaderboard.svc.cluster.local
+    usages:
+    - digital signature
+    - server auth
+  env:
+    HOME: /tmp/pki-home
+    CASSANDRA__TLS__CA_CERT_PATH: /pki/trust/scylla-ca.crt
+    CASSANDRA__TLS__CERT_PATH: /pki/client/tls.crt
+    CASSANDRA__TLS__KEY_PATH: /pki/client/tls.key
+    CASSANDRA__TLS__SERVER_NAME: sky-client
+    REDIS__TLS__HOST: redis-tls.sky.svc.cluster.local
+    REDIS__TLS__PORT: '6380'
+    REDIS__TLS__CA_CERT_PATH: /pki/trust/ca.crt
+    REDIS__TLS__CERT_PATH: /pki/client/tls.crt
+    REDIS__TLS__KEY_PATH: /pki/client/tls.key
+    HTTPS__TLS__CA_CERT_PATH: /pki/trust/ca.crt
+    HTTPS__TLS__CERT_PATH: /pki/server/tls.crt
+    HTTPS__TLS__KEY_PATH: /pki/server/tls.key

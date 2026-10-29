@@ -21,6 +21,7 @@ targetCustomizations:
       valuesFiles:
         - ./chart/redis-optional-tls-eu.yaml
         - ./chart/valkey-handoff-eu.yaml
+        - ./chart/pki-eu.yaml
       values:
         openbao:
           addr: "https://openbao.openbao.svc:8200"

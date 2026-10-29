@@ -40,6 +40,9 @@ spec:
             type: RuntimeDefault
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
+          {{- if (.Values.pki | default dict).applicationEnabled }}
+          - {name: https, containerPort: 8443}
+          {{- end }}
         env:
           # ── OpenBao configuration ──────────────────────────────────
           - name: OPENBAO__ENABLED
@@ -75,16 +78,34 @@ spec:
             value: /openbao/tls/ca.crt
           {{ end }}
           # ── Application env vars ───────────────────────────────────
+          {{- if (.Values.pki | default dict).applicationEnabled }}
+          {{- range $name, $value := .Values.pki.env }}
+          - name: {{ $name }}
+            value: {{ $value | quote }}
+          {{- end }}
+          {{- end }}
           {{- range .Values.envVars }}
           {{- if not (and $.Values.openbao.authPath (not $.Values.openbao.optional) (hasKey (.valueFrom | default dict) "secretKeyRef")) }}
           {{- toYaml (list .) | nindent 10 }}
           {{- end }}
           {{- end }}
         readinessProbe:
+          {{- if (.Values.pki | default dict).applicationEnabled }}
+          httpGet: {path: /health/ready, port: api}
+          timeoutSeconds: 10
+          periodSeconds: 5
+          {{- else }}
           {{ toYaml .Values.readinessProbe | nindent 10 }}
+          {{- end }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
+        {{- if (.Values.pki | default dict).applicationEnabled }}
+        - {name: pki-client, mountPath: /pki/client, readOnly: true}
+        - {name: pki-server, mountPath: /pki/server, readOnly: true}
+        - {name: pki-trust, mountPath: /pki/trust, readOnly: true}
+        - {name: pki-home, mountPath: /tmp/pki-home}
+        {{- end }}
         {{- if .Values.openbao.tokenAudience }}
         - name: openbao-workload-token
           mountPath: /var/run/secrets/openbao
@@ -98,6 +119,16 @@ spec:
           {{ end }}
         {{ end }}
       volumes:
+      {{- if (.Values.pki | default dict).applicationEnabled }}
+      - name: pki-client
+        secret: {secretName: leaderboard-client, defaultMode: 0440}
+      - name: pki-server
+        secret: {secretName: leaderboard-server, defaultMode: 0440}
+      - name: pki-trust
+        configMap: {name: leaderboard-pki-trust}
+      - name: pki-home
+        emptyDir: {medium: Memory, sizeLimit: 16Mi}
+      {{- end }}
       {{- if .Values.openbao.tokenAudience }}
       - name: openbao-workload-token
         projected:
