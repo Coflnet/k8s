@@ -6,3 +6,7 @@ valkeyHandoff:
       storageClassName: longhorn-encrypted
       memoryLimit: 512Mi
       memoryRequest: 128Mi
+global:
+  redisUpgrade:
+    routes:
+      redis: persistent-v1
