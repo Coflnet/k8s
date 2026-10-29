@@ -5,7 +5,7 @@ sky-mayor:
   pki:
     enabled: true
     applicationEnabled: true
-    revision: mayor-pki-20261029
+    revision: mayor-pki-ready-20261029
     rootCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIB7zCCAXSgAwIBAgIUHiabVzU7uVeszIY2O8ihUrQ5DwgwCgYIKoZIzj0EAwMw
@@ -58,7 +58,7 @@ sky-mayor:
       HTTPS__TLS__CA_CERT_PATH: /pki/trust/ca.crt
       HTTPS__TLS__CERT_PATH: /pki/server/tls.crt
       HTTPS__TLS__KEY_PATH: /pki/server/tls.key
-    readinessEnabled: false
+    readinessEnabled: true
     scyllaCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIGGzCCBAOgAwIBAgIUSmVwtAECp8T/t6Idz5Mj9MRpAl8wDQYJKoZIhvcNAQEL
