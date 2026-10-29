@@ -2,8 +2,8 @@
 sky-settings:
   pki:
     enabled: true
-    applicationEnabled: false
-    revision: settings-external-cql-prepared-20261029
+    applicationEnabled: true
+    revision: settings-external-cql-diagnostic-20261029
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
