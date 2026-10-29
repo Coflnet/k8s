@@ -1,0 +1,17 @@
+{{- if or (index .Values "sky-bfcs").enabled (index .Values "sky-mod-commands").enabled }}
+# Every global consumer needs the same exact remote TLS routes, including EU edges.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sky-bfcs-remote-tls-egress
+spec:
+  podSelector:
+    matchExpressions:
+    - {key: app, operator: In, values: [sky-bfcs, sky-mod-commands]}
+  policyTypes: [Egress]
+  egress:
+  - to:
+    - ipBlock: {cidr: 172.232.26.243/32}
+    - ipBlock: {cidr: 23.158.232.23/32}
+    ports: [{protocol: TCP, port: 31380}]
+{{- end }}

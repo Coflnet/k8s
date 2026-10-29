@@ -1,61 +1,58 @@
-# BFCS Redis TLS coexistence
+# BFCS Redis TLS coexistence and global publication hold
 
-Keep `sky-bfcs-redis` and every current consumer connection running. Add the
-independent `sky-bfcs-redis-shared` broker and its
-`sky-bfcs-redis-shared-tls.sky.svc.cluster.local:6380` Service. This is a second
-Pub/Sub instance, not a replacement endpoint for the old Service.
+Keep every existing broker and publisher running. The independent EU
+`sky-bfcs-redis-shared` broker is additive; its presence and EU subscriptions do
+not prove global consumer continuity. Linode, CloudFanatic, Datawagon and Contabo
+also serve BFCS WebSocket consumers. BFCS publishes to one `FLIP_REDIS_OPTIONS`
+endpoint and subscribes to every `REDIS_FLIP_INSTANCES` entry. It forwards received
+messages to WebSocket clients, not into its own publication broker.
 
-The EU-only `bfcs-shared-redis-eu.yaml` initially creates the new broker without
-changing any existing rendered object. Its exact certificate uses the dedicated
-`sky/bfcs-shared-root` Issuer and `redis-server-bfcs-shared` role. The existing
-namespace shared-root ConfigMap, renewal reloader and probes are reused.
-The new broker keeps the current EU default-user/nopass contract; its external
-Pod ingress permits only TLS6380 from BFCS and ModCommands. Old broker auth,
-credentials, roots, connections and Service selectors remain untouched.
+The global publication transition is held. The helper's legacy `consume` and
+`publish` commands now fail with a clear error before reading or changing KV.
+An EU-only receipt cannot authorize changing the shared `FLIP_REDIS_OPTIONS` key.
+The requested independent second-broker and dual-consumer migration remains
+pending verified TLS routes and subscriptions for every global consumer.
+The remote optional TLS frontends are phase-one support on the original brokers,
+as documented in `BFCS-REMOTE-TLS.md`; they do not perform that migration.
 
-1. Provision the exact new role/JWT profile through the narrow child-token
-   workflow and publish the new namespaced Issuer through Fleet. Apply the new
-   broker source and require its certificate, independent endpoint and TLS
-   freshness probe healthy. Leave consumersEnabled false and publisherRevision
-   empty. No old Pod or Service changes in this stage.
-2. Run the Ansible helper `configure-bfcs-redis-coexistence.py consume --execute
-   --receipt PRIVATE/consumers.json` inside a narrow OpenBao session. It reads
-   both current KV versions and CAS-patches only BFCS
-   `REDIS_FLIP_INSTANCES__3` and ModCommands `REDIS_FLIP_INSTANCES__4`. Every
-   previous instance, publisher field and unrelated secret field is preserved
-   and read back. The helper defaults to audit; `consume --print-policy` renders
-   its exact two-leaf task policy. Revoke/prove403/remove the child immediately.
-3. Set `global.bfcsSharedRedis.consumersEnabled: true` only in the EU values
-   file and reconcile consumers normally. Their old publication target remains
-   unchanged. The flag adds the shared-root mount and
-   `SSL_CERT_DIR=/etc/ssl/certs:/redis-shared-trust`, preserving system roots.
-   Existing application code subscribes to multiple instances. Allow rolling
-   availability: BFCS's singleton keeps its old Ready Pod until the new one is
-   Ready. For ModCommands use an EU canary override maxUnavailable0/maxSurge1
-   during this change if capacity allows; never scale either workload to zero.
-   Stop on scheduling or analysis failure; the old broker keeps serving.
-4. Run `verify --consumer-receipt PRIVATE/consumers.json --kubeconfig KUBECONFIG
-   --receipt PRIVATE/canary.json`. It binds the verified TLS leaf, independent
-   old/new endpoints and every current fully updated Ready consumer Pod. It
-   requires both snipes/beat subscriptions on the new broker from every
-   consumer, rejecting unknown clients. The immutable0600 receipt contains no
-   credentials. This phase is read-only against production.
-5. In a new narrow child session run `publish --execute --consumer-receipt
-   PRIVATE/consumers.json --canary-receipt PRIVATE/canary.json --kubeconfig
-   KUBECONFIG --receipt PRIVATE/publisher.json`. It rechecks live canary evidence,
-   rejects a changed old publisher, and CAS-patches only FLIP_REDIS_OPTIONS.
-   Revoke/prove403/remove that child immediately. Then set the EU
-   `global.bfcsSharedRedis.publisherRevision: shared-tls-v1` to roll only BFCS;
-   its primary multiplexer is constructed at startup. Both brokers remain
-   subscribed throughout the rolling publisher transition.
-6. Verify BFCS Ready, its additional publisher connection on the TLS broker,
-   business publication and all consumer subscriptions. Retain the old broker
-   and all old instance entries. Retirement and mandatory mTLS are separate.
+The existing `kv/sky/sky-bfcs` leaf is read by both EU and Linode. Its appended
+EU-internal `.svc` consumer entry must therefore leave shared KV. ModCommands's
+EU-internal entry must also become explicitly EU-only before future reuse of its
+shared configuration. Every previous broker/consumer entry stays unchanged.
 
-Both exact deployed application images were tested with their actual shipped
-StackExchange.Redis assembly. The proposed TLS connection parsed and connected
-with standard validation; wrongCA/SAN failed; all120 public roots remained.
-IConfiguration tests showed the new flat last-provider keys append correctly,
-including ModCommands's existing gapped0/2/3 indices. Message deduplication in
-ModBackgroundService already suppresses duplicate auction/finder/price tuples
-across subscribed brokers. No application image build is needed.
+1. Reconcile the EU chart with `global.bfcsSharedRedis.consumersEnabled: true`.
+   Alongside its existing shared-root trust mount, the EU BFCS Deployment now
+   declares the exact existing consumer connection as environment entry
+   `REDIS_FLIP_INSTANCES__3`; the EU ModCommands Rollout declares `__4`.
+   Shared KV temporarily overrides those entries with the same value, so this
+   source deployment does not change the effective connection. Keep publishing
+   unchanged. Stop on scheduling, readiness or analysis failure.
+2. Audit `configure-bfcs-redis-coexistence.py cleanup-shared-consumers
+   --consumer-receipt PRIVATE/consumers.json --kubeconfig KUBECONFIG` inside the
+   existing narrow OpenBao session. `cleanup-shared-consumers --print-policy`
+   renders its exact two-leaf task ACL. The helper verifies the EU cluster UID,
+   full healthy rollouts, the exact environment on both owner templates and all
+   current Pods, independent old/new brokers, certificate freshness and both
+   subscriptions from every EU consumer before reading the two KV leaves.
+3. Add `--execute --receipt PRIVATE/cleanup.json` in the narrow child session.
+   The helper refuses a changed publisher or occupied/ambiguous consumer index,
+   preflights both leaves before any write, and CAS merge-patches JSON null only
+   for the two exact appended entries. Readback must equal the previous map
+   minus those entries, including every unrelated field. An already absent key
+   is safe for resuming a partial successful cleanup. It records private,
+   immutable metadata evidence. Revoke the child, prove403 and remove its artifact.
+4. Verify EU subscriptions remain healthy after cleanup. Linode's shared KV no
+   longer supplies the unreachable EU-local address on reload or restart. All
+   publication targets, existing broker processes and prior consumer routes stay.
+
+Use `verify --consumer-receipt PRIVATE/consumers.json --kubeconfig KUBECONFIG
+--receipt PRIVATE/eu-canary.json` for read-only EU validation. Its receipt is
+explicitly EU-scoped and cannot release the global publication hold.
+
+For eventual migration, separate cluster-specific publication topology from
+shared credential KV, enumerate every live consumer, and establish verified TLS
+DNS/TCP/CA/SAN routes and both subscriptions from each actual consumer Pod to
+every proposed publication broker. Keep old and new brokers subscribed throughout
+any reviewed publisher transition. A Ready Pod is insufficient:
+`ModBackgroundService` can skip an unreachable entry at startup after connecting
+to another broker. Retirement and mandatory mTLS remain separate operations.

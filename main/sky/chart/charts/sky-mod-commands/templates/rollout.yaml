@@ -62,6 +62,9 @@ spec:
           {{- if $sharedRedis.consumersEnabled }}
           - name: SSL_CERT_DIR
             value: /etc/ssl/certs:/redis-shared-trust
+          # This endpoint is local to EU; shared OpenBao KV is also read by Linode.
+          - name: REDIS_FLIP_INSTANCES__4
+            value: 'sky-bfcs-redis-shared-tls.sky.svc.cluster.local:6380,ssl=true,sslHost=sky-bfcs-redis-shared.sky.svc.cluster.local,syncTimeout=1000'
           {{- end }}
           - name: OPENBAO__ENABLED
             value: "true"

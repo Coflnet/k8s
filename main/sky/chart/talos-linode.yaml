@@ -279,3 +279,23 @@ extra-chart:
   enabled: false
 necwebsite:
   enabled: false
+
+# Phase one transport support; all existing publishers and subscribers stay in place.
+bfcsRemoteTlsFrontend:
+  enabled: true
+  cluster: talos-linode
+  remoteIP: 172.232.26.243
+  issuer: bfcs-redis-frontend-linode
+  # Exact existing BFCS mesh consumer node allowlist; additions require review.
+  allowedSourceCIDRs:
+    - 23.158.232.23/32
+    - 172.232.26.243/32
+    - 45.119.211.86/32
+    - 45.119.211.176/32
+    - 154.53.46.102/32
+    - 49.12.101.3/32
+    - 49.13.127.53/32
+    - 91.99.184.187/32
+    - 23.88.20.173/32
+    - 23.88.20.170/32
+    - 144.76.87.113/32
