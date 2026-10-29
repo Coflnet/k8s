@@ -30,6 +30,8 @@ global:
     - sky-mod-commands-redis
     - sky-settings-redis
     - sky-sniper-redis
+    - sky-profiles-redis
+    - sky-proxy-redis
     externalReloaderServices:
     - sky-global-redis
     - sky-mod-commands-redis
