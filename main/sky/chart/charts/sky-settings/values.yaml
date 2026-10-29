@@ -84,3 +84,9 @@ envVars:
         key: cassandra_password
   - name: OLD_CASSANDRA__KEYSPACE
     value: settings
+
+# Certificate issuance and application activation are separate EU-only phases.
+pki:
+  enabled: false
+  applicationEnabled: false
+  readinessEnabled: false

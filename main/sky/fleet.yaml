@@ -99,6 +99,7 @@ targetCustomizations:
         - ./chart/playername-pki-eu.yaml
         - ./chart/mayor-pki-eu.yaml
         - ./chart/crafts-pki-eu.yaml
+        - ./chart/settings-pki-eu.yaml
 
   - name: talos-linode
     clusterName: talos-linode
