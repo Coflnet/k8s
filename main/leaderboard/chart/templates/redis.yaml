@@ -1,6 +1,6 @@
 {{- $tlsConfig := (.Values.global | default dict).redisOptionalTls | default dict }}
 {{- $upgrade := (.Values.global | default dict).redisUpgrade | default dict }}
-{{- $tls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has "redis" (dig "listenerServices" ($tlsConfig.services | default list) $tlsConfig)) }}
+{{- $tls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has "redis" (dig "listenerServices" ($tlsConfig.services | default list) $tlsConfig)) (not ((.Values.valkeyTlsFrontend | default dict).enabled)) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:

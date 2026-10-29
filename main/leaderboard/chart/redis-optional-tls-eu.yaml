@@ -5,5 +5,7 @@ global:
     trustBundleConfigMap: redis-shared-root-trust
     services:
     - redis
-    listenersEnabled: false
+    listenersEnabled: true
     clusterIdentity: talos-eu
+valkeyTlsFrontend:
+  enabled: true

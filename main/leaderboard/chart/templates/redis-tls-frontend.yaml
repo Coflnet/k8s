@@ -1,0 +1,153 @@
+{{- if (.Values.valkeyTlsFrontend | default dict).enabled }}
+{{- $config := (.Values.global | default dict).redisOptionalTls | default dict }}
+{{- $upgrade := (.Values.global | default dict).redisUpgrade | default dict }}
+{{- if or (not $config.enabled) (not $config.listenersEnabled) (not (has "redis" ($config.services | default list))) (not (has "redis" (dig "listenerServices" ($config.services | default list) $config))) }}
+{{- fail "Valkey TLS frontend requires the optional TLS certificate and listener" }}
+{{- end }}
+{{- if index ($upgrade.retired | default dict) "redis" }}
+{{- fail "The original Valkey must remain active while its TLS frontend is enabled" }}
+{{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-tls-frontend-config
+data:
+  nginx.conf: |
+{{ .Files.Get "files/redis-tls-frontend.conf" | indent 4 }}
+  reload-tls.sh: |
+{{ .Files.Get "files/redis-tls-frontend-reload.sh" | indent 4 }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-tls-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: redis-tls-frontend}
+  template:
+    metadata:
+      labels: {app: redis-tls-frontend}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+        seccompProfile: {type: RuntimeDefault}
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels: {app: redis}
+              matchExpressions:
+              - {key: redis-upgrade-candidate, operator: DoesNotExist}
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - name: frontend
+        image: docker.io/nginxinc/nginx-unprivileged:1.29-alpine@sha256:0c79d56aee561a1d81c63f00eee5fb5fe29279560cdc55e91425133104c7fbe6
+        command: [/bin/sh, -ec]
+        args:
+        - |
+          dns=$(awk '/^nameserver / {print $2; exit}' /etc/resolv.conf)
+          test -n "$dns"
+          sed "s/CLUSTER_DNS/$dns/g; s/REDIS_LOCAL_BACKEND/redis-tls-local.{{ .Release.Namespace }}.svc.cluster.local/g" /frontend/nginx.conf > /tmp/nginx.conf
+          inotifyd /frontend/reload-tls.sh /optional-tls:yn &
+          echo "$!" > /tmp/tls-watcher.pid
+          exec nginx -c /tmp/nginx.conf -g 'daemon off;'
+        ports: [{name: redis-tls, containerPort: 6380}]
+        readinessProbe:
+          exec:
+            command: [/bin/sh, -ec, 'test ! -e /tmp/tls-reload-failed && nc -z -w 2 127.0.0.1 6380 && nc -z -w 2 redis-tls-local.{{ .Release.Namespace }}.svc.cluster.local 6379']
+          timeoutSeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          exec:
+            command: [/bin/sh, -ec, 'kill -0 "$(cat /tmp/nginx.pid)"; kill -0 "$(cat /tmp/tls-watcher.pid)"']
+          periodSeconds: 15
+        resources:
+          requests: {cpu: 20m, memory: 32Mi}
+          limits: {cpu: 200m, memory: 128Mi}
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities: {drop: [ALL]}
+        volumeMounts:
+        - {name: config, mountPath: /frontend, readOnly: true}
+        - {name: redis-optional-tls, mountPath: /optional-tls, readOnly: true}
+        - {name: temporary, mountPath: /tmp}
+      volumes:
+      - {name: config, configMap: {name: redis-tls-frontend-config, defaultMode: 0555}}
+      - name: redis-optional-tls
+        projected:
+          defaultMode: 0440
+          sources:
+          - secret: {name: redis-shared-tls}
+          - configMap:
+              name: {{ required "Redis shared-root ConfigMap is required" $config.trustBundleConfigMap }}
+              items: [{key: ca.crt, path: ca.crt}]
+      - name: temporary
+        emptyDir: {medium: Memory, sizeLimit: 16Mi}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-tls-local
+  labels: {maintenance.coflnet.com/drain-policy: block}
+  annotations: {maintenance.coflnet.com/max-downtime-seconds: "0"}
+spec:
+  internalTrafficPolicy: Local
+  selector:
+    app: redis
+    {{- with index ($upgrade.routes | default dict) "redis" }}
+    redis-route: {{ . | quote }}
+    {{- end }}
+  ports: [{name: redis, port: 6379, targetPort: 6379}]
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: redis-tls-frontend
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels: {app: redis-tls-frontend}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: redis-tls-frontend
+spec:
+  podSelector: {matchLabels: {app: redis-tls-frontend}}
+  policyTypes: [Ingress, Egress]
+  ingress:
+  - from: [{podSelector: {}}]
+    ports: [{protocol: TCP, port: 6380}]
+  egress:
+  - to:
+    - podSelector:
+        matchLabels: {app: redis}
+        matchExpressions:
+        - {key: redis-upgrade-candidate, operator: DoesNotExist}
+    ports: [{protocol: TCP, port: 6379}]
+  - to:
+    - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: kube-system}}
+      podSelector: {matchLabels: {k8s-app: kube-dns}}
+    ports: [{protocol: UDP, port: 53}, {protocol: TCP, port: 53}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: redis-tls-frontend-backend
+spec:
+  podSelector:
+    matchLabels: {app: redis}
+    matchExpressions:
+    - {key: redis-upgrade-candidate, operator: DoesNotExist}
+  policyTypes: [Ingress]
+  ingress:
+  - from: [{podSelector: {matchLabels: {app: redis-tls-frontend}}}]
+    ports: [{protocol: TCP, port: 6379}]
+{{- end }}

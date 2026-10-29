@@ -41,9 +41,13 @@ metadata:
     maintenance.coflnet.com/max-downtime-seconds: "0"
 spec:
   selector:
+    {{- if and (eq . "redis") (($.Values.valkeyTlsFrontend | default dict).enabled) }}
+    app: redis-tls-frontend
+    {{- else }}
     app: {{ . }}
     {{- with index (($.Values.global.redisUpgrade | default dict).routes | default dict) . }}
     redis-route: {{ . | quote }}
+    {{- end }}
     {{- end }}
   ports:
   - name: redis-tls
