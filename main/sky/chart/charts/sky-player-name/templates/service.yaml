@@ -6,10 +6,16 @@ metadata:
   labels:
     app: {{ .Chart.Name }}
     "mirror.linkerd.io/exported": "true"
+    maintenance.coflnet.com/drain-policy: block
+  annotations:
+    maintenance.coflnet.com/max-downtime-seconds: "0"
 spec:
   selector:
     app: {{ .Chart.Name }}
   ports:
     {{ toYaml .Values.serivcePorts | nindent 4 }}
+    {{- if (.Values.pki | default dict).applicationEnabled }}
+    - {name: https, port: 8443, targetPort: https}
+    {{- end }}
 ---
 {{ end }}
