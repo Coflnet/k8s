@@ -2,7 +2,7 @@
 sky-profiles:
   pki:
     enabled: true
-    applicationEnabled: false
+    applicationEnabled: true
     revision: profiles-external-cql-prepared-20261029
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
