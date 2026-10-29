@@ -68,3 +68,9 @@ volumeMounts:
   - name: scylla-pfx
     mountPath: /tls/scylla/secret/db.pfx
     subPath: db.pfx
+
+# External CQL identity issuance and application use are separate EU-only phases.
+pki:
+  enabled: false
+  applicationEnabled: false
+  readinessEnabled: false
