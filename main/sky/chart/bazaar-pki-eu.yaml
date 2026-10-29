@@ -2,7 +2,7 @@
 sky-bazaar:
   pki:
     enabled: true
-    applicationEnabled: false
+    applicationEnabled: true
     revision: bazaar-external-cql-prepared-20261030
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
