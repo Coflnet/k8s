@@ -2,7 +2,7 @@
 sky-referral:
   pki:
     enabled: true
-    applicationEnabled: false
+    applicationEnabled: true
     readinessEnabled: false
     revision: referral-external-sql-prepared-20261030
     listenerCaBundle: |
