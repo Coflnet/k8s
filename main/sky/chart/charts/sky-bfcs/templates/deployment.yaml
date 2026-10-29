@@ -1,3 +1,4 @@
+{{- $sharedRedis := .Values.global.bfcsSharedRedis | default dict }}
 {{ if .Values.enabled }}
 apiVersion: apps/v1
 kind: Deployment
@@ -19,6 +20,9 @@ spec:
         app: {{ .Chart.Name }}
         security.coflnet.com/k8s-api-access: "false"
       annotations:
+        {{- with $sharedRedis.publisherRevision }}
+        pki.coflnet.com/bfcs-publisher-revision: {{ . | quote }}
+        {{- end }}
         {{ toYaml .Values.global.podAnnotations | nindent 8 }}
     spec:
       serviceAccountName: {{ .Chart.Name }}
@@ -48,6 +52,10 @@ spec:
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
+          {{- if $sharedRedis.consumersEnabled }}
+          - name: SSL_CERT_DIR
+            value: /etc/ssl/certs:/redis-shared-trust
+          {{- end }}
           - name: OPENBAO__ENABLED
             value: "true"
           - name: OPENBAO__OPTIONAL
@@ -96,6 +104,11 @@ spec:
         livenessProbe:
           {{ toYaml .Values.livenessProbe | nindent 10 }}
         volumeMounts:
+        {{- if $sharedRedis.consumersEnabled }}
+        - name: redis-shared-trust
+          mountPath: /redis-shared-trust
+          readOnly: true
+        {{- end }}
         {{- if .Values.global.openbaoAuthPath }}
         - name: openbao-workload-token
           mountPath: /var/run/secrets/openbao
@@ -105,7 +118,11 @@ spec:
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
-      volumes: 
+      volumes:
+      {{- if $sharedRedis.consumersEnabled }}
+        - name: redis-shared-trust
+          configMap: {name: redis-shared-root-trust}
+      {{- end }}
       {{- if .Values.global.openbaoAuthPath }}
         - name: openbao-workload-token
           projected:

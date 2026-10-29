@@ -95,6 +95,7 @@ targetCustomizations:
       valuesFiles:
         - ./chart/talos.yaml
         - ./chart/redis-optional-tls-eu.yaml
+        - ./chart/bfcs-shared-redis-eu.yaml
 
   - name: talos-linode
     clusterName: talos-linode

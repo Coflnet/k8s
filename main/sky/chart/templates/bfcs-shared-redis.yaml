@@ -1,0 +1,105 @@
+{{- $broker := .Values.bfcsSharedRedis | default dict }}
+{{- if $broker.enabled }}
+{{- $name := "sky-bfcs-redis-shared" }}
+{{- $config := .Values.global.redisOptionalTls }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ $name }}-shared-tls
+spec:
+  secretName: {{ $name }}-shared-tls
+  duration: 24h
+  renewBefore: 8h
+  issuerRef: {kind: Issuer, name: bfcs-shared-root}
+  privateKey: {algorithm: ECDSA, size: 384, rotationPolicy: Always}
+  commonName: {{ $name }}.{{ .Release.Namespace }}.svc.cluster.local
+  dnsNames:
+  - {{ $name }}
+  - {{ $name }}.{{ .Release.Namespace }}
+  - {{ $name }}.{{ .Release.Namespace }}.svc
+  - {{ $name }}.{{ .Release.Namespace }}.svc.cluster.local
+  - {{ $name }}-tls
+  - {{ $name }}-tls.{{ .Release.Namespace }}
+  - {{ $name }}-tls.{{ .Release.Namespace }}.svc
+  - {{ $name }}-tls.{{ .Release.Namespace }}.svc.cluster.local
+  - {{ $name }}.{{ .Release.Namespace }}.talos-eu.coflnet.internal
+  usages: [digital signature, server auth]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector:
+    matchLabels: {app: {{ $name }}}
+  template:
+    metadata:
+      labels:
+        app: {{ $name }}
+        security.coflnet.com/k8s-api-access: "false"
+      annotations:
+        kubectl.kubernetes.io/default-container: redis
+    spec:
+      automountServiceAccountToken: false
+      securityContext: {fsGroup: 999}
+      containers:
+      - name: redis
+        image: redis:7.2.16@sha256:0637954999d01b7c9ce9167db2da50656e2590d3b884f1c600c5f63bb6e6773c
+        args:
+        - --save
+        - ""
+        - --appendonly
+        - "no"
+        {{- include "coflnet.redisOptionalTls.args" . | nindent 8 }}
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 999
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities: {drop: [ALL]}
+          seccompProfile: {type: RuntimeDefault}
+        readinessProbe:
+          exec: {command: [redis-cli, PING]}
+          periodSeconds: 2
+        ports:
+        - {name: redis-tls, containerPort: 6380}
+        resources:
+          requests: {cpu: 50m, memory: 64Mi}
+          limits: {memory: 256Mi}
+        volumeMounts:
+        - {name: data, mountPath: /data}
+        {{- include "coflnet.redisOptionalTls.mount" . | nindent 8 }}
+      {{- include "coflnet.redisOptionalTls.reloader" (dict "serverName" (printf "%s.%s.svc.cluster.local" $name .Release.Namespace)) | nindent 6 }}
+      volumes:
+      - name: data
+        emptyDir: {}
+      {{- include "coflnet.redisOptionalTls.volume" (dict "name" $name "config" $config) | nindent 6 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}-tls
+  labels: {maintenance.coflnet.com/drain-policy: block}
+  annotations: {maintenance.coflnet.com/max-downtime-seconds: "0"}
+spec:
+  selector: {app: {{ $name }}}
+  ports:
+  - {name: redis-tls, port: 6380, targetPort: redis-tls, protocol: TCP}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ $name }}-clients
+spec:
+  endpointSelector:
+    matchLabels: {app: {{ $name }}}
+  ingress:
+  - fromEndpoints:
+    - matchLabels: {k8s:io.kubernetes.pod.namespace: {{ .Release.Namespace }}}
+      matchExpressions:
+      - {key: app, operator: In, values: [sky-bfcs, sky-mod-commands]}
+    toPorts:
+    - ports: [{port: "6380", protocol: TCP}]
+{{- end }}

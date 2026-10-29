@@ -1,0 +1,6 @@
+bfcsSharedRedis:
+  enabled: true
+global:
+  bfcsSharedRedis:
+    consumersEnabled: false
+    publisherRevision: ""

@@ -1,3 +1,4 @@
+{{- $sharedRedis := .Values.global.bfcsSharedRedis | default dict }}
 {{ if and .Values.enabled (or (not (hasKey .Values "rollout")) .Values.rollout.enabled) }}
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
@@ -58,6 +59,10 @@ spec:
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
+          {{- if $sharedRedis.consumersEnabled }}
+          - name: SSL_CERT_DIR
+            value: /etc/ssl/certs:/redis-shared-trust
+          {{- end }}
           - name: OPENBAO__ENABLED
             value: "true"
           - name: OPENBAO__OPTIONAL
@@ -115,6 +120,11 @@ spec:
         resources:
          {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
+        {{- if $sharedRedis.consumersEnabled }}
+        - name: redis-shared-trust
+          mountPath: /redis-shared-trust
+          readOnly: true
+        {{- end }}
         - name: response-tmp
           mountPath: /tmp
         {{- if $.Values.global.openbaoAuthPath }}
@@ -132,6 +142,10 @@ spec:
         {{ include "sky-mod-commands.diagnosticsAppVolumeMount" . | nindent 8 }}
       {{ include "sky-mod-commands.diagnosticsContainer" . | nindent 6 }}
       volumes:
+      {{- if $sharedRedis.consumersEnabled }}
+        - name: redis-shared-trust
+          configMap: {name: redis-shared-root-trust}
+      {{- end }}
         - name: response-tmp
           emptyDir:
             sizeLimit: 256Mi
