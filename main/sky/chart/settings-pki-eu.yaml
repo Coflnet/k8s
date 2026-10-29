@@ -3,7 +3,7 @@ sky-settings:
   pki:
     enabled: true
     applicationEnabled: true
-    revision: settings-external-cql-fix-prepared-20261029
+    revision: settings-external-cql-ready-20261029
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
@@ -42,7 +42,7 @@ sky-settings:
       CASSANDRA__TLS__CA_CERT_PATH: /pki/trust/scylla-ca.crt
       CASSANDRA__TLS__CERT_PATH: /pki/client/tls.crt
       CASSANDRA__TLS__KEY_PATH: /pki/client/tls.key
-    readinessEnabled: false
+    readinessEnabled: true
     scyllaCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIGGzCCBAOgAwIBAgIUSmVwtAECp8T/t6Idz5Mj9MRpAl8wDQYJKoZIhvcNAQEL
