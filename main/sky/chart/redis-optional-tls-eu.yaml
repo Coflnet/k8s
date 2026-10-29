@@ -23,4 +23,7 @@ global:
     - sky-api-redis
     - sky-auctions-redis
     - sky-commands-redis
+    - sky-mc-connect-redis
+    - sky-player-name-redis
+    - sky-player-state-redis
     clusterIdentity: talos-eu
