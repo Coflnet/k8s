@@ -20,11 +20,17 @@ spec:
         security.coflnet.com/k8s-api-access: "false"
       annotations:
         {{ toYaml .Values.global.podAnnotations | nindent 8 }}
+        {{- if (.Values.pki | default dict).applicationEnabled }}
+        security.coflnet.com/pki-revision: {{ .Values.pki.revision | quote }}
+        {{- end }}
     spec:
       serviceAccountName: {{ .Chart.Name }}
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       securityContext:
+        {{- if (.Values.pki | default dict).applicationEnabled }}
+        fsGroup: 1000
+        {{- end }}
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
@@ -44,7 +50,16 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag  }}"
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
+          {{- if (.Values.pki | default dict).applicationEnabled }}
+          - {name: https, containerPort: 8443}
+          {{- end }}
         env:
+          {{- if (.Values.pki | default dict).applicationEnabled }}
+          {{- range $name, $value := .Values.pki.env }}
+          - name: {{ $name }}
+            value: {{ $value | quote }}
+          {{- end }}
+          {{- end }}
           - name: OPENBAO__ENABLED
             value: "true"
           - name: OPENBAO__OPTIONAL
@@ -66,10 +81,23 @@ spec:
           {{ end }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars) | nindent 10 }}
         readinessProbe:
+          {{- if and (.Values.pki | default dict).applicationEnabled (ne (.Values.pki | default dict).readinessEnabled false) }}
+          httpGet: {path: /health/ready, port: api}
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          periodSeconds: 3
+          {{- else }}
           {{ toYaml .Values.readinessProbe | nindent 10 }}
+          {{- end }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
+        {{- if (.Values.pki | default dict).applicationEnabled }}
+        - {name: pki-client, mountPath: /pki/client, readOnly: true}
+        - {name: pki-server, mountPath: /pki/server, readOnly: true}
+        - {name: pki-trust, mountPath: /pki/trust, readOnly: true}
+        - {name: pki-home, mountPath: /tmp/pki-home}
+        {{- end }}
         {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
@@ -80,6 +108,16 @@ spec:
           mountPath: /tls/scylla/secret/db.pfx
           subPath: db.pfx
       volumes:
+      {{- if (.Values.pki | default dict).applicationEnabled }}
+        - name: pki-client
+          secret: {secretName: sky-mayor-client, defaultMode: 0440}
+        - name: pki-server
+          secret: {secretName: sky-mayor-server, defaultMode: 0440}
+        - name: pki-trust
+          configMap: {name: sky-mayor-pki-trust}
+        - name: pki-home
+          emptyDir: {medium: Memory, sizeLimit: 16Mi}
+      {{- end }}
         - name: tmp
           emptyDir:
             sizeLimit: 256Mi
