@@ -1,3 +1,5 @@
+{{- $tlsConfig := (.Values.global | default dict).redisOptionalTls | default dict }}
+{{- $tls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has "redis" ($tlsConfig.services | default list)) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,6 +16,10 @@ spec:
       labels:
         app: redis
     spec:
+      {{- if $tls }}
+      securityContext:
+        fsGroup: 999
+      {{- end }}
       containers:
       - name: redis
         image: valkey/valkey:7.2@sha256:cbfcb3772ceb0f87ba2bfb2948a3339659696538e9456c0da23edc99fdefb70a
@@ -27,8 +33,19 @@ spec:
               - ALL
           seccompProfile:
             type: RuntimeDefault
+        {{- if $tls }}
+        args:
+        {{- include "coflnet.redisOptionalTls.args" . | nindent 8 }}
+        volumeMounts:
+        {{- include "coflnet.redisOptionalTls.mount" . | nindent 8 }}
+        {{- end }}
         ports:
         - containerPort: 6379
+      {{- if $tls }}
+      {{- include "coflnet.redisOptionalTls.reloader" dict | nindent 6 }}
+      volumes:
+      {{- include "coflnet.redisOptionalTls.volume" (dict "name" "redis" "config" $tlsConfig) | nindent 6 }}
+      {{- end }}
 ---
 apiVersion: v1
 kind: Service

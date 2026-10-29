@@ -1,6 +1,10 @@
 {{ if .Values.enabled }}
 {{ if .Values.redis.enabled }}
+{{- $name := printf "%s-redis" .Chart.Name }}
+{{- $tlsConfig := (.Values.global | default dict).redisOptionalTls | default dict }}
+{{- $optionalTls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has $name ($tlsConfig.services | default list)) }}
 {{- $tls := .Values.redis.tls }}
+{{- if and $optionalTls $tls.enabled }}{{ fail "optional TLS cannot override existing BFCS TLS-only mode" }}{{ end }}
 {{- $acl := .Values.redis.acl }}
 apiVersion: apps/v1
 kind: Deployment
@@ -22,6 +26,10 @@ spec:
         app: {{ .Chart.Name }}-redis
     spec:
       automountServiceAccountToken: false
+      {{- if $optionalTls }}
+      securityContext:
+        fsGroup: 999
+      {{- end }}
       containers:
       - name: {{ .Chart.Name }}-redis
         image: redis:7.2.16@sha256:0637954999d01b7c9ce9167db2da50656e2590d3b884f1c600c5f63bb6e6773c
@@ -38,6 +46,9 @@ spec:
           seccompProfile:
             type: RuntimeDefault
         args:
+          {{- if $optionalTls }}
+          {{- include "coflnet.redisOptionalTls.args" . | nindent 10 }}
+          {{- end }}
           {{- if $tls.enabled }}
           - --port
           - "0"
@@ -97,7 +108,16 @@ spec:
           mountPath: /acl
           readOnly: true
         {{- end }}
+        {{- if $optionalTls }}
+        {{- include "coflnet.redisOptionalTls.mount" . | nindent 8 }}
+        {{- end }}
+      {{- if $optionalTls }}
+      {{- include "coflnet.redisOptionalTls.reloader" (dict "passwordSecret" .Values.redis.passwordSecret) | nindent 6 }}
+      {{- end }}
       volumes:
+      {{- if $optionalTls }}
+      {{- include "coflnet.redisOptionalTls.volume" (dict "name" $name "config" $tlsConfig) | nindent 6 }}
+      {{- end }}
       - name: data
         emptyDir: {}
       {{- if $tls.enabled }}

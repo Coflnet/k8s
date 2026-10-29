@@ -1,0 +1,51 @@
+{{- $config := (.Values.global | default dict).redisOptionalTls | default dict }}
+{{- if $config.enabled }}
+{{- range $config.services }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ . }}-shared-tls
+spec:
+  secretName: {{ . }}-shared-tls
+  duration: 24h
+  renewBefore: 8h
+  privateKey:
+    algorithm: ECDSA
+    size: 384
+    rotationPolicy: Always
+  issuerRef:
+    name: {{ required "global.redisOptionalTls.issuerName is required" $config.issuerName }}
+    kind: Issuer
+  commonName: {{ . }}.{{ $.Release.Namespace }}.svc.cluster.local
+  dnsNames:
+  - {{ . }}
+  - {{ . }}.{{ $.Release.Namespace }}
+  - {{ . }}.{{ $.Release.Namespace }}.svc
+  - {{ . }}.{{ $.Release.Namespace }}.svc.cluster.local
+  - {{ . }}-tls
+  - {{ . }}-tls.{{ $.Release.Namespace }}
+  - {{ . }}-tls.{{ $.Release.Namespace }}.svc
+  - {{ . }}-tls.{{ $.Release.Namespace }}.svc.cluster.local
+  - {{ . }}.{{ $.Release.Namespace }}.{{ required "global.redisOptionalTls.clusterIdentity is required" $config.clusterIdentity }}.coflnet.internal
+  usages: [digital signature, server auth]
+{{- if $config.listenersEnabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ . }}-tls
+spec:
+  selector:
+    app: {{ . }}
+    {{- with index (($.Values.global.redisUpgrade | default dict).routes | default dict) . }}
+    redis-route: {{ . | quote }}
+    {{- end }}
+  ports:
+  - name: redis-tls
+    port: 6380
+    targetPort: 6380
+    protocol: TCP
+{{- end }}
+{{- end }}
+{{- end }}

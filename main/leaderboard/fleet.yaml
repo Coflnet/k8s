@@ -18,6 +18,8 @@ targetCustomizations:
   - name: talos-eu-hcloud
     clusterName: talos-eu-hcloud
     helm:
+      valuesFiles:
+        - ./chart/redis-optional-tls-eu.yaml
       values:
         openbao:
           addr: "https://openbao.openbao.svc:8200"

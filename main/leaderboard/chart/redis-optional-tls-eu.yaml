@@ -1,0 +1,9 @@
+global:
+  redisOptionalTls:
+    enabled: true
+    issuerName: redis-shared-root
+    trustBundleConfigMap: redis-shared-root-trust
+    services:
+    - redis
+    listenersEnabled: false
+    clusterIdentity: talos-eu

@@ -1,5 +1,7 @@
 {{- range (.Values.redisUpgrade | default dict).candidates }}
 {{- $name := required "redisUpgrade.candidates[].name is required" .name }}
+{{- $tlsConfig := ($.Values.global | default dict).redisOptionalTls | default dict }}
+{{- $tls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has $name ($tlsConfig.services | default list)) }}
 {{- $route := required "redisUpgrade.candidates[].route is required" .route }}
 {{- $class := required "redisUpgrade.candidates[].storageClassName is required" .storageClassName }}
 {{- if or (eq $name "sky-event-broker-redis") (eq $name "sky-bfcs-redis") }}{{ fail "Broker and BFCS do not use replica handoff" }}{{ end }}
@@ -80,7 +82,11 @@ spec:
       containers:
       - name: redis
         image: {{ .image | default "redis:7.2.16@sha256:0637954999d01b7c9ce9167db2da50656e2590d3b884f1c600c5f63bb6e6773c" }}
-        args: [/data/redis.conf]
+        args:
+        - /data/redis.conf
+        {{- if $tls }}
+        {{- include "coflnet.redisOptionalTls.args" . | nindent 8 }}
+        {{- end }}
         readinessProbe:
           exec:
             command:
@@ -114,7 +120,16 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /data
+        {{- if $tls }}
+        {{- include "coflnet.redisOptionalTls.mount" . | nindent 8 }}
+        {{- end }}
+      {{- if $tls }}
+      {{- include "coflnet.redisOptionalTls.reloader" dict | nindent 6 }}
+      {{- end }}
       volumes:
+      {{- if $tls }}
+      {{- include "coflnet.redisOptionalTls.volume" (dict "name" $name "config" $tlsConfig) | nindent 6 }}
+      {{- end }}
       - name: data
         persistentVolumeClaim:
           claimName: {{ $name }}-upgrade

@@ -94,6 +94,7 @@ targetCustomizations:
     helm:
       valuesFiles:
         - ./chart/talos.yaml
+        - ./chart/redis-optional-tls-eu.yaml
 
   - name: talos-linode
     clusterName: talos-linode

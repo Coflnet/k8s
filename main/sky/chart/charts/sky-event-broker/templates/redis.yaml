@@ -1,4 +1,7 @@
 {{ if .Values.enabled }}
+{{- $name := printf "%s-redis" .Chart.Name }}
+{{- $tlsConfig := (.Values.global | default dict).redisOptionalTls | default dict }}
+{{- $tls := and $tlsConfig.enabled $tlsConfig.listenersEnabled (has $name ($tlsConfig.services | default list)) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,7 +24,7 @@ spec:
         app: {{ .Chart.Name }}-redis
     spec:
       automountServiceAccountToken: false
-      {{- if .Values.redis.persistence.enabled }}
+      {{- if or .Values.redis.persistence.enabled $tls }}
       securityContext:
         fsGroup: 999
         fsGroupChangePolicy: OnRootMismatch
@@ -29,8 +32,12 @@ spec:
       containers:
       - name: {{ .Chart.Name }}-redis
         image: redis:7.2.16@sha256:0637954999d01b7c9ce9167db2da50656e2590d3b884f1c600c5f63bb6e6773c
-        {{- if .Values.redis.persistence.enabled }}
+        {{- if or .Values.redis.persistence.enabled $tls }}
         args:
+          {{- if $tls }}
+          {{- include "coflnet.redisOptionalTls.args" . | nindent 10 }}
+          {{- end }}
+          {{- if .Values.redis.persistence.enabled }}
           - --dir
           - /data
           - --save
@@ -41,9 +48,15 @@ spec:
           - {{ .Values.redis.maxmemory | quote }}
           - --maxmemory-policy
           - noeviction
+          {{- end }}
         volumeMounts:
+          {{- if $tls }}
+          {{- include "coflnet.redisOptionalTls.mount" . | nindent 10 }}
+          {{- end }}
+          {{- if .Values.redis.persistence.enabled }}
           - name: data
             mountPath: /data
+          {{- end }}
         {{- end }}
         securityContext:
           allowPrivilegeEscalation: false
@@ -72,11 +85,19 @@ spec:
           requests:
             memory: {{ .Values.redis.memoryRequest | quote }}
             cpu: "50m"
-      {{- if .Values.redis.persistence.enabled }}
+      {{- if $tls }}
+      {{- include "coflnet.redisOptionalTls.reloader" dict | nindent 6 }}
+      {{- end }}
+      {{- if or .Values.redis.persistence.enabled $tls }}
       volumes:
+        {{- if $tls }}
+        {{- include "coflnet.redisOptionalTls.volume" (dict "name" $name "config" $tlsConfig) | nindent 8 }}
+        {{- end }}
+        {{- if .Values.redis.persistence.enabled }}
         - name: data
           persistentVolumeClaim:
             claimName: {{ .Chart.Name }}-redis
+        {{- end }}
       {{- end }}
 {{- if .Values.redis.persistence.enabled }}
 ---
