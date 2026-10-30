@@ -2,7 +2,7 @@
 sky-auctions:
   pki:
     enabled: true
-    applicationEnabled: false
+    applicationEnabled: true
     revision: auctions-external-cql-prepared-20261030
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
