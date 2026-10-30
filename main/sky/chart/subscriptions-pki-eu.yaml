@@ -2,7 +2,7 @@
 sky-subscriptions:
   pki:
     enabled: true
-    applicationEnabled: false
+    applicationEnabled: true
     readinessEnabled: false
     revision: subscriptions-external-sql-prepared-20261030
     listenerCaBundle: |
