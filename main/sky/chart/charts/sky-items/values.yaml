@@ -95,3 +95,9 @@ envVars:
       secretKeyRef:
         name: secret
         key: connection_items_database
+
+# EU-only external SQL certificate issuance is separate from application use.
+pki:
+  enabled: false
+  applicationEnabled: false
+  readinessEnabled: false
