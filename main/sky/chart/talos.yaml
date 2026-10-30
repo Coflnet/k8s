@@ -463,7 +463,7 @@ sky-auctions:
     # from OpenBao kv/sky/sky-auctions, a read-only user is enough), markers in SETTINGS_REDIS_HOST (sky-settings-redis).
     # Roll out after a SkyIndexer image that has the import worker and the ArchiveScyllaAt migration.
     - name: ARCHIVE__ENABLED
-      value: "false"
+      value: "true"
     - name: ARCHIVE__OLDEST_MONTH
       value: "2019-07"
     - name: ARCHIVE__NEWEST_MONTH
