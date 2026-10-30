@@ -10,6 +10,9 @@ The helper remains `ansible/scripts/handoff-sky-redis.sh KUBECONFIG redis persis
 The EU candidate is currently parked at zero replicas while the original Redis
 serves traffic. Its PVC and data are retained. Remove `parked: true` through GitOps
 only when proceeding with the guarded handoff below; the helper requires one replica.
+Parking retires the candidate Pod UID pinned by the existing handoff receipt.
+Preserve that receipt; resuming needs a reviewed fresh receipt for the same source
+and PVC, followed by resynchronization before promotion.
 It pins the exact current Valkey digest and version, Service/controller/Pod/PVC
 identities, encrypted two-replica storage, replica sync, persisted primary role,
 Service EndpointSlices and all six Cilium backend maps. Replication does not
