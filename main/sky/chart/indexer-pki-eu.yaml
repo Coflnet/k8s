@@ -2,9 +2,9 @@
 sky-indexer:
   pki:
     enabled: true
-    applicationEnabled: false
+    applicationEnabled: true
     readinessEnabled: false
-    revision: indexer-external-sql-prepared-20261030
+    revision: indexer-external-sql-old-prep-20261030
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
