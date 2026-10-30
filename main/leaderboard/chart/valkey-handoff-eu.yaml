@@ -2,6 +2,7 @@ valkeyHandoff:
   enabled: true
   candidates:
     - name: redis
+      parked: true
       route: persistent-v1
       storageClassName: longhorn-encrypted
       memoryLimit: 512Mi

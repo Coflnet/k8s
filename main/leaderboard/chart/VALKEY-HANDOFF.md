@@ -7,6 +7,9 @@ still replaces the Pod and loses its volatile state. Use a same-image replica
 handoff to the separately declared `redis-upgrade` PVC candidate.
 
 The helper remains `ansible/scripts/handoff-sky-redis.sh KUBECONFIG redis persistent-v1 PHASE`.
+The EU candidate is currently parked at zero replicas while the original Redis
+serves traffic. Its PVC and data are retained. Remove `parked: true` through GitOps
+only when proceeding with the guarded handoff below; the helper requires one replica.
 It pins the exact current Valkey digest and version, Service/controller/Pod/PVC
 identities, encrypted two-replica storage, replica sync, persisted primary role,
 Service EndpointSlices and all six Cilium backend maps. Replication does not
@@ -26,7 +29,8 @@ stages, checking each result before proceeding:
    candidate requests 128Mi, limit 512Mi; observed source peak was 122,171,008
    bytes with 99,020,800 RSS. No node drain, pressure, image upgrade or concurrent
    maintenance may overlap the handoff.
-2. Add `./chart/valkey-handoff-eu.yaml` to only leaderboard's EU Fleet target.
+2. Add `./chart/valkey-handoff-eu.yaml` to only leaderboard's EU Fleet target
+   and remove the candidate's `parked: true` setting.
    Keep `global.redisOptionalTls.listenersEnabled: false`. This creates the
    same-image TLS-capable candidate with AOF/everysec and an ACL file configured
    before first boot. The current Deployment and Service remain unchanged.

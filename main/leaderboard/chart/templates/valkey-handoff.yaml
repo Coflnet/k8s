@@ -35,7 +35,7 @@ metadata:
     redis.coflnet.com/disable-automatic-rdb: "true"
   {{- end }}
 spec:
-  replicas: 1
+  replicas: {{ if .parked }}0{{ else }}1{{ end }}
   strategy:
     type: Recreate
   selector:

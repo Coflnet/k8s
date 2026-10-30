@@ -49,7 +49,8 @@ class ValkeyFrontendRender(unittest.TestCase):
             'topologyKey': 'kubernetes.io/hostname'}])
         config = self.active['ConfigMap', 'redis-tls-frontend-config']['data']
         self.assertIn('ssl_verify_client optional;', config['nginx.conf'])
-        self.assertIn('access_log off;', config['nginx.conf'])
+        self.assertIn("log_format pki 'tls_client_verify=$ssl_client_verify tls_client_serial=$ssl_client_serial';", config['nginx.conf'])
+        self.assertIn('access_log /dev/stdout pki if=$ssl_protocol;', config['nginx.conf'])
         self.assertNotIn('kill -TERM', config['reload-tls.sh'])
 
 
