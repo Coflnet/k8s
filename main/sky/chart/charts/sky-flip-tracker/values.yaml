@@ -135,3 +135,9 @@ migrationEnvVars:
         key: cassandra_password
   - name: OLD_CASSANDRA__KEYSPACE
     value: "flips"
+
+# EU-only external CQL/SQL client issuance is independent of application use.
+pki:
+  enabled: false
+  applicationEnabled: false
+  readinessEnabled: false

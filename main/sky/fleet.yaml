@@ -106,6 +106,7 @@ targetCustomizations:
         - ./chart/subscriptions-pki-eu.yaml
         - ./chart/items-pki-eu.yaml
         - ./chart/indexer-pki-eu.yaml
+        - ./chart/flip-tracker-pki-eu.yaml
         - ./chart/auctions-pki-eu.yaml
 
   - name: talos-linode
