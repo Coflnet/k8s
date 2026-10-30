@@ -1,7 +1,7 @@
 # External SQL client only; internal HTTP and legacy Kafka remain unchanged.
 sky-indexer:
   pki:
-    enabled: false
+    enabled: true
     applicationEnabled: false
     readinessEnabled: false
     revision: indexer-external-sql-prepared-20261030
