@@ -770,12 +770,13 @@ sky-indexer:
   # copy and a 256 MB blob cache on top of the indexer's normal ~550 Mi.
   resources:
     requests:
-      cpu: 150m
+      cpu: 500m
       memory: 700Mi
     limits:
-      # 800m since 2026-10-26: the pod sat at its 500m limit after the active-auction
-      # explorer deploy and the MariaDB->R2 archive pace dropped from ~5.4M to ~1.5M rows/h.
-      cpu: 800m
+      # 2 cores since 2026-10-30 while the MariaDB->R2 auction archive runs: with parallel
+      # items (ITEM_PARALLELISM 4) the pod sat at its 800m limit (throttled up to 28 %).
+      # Drop back to ~800m once the archive has caught up to the retention window.
+      cpu: 2000m
       memory: 3000Mi
   envVars:
     - name: DBConnection
