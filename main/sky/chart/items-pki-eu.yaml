@@ -2,7 +2,7 @@
 sky-items:
   pki:
     enabled: true
-    applicationEnabled: false
+    applicationEnabled: true
     readinessEnabled: false
     revision: items-external-sql-prepared-20261030
     listenerCaBundle: |
