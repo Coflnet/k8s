@@ -2,9 +2,9 @@
 sky-flip-tracker:
   pki:
     enabled: true
-    applicationEnabled: false
+    applicationEnabled: true
     readinessEnabled: false
-    revision: flip-tracker-client-preparation-20261030
+    revision: flip-tracker-external-databases-prepared-20261030
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
