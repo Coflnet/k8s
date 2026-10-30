@@ -66,3 +66,13 @@ envVars:
       secretKeyRef:
         key: connection_live
         name: secret
+
+# External CQL PEM credentials are staged separately from application activation.
+pki:
+  enabled: false
+  applicationEnabled: false
+  revision: auctions-external-cql-prepared-20261030
+  listenerCaBundle: ""
+  scyllaCaBundle: ""
+  certificates: []
+  env: {}
