@@ -54,3 +54,9 @@ envVars:
       secretKeyRef:
         name: secret
         key: firebase_key
+
+# External SQL issuance is separate from application activation.
+pki:
+  enabled: false
+  applicationEnabled: false
+  readinessEnabled: false

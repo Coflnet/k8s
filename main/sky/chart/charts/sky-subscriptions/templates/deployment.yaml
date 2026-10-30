@@ -20,6 +20,9 @@ spec:
         security.coflnet.com/k8s-api-access: "false"
       annotations:
         {{ toYaml .Values.global.podAnnotations | nindent 8 }}
+        {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+        security.coflnet.com/pki-revision: {{ .Values.pki.revision | quote }}
+        {{- end }}
     spec:
       serviceAccountName: {{ .Chart.Name }}
       {{- if $.Values.global.openbaoAuthPath }}
@@ -29,7 +32,7 @@ spec:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       securityContext:
         runAsNonRoot: true
-        {{- if $.Values.global.openbaoAuthPath }}
+        {{- if or $.Values.global.openbaoAuthPath (and .Values.pki.enabled .Values.pki.applicationEnabled) }}
         fsGroup: 1000
         {{- end }}
         seccompProfile:
@@ -51,6 +54,12 @@ spec:
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
+          {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+          {{- range $name, $value := .Values.pki.env }}
+          - name: {{ $name }}
+            value: {{ $value | quote }}
+          {{- end }}
+          {{- end }}
           - name: OPENBAO__ENABLED
             value: "true"
           - name: OPENBAO__OPTIONAL
@@ -88,10 +97,19 @@ spec:
           {{ end }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars) | nindent 10 }}
         readinessProbe:
+          {{- if and .Values.pki.enabled .Values.pki.applicationEnabled .Values.pki.readinessEnabled }}
+          {{ toYaml (mergeOverwrite (deepCopy .Values.readinessProbe) (dict "httpGet" (dict "path" "/health/ready" "port" "api"))) | nindent 10 }}
+          {{- else }}
           {{ toYaml .Values.readinessProbe | nindent 10 }}
+          {{- end }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
+        {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+        - {name: pki-client, mountPath: /pki/client, readOnly: true}
+        - {name: pki-trust, mountPath: /pki/trust, readOnly: true}
+        - {name: pki-home, mountPath: /tmp/pki-home}
+        {{- end }}
         {{- if $.Values.global.openbaoAuthPath }}
         - name: openbao-workload-token
           mountPath: /var/run/secrets/openbao
@@ -101,7 +119,15 @@ spec:
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
-      volumes: 
+      volumes:
+      {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+        - name: pki-client
+          secret: {secretName: sky-subscriptions-client, defaultMode: 0440}
+        - name: pki-trust
+          configMap: {name: sky-subscriptions-pki-trust}
+        - name: pki-home
+          emptyDir: {medium: Memory, sizeLimit: 16Mi}
+      {{- end }}
       {{- if $.Values.global.openbaoAuthPath }}
         - name: openbao-workload-token
           projected:
