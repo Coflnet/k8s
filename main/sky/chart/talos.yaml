@@ -807,11 +807,10 @@ sky-indexer:
       value: "false"
     - name: ARCHIVE__START_DELAY_SECONDS
       value: "600"
-    # Index inserts on the primary are latency-bound (one statement waits on ~2 ms random
-    # page reads, disk ~50 % busy, CPU ~16 %): two concurrent writers use the idle disk.
-    # Revert to 1 if the mean sky_indexer_archive_stage_seconds{stage="index_write"} doubles.
+    # One index writer on the primary. Two (2026-10-30) gave only ~15-19 % more index rows/h
+    # while each insert got ~2x slower per row.
     - name: ARCHIVE__INDEX_WRITE_PARALLELISM
-      value: "2"
+      value: "1"
   livenessProbe:
     initialDelaySeconds: 90
   readinessProbe:
