@@ -54,3 +54,9 @@ envVars:
     value: "false"
   - name: ARCHIVE__DELETE_MARIADB
     value: "false"
+
+# EU-only external SQL issuance is independent of application use.
+pki:
+  enabled: false
+  applicationEnabled: false
+  readinessEnabled: false
