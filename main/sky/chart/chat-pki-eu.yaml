@@ -2,10 +2,10 @@
 sky-chat:
   pki:
     enabled: true
-    mountsEnabled: false
+    mountsEnabled: true
     applicationEnabled: false
     readinessEnabled: false
-    revision: sky-chat-external-databases-prepared-20261030
+    revision: sky-chat-old-image-mounts-prepared-20261031
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
