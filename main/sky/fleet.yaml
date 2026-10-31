@@ -109,6 +109,7 @@ targetCustomizations:
         - ./chart/flip-tracker-pki-eu.yaml
         - ./chart/chat-pki-eu.yaml
         - ./chart/auctions-pki-eu.yaml
+        - ./chart/player-state-pki-eu.yaml
 
   - name: talos-linode
     clusterName: talos-linode

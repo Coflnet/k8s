@@ -3,6 +3,18 @@ replicaCount: 3
 
 strategy: RollingUpdate
 
+# Certificate issuance, client/trust/HOME mounts and application TLS are separate EU-only phases
+# (see chart/player-state-pki-eu.yaml). Everything defaults off; other clusters never enable it.
+pki:
+  enabled: false
+  # Mount the projected client certificate, trust bundle and writable HOME without any application setting.
+  mountsEnabled: false
+  applicationEnabled: false
+  # Move the kubelet readinessProbe to /health/ready (semantic CQL check) BEFORE the application TLS flip.
+  readinessEnabled: false
+  homeEnv: {}
+  env: {}
+
 image:
   repository: muehlhansfl/skyplayerstate
   tag: 9070b6abca95628f1211c4437e579ceec557f1cb@sha256:343089e71e5a37fb76b5c2171c347d081c1ae7eaf5cd51203ce5cf8df22f8077
