@@ -41,3 +41,8 @@ envVars:
         key: connection_chat_database
   - name: REDIS_HOST
     value: sky-settings-redis
+
+pki:
+  enabled: false
+  applicationEnabled: false
+  readinessEnabled: false
