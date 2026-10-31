@@ -3,10 +3,10 @@
 sky-player-state:
   pki:
     enabled: true
-    mountsEnabled: false
+    mountsEnabled: true
     applicationEnabled: false
     readinessEnabled: false
-    revision: sky-player-state-cql-pki-staged-20261031
+    revision: sky-player-state-cql-pki-mounts-20261031
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
