@@ -4,8 +4,8 @@ sky-chat:
     enabled: true
     mountsEnabled: true
     applicationEnabled: true
-    readinessEnabled: false
-    revision: sky-chat-sql-tls-enabled-v2-20261031
+    readinessEnabled: true
+    revision: sky-chat-sql-readiness-20261031
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
