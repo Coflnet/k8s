@@ -1,4 +1,6 @@
 {{ if .Values.enabled }}
+{{- $pkiPrepared := and .Values.pki.enabled (or .Values.pki.mountsEnabled .Values.pki.applicationEnabled) }}
+{{- $pkiApplication := and .Values.pki.enabled .Values.pki.applicationEnabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,7 +22,7 @@ spec:
         security.coflnet.com/k8s-api-access: "false"
       annotations:
         {{ toYaml .Values.global.podAnnotations | nindent 8 }}
-        {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+        {{- if $pkiPrepared }}
         security.coflnet.com/pki-revision: {{ .Values.pki.revision | quote }}
         {{- end }}
     spec:
@@ -32,7 +34,7 @@ spec:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       securityContext:
         runAsNonRoot: true
-        {{- if or $.Values.global.openbaoAuthPath (and .Values.pki.enabled .Values.pki.applicationEnabled) }}
+        {{- if or $.Values.global.openbaoAuthPath $pkiPrepared }}
         fsGroup: 1000
         {{- end }}
         seccompProfile:
@@ -54,7 +56,13 @@ spec:
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
-          {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+          {{- if $pkiPrepared }}
+          {{- range $name, $value := .Values.pki.homeEnv }}
+          - name: {{ $name }}
+            value: {{ $value | quote }}
+          {{- end }}
+          {{- end }}
+          {{- if $pkiApplication }}
           {{- range $name, $value := .Values.pki.env }}
           - name: {{ $name }}
             value: {{ $value | quote }}
@@ -105,7 +113,7 @@ spec:
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
-        {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+        {{- if $pkiPrepared }}
         - {name: pki-client, mountPath: /pki/client, readOnly: true}
         - {name: pki-trust, mountPath: /pki/trust, readOnly: true}
         - {name: pki-home, mountPath: /tmp/pki-home}
@@ -120,7 +128,7 @@ spec:
           mountPath: {{ .mountPath }}
         {{ end }}
       volumes:
-      {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+      {{- if $pkiPrepared }}
         - name: pki-client
           secret: {secretName: sky-chat-client, defaultMode: 0440}
         - name: pki-trust

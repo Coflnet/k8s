@@ -2,6 +2,7 @@
 sky-chat:
   pki:
     enabled: true
+    mountsEnabled: false
     applicationEnabled: false
     readinessEnabled: false
     revision: sky-chat-external-databases-prepared-20261030
@@ -43,8 +44,9 @@ sky-chat:
       HHruulsMgVPkPJjJtzrdCgIxAPmVl1a1SSySB+/dkp6u+Lb/Y0SJ03Y26HQvIt1S
       AfQEYz7xazS4XJ3nIbGpy3MxSg==
       -----END CERTIFICATE-----
-    env:
+    homeEnv:
       HOME: /tmp/pki-home
+    env:
       DB__TLS__CA_CERT_PATH: /pki/trust/mariadb-ca.crt
       DB__TLS__CERT_PATH: /pki/client/tls.crt
       DB__TLS__KEY_PATH: /pki/client/tls.key

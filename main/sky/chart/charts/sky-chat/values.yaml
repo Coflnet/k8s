@@ -44,5 +44,9 @@ envVars:
 
 pki:
   enabled: false
+  # Mount the projected client certificate, trust bundle and writable HOME without
+  # any application TLS/PKI setting (old-image preparation phase).
+  mountsEnabled: false
   applicationEnabled: false
   readinessEnabled: false
+  homeEnv: {}
