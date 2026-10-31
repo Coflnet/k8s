@@ -3,9 +3,9 @@ sky-chat:
   pki:
     enabled: true
     mountsEnabled: true
-    applicationEnabled: true
+    applicationEnabled: false
     readinessEnabled: false
-    revision: sky-chat-sql-tls-enabled-20261031
+    revision: sky-chat-old-image-mounts-prepared-20261031
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
