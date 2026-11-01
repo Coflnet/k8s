@@ -1,13 +1,17 @@
 # External CockroachDB SQL client identity for the EU sky-proxy Deployment (SQL user sky_proxy, PKI role cockroachdb-client-sky-proxy).
-# Order: stage the Issuer/Certificate (no Pod change), mount client/trust/HOME with SQL TLS still off (old image), then enable
-# DB__TLS__* (new image), then move readiness to /health/ready. Only the talos-eu-hcloud Fleet target loads this file.
+# Order: stage the Issuer/Certificate (no Pod change), mount client/trust/HOME with SQL TLS still off, move readiness to
+# /health/ready (phase R), then enable DB__TLS__* (phase B). Only the talos-eu-hcloud Fleet target loads this file.
 sky-proxy:
+  # Phase R: /health/ready runs SELECT 1 with its own 4 s bound (bare 503 on failure). timeoutSeconds stays 10 (> 4 s + HTTP overhead),
+  # periodSeconds 15 x failureThreshold 3 = 45 s before a DB blip removes the only endpoint; a truthful probe needs no 90 s start delay.
+  readinessProbe:
+    initialDelaySeconds: 20
   pki:
     enabled: true
     mountsEnabled: true
     applicationEnabled: false
-    readinessEnabled: false
-    revision: sky-proxy-cockroach-mounts-prepared-20261101
+    readinessEnabled: true
+    revision: sky-proxy-cockroach-readiness-20261101
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw

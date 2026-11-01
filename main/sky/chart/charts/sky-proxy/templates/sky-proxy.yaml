@@ -143,7 +143,7 @@ spec:
             {{- end }}
             {{- end }}
           readinessProbe:
-            {{- if and $pkiApplication .Values.pki.readinessEnabled }}
+            {{- if and .Values.pki.enabled .Values.pki.readinessEnabled }}
             {{ toYaml (mergeOverwrite (deepCopy .Values.readinessProbe) (dict "httpGet" (dict "path" "/health/ready" "port" "api"))) | nindent 12 }}
             {{- else }}
             {{ toYaml .Values.readinessProbe | nindent 12 }}

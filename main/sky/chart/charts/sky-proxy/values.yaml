@@ -67,7 +67,7 @@ pki:
   mountsEnabled: false
   # Adds pki.env (DB__TLS__*) to the container.
   applicationEnabled: false
-  # Moves the kubelet readinessProbe to /health/ready (needs applicationEnabled and an image that serves it).
+  # Moves the kubelet readinessProbe to /health/ready (needs an image that serves it; independent of applicationEnabled).
   readinessEnabled: false
   homeEnv: {}
   env: {}
