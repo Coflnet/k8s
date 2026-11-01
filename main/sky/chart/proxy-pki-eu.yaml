@@ -9,9 +9,9 @@ sky-proxy:
   pki:
     enabled: true
     mountsEnabled: true
-    applicationEnabled: false
+    applicationEnabled: true
     readinessEnabled: true
-    revision: sky-proxy-cockroach-readiness-20261101
+    revision: sky-proxy-cockroach-sql-tls-enabled-20261101
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
