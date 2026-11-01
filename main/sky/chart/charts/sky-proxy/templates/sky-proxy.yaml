@@ -1,4 +1,9 @@
 {{ if .Values.enabled }}
+{{- $pkiPrepared := and .Values.pki.enabled (or .Values.pki.mountsEnabled .Values.pki.applicationEnabled) }}
+{{- $pkiApplication := and .Values.pki.enabled .Values.pki.applicationEnabled }}
+{{- if and $pkiPrepared (not .Values.global.volumes) }}
+{{- fail "sky-proxy pki mounts need the global.volumes block (volumeMounts/volumes are rendered inside it)" }}
+{{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -29,6 +34,9 @@ spec:
 {{ toYaml .podAnnotations | nindent 8 }}
   {{- end }}
   {{- end }}
+  {{- if $pkiPrepared }}
+        security.coflnet.com/pki-revision: {{ .Values.pki.revision | quote }}
+  {{- end }}
     spec:
       serviceAccountName: {{ .Chart.Name }}
       {{- with .Values.nodeSelector }}
@@ -46,7 +54,7 @@ spec:
       {{- end }}
       securityContext:
         runAsNonRoot: true
-        {{- if $.Values.global.openbaoAuthPath }}
+        {{- if or $.Values.global.openbaoAuthPath $pkiPrepared }}
         fsGroup: 1000
         {{- end }}
         seccompProfile:
@@ -80,6 +88,18 @@ spec:
           ports:
              {{ toYaml .Values.ports | nindent 10 }}
           env:
+            {{- if $pkiPrepared }}
+            {{- range $name, $value := .Values.pki.homeEnv }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- end }}
+            {{- if $pkiApplication }}
+            {{- range $name, $value := .Values.pki.env }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- end }}
             - name: OPENBAO__ENABLED
               value: "true"
             - name: OPENBAO__OPTIONAL
@@ -123,12 +143,21 @@ spec:
             {{- end }}
             {{- end }}
           readinessProbe:
+            {{- if and $pkiApplication .Values.pki.readinessEnabled }}
+            {{ toYaml (mergeOverwrite (deepCopy .Values.readinessProbe) (dict "httpGet" (dict "path" "/health/ready" "port" "api"))) | nindent 12 }}
+            {{- else }}
             {{ toYaml .Values.readinessProbe | nindent 12 }}
+            {{- end }}
           resources:
             {{ toYaml .Values.resources | nindent 12 }}
           {{- with .Values.global }}
           {{- if .volumes }}
           volumeMounts:
+          {{- if $pkiPrepared }}
+            - {name: pki-client, mountPath: /pki/client, readOnly: true}
+            - {name: pki-trust, mountPath: /pki/trust, readOnly: true}
+            - {name: pki-home, mountPath: /tmp/pki-home}
+          {{- end }}
           {{- if $.Values.global.openbaoAuthPath }}
             - name: openbao-workload-token
               mountPath: /var/run/secrets/openbao
@@ -143,6 +172,14 @@ spec:
       {{- with .Values.global }}
       {{- if .volumes }}
       volumes:
+      {{- if $pkiPrepared }}
+        - name: pki-client
+          secret: {secretName: sky-proxy-cockroach-client, defaultMode: 0440}
+        - name: pki-trust
+          configMap: {name: sky-proxy-pki-trust}
+        - name: pki-home
+          emptyDir: {medium: Memory, sizeLimit: 16Mi}
+      {{- end }}
       {{- if $.Values.global.openbaoAuthPath }}
         - name: openbao-workload-token
           projected:

@@ -1,0 +1,80 @@
+# External CockroachDB SQL client identity for the EU sky-proxy Deployment (SQL user sky_proxy, PKI role cockroachdb-client-sky-proxy).
+# Order: stage the Issuer/Certificate (no Pod change), mount client/trust/HOME with SQL TLS still off (old image), then enable
+# DB__TLS__* (new image), then move readiness to /health/ready. Only the talos-eu-hcloud Fleet target loads this file.
+sky-proxy:
+  pki:
+    enabled: true
+    mountsEnabled: false
+    applicationEnabled: false
+    readinessEnabled: false
+    revision: sky-proxy-cockroach-objects-staged-20261101
+    listenerCaBundle: |
+      -----BEGIN CERTIFICATE-----
+      MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
+      FTETMBEGA1UEAxMKb3BlbmJhby1jYTAeFw0yNjA1MzAwNjMwMDdaFw0zNjA1Mjcw
+      NjMwMDdaMBUxEzARBgNVBAMTCm9wZW5iYW8tY2EwWTATBgcqhkjOPQIBBggqhkjO
+      PQMBBwNCAATP+OVpqk8lnHealoOSbRZpInlL4ypSkvSCR0ksELx2Xg/eJJY3y9gj
+      tRrEp6OXd24Wwoy2L4V74FkfO+dkfUTko0IwQDAOBgNVHQ8BAf8EBAMCAqQwDwYD
+      VR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUTs+GuzkdJhBXyXXlwZI7Mn3pr8gwCgYI
+      KoZIzj0EAwIDRwAwRAIgA1l0MK0v3oIhoVgys1U/jdVZig/jp/SMhGJTilO25FkC
+      IDcNtGjLm4jxvXj9MrrNBwICv2XvSscsE/nc8Je3zE8D
+      -----END CERTIFICATE-----
+      -----BEGIN CERTIFICATE-----
+      MIIB7zCCAXSgAwIBAgIUHiabVzU7uVeszIY2O8ihUrQ5DwgwCgYIKoZIzj0EAwMw
+      NTEhMB8GA1UEAwwYQ29mbG5ldCBJbnRlcm5hbCBSb290IENBMRAwDgYDVQQKDAdD
+      b2ZsbmV0MB4XDTI2MDcyMDIwNDIxN1oXDTM2MDcxNzIwNDIxN1owNTEhMB8GA1UE
+      AwwYQ29mbG5ldCBJbnRlcm5hbCBSb290IENBMRAwDgYDVQQKDAdDb2ZsbmV0MHYw
+      EAYHKoZIzj0CAQYFK4EEACIDYgAETSbRhSFLZeXf60Uv7P/E5BWyVwhYXWwBpR7S
+      WuAdCWRExq7E1QRmo484Zrtr6UlkTAzS0DAq2zggBcp1hQyvIUBrCn/TO6JNjdde
+      exWeoahXw+XGMkObmbRJHT5xtsU/o0UwQzASBgNVHRMBAf8ECDAGAQH/AgEBMA4G
+      A1UdDwEB/wQEAwIBBjAdBgNVHQ4EFgQUoVgcsk/ZkIkNHEyXnMi7BFErBlEwCgYI
+      KoZIzj0EAwMDaQAwZgIxAMfHYvIGbgyOXRCw0eTfN4xzNJ62MqfC+8+AzdoSm9nM
+      HHruulsMgVPkPJjJtzrdCgIxAPmVl1a1SSySB+/dkp6u+Lb/Y0SJ03Y26HQvIt1S
+      AfQEYz7xazS4XJ3nIbGpy3MxSg==
+      -----END CERTIFICATE-----
+    cockroachCaBundle: |
+      -----BEGIN CERTIFICATE-----
+      MIIDJjCCAg6gAwIBAgIRANT0y3Zf7+5XjnWpgrM3DukwDQYJKoZIhvcNAQELBQAw
+      KzESMBAGA1UEChMJQ29ja3JvYWNoMRUwEwYDVQQDEwxDb2Nrcm9hY2ggQ0EwHhcN
+      MjIwODI4MTYzMjIzWhcNMzIwOTA1MTYzMjIzWjArMRIwEAYDVQQKEwlDb2Nrcm9h
+      Y2gxFTATBgNVBAMTDENvY2tyb2FjaCBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEP
+      ADCCAQoCggEBALamt1rCT6Hxmi1L7EZ34Q7DMGfEftYwAQyUVRrGoUpUGx6euCvI
+      fij98iZIBN/3F+UQUQf1ShmqeeMOXOMIg7a0jMOBIViMMrKwYtT8HShnFx7EIeNM
+      mXpS4hTmJlx8aOMvLzJvYYZ81coog5na3o6GSSr3cbHwU/itYop46ZUA+4Ky6BNG
+      TE2bRJVXzpT56W4UA/N+cTCt1vYyvKmpkXogzVteSx4Qp4wuOeM/wkcRD5OT4kWD
+      gSIMcQwnGVRp0bEfRbIeXmSmmzWaT/JARTA3hs2d2ZTlz9wfPnPw0HytTay6hmjg
+      /wqwLnM3SPpYe4Qaz/fjXx8XqNFAvTAMZGsCAwEAAaNFMEMwDgYDVR0PAQH/BAQD
+      AgLkMBIGA1UdEwEB/wQIMAYBAf8CAQEwHQYDVR0OBBYEFKOZBcqjYtZecCuWnOm6
+      BVwHA3DjMA0GCSqGSIb3DQEBCwUAA4IBAQBvtgKIS9GcvyQfRa9JxeUUYK6AwRDv
+      Ynw6a1ti7ArIEA1rvBYTxK3WW/XtGF/0peKyvP16Omx3/qdW9fmHY02PRu7wp0Mv
+      a73jB6+RESmunzT+kcxMqrEzN5AXVl+BUYz4Sk2tmQDlRp3ouw52V6EGKZMntVbB
+      BVODozxNf1O8noa44xto4Ag8fXFHmq7p/nblda8KaYOk8xvkgxk4uHi0WH1hNCcg
+      Sp1warQfb39AWuVomfiZoO6k1f//HHXW9fmjNzFSUVcRBZmfEh+8g5RLUHmKCRHB
+      wNaiOvKCI+jMcmr2pR/bwDxQAadw5AxqKYx9MCUCWr100cAVyKOrCt+O
+      -----END CERTIFICATE-----
+      -----BEGIN CERTIFICATE-----
+      MIIB7zCCAXSgAwIBAgIUHiabVzU7uVeszIY2O8ihUrQ5DwgwCgYIKoZIzj0EAwMw
+      NTEhMB8GA1UEAwwYQ29mbG5ldCBJbnRlcm5hbCBSb290IENBMRAwDgYDVQQKDAdD
+      b2ZsbmV0MB4XDTI2MDcyMDIwNDIxN1oXDTM2MDcxNzIwNDIxN1owNTEhMB8GA1UE
+      AwwYQ29mbG5ldCBJbnRlcm5hbCBSb290IENBMRAwDgYDVQQKDAdDb2ZsbmV0MHYw
+      EAYHKoZIzj0CAQYFK4EEACIDYgAETSbRhSFLZeXf60Uv7P/E5BWyVwhYXWwBpR7S
+      WuAdCWRExq7E1QRmo484Zrtr6UlkTAzS0DAq2zggBcp1hQyvIUBrCn/TO6JNjdde
+      exWeoahXw+XGMkObmbRJHT5xtsU/o0UwQzASBgNVHRMBAf8ECDAGAQH/AgEBMA4G
+      A1UdDwEB/wQEAwIBBjAdBgNVHQ4EFgQUoVgcsk/ZkIkNHEyXnMi7BFErBlEwCgYI
+      KoZIzj0EAwMDaQAwZgIxAMfHYvIGbgyOXRCw0eTfN4xzNJ62MqfC+8+AzdoSm9nM
+      HHruulsMgVPkPJjJtzrdCgIxAPmVl1a1SSySB+/dkp6u+Lb/Y0SJ03Y26HQvIt1S
+      AfQEYz7xazS4XJ3nIbGpy3MxSg==
+      -----END CERTIFICATE-----
+    certificates:
+    - name: sky-proxy-cockroach-client
+      pkiRole: cockroachdb-client-sky-proxy
+      commonName: sky_proxy
+      usages:
+      - digital signature
+      - client auth
+    homeEnv:
+      HOME: /tmp/pki-home
+    env:
+      DB__TLS__CA_CERT_PATH: /pki/trust/cockroach-ca.crt
+      DB__TLS__CERT_PATH: /pki/client/tls.crt
+      DB__TLS__KEY_PATH: /pki/client/tls.key

@@ -1,0 +1,71 @@
+{{- if .Values.pki.enabled }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sky-proxy-certificates
+automountServiceAccountToken: false
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: sky-proxy-certificates
+rules:
+- apiGroups: ['']
+  resources: [serviceaccounts/token]
+  resourceNames: [sky-proxy-certificates]
+  verbs: [create]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sky-proxy-certificates
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: sky-proxy-certificates}
+subjects:
+- {kind: ServiceAccount, name: cert-manager, namespace: cert-manager}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sky-proxy-pki-trust
+data:
+  # CockroachDB legacy CA (verifies today's node leaves) + shared Coflnet root (verifies them after the deferred server-leaf switch).
+  cockroach-ca.crt: |
+{{ required "pki.cockroachCaBundle is required" .Values.pki.cockroachCaBundle | indent 4 }}
+{{- range .Values.pki.certificates }}
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ .name }}
+spec:
+  vault:
+    server: https://openbao.openbao.svc:8200
+    path: pki_int/sign/{{ required "pki.certificates[].pkiRole is required" .pkiRole }}
+    caBundle: {{ required "pki.listenerCaBundle is required" $.Values.pki.listenerCaBundle | b64enc | quote }}
+    auth:
+      kubernetes:
+        mountPath: /v1/auth/jwt-talos-eu
+        role: cert-manager-issuer-sky-{{ .name }}
+        serviceAccountRef:
+          name: sky-proxy-certificates
+          audiences: [{{ printf "vault://sky/%s" .name | quote }}]
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .name }}
+spec:
+  secretName: {{ .name }}
+  duration: 24h
+  renewBefore: 8h
+  privateKey: {algorithm: ECDSA, size: 384, rotationPolicy: Always}
+  issuerRef: {name: {{ .name }}, kind: Issuer}
+  # CN is the exact CockroachDB SQL user (cert-password HBA: CN == user); no dnsNames are requested.
+  commonName: {{ .commonName }}
+  {{- with .dnsNames }}
+  dnsNames:
+{{ toYaml . | indent 2 }}
+  {{- end }}
+  usages: {{ toJson .usages }}
+{{- end }}
+{{- end }}

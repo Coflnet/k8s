@@ -58,3 +58,16 @@ strategy:
     maxSurge: 1
     # keep the old pod until the new pod is ready
     maxUnavailable: 0
+
+# CockroachDB SQL client certificate (EU only, see chart/proxy-pki-eu.yaml). Issuance, client/trust/HOME mounts, application TLS and the
+# readiness move are separate phases; everything defaults off and other clusters never enable it.
+pki:
+  enabled: false
+  # Mount the client certificate, trust bundle and writable HOME without any application setting (old image).
+  mountsEnabled: false
+  # Adds pki.env (DB__TLS__*) to the container.
+  applicationEnabled: false
+  # Moves the kubelet readinessProbe to /health/ready (needs applicationEnabled and an image that serves it).
+  readinessEnabled: false
+  homeEnv: {}
+  env: {}
