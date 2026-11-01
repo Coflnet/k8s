@@ -4,9 +4,9 @@ sky-player-state:
   pki:
     enabled: true
     mountsEnabled: true
-    applicationEnabled: false
+    applicationEnabled: true
     readinessEnabled: true
-    revision: sky-player-state-cql-ready-probe-20261031
+    revision: sky-player-state-cql-tls-enabled-20261031
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
