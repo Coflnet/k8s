@@ -4,7 +4,7 @@
 sky-mod-commands:
   pki:
     enabled: true
-    applicationEnabled: false  # true together with the app change that reads CASSANDRA:TLS
+    applicationEnabled: true
     revision: mod-commands-external-cql-ready-20261102
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
