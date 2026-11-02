@@ -1,9 +1,10 @@
 # External CQL client identity for sky-mod-commands. The current app ignores the TLS env (behaviour-neutral);
-# the scylla-pfx mount stays until the app switch is verified.
+# the scylla-pfx mount stays until the app switch is verified. Stage 1 issues the leaf only; applicationEnabled
+# adds the mounts and env once the app reads CASSANDRA:TLS.
 sky-mod-commands:
   pki:
     enabled: true
-    applicationEnabled: true
+    applicationEnabled: false  # true together with the app change that reads CASSANDRA:TLS
     revision: mod-commands-external-cql-ready-20261102
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
