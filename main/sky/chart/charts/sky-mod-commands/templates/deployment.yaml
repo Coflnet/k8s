@@ -137,9 +137,11 @@ spec:
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
+        {{- if not (and .Values.pki.enabled .Values.pki.applicationEnabled) }}
         - name: scylla-pfx
           mountPath: /tls/scylla/secret/db.pfx
           subPath: db.pfx
+        {{- end }}
         {{ include "sky-mod-commands.diagnosticsAppVolumeMount" . | nindent 8 }}
       {{ include "sky-mod-commands.diagnosticsContainer" . | nindent 6 }}
       volumes:
@@ -164,12 +166,14 @@ spec:
                   expirationSeconds: 600
                   path: token
       {{- end }}
+        {{- if not (and .Values.pki.enabled .Values.pki.applicationEnabled) }}
         - name: scylla-pfx
           secret:
             secretName: scylla-pfx
             items:
             - key: db.pfx
               path: db.pfx
+        {{- end }}
       {{ include "sky-mod-commands.diagnosticsVolumes" . | nindent 8 }}
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
