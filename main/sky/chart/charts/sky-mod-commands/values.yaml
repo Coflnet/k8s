@@ -183,3 +183,9 @@ envVars:
       secretKeyRef:
         name: scylla-credentials
         key: db-pfx-password
+
+# External CQL client identity (short-lived clientAuth leaf from OpenBao via cert-manager).
+# Only the talos-eu-hcloud Fleet target enables it (see mod-commands-pki-eu.yaml).
+pki:
+  enabled: false
+  applicationEnabled: false

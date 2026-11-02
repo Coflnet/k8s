@@ -21,6 +21,9 @@ spec:
         security.coflnet.com/k8s-api-access: "false"
       annotations:
         {{ toYaml .Values.global.podAnnotations | nindent 8 }}
+        {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+        security.coflnet.com/pki-revision: {{ .Values.pki.revision | quote }}
+        {{- end }}
     spec:
       serviceAccountName: {{ .Chart.Name }}
       {{- if $.Values.global.openbaoAuthPath }}
@@ -37,7 +40,7 @@ spec:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       securityContext:
         runAsNonRoot: true
-        {{- if $.Values.global.openbaoAuthPath }}
+        {{- if or $.Values.global.openbaoAuthPath (and .Values.pki.enabled .Values.pki.applicationEnabled) }}
         fsGroup: 1000
         {{- end }}
         seccompProfile:
@@ -59,6 +62,12 @@ spec:
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
+          {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+          {{- range $name, $value := .Values.pki.env }}
+          - name: {{ $name }}
+            value: {{ $value | quote }}
+          {{- end }}
+          {{- end }}
           {{- if $sharedRedis.consumersEnabled }}
           - name: SSL_CERT_DIR
             value: /etc/ssl/certs:/redis-shared-trust
@@ -123,6 +132,11 @@ spec:
         resources:
          {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
+        {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+        - {name: pki-client, mountPath: /pki/client, readOnly: true}
+        - {name: pki-trust, mountPath: /pki/trust, readOnly: true}
+        - {name: pki-home, mountPath: /tmp/pki-home}
+        {{- end }}
         {{- if $sharedRedis.consumersEnabled }}
         - name: redis-shared-trust
           mountPath: /redis-shared-trust
@@ -145,6 +159,14 @@ spec:
         {{ include "sky-mod-commands.diagnosticsAppVolumeMount" . | nindent 8 }}
       {{ include "sky-mod-commands.diagnosticsContainer" . | nindent 6 }}
       volumes:
+      {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+        - name: pki-client
+          secret: {secretName: sky-mod-commands-client, defaultMode: 0440}
+        - name: pki-trust
+          configMap: {name: sky-mod-commands-pki-trust}
+        - name: pki-home
+          emptyDir: {medium: Memory, sizeLimit: 16Mi}
+      {{- end }}
       {{- if $sharedRedis.consumersEnabled }}
         - name: redis-shared-trust
           configMap: {name: redis-shared-root-trust}

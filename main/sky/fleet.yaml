@@ -111,6 +111,7 @@ targetCustomizations:
         - ./chart/auctions-pki-eu.yaml
         - ./chart/player-state-pki-eu.yaml
         - ./chart/proxy-pki-eu.yaml
+        - ./chart/mod-commands-pki-eu.yaml
 
   - name: talos-linode
     clusterName: talos-linode
