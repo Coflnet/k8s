@@ -63,13 +63,6 @@ envVars:
   # (OPENBAO__OPTIONAL=true — if unreachable, Cassandra init fails at runtime.)
   - name: CASSANDRA__KEYSPACE
     value: leaderboards
-  - name: CASSANDRA__X509Certificate_PATHS
-    value: /tls/scylla/secret/db.pfx
-  - name: CASSANDRA__X509Certificate_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: scylla-credentials
-        key: db-pfx-password
 
   # ── Redis (sidecar in same pod via redis.yaml) ──────────────────────
   - name: REDIS_HOST
@@ -145,10 +138,3 @@ volumes:
     mountPath: /openbao/tls
     type: configmap
     sourceName: openbao-ca
-  # ScyllaDB mTLS client certificate
-  - name: scylla-pfx
-    mountName: scylla-pfx
-    mountPath: /tls/scylla/secret/db.pfx
-    subPath: db.pfx
-    type: secret
-    sourceName: scylla-pfx
