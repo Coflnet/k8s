@@ -1,6 +1,10 @@
 {{ if .Values.enabled }}
 {{- $pkiPrepared := and .Values.pki.enabled (or .Values.pki.mountsEnabled .Values.pki.applicationEnabled) }}
 {{- $pkiApplication := and .Values.pki.enabled .Values.pki.applicationEnabled }}
+{{- $legacyScyllaExclude := ternary (list "Mongo__ConnectionString") (list) (not (empty $.Values.global.openbaoAuthPath)) }}
+{{- if $pkiApplication }}
+{{- $legacyScyllaExclude = concat $legacyScyllaExclude (list "SCYLLA__X509Certificate_PATHS" "SCYLLA__X509Certificate_PASSWORD") }}
+{{- end }}
 # StatefulSet (not Deployment) so each replica gets a stable ordinal hostname
 # (sky-player-state-0/1/2). The task aggregate writer keys its cassandra rows on
 # instanceId = Environment.MachineName; with a Deployment that was a fresh random
@@ -108,7 +112,7 @@ spec:
             value: "2"
           {{- end }}
           {{ if .Values.envVars }}
-          {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars "excludeNames" (ternary (list "Mongo__ConnectionString") (list) (not (empty $.Values.global.openbaoAuthPath)))) | nindent 10 }}
+          {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars "excludeNames" $legacyScyllaExclude) | nindent 10 }}
           {{ end }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars "excludeNames" (ternary (list "KAFKA__BROKERS" "KAFKA__USERNAME" "KAFKA__PASSWORD") (list) (not (empty $.Values.global.openbaoAuthPath)))) | nindent 10 }}
         readinessProbe:
@@ -134,9 +138,11 @@ spec:
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
+        {{- if not $pkiApplication }}
         - name: scylla-pfx
           mountPath: /tls/scylla/secret/db.pfx
           subPath: db.pfx
+        {{- end }}
       volumes:
       {{- if $pkiPrepared }}
         - name: pki-client
@@ -156,12 +162,14 @@ spec:
                   expirationSeconds: 600
                   path: token
       {{- end }}
+        {{- if not $pkiApplication }}
         - name: scylla-pfx
           secret:
             secretName: scylla-pfx
             items:
             - key: db.pfx
               path: db.pfx
+        {{- end }}
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
