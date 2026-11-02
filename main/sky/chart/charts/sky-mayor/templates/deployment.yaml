@@ -104,9 +104,11 @@ spec:
         {{ end }}
         - name: tmp
           mountPath: /tmp
+        {{- if not ((.Values.pki | default dict).applicationEnabled) }}
         - name: scylla-pfx
           mountPath: /tls/scylla/secret/db.pfx
           subPath: db.pfx
+        {{- end }}
       volumes:
       {{- if (.Values.pki | default dict).applicationEnabled }}
         - name: pki-client
@@ -121,12 +123,14 @@ spec:
         - name: tmp
           emptyDir:
             sizeLimit: 256Mi
+        {{- if not ((.Values.pki | default dict).applicationEnabled) }}
         - name: scylla-pfx
           secret:
             secretName: scylla-pfx
             items:
               - key: db.pfx
                 path: db.pfx
+        {{- end }}
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
