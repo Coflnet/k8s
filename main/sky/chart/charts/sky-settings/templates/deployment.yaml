@@ -1,4 +1,9 @@
 {{ if .Values.enabled }}
+{{- $pkiApplication := and .Values.pki.enabled .Values.pki.applicationEnabled }}
+{{- $legacyScyllaExclude := ternary (list "DB_CONNECTION") (list) (not (empty $.Values.global.openbaoAuthPath)) }}
+{{- if $pkiApplication }}
+{{- $legacyScyllaExclude = concat $legacyScyllaExclude (list "CASSANDRA__X509Certificate_PATHS" "CASSANDRA__X509Certificate_PASSWORD") }}
+{{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -102,7 +107,7 @@ spec:
           - name: REDIS_HOST
             value: "{{ .Chart.Name }}-redis,syncTimeout=1000"
           {{ if .Values.envVars }}
-          {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars "excludeNames" (ternary (list "DB_CONNECTION") (list) (not (empty $.Values.global.openbaoAuthPath)))) | nindent 10 }}
+          {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars "excludeNames" $legacyScyllaExclude) | nindent 10 }}
           {{ end }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars "excludeNames" (ternary (list "KAFKA__BROKERS" "KAFKA__USERNAME" "KAFKA__PASSWORD") (list) (not (empty $.Values.global.openbaoAuthPath)))) | nindent 10 }}
         readinessProbe:
@@ -128,9 +133,11 @@ spec:
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
+        {{- if not $pkiApplication }}
         - name: scylla-pfx
           mountPath: /tls/scylla/secret/db.pfx
           subPath: db.pfx
+        {{- end }}
       volumes:
       {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
         - name: pki-client
@@ -150,12 +157,14 @@ spec:
                   expirationSeconds: 600
                   path: token
       {{- end }}
+        {{- if not $pkiApplication }}
         - name: scylla-pfx
           secret:
             secretName: scylla-pfx
             items:
               - key: db.pfx
                 path: db.pfx
+        {{- end }}
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
