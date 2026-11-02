@@ -483,13 +483,6 @@ sky-auctions:
         secretKeyRef:
           name: scylla-credentials
           key: auctions-password
-    - name: CASSANDRA__X509Certificate_PATHS
-      value: /tls/scylla/secret/db.pfx
-    - name: CASSANDRA__X509Certificate_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: scylla-credentials
-          key: db-pfx-password
   livenessProbe:
     initialDelaySeconds: 90
   readinessProbe:

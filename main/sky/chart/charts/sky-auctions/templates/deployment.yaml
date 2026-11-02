@@ -119,9 +119,11 @@ spec:
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
+        {{- if not (and .Values.pki.enabled .Values.pki.applicationEnabled) }}
         - name: scylla-pfx
           mountPath: /tls/scylla/secret/db.pfx
           subPath: db.pfx
+        {{- end }}
       volumes:
       {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
         - name: pki-client
@@ -153,10 +155,12 @@ spec:
             secretName: {{ .name }}
           {{ end }}
       {{ end }}
+        {{- if not (and .Values.pki.enabled .Values.pki.applicationEnabled) }}
         - name: scylla-pfx
           secret:
             secretName: scylla-pfx
             items:
             - key: db.pfx
               path: db.pfx
+        {{- end }}
 {{ end }}
