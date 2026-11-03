@@ -1,4 +1,5 @@
 {{ if .Values.enabled }}
+{{- include "payments.cockroachClient.validateInstances" . }}
 {{ range $p := .Values.payments }}
 {{- $ctx := dict "root" $ "p" $p }}
 {{- $pkiMounts := include "payments.cockroachClient.mounts" $ctx }}

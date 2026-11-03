@@ -1,5 +1,8 @@
 {{/*
-Per-instance CockroachDB client certificates (openbao.database.mtls.instances).
+Per-instance CockroachDB client certificate wiring (openbao.database.mtls.instances).
+The certificate objects themselves (ServiceAccount, Issuer, Certificate, trust ConfigMap)
+are created by the Fleet bundle payments-pki; this chart only mounts the Secret and
+ConfigMap below, so their names must match that bundle.
 Helpers taking a context expect (dict "root" $ "p" <payments entry>).
 */}}
 
@@ -8,25 +11,20 @@ Helpers taking a context expect (dict "root" $ "p" <payments entry>).
 {{- trimSuffix "-payments" .name -}}
 {{- end }}
 
+{{/* Secret written by the payments-pki Certificate. */}}
 {{- define "payments.cockroachClient.name" -}}
 {{- printf "%s-cockroach-client" (include "payments.instance" .p) -}}
 {{- end }}
 
-{{- define "payments.cockroachClient.serviceAccount" -}}
-{{- printf "%s-certificates" (include "payments.instance" .p) -}}
-{{- end }}
-
+{{/* ConfigMap (cockroach-ca.crt) created by payments-pki. */}}
 {{- define "payments.cockroachClient.trustName" -}}
 {{- printf "%s-cockroach-trust" (include "payments.instance" .p) -}}
 {{- end }}
 
-{{/* The instance's phase switches as YAML ({} when unlisted); fails on an inconsistent phase order. */}}
+{{/* The instance's phase switches as YAML ({} when unlisted); fails on an inconsistent phase order. The stage phase is Fleet's payments-pki. */}}
 {{- define "payments.cockroachClient.settings" -}}
 {{- $instance := include "payments.instance" .p -}}
 {{- $settings := get (.root.Values.openbao.database.mtls.instances | default dict) $instance | default dict -}}
-{{- if and $settings.mounts (not $settings.stage) -}}
-{{- fail (printf "openbao.database.mtls.instances.%s.mounts needs stage (the client Secret would not exist)" $instance) -}}
-{{- end -}}
 {{- if and $settings.application (not $settings.mounts) -}}
 {{- fail (printf "openbao.database.mtls.instances.%s.application needs mounts (the certificate files would be missing)" $instance) -}}
 {{- end -}}
@@ -37,10 +35,6 @@ Helpers taking a context expect (dict "root" $ "p" <payments entry>).
 {{- end }}
 
 {{/* "true" when the phase is on for this instance, "" otherwise. */}}
-{{- define "payments.cockroachClient.stage" -}}
-{{- if (fromYaml (include "payments.cockroachClient.settings" .)).stage }}true{{ end -}}
-{{- end }}
-
 {{- define "payments.cockroachClient.mounts" -}}
 {{- if (fromYaml (include "payments.cockroachClient.settings" .)).mounts }}true{{ end -}}
 {{- end }}
@@ -56,7 +50,7 @@ Helpers taking a context expect (dict "root" $ "p" <payments entry>).
 {{- $known = append $known (include "payments.instance" .) -}}
 {{- end -}}
 {{- range $instance, $settings := .Values.openbao.database.mtls.instances | default dict -}}
-{{- if and (or $settings.stage $settings.mounts $settings.application) (not (has $instance $known)) -}}
+{{- if and (or $settings.mounts $settings.application) (not (has $instance $known)) -}}
 {{- fail (printf "openbao.database.mtls.instances.%s is enabled but there is no payments entry %s-payments" $instance $instance) -}}
 {{- end -}}
 {{- end -}}

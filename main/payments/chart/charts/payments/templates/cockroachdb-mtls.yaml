@@ -1,6 +1,6 @@
-{{- /* RETIRED: the ClusterIssuers below do not exist; per-instance certificates live in cockroach-client-pki.yaml. */}}
+{{- /* RETIRED: the ClusterIssuers below do not exist; per-instance certificates are issued by the Fleet bundle payments-pki. */}}
 {{- if .Values.openbao.database.mtls.enabled }}
-{{- fail "openbao.database.mtls.enabled is the retired global design; use openbao.database.mtls.instances.<instance>.{stage,mounts,application}" }}
+{{- fail "openbao.database.mtls.enabled is the retired global design; use openbao.database.mtls.instances.<instance>.{mounts,application}" }}
 {{- end }}
 {{- if and .Values.enabled .Values.openbao.database.enabled .Values.openbao.database.mtls.enabled }}
 {{- if not .Values.openbao.database.mtls.rootCA }}
