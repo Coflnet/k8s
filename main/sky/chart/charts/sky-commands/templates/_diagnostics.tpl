@@ -29,6 +29,9 @@
     privileged: false
     readOnlyRootFilesystem: true
     runAsNonRoot: true
+    # same uid as the app: the app connects to the socket dotnet-monitor creates, which is not group-writable
+    runAsUser: 1000
+    runAsGroup: 1000
     capabilities:
       drop:
         - ALL
@@ -57,15 +60,10 @@
       value: {{ .Values.diagnostics.workingSetThresholdMb | quote }}
     - name: DOTNETMONITOR_CollectionRules__HighMemory__Trigger__Settings__SlidingWindowDuration
       value: "00:00:15"
+    # gcdump only: a Full dump pauses every session for seconds and needs several GB of disk
     - name: DOTNETMONITOR_CollectionRules__HighMemory__Actions__0__Type
-      value: CollectDump
-    - name: DOTNETMONITOR_CollectionRules__HighMemory__Actions__0__Settings__Type
-      value: Full
-    - name: DOTNETMONITOR_CollectionRules__HighMemory__Actions__0__Settings__Egress
-      value: artifacts
-    - name: DOTNETMONITOR_CollectionRules__HighMemory__Actions__1__Type
       value: CollectGCDump
-    - name: DOTNETMONITOR_CollectionRules__HighMemory__Actions__1__Settings__Egress
+    - name: DOTNETMONITOR_CollectionRules__HighMemory__Actions__0__Settings__Egress
       value: artifacts
     - name: DOTNETMONITOR_CollectionRules__HighMemory__Limits__ActionCount
       value: "1"

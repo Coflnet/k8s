@@ -40,7 +40,8 @@ diagnostics:
       memory: 32Mi
     limits:
       cpu: 250m
-      memory: 256Mi
+      # the gcdump graph is built inside dotnet-monitor
+      memory: 1Gi
 
 services:
   - sky-commands
