@@ -67,6 +67,9 @@ Helpers taking a context expect (dict "root" $ "p" <payments entry>).
 {{- $securityContext := deepCopy (.root.Values.podSecurityContext | default dict) -}}
 {{- if include "payments.cockroachClient.mounts" . -}}
 {{- $fsGroup := .root.Values.openbao.database.mtls.clientPki.fsGroup | int64 -}}
+{{- if le $fsGroup 0 -}}
+{{- fail "openbao.database.mtls.clientPki.fsGroup must be a positive group id (0 would be the root group)" -}}
+{{- end -}}
 {{- $_ := set $securityContext "fsGroup" ($securityContext.fsGroup | default $fsGroup) -}}
 {{- end -}}
 {{- toYaml $securityContext -}}
