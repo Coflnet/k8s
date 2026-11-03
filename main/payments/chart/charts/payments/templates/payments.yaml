@@ -1,5 +1,8 @@
 {{ if .Values.enabled }}
 {{ range $p := .Values.payments }}
+{{- $ctx := dict "root" $ "p" $p }}
+{{- $pkiMounts := include "payments.cockroachClient.mounts" $ctx }}
+{{- $clientPki := $.Values.openbao.database.mtls.clientPki }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -57,7 +60,7 @@ spec:
     spec:
       serviceAccountName: {{ $p.name }}
       automountServiceAccountToken: {{ $.Values.automountServiceAccountToken | default false }}
-      {{- with $.Values.podSecurityContext }}
+      {{- with (include "payments.podSecurityContext" $ctx | fromYaml) }}
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -163,6 +166,12 @@ spec:
           {{- if $p.envVars }}
           {{ toYaml $p.envVars | nindent 10 }}
           {{- end }}
+          {{- if include "payments.cockroachClient.application" $ctx }}
+          {{- range $name, $value := $clientPki.env }}
+          - name: {{ $name }}
+            value: {{ $value | quote }}
+          {{- end }}
+          {{- end }}
         readinessProbe:
           {{ toYaml $.Values.readinessProbe | nindent 10 }}
         resources:
@@ -197,6 +206,15 @@ spec:
         {{- end }}
         {{ end }}
         {{ end }}
+        {{- if $pkiMounts }}
+        # CockroachDB client PKI stays last: Kyverno injects its volumes at the front.
+        - name: cockroach-client-pki
+          mountPath: {{ $clientPki.certMountPath | quote }}
+          readOnly: true
+        - name: cockroach-client-trust
+          mountPath: {{ $clientPki.trustMountPath | quote }}
+          readOnly: true
+        {{- end }}
       # Kyverno autogen (project-openbao-token-for-no-api-workloads) moves
       # openbao-token to the front of volumes; keep it first so live matches git.
       volumes:
@@ -237,6 +255,15 @@ spec:
         {{- end }}
       {{ end }}
       {{ end }}
+        {{- if $pkiMounts }}
+        - name: cockroach-client-pki
+          secret:
+            secretName: {{ include "payments.cockroachClient.name" $ctx | quote }}
+            defaultMode: 0440
+        - name: cockroach-client-trust
+          configMap:
+            name: {{ include "payments.cockroachClient.trustName" $ctx | quote }}
+        {{- end }}
 ---
 apiVersion: v1
 kind: ServiceAccount
