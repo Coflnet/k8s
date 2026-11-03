@@ -56,14 +56,45 @@ openbao:
     mount: database
     credentialsKind: static
     refreshSeconds: 1800
-    # Additive CockroachDB client mTLS. Password rotation remains active while
-    # this is enabled, so cert-password authentication has a rollback path.
     mtls:
+      # RETIRED global design (one switch for all four instances, ClusterIssuers
+      # openbao-pki-cockroachdb-* that do not exist). Must stay false; the chart
+      # fails if it is set. Use `instances` below. Removed in a later cleanup.
       enabled: false
       rootCAConfigMapName: cockroachdb-server-ca
       rootCAPath: /var/run/secrets/cockroachdb-server-ca/ca.crt
       clientMountPath: /var/run/secrets/cockroachdb-client
       rootCA: ""
+      # Per-instance CockroachDB SQL client certificates (SQL user <instance>_payments,
+      # PKI role cockroachdb-client-<instance>-payments). Keys are the instance prefix
+      # of the payments entry (tab -> tab-payments). Phases, each needing the previous:
+      #   stage:       Issuer, cert-manager SA/Role/RoleBinding, Certificate, trust ConfigMap (no Pod change)
+      #   mounts:      mount the client Secret + trust ConfigMap into that Deployment only (+ pod fsGroup)
+      #   application: add clientPki.env to that container (needs openbao.database.enabled)
+      # Password rotation stays active (HBA cert-password), so turning a phase off is the rollback.
+      instances:
+        sky: {stage: false, mounts: false, application: false}
+        ane: {stage: false, mounts: false, application: false}
+        tab: {stage: false, mounts: false, application: false}
+        dash: {stage: false, mounts: false, application: false}
+      clientPki:
+        # OpenBao JWT auth mount cert-manager logs in with (e.g. /v1/auth/jwt-talos-eu).
+        authMountPath: ""
+        # PEM bundle verifying the OpenBao listener at openbao.addr.
+        listenerCaBundle: ""
+        # PEM bundle verifying the CockroachDB server leaves (legacy CA + shared root during the overlap).
+        trustBundle: ""
+        certMountPath: /pki/client
+        trustMountPath: /pki/trust
+        # Group that may read the 0440 client key (the image's app user/group).
+        fsGroup: 1654
+        # Rendered into the container only when the instance's `application` phase is on.
+        # Paths must match certMountPath/trustMountPath above.
+        env:
+          OPENBAO__DB__MTLS__ENABLED: "true"
+          OPENBAO__DB__MTLS__CLIENT_CERT_PATH: /pki/client/tls.crt
+          OPENBAO__DB__MTLS__CLIENT_KEY_PATH: /pki/client/tls.key
+          OPENBAO__DB__MTLS__ROOT_CERT_PATH: /pki/trust/cockroach-ca.crt
 
 # Redpanda mTLS material (ca.crt, skyblock.crt, skyblock.key).
 # Default: mounted from the in-cluster `redpanda` Secret/ConfigMap (eu-cluster).

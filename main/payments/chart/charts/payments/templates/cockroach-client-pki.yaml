@@ -1,0 +1,89 @@
+{{- /* Per-instance CockroachDB SQL client certificates: the `stage` phase of openbao.database.mtls.instances.<instance>. */}}
+{{- if .Values.enabled }}
+{{- include "payments.cockroachClient.validateInstances" . }}
+{{- $clientPki := .Values.openbao.database.mtls.clientPki }}
+{{- range $p := .Values.payments }}
+{{- $ctx := dict "root" $ "p" $p }}
+{{- if include "payments.cockroachClient.stage" $ctx }}
+{{- $instance := include "payments.instance" $p }}
+{{- $name := include "payments.cockroachClient.name" $ctx }}
+{{- $serviceAccount := include "payments.cockroachClient.serviceAccount" $ctx }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $serviceAccount }}
+  labels:
+    app.kubernetes.io/part-of: payments
+automountServiceAccountToken: false
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $serviceAccount }}
+  labels:
+    app.kubernetes.io/part-of: payments
+rules:
+- apiGroups: ['']
+  resources: [serviceaccounts/token]
+  resourceNames: [{{ $serviceAccount }}]
+  verbs: [create]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $serviceAccount }}
+  labels:
+    app.kubernetes.io/part-of: payments
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: {{ $serviceAccount }}}
+subjects:
+- {kind: ServiceAccount, name: cert-manager, namespace: cert-manager}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "payments.cockroachClient.trustName" $ctx }}
+  labels:
+    app.kubernetes.io/part-of: payments
+data:
+  # CockroachDB legacy CA (verifies today's node leaves) + shared Coflnet root (verifies them after the deferred server-leaf switch).
+  cockroach-ca.crt: |
+{{ required "openbao.database.mtls.clientPki.trustBundle is required" $clientPki.trustBundle | trimSuffix "\n" | indent 4 }}
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ $name }}
+  labels:
+    app.kubernetes.io/part-of: payments
+spec:
+  vault:
+    server: {{ $.Values.openbao.addr }}
+    path: pki_int/sign/{{ printf "cockroachdb-client-%s" $p.name }}
+    caBundle: {{ required "openbao.database.mtls.clientPki.listenerCaBundle is required" $clientPki.listenerCaBundle | b64enc | quote }}
+    auth:
+      kubernetes:
+        mountPath: {{ required "openbao.database.mtls.clientPki.authMountPath is required" $clientPki.authMountPath }}
+        role: {{ printf "cert-manager-issuer-%s-%s" $.Release.Namespace $name }}
+        serviceAccountRef:
+          name: {{ $serviceAccount }}
+          audiences: [{{ printf "vault://%s/%s" $.Release.Namespace $name | quote }}]
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ $name }}
+  labels:
+    app.kubernetes.io/part-of: payments
+spec:
+  secretName: {{ $name }}
+  duration: 24h
+  renewBefore: 8h
+  privateKey: {algorithm: ECDSA, size: 384, rotationPolicy: Always}
+  issuerRef: {name: {{ $name }}, kind: Issuer}
+  # CN is the exact CockroachDB SQL user (cert-password HBA: CN == user); no dnsNames are requested.
+  commonName: {{ printf "%s_payments" $instance }}
+  usages: ["digital signature", "client auth"]
+{{- end }}
+{{- end }}
+{{- end }}
