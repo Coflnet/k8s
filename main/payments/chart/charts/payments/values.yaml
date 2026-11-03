@@ -68,22 +68,18 @@ openbao:
       # Per-instance CockroachDB SQL client certificates (SQL user <instance>_payments,
       # PKI role cockroachdb-client-<instance>-payments). Keys are the instance prefix
       # of the payments entry (tab -> tab-payments). Phases, each needing the previous:
-      #   stage:       Issuer, cert-manager SA/Role/RoleBinding, Certificate, trust ConfigMap (no Pod change)
-      #   mounts:      mount the client Secret + trust ConfigMap into that Deployment only (+ pod fsGroup)
+      #   stage:       Fleet bundle payments-pki (fleet repo): Issuer, SA/Role/RoleBinding, Certificate,
+      #                trust ConfigMap. Not part of this chart; must be Ready before `mounts`.
+      #   mounts:      mount Secret <instance>-cockroach-client + ConfigMap <instance>-cockroach-trust
+      #                into that Deployment only (+ pod fsGroup)
       #   application: add clientPki.env to that container (needs openbao.database.enabled)
       # Password rotation stays active (HBA cert-password), so turning a phase off is the rollback.
       instances:
-        sky: {stage: false, mounts: false, application: false}
-        ane: {stage: false, mounts: false, application: false}
-        tab: {stage: false, mounts: false, application: false}
-        dash: {stage: false, mounts: false, application: false}
+        sky: {mounts: false, application: false}
+        ane: {mounts: false, application: false}
+        tab: {mounts: false, application: false}
+        dash: {mounts: false, application: false}
       clientPki:
-        # OpenBao JWT auth mount cert-manager logs in with (e.g. /v1/auth/jwt-talos-eu).
-        authMountPath: ""
-        # PEM bundle verifying the OpenBao listener at openbao.addr.
-        listenerCaBundle: ""
-        # PEM bundle verifying the CockroachDB server leaves (legacy CA + shared root during the overlap).
-        trustBundle: ""
         certMountPath: /pki/client
         trustMountPath: /pki/trust
         # Group that may read the 0440 client key (the image's app user/group).
