@@ -4,7 +4,7 @@ from pathlib import Path
 import subprocess, sys
 import yaml
 CHART = Path(__file__).resolve().parents[2] / 'main/payments/chart'
-VALUE_SETS = {'default': [], 'talos': ['talos.yaml', 'talos-openbao-secrets-cutover.yaml'], 'us': ['us.yaml']}
+VALUE_SETS = {'default': [], 'talos': ['talos.yaml', 'talos-openbao-secrets-cutover.yaml']}
 def render(files):
     args = ['helm', 'template', 'payments', str(CHART), '-n', 'payment']
     for f in files: args += ['-f', str(CHART / f)]

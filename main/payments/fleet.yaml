@@ -3,11 +3,6 @@ helm:
   chart: ./chart
 
 targetCustomizations:
-  - name: us-cluster
-    clusterName: us-cluster
-    helm:
-      valuesFiles:
-        - ./chart/us.yaml
   - name: talos-eu-hcloud
     clusterName: talos-eu-hcloud
     helm:
