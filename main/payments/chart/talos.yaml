@@ -89,6 +89,10 @@ payments:
         # Retired global design; must stay false (see chart values). Per-instance
         # switches: payments.openbao.database.mtls.instances.<sky|ane|tab|dash>.
         enabled: false
+        # `application` is set here, not in the chart defaults, because it needs
+        # database.enabled above; merges with the defaults' `mounts` per instance.
+        instances:
+          dash: {application: true}
         rootCA: |
           -----BEGIN CERTIFICATE-----
           MIIDJjCCAg6gAwIBAgIRANT0y3Zf7+5XjnWpgrM3DukwDQYJKoZIhvcNAQELBQAw
