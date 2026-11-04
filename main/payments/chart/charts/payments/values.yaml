@@ -76,7 +76,7 @@ openbao:
       # Password rotation stays active (HBA cert-password), so turning a phase off is the rollback.
       instances:
         sky: {mounts: false, application: false}
-        ane: {mounts: false, application: false}
+        ane: {mounts: true, application: false}
         tab: {mounts: true, application: false}
         dash: {mounts: true, application: false}
       clientPki:

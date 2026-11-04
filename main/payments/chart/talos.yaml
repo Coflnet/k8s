@@ -94,6 +94,7 @@ payments:
         instances:
           dash: {application: true}
           tab: {application: true}
+          ane: {application: true}
         rootCA: |
           -----BEGIN CERTIFICATE-----
           MIIDJjCCAg6gAwIBAgIRANT0y3Zf7+5XjnWpgrM3DukwDQYJKoZIhvcNAQELBQAw
