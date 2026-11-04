@@ -93,6 +93,7 @@ payments:
         # database.enabled above; merges with the defaults' `mounts` per instance.
         instances:
           dash: {application: true}
+          tab: {application: true}
         rootCA: |
           -----BEGIN CERTIFICATE-----
           MIIDJjCCAg6gAwIBAgIRANT0y3Zf7+5XjnWpgrM3DukwDQYJKoZIhvcNAQELBQAw

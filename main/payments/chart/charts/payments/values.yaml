@@ -77,7 +77,7 @@ openbao:
       instances:
         sky: {mounts: false, application: false}
         ane: {mounts: false, application: false}
-        tab: {mounts: false, application: false}
+        tab: {mounts: true, application: false}
         dash: {mounts: true, application: false}
       clientPki:
         certMountPath: /pki/client
