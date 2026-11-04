@@ -159,12 +159,17 @@ serivcePorts:
     port: 8000
     targetPort: 8000
 
+# /health/ready answers 200 only when the database answers SELECT 1 (the app
+# gives up after 3s and returns 503), so a pod with a broken DB certificate or
+# unreachable DB leaves the Service endpoints. timeoutSeconds stays above that
+# 3s so the app's own 503 decides rather than the kubelet's default 1s timeout.
 readinessProbe:
   httpGet:
-    path: /migrationdone
+    path: /health/ready
     port: api
   initialDelaySeconds: 30
   periodSeconds: 3
+  timeoutSeconds: 4
 
 envVars:
   - name: JAEGER_AGENT_HOST
