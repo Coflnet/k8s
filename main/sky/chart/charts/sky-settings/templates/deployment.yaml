@@ -109,7 +109,7 @@ spec:
           {{ if .Values.envVars }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars "excludeNames" $legacyScyllaExclude) | nindent 10 }}
           {{ end }}
-          {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars "excludeNames" (ternary (list "KAFKA__BROKERS" "KAFKA__USERNAME" "KAFKA__PASSWORD") (list) (not (empty $.Values.global.openbaoAuthPath)))) | nindent 10 }}
+          {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars "pki" .Values.pki "excludeNames" (ternary (list "KAFKA__BROKERS" "KAFKA__USERNAME" "KAFKA__PASSWORD") (list) (not (empty $.Values.global.openbaoAuthPath)))) | nindent 10 }}
         readinessProbe:
           {{- if and .Values.pki.enabled .Values.pki.applicationEnabled .Values.pki.readinessEnabled }}
           {{ toYaml (mergeOverwrite (deepCopy .Values.readinessProbe) (dict "httpGet" (dict "path" "/health/ready" "port" "api"))) | nindent 10 }}

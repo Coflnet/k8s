@@ -187,6 +187,45 @@ global:
     IDcNtGjLm4jxvXj9MrrNBwICv2XvSscsE/nc8Je3zE8D
     -----END CERTIFICATE-----
 
+  # Kafka broker trust for workloads presenting their own PKI leaf (pki.env
+  # KAFKA__TLS__CA_LOCATION=/pki/trust/kafka-ca.crt): legacy broker server CA
+  # (Coflnet GmbH) + Coflnet Internal Root CA, so librdkafka verifies the brokers and
+  # Coflnet.Core renewal validates the leaf chain. Rendered into each <chart>-pki-trust.
+  kafkaCaBundle: |
+    -----BEGIN CERTIFICATE-----
+    MIIDRjCCAi6gAwIBAgIUPqO/DLPmTaHuhK4e/nHe2WRGAocwDQYJKoZIhvcNAQEL
+    BQAwKTEVMBMGA1UEAwwMQ29mbG5ldCBHbWJIMRAwDgYDVQQKDAdDb2ZsbmV0MB4X
+    DTI1MTAxNDE4MDI1MVoXDTM1MTAxMjE4MDI1MVowKTEVMBMGA1UEAwwMQ29mbG5l
+    dCBHbWJIMRAwDgYDVQQKDAdDb2ZsbmV0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
+    MIIBCgKCAQEA8az1PzhKpHlnMEap4YHvprLkVALBxlpdNMfG7AtEger+bbQU0OIt
+    okcGViSQ4Q7s6vu+melhz0XznbkwqbQHR4ZQyWjlyKiN+OHUwWg6QAgFihDEMaKy
+    JOayDC1A+iDeo2zcdLWmt5rVYPgpUAqNhSbxpHCBA6P9+kVNo4hALZ4MuDsOpJwX
+    KvRFSWt68ePaCXBLewXs37S6FvEHOyz/8oVnR/4AzTUIg+MPFXqProBkH3gu4Na0
+    U2v6w1d5eXvGNgfOuo3mqZCmUnB6PEZZpWnwEqNMIvU/YY2i49w2QsWGrERwHj+/
+    vEE6oVrCDFZFt4SRB2LEOhunozMyFwOPBQIDAQABo2YwZDAdBgNVHQ4EFgQUzSXb
+    NHyiBw+j0cW5xlU+FdaAj5owHwYDVR0jBBgwFoAUzSXbNHyiBw+j0cW5xlU+FdaA
+    j5owEgYDVR0TAQH/BAgwBgEB/wIBADAOBgNVHQ8BAf8EBAMCAQYwDQYJKoZIhvcN
+    AQELBQADggEBAN25AYz+fTyn+snYcr1LNSVtOotxqermE46te47ZCjfp2O/jzmkp
+    hBcbdVvrw6W8ePHUrxQokrVPJK/0OgyxsjYIZCaAZ9JqDoac+eoAiyypa+NyOF50
+    HnWMR1eOHS6pjbE8nMH8+7OUFOAW1LTrqSNBXeo0nBb5YnZUYqwc1zQs2lHjJWPo
+    2W7z+G3Ghn1KtDwVXVAOhHzhyUAfZflFMNBOIXNhFBx8wvXixN9wtZdk1m329zEt
+    SdmR//jDHTsCcM3uJcaqJGSokxgdXTRWyPknSYaf8wTgyBytN+VGyhM84eBt9iOJ
+    HBa9o7Pj46YtQRLH/YhfPXAhiHf040xCb90=
+    -----END CERTIFICATE-----
+    -----BEGIN CERTIFICATE-----
+    MIIB7zCCAXSgAwIBAgIUHiabVzU7uVeszIY2O8ihUrQ5DwgwCgYIKoZIzj0EAwMw
+    NTEhMB8GA1UEAwwYQ29mbG5ldCBJbnRlcm5hbCBSb290IENBMRAwDgYDVQQKDAdD
+    b2ZsbmV0MB4XDTI2MDcyMDIwNDIxN1oXDTM2MDcxNzIwNDIxN1owNTEhMB8GA1UE
+    AwwYQ29mbG5ldCBJbnRlcm5hbCBSb290IENBMRAwDgYDVQQKDAdDb2ZsbmV0MHYw
+    EAYHKoZIzj0CAQYFK4EEACIDYgAETSbRhSFLZeXf60Uv7P/E5BWyVwhYXWwBpR7S
+    WuAdCWRExq7E1QRmo484Zrtr6UlkTAzS0DAq2zggBcp1hQyvIUBrCn/TO6JNjdde
+    exWeoahXw+XGMkObmbRJHT5xtsU/o0UwQzASBgNVHRMBAf8ECDAGAQH/AgEBMA4G
+    A1UdDwEB/wQEAwIBBjAdBgNVHQ4EFgQUoVgcsk/ZkIkNHEyXnMi7BFErBlEwCgYI
+    KoZIzj0EAwMDaQAwZgIxAMfHYvIGbgyOXRCw0eTfN4xzNJ62MqfC+8+AzdoSm9nM
+    HHruulsMgVPkPJjJtzrdCgIxAPmVl1a1SSySB+/dkp6u+Lb/Y0SJ03Y26HQvIt1S
+    AfQEYz7xazS4XJ3nIbGpy3MxSg==
+    -----END CERTIFICATE-----
+
   # Keep global.secret / global.config disabled; secrets are created externally,
   # not by the chart template.
   secret:

@@ -2,6 +2,11 @@
 {{- $root := .root -}}
 {{- $env := .env | default list -}}
 {{- $excludeNames := .excludeNames | default list -}}
+{{- /* Optional "pki": when the app PKI path is on, pki.env wins over same-named entries. */ -}}
+{{- $pki := .pki | default dict -}}
+{{- if and $pki.enabled $pki.applicationEnabled -}}
+{{- $excludeNames = concat $excludeNames (keys ($pki.env | default dict)) -}}
+{{- end -}}
 {{- $filtered := list -}}
 {{- range $item := $env -}}
 {{- $fromSecret := hasKey ($item.valueFrom | default dict) "secretKeyRef" -}}

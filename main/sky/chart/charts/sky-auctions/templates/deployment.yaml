@@ -95,7 +95,7 @@ spec:
           {{ if .Values.envVars }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 10 }}
           {{ end }}
-          {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars) | nindent 10 }}
+          {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars "pki" .Values.pki) | nindent 10 }}
           - name: REDIS_HOST
             value: "{{ .Chart.Name }}-redis"
         readinessProbe:

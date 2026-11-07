@@ -79,7 +79,7 @@ spec:
           {{ if .Values.envVars }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 10 }}
           {{ end }}
-          {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars) | nindent 10 }}
+          {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars "pki" .Values.pki) | nindent 10 }}
         readinessProbe:
           {{- if and (.Values.pki | default dict).applicationEnabled (ne (.Values.pki | default dict).readinessEnabled false) }}
           httpGet: {path: /health/ready, port: api}

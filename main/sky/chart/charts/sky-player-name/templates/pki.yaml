@@ -30,6 +30,10 @@ metadata:
 data:
   ca.crt: |
 {{ required "pki.rootCaBundle is required" .Values.pki.rootCaBundle | indent 4 }}
+{{- with .Values.pki.kafkaCaBundle | default .Values.global.kafkaCaBundle }}
+  kafka-ca.crt: |
+{{ . | indent 4 }}
+{{- end }}
 {{- range .Values.pki.certificates }}
 ---
 apiVersion: cert-manager.io/v1
