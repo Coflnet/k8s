@@ -23,7 +23,7 @@ serviceMonitor:
 
 image:
   repository: muehlhansfl/skyitems
-  tag: cad506495525f88150f22566a3aee0f908930acc@sha256:79c0421f1ce4fedacd034bbeaceef33a56a55c39a4483ffaf6d8e21f61b5bf1c
+  tag: acbf0990ab7db16d9229e31f0e9485ab1a1ca5b6@sha256:f7571fedc41de6655c78de1e9275e86cee7ca955fd747f48ea1a33669eb90e62
   pullPolicy: IfNotPresent
 
 ports:
