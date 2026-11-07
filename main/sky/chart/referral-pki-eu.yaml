@@ -1,4 +1,4 @@
-# External SQL client only; internal HTTP and legacy Kafka remain unchanged.
+# External SQL client + Kafka canary (own leaf); internal HTTP remains unchanged.
 sky-referral:
   pki:
     enabled: true
@@ -53,3 +53,10 @@ sky-referral:
       DB__TLS__CA_CERT_PATH: /pki/trust/mariadb-ca.crt
       DB__TLS__CERT_PATH: /pki/client/tls.crt
       DB__TLS__KEY_PATH: /pki/client/tls.key
+      # Kafka canary: present the own short-lived leaf (renewed in-process) instead of
+      # the shared legacy cert; the SASL user stays the principal. These keys override
+      # global.envVars. Rollback = remove these four keys.
+      KAFKA__TLS__CA_LOCATION: /pki/trust/kafka-ca.crt
+      KAFKA__TLS__CERTIFICATE_LOCATION: /pki/client/tls.crt
+      KAFKA__TLS__KEY_LOCATION: /pki/client/tls.key
+      KAFKA__TLS__RELOAD_ON_CHANGE: "true"
