@@ -28,3 +28,7 @@ readinessProbe:
   initialDelaySeconds: 20
   periodSeconds: 3
 
+
+pki:
+  enabled: false
+  applicationEnabled: false

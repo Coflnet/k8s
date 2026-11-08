@@ -150,3 +150,7 @@ envVars:
       secretKeyRef:
         name: secret
         key: paid_api_access_rules
+
+pki:
+  enabled: false
+  applicationEnabled: false
