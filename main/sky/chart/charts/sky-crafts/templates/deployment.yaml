@@ -53,9 +53,6 @@ spec:
         image: {{ .Values.image.repository }}:{{ .Values.image.tag  }}
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
-          {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
-          - {name: https, containerPort: 8443}
-          {{- end }}
         env:
           {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
           {{- range $name, $value := .Values.pki.env }}
@@ -103,7 +100,6 @@ spec:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
         {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
-        - {name: pki-server, mountPath: /pki/server, readOnly: true}
         - {name: pki-trust, mountPath: /pki/trust, readOnly: true}
         {{- end }}
         {{- if $.Values.global.openbaoAuthPath }}
@@ -117,8 +113,6 @@ spec:
         {{ end }}
       volumes:
       {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
-        - name: pki-server
-          secret: {secretName: sky-crafts-server, defaultMode: 0440}
         - name: pki-trust
           configMap: {name: sky-crafts-pki-trust}
       {{- end }}

@@ -1,4 +1,4 @@
-# Public server PKI material; activate HTTPS only after the compatible source release.
+# Client leaf only (Kafka); sky-crafts serves plain HTTP on 8000, no HTTPS listener.
 sky-crafts:
   pki:
     enabled: true
@@ -29,7 +29,3 @@ sky-crafts:
       KoZIzj0EAwIDRwAwRAIgA1l0MK0v3oIhoVgys1U/jdVZig/jp/SMhGJTilO25FkC
       IDcNtGjLm4jxvXj9MrrNBwICv2XvSscsE/nc8Je3zE8D
       -----END CERTIFICATE-----
-    env:
-      HTTPS__TLS__CA_CERT_PATH: /pki/trust/ca.crt
-      HTTPS__TLS__CERT_PATH: /pki/server/tls.crt
-      HTTPS__TLS__KEY_PATH: /pki/server/tls.key
