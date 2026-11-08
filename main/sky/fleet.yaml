@@ -112,6 +112,15 @@ targetCustomizations:
         - ./chart/player-state-pki-eu.yaml
         - ./chart/proxy-pki-eu.yaml
         - ./chart/mod-commands-pki-eu.yaml
+        - ./chart/api-pki-eu.yaml
+        - ./chart/bazaar-flipper-pki-eu.yaml
+        - ./chart/bfcs-pki-eu.yaml
+        - ./chart/commands-pki-eu.yaml
+        - ./chart/event-broker-pki-eu.yaml
+        - ./chart/flipper-pki-eu.yaml
+        - ./chart/mc-connect-pki-eu.yaml
+        - ./chart/sniper-pki-eu.yaml
+        - ./chart/updater-pki-eu.yaml
 
   - name: talos-linode
     clusterName: talos-linode

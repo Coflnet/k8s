@@ -30,6 +30,10 @@ metadata:
 data:
   ca.crt: |
 {{ required "pki.rootCaBundle is required" .Values.pki.rootCaBundle | indent 4 }}
+{{- with .Values.pki.kafkaCaBundle | default .Values.global.kafkaCaBundle }}
+  kafka-ca.crt: |
+{{ . | indent 4 }}
+{{- end }}
 ---
 apiVersion: cert-manager.io/v1
 kind: Issuer
@@ -61,6 +65,38 @@ spec:
   commonName: sky-crafts.sky.svc.cluster.local
   dnsNames: [sky-crafts, sky-crafts.sky, sky-crafts.sky.svc, sky-crafts.sky.svc.cluster.local]
   usages: [digital signature, server auth]
+---
+# Client leaf (Kafka/other mTLS clients); same ServiceAccount, separate OpenBao role/issuer.
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: sky-crafts-client
+spec:
+  vault:
+    server: https://openbao.openbao.svc:8200
+    path: pki_int/sign/sky-crafts-client
+    caBundle: {{ required "pki.listenerCaBundle is required" .Values.pki.listenerCaBundle | b64enc | quote }}
+    auth:
+      kubernetes:
+        mountPath: /v1/auth/jwt-talos-eu
+        role: cert-manager-issuer-sky-sky-crafts-client
+        serviceAccountRef:
+          name: sky-crafts-certificates
+          audiences: ["vault://sky/sky-crafts-client"]
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: sky-crafts-client
+spec:
+  secretName: sky-crafts-client
+  duration: 24h
+  renewBefore: 8h
+  privateKey: {algorithm: ECDSA, size: 384, rotationPolicy: Always}
+  issuerRef: {name: sky-crafts-client, kind: Issuer}
+  commonName: sky-crafts.sky.talos-eu.clients.coflnet.internal
+  dnsNames: [sky-crafts.sky.talos-eu.clients.coflnet.internal]
+  usages: [digital signature, client auth]
 {{- if .Values.pki.applicationEnabled }}
 ---
 apiVersion: networking.k8s.io/v1
