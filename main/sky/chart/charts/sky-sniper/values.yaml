@@ -66,3 +66,7 @@ envVars:
       secretKeyRef:
         key: jwt_secret_sniper
         name: secret
+
+pki:
+  enabled: false
+  applicationEnabled: false

@@ -91,3 +91,7 @@ redis:
   maxmemory: 50mb
   # Container memory request; keep it above maxmemory plus fragmentation (~1.4x).
   memoryRequest: 200Mi
+
+pki:
+  enabled: false
+  applicationEnabled: false

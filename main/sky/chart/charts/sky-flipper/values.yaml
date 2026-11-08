@@ -41,3 +41,7 @@ envVars:
       secretKeyRef:
         name: secret
         key: connection_read_secondary
+
+pki:
+  enabled: false
+  applicationEnabled: false

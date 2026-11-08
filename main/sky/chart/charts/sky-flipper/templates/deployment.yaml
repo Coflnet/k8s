@@ -20,12 +20,18 @@ spec:
         security.coflnet.com/k8s-api-access: "false"
       annotations:
         {{ toYaml .Values.global.podAnnotations | nindent 8 }}
+        {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+        security.coflnet.com/pki-revision: {{ .Values.pki.revision | quote }}
+        {{- end }}
     spec:
       serviceAccountName: {{ .Chart.Name }}
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       securityContext:
         runAsNonRoot: true
+        {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+        fsGroup: 1000
+        {{- end }}
         seccompProfile:
           type: RuntimeDefault
       containers:
@@ -45,6 +51,12 @@ spec:
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
+          {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+          {{- range $name, $value := .Values.pki.env }}
+          - name: {{ $name }}
+            value: {{ $value | quote }}
+          {{- end }}
+          {{- end }}
           - name: OPENBAO__ENABLED
             value: "true"
           - name: OPENBAO__OPTIONAL
@@ -64,15 +76,28 @@ spec:
           {{ if .Values.envVars }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 10 }}
           {{ end }}
-          {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars) | nindent 10 }}
+          {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars "pki" .Values.pki) | nindent 10 }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
         volumeMounts:
+        {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+        - {name: pki-client, mountPath: /pki/client, readOnly: true}
+        - {name: pki-trust, mountPath: /pki/trust, readOnly: true}
+        - {name: pki-home, mountPath: /tmp/pki-home}
+        {{- end }}
         {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
         {{ end }}
       volumes: 
+      {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
+        - name: pki-client
+          secret: {secretName: sky-flipper-client, defaultMode: 0440}
+        - name: pki-trust
+          configMap: {name: sky-flipper-pki-trust}
+        - name: pki-home
+          emptyDir: {medium: Memory, sizeLimit: 16Mi}
+      {{- end }}
       {{ range .Values.global.volumes }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
