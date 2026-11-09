@@ -1,9 +1,10 @@
-# Client leaf only (Kafka); sky-crafts serves plain HTTP on 8000, no HTTPS listener.
+# Kafka client on the own leaf (stage 2): sky-crafts-client + sky-crafts-pki-trust mounted at /pki;
+# only the Kafka TLS env switches. sky-crafts serves plain HTTP on 8000, no HTTPS listener.
 sky-crafts:
   pki:
     enabled: true
-    applicationEnabled: false
-    revision: crafts-pki-20261029
+    applicationEnabled: true
+    revision: crafts-kafka-leaf-20261109
     rootCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIB7zCCAXSgAwIBAgIUHiabVzU7uVeszIY2O8ihUrQ5DwgwCgYIKoZIzj0EAwMw
@@ -29,3 +30,12 @@ sky-crafts:
       KoZIzj0EAwIDRwAwRAIgA1l0MK0v3oIhoVgys1U/jdVZig/jp/SMhGJTilO25FkC
       IDcNtGjLm4jxvXj9MrrNBwICv2XvSscsE/nc8Je3zE8D
       -----END CERTIFICATE-----
+    env:
+      HOME: /tmp/pki-home
+      # Kafka client on the own short-lived leaf (renewed in-process) instead of the shared
+      # legacy cert; the SASL user stays the principal. These keys override global.envVars.
+      # Rollback = remove these four keys.
+      KAFKA__TLS__CA_LOCATION: /pki/trust/kafka-ca.crt
+      KAFKA__TLS__CERTIFICATE_LOCATION: /pki/client/tls.crt
+      KAFKA__TLS__KEY_LOCATION: /pki/client/tls.key
+      KAFKA__TLS__RELOAD_ON_CHANGE: "true"
