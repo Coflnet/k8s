@@ -68,31 +68,6 @@ envVars:
   - name: REDIS_HOST
     value: redis
 
-  # ── Kafka (mTLS) via CoflnetCore.AddKafka() ─────────────────────────
-  # Reads the KAFKA config section. The sky namespace redpanda secrets
-  # and configmaps already exist on both clusters.
-  - name: KAFKA__BROKERS
-    valueFrom:
-      secretKeyRef:
-        name: redpanda
-        key: brokers
-  - name: KAFKA__USERNAME
-    valueFrom:
-      secretKeyRef:
-        name: redpanda-credentials
-        key: username
-  - name: KAFKA__PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: redpanda-credentials
-        key: password
-  - name: KAFKA__TLS__CA_LOCATION
-    value: /tls/cm/ca.crt
-  - name: KAFKA__TLS__CERTIFICATE_LOCATION
-    value: /tls/cm/skyblock.crt
-  - name: KAFKA__TLS__KEY_LOCATION
-    value: /tls/secret/skyblock.key
-
   # ── OpenTelemetry ───────────────────────────────────────────────────
   - name: OTEL_SERVICE_NAME
     value: leaderboard
@@ -121,17 +96,6 @@ openbao:
 
 # ── Volumes ────────────────────────────────────────────────────────────
 volumes:
-  # Kafka mTLS certificates (from redpanda configmap/secret in sky namespace)
-  - name: kafka-ca
-    mountName: kafka-cert
-    mountPath: /tls/cm
-    type: configmap
-    sourceName: redpanda
-  - name: kafka-key
-    mountName: kafka-key
-    mountPath: /tls/secret
-    type: secret
-    sourceName: redpanda
   # OpenBao CA certificate (for TLS verification, used when openbaoAddr is https)
   - name: openbao-ca
     mountName: openbao-tls

@@ -98,7 +98,6 @@ targetCustomizations:
         - ./chart/bfcs-shared-redis-eu.yaml
         - ./chart/playername-pki-eu.yaml
         - ./chart/mayor-pki-eu.yaml
-        - ./chart/crafts-pki-eu.yaml
         - ./chart/settings-pki-eu.yaml
         - ./chart/profiles-pki-eu.yaml
         - ./chart/bazaar-pki-eu.yaml

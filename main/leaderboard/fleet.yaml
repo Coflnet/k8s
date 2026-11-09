@@ -3,7 +3,7 @@ helm:
   chart: ./chart
 
 # Leaderboard runs in the sky namespace so it can reference the shared
-# scylla-config, scylla-credentials, redpanda, redpanda-credentials, and
+# scylla-config, scylla-credentials and
 # openbao-ca-cert k8s resources which are also in sky. Cross-namespace
 # secret/configmap references are not allowed in Kubernetes.
 #
