@@ -93,3 +93,7 @@ envVars:
       configMapKeyRef:
         key: reload_config_on_change
         name: config
+
+pki:
+  enabled: false
+  applicationEnabled: false

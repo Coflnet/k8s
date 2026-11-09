@@ -1,10 +1,11 @@
-# Client leaf only (stage 1): Certificate issued into sky-bfcs-client, nothing mounted, no env change.
+# Kafka client on the own leaf (stage 2): sky-bfcs-client + sky-bfcs-pki-trust mounted at /pki,
+# only the Kafka TLS env switches; no DB/other TLS change. Readiness probe unchanged.
 sky-bfcs:
   pki:
     enabled: true
-    applicationEnabled: false
+    applicationEnabled: true
     readinessEnabled: false
-    revision: bfcs-client-leaf-20261108
+    revision: bfcs-kafka-leaf-20261109
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
@@ -48,3 +49,12 @@ sky-bfcs:
       commonName: sky-bfcs.sky.talos-eu.clients.coflnet.internal
       dnsNames: [sky-bfcs.sky.talos-eu.clients.coflnet.internal]
       usages: [digital signature, client auth]
+    env:
+      HOME: /tmp/pki-home
+      # Kafka client on the own short-lived leaf (renewed in-process) instead of the shared /
+      # legacy cert; the SASL user stays the principal. These keys override global.envVars.
+      # Rollback = remove these four keys.
+      KAFKA__TLS__CA_LOCATION: /pki/trust/kafka-ca.crt
+      KAFKA__TLS__CERTIFICATE_LOCATION: /pki/client/tls.crt
+      KAFKA__TLS__KEY_LOCATION: /pki/client/tls.key
+      KAFKA__TLS__RELOAD_ON_CHANGE: "true"

@@ -70,3 +70,7 @@ redis:
   enabled: true
 
 externalMinio: false
+
+pki:
+  enabled: false
+  applicationEnabled: false
