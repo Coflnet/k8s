@@ -76,6 +76,12 @@ sky-proxy:
       usages:
       - digital signature
       - client auth
+    # Kafka client leaf (stage 1): issued into Secret sky-proxy-client, not mounted, no env change (pki-client mounts the Cockroach leaf).
+    - name: sky-proxy-client
+      pkiRole: sky-proxy-client
+      commonName: sky-proxy.sky.talos-eu.clients.coflnet.internal
+      dnsNames: [sky-proxy.sky.talos-eu.clients.coflnet.internal]
+      usages: [digital signature, client auth]
     homeEnv:
       HOME: /tmp/pki-home
     env:

@@ -31,6 +31,10 @@ data:
   # CockroachDB legacy CA (verifies today's node leaves) + shared Coflnet root (verifies them after the deferred server-leaf switch).
   cockroach-ca.crt: |
 {{ required "pki.cockroachCaBundle is required" .Values.pki.cockroachCaBundle | indent 4 }}
+{{- with .Values.pki.kafkaCaBundle | default .Values.global.kafkaCaBundle }}
+  kafka-ca.crt: |
+{{ . | indent 4 }}
+{{- end }}
 {{- range .Values.pki.certificates }}
 ---
 apiVersion: cert-manager.io/v1
@@ -60,7 +64,9 @@ spec:
   renewBefore: 8h
   privateKey: {algorithm: ECDSA, size: 384, rotationPolicy: Always}
   issuerRef: {name: {{ .name }}, kind: Issuer}
+  {{- if not .dnsNames }}
   # CN is the exact CockroachDB SQL user (cert-password HBA: CN == user); no dnsNames are requested.
+  {{- end }}
   commonName: {{ .commonName }}
   {{- with .dnsNames }}
   dnsNames:
