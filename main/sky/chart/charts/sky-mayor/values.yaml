@@ -68,3 +68,8 @@ envVars:
       secretKeyRef:
         name: scylla-credentials
         key: db-pfx-password
+
+# This app has no Kafka client: skip the shared redpanda volumes and all KAFKA* entries
+# from global.envVars. Set to true only if the app gains a Kafka client.
+kafka:
+  enabled: false

@@ -53,6 +53,7 @@ spec:
           {{- if (.Values.pki | default dict).applicationEnabled }}
           - {name: https, containerPort: 8443}
           {{- end }}
+        {{- $kafkaOff := eq ((.Values.kafka | default dict).enabled | toString) "false" }}
         env:
           {{- if (.Values.pki | default dict).applicationEnabled }}
           {{- range $name, $value := .Values.pki.env }}
@@ -79,7 +80,11 @@ spec:
           {{ if .Values.envVars }}
           {{ include "coflnet.envVars" (dict "root" . "env" .Values.envVars) | nindent 10 }}
           {{ end }}
-          {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars "pki" .Values.pki) | nindent 10 }}
+          {{- $excludeEnv := list }}
+          {{- if $kafkaOff }}
+          {{- range .Values.global.envVars }}{{ if hasPrefix "KAFKA" .name }}{{ $excludeEnv = append $excludeEnv .name }}{{ end }}{{ end }}
+          {{- end }}
+          {{ include "coflnet.envVars" (dict "root" . "env" .Values.global.envVars "pki" .Values.pki "excludeNames" $excludeEnv) | nindent 10 }}
         readinessProbe:
           {{- if and (.Values.pki | default dict).applicationEnabled (ne (.Values.pki | default dict).readinessEnabled false) }}
           httpGet: {path: /health/ready, port: api}
@@ -99,8 +104,10 @@ spec:
         - {name: pki-home, mountPath: /tmp/pki-home}
         {{- end }}
         {{ range .Values.global.volumes }}
+        {{- if not (and $kafkaOff (eq .name "redpanda")) }}
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
+        {{- end }}
         {{ end }}
         - name: tmp
           mountPath: /tmp
@@ -132,6 +139,7 @@ spec:
                 path: db.pfx
         {{- end }}
       {{ range .Values.global.volumes }}
+      {{- if not (and $kafkaOff (eq .name "redpanda")) }}
         - name: {{ .mountName }}
           {{ if eq .type "configmap"  }}
           configMap:
@@ -140,5 +148,6 @@ spec:
           secret:
             secretName: {{ .name }}
           {{ end }}
+      {{- end }}
       {{ end }}
 {{ end }}
