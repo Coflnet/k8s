@@ -1,11 +1,11 @@
 # Kafka client on the own leaf (stage 2): sky-api-client + sky-api-pki-trust mounted at /pki,
-# only the Kafka TLS env switches; no DB/other TLS change. Readiness probe unchanged.
+# Kafka TLS env on the own leaf; MariaDB presents the same leaf (DB__TLS__*). Readiness probe unchanged.
 sky-api:
   pki:
     enabled: true
     applicationEnabled: true
     readinessEnabled: false
-    revision: api-kafka-leaf-20261108
+    revision: api-mariadb-leaf-20261111
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
@@ -51,6 +51,14 @@ sky-api:
       usages: [digital signature, client auth]
     env:
       HOME: /tmp/pki-home
+      # MariaDB client on the own leaf (2026-11-11): SkyCore 1.0.5 DatabaseTlsFactory presents it on every new
+      # physical HypixelContext/ArchiveContext connection (SslMode=Required, strict server check against
+      # mariadb-ca.crt). SHARED_CONTEXT is the explicit opt-in. Accounts are not bound yet (password still
+      # required). Rollback = remove these four keys.
+      DB__TLS__CA_CERT_PATH: /pki/trust/mariadb-ca.crt
+      DB__TLS__CERT_PATH: /pki/client/tls.crt
+      DB__TLS__KEY_PATH: /pki/client/tls.key
+      DB__TLS__SHARED_CONTEXT: "true"
       # Kafka client on the own short-lived leaf (renewed in-process) instead of the shared /
       # legacy cert; the SASL user stays the principal. These keys override global.envVars.
       # Rollback = remove these four keys.

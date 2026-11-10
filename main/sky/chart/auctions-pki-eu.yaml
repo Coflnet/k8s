@@ -3,7 +3,7 @@ sky-auctions:
   pki:
     enabled: true
     applicationEnabled: true
-    revision: auctions-external-cql-restored-20261030
+    revision: auctions-mariadb-leaf-20261111
     listenerCaBundle: |
       -----BEGIN CERTIFICATE-----
       MIIBbTCCARSgAwIBAgIUFjyDQv3FGn29svU0l0fMAYJW77kwCgYIKoZIzj0EAwIw
@@ -28,6 +28,20 @@ sky-auctions:
       HHruulsMgVPkPJjJtzrdCgIxAPmVl1a1SSySB+/dkp6u+Lb/Y0SJ03Y26HQvIt1S
       AfQEYz7xazS4XJ3nIbGpy3MxSg==
       -----END CERTIFICATE-----
+    rootCaBundle: |
+      -----BEGIN CERTIFICATE-----
+      MIIB7zCCAXSgAwIBAgIUHiabVzU7uVeszIY2O8ihUrQ5DwgwCgYIKoZIzj0EAwMw
+      NTEhMB8GA1UEAwwYQ29mbG5ldCBJbnRlcm5hbCBSb290IENBMRAwDgYDVQQKDAdD
+      b2ZsbmV0MB4XDTI2MDcyMDIwNDIxN1oXDTM2MDcxNzIwNDIxN1owNTEhMB8GA1UE
+      AwwYQ29mbG5ldCBJbnRlcm5hbCBSb290IENBMRAwDgYDVQQKDAdDb2ZsbmV0MHYw
+      EAYHKoZIzj0CAQYFK4EEACIDYgAETSbRhSFLZeXf60Uv7P/E5BWyVwhYXWwBpR7S
+      WuAdCWRExq7E1QRmo484Zrtr6UlkTAzS0DAq2zggBcp1hQyvIUBrCn/TO6JNjdde
+      exWeoahXw+XGMkObmbRJHT5xtsU/o0UwQzASBgNVHRMBAf8ECDAGAQH/AgEBMA4G
+      A1UdDwEB/wQEAwIBBjAdBgNVHQ4EFgQUoVgcsk/ZkIkNHEyXnMi7BFErBlEwCgYI
+      KoZIzj0EAwMDaQAwZgIxAMfHYvIGbgyOXRCw0eTfN4xzNJ62MqfC+8+AzdoSm9nM
+      HHruulsMgVPkPJjJtzrdCgIxAPmVl1a1SSySB+/dkp6u+Lb/Y0SJ03Y26HQvIt1S
+      AfQEYz7xazS4XJ3nIbGpy3MxSg==
+      -----END CERTIFICATE-----
     certificates:
     - name: sky-auctions-client
       commonName: sky-auctions.sky.talos-eu.clients.coflnet.internal
@@ -38,6 +52,14 @@ sky-auctions:
       - client auth
     env:
       HOME: /tmp/pki-home
+      # MariaDB client on the own leaf (2026-11-11): SkyCore 1.0.5 DatabaseTlsFactory presents it on every new
+      # physical HypixelContext/ArchiveContext connection (SslMode=Required, strict server check against
+      # mariadb-ca.crt). SHARED_CONTEXT is the explicit opt-in. Accounts are not bound yet (password still
+      # required). Rollback = remove these four keys.
+      DB__TLS__CA_CERT_PATH: /pki/trust/mariadb-ca.crt
+      DB__TLS__CERT_PATH: /pki/client/tls.crt
+      DB__TLS__KEY_PATH: /pki/client/tls.key
+      DB__TLS__SHARED_CONTEXT: "true"
       CASSANDRA__TLS__SERVER_NAME: sky-client
       CASSANDRA__TLS__CA_CERT_PATH: /pki/trust/scylla-ca.crt
       CASSANDRA__TLS__CERT_PATH: /pki/client/tls.crt

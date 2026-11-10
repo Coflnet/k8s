@@ -30,6 +30,10 @@ metadata:
 data:
   scylla-ca.crt: |
 {{ required "pki.scyllaCaBundle is required" .Values.pki.scyllaCaBundle | indent 4 }}
+{{- with .Values.pki.rootCaBundle }}
+  mariadb-ca.crt: |
+{{ . | indent 4 }}
+{{- end }}
 {{- with .Values.pki.kafkaCaBundle | default .Values.global.kafkaCaBundle }}
   kafka-ca.crt: |
 {{ . | indent 4 }}
