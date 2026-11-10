@@ -1,6 +1,7 @@
 {{ if .Values.enabled }}
 {{- $pkiPrepared := and .Values.pki.enabled (or .Values.pki.mountsEnabled .Values.pki.applicationEnabled) }}
 {{- $pkiApplication := and .Values.pki.enabled .Values.pki.applicationEnabled }}
+{{- $pkiKafkaClient := and $pkiPrepared .Values.pki.kafkaClientEnabled }}
 {{- if and $pkiPrepared (not .Values.global.volumes) }}
 {{- fail "sky-proxy pki mounts need the global.volumes block (volumeMounts/volumes are rendered inside it)" }}
 {{- end }}
@@ -139,7 +140,7 @@ spec:
             {{ end }}
             {{- with .Values.global }}
             {{- if .envVars }}
-{{ include "coflnet.envVars" (dict "root" $ "env" .envVars) | nindent 12 }}
+{{ include "coflnet.envVars" (dict "root" $ "env" .envVars "pki" $.Values.pki) | nindent 12 }}
             {{- end }}
             {{- end }}
           readinessProbe:
@@ -157,6 +158,9 @@ spec:
             - {name: pki-client, mountPath: /pki/client, readOnly: true}
             - {name: pki-trust, mountPath: /pki/trust, readOnly: true}
             - {name: pki-home, mountPath: /tmp/pki-home}
+          {{- end }}
+          {{- if $pkiKafkaClient }}
+            - {name: pki-kafka-client, mountPath: /pki/kafka-client, readOnly: true}
           {{- end }}
           {{- if $.Values.global.openbaoAuthPath }}
             - name: openbao-workload-token
@@ -179,6 +183,10 @@ spec:
           configMap: {name: sky-proxy-pki-trust}
         - name: pki-home
           emptyDir: {medium: Memory, sizeLimit: 16Mi}
+      {{- end }}
+      {{- if $pkiKafkaClient }}
+        - name: pki-kafka-client
+          secret: {secretName: sky-proxy-client, defaultMode: 0440}
       {{- end }}
       {{- if $.Values.global.openbaoAuthPath }}
         - name: openbao-workload-token

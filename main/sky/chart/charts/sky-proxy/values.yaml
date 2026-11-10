@@ -69,5 +69,7 @@ pki:
   applicationEnabled: false
   # Moves the kubelet readinessProbe to /health/ready (needs an image that serves it; independent of applicationEnabled).
   readinessEnabled: false
+  # Mounts the Kafka client leaf (Secret sky-proxy-client) at /pki/kafka-client; pki-client stays the Cockroach leaf.
+  kafkaClientEnabled: false
   homeEnv: {}
   env: {}
