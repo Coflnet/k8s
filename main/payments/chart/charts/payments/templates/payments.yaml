@@ -204,6 +204,9 @@ spec:
         {{- if not (and $.Values.redpanda.openbao.enabled (eq .name "redpanda")) }}
         - name: {{ .mountName }}
           mountPath: {{ .mountPath }}
+          {{- if .readOnly }}
+          readOnly: true
+          {{- end }}
         {{- end }}
         {{ end }}
         {{ end }}
@@ -252,6 +255,9 @@ spec:
           {{ else }}
           secret:
             secretName: {{ .name }}
+            {{- with .defaultMode }}
+            defaultMode: {{ . }}
+            {{- end }}
           {{ end }}
         {{- end }}
       {{ end }}

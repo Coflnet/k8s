@@ -189,14 +189,18 @@ payments:
         value: "174444"
       - name: lemonsqueezy__SUBSCRIPTION_VARIANT_ID
         value: "805091"
+      # Kafka client on the own short-lived leaf (Secret ane-payments-kafka-client, CA kafka-ca.crt from the
+      # ane-cockroach-trust mount at /pki/trust, so it needs openbao.database.mtls.instances.ane.mounts).
+      # No in-process renewal needed: every event builds a new producer from these paths.
+      # Rollback = restore the /tls/cm and /tls/secret paths.
       - name: KAFKA__TLS__CA_LOCATION
-        value: "/tls/cm/ca.crt"
+        value: "/pki/trust/kafka-ca.crt"
 
       - name: KAFKA__TLS__CERTIFICATE_LOCATION
-        value: "/tls/cm/skyblock.crt"
+        value: "/pki/kafka-client/tls.crt"
 
       - name: KAFKA__TLS__KEY_LOCATION
-        value: "/tls/secret/skyblock.key"
+        value: "/pki/kafka-client/tls.key"
 
       - name: KAFKA__REPLICATION_FACTOR
         value: "3"
@@ -214,6 +218,12 @@ payments:
         mountPath: /tls/cm
         type: configmap
         mountName: redpanda-cm
+      - name: ane-payments-kafka-client
+        mountPath: /pki/kafka-client
+        type: secret
+        mountName: kafka-client
+        readOnly: true
+        defaultMode: 0440
 
     ingress:
       enabled: true
@@ -272,14 +282,18 @@ payments:
         value: "false"
       - name: KAFKA_HOST
         value: k8-main-kafka-kafka.kafka.svc.cluster.local
+      # Kafka client on the own short-lived leaf (Secret sky-payments-kafka-client, CA kafka-ca.crt from the
+      # sky-cockroach-trust mount at /pki/trust, so it needs openbao.database.mtls.instances.sky.mounts).
+      # No in-process renewal needed: every event builds a new producer from these paths.
+      # Rollback = restore the /tls/cm and /tls/secret paths.
       - name: KAFKA__TLS__CA_LOCATION
-        value: "/tls/cm/ca.crt"
+        value: "/pki/trust/kafka-ca.crt"
 
       - name: KAFKA__TLS__CERTIFICATE_LOCATION
-        value: "/tls/cm/skyblock.crt"
+        value: "/pki/kafka-client/tls.crt"
 
       - name: KAFKA__TLS__KEY_LOCATION
-        value: "/tls/secret/skyblock.key"
+        value: "/pki/kafka-client/tls.key"
 
       - name: KAFKA__REPLICATION_FACTOR
         value: "3"
@@ -297,6 +311,12 @@ payments:
         mountPath: /tls/cm
         type: configmap
         mountName: redpanda-cm
+      - name: sky-payments-kafka-client
+        mountPath: /pki/kafka-client
+        type: secret
+        mountName: kafka-client
+        readOnly: true
+        defaultMode: 0440
     ingress:
       enabled: true
       nginx: true
