@@ -833,8 +833,13 @@ sky-indexer:
       value: "true"
     - name: ARCHIVE__ENABLED
       value: "true"
+    # MariaDB deletes of months older than 3 years, gated per month by the NAS backup receipt, Scylla import (scylla_at),
+    # count + part-hash checks and replica/binlog health. Scylla itself is not deleted.
     - name: ARCHIVE__DELETE_MARIADB
-      value: "false"
+      value: "true"
+    # 2019-06 has no auctions in R2 (no receipt, no scylla_at); starting there would block the delete walk.
+    - name: ARCHIVE__OLDEST_MONTH
+      value: "2019-07"
     - name: ARCHIVE__START_DELAY_SECONDS
       value: "600"
     # One index writer on the primary. Two (2026-10-30) gave only ~15-19 % more index rows/h
