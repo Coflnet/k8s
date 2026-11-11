@@ -497,16 +497,23 @@ sky-auctions:
       value: "sky-auctions-archive"
     - name: S3__ENABLED
       value: "true"
-    # Auction archive phase 2: add Scylla-only rows of 2019-07..2021-03 to the v2 R2 archive after SkyIndexer (phase 1)
+    # Auction archive phase 2: add Scylla-only rows of 2019-07..2024-02 to the v2 R2 archive after SkyIndexer (phase 1)
     # sealed each month; SkyIndexer imports the R2 manifests into MariaDB. No deletion. Reads MariaDB only (DBConnection
     # from OpenBao kv/sky/sky-auctions, a read-only user is enough), markers in SETTINGS_REDIS_HOST (sky-settings-redis).
-    # Roll out after a SkyIndexer image that has the import worker and the ArchiveScyllaAt migration.
+    # 2021-04+ need scylla_at for the SkyIndexer MariaDB retention gate and for any Scylla delete.
+    # After widening the range, DEL auctions_archive:v2:sweep_complete once on sky-settings-redis (else the sweep stays idle).
     - name: ARCHIVE__ENABLED
       value: "true"
     - name: ARCHIVE__OLDEST_MONTH
       value: "2019-07"
     - name: ARCHIVE__NEWEST_MONTH
-      value: "2021-03"
+      value: "2024-02"
+    # Read-only Scylla vs R2 audit (results under auctions/v2/_meta/audit/scylla/), months default to the sweep range and
+    # trail the import; reads at consistency ALL, so it is paced.
+    - name: ARCHIVE__AUDIT_ENABLED
+      value: "true"
+    - name: ARCHIVE__AUDIT_PARTITIONS_PER_MINUTE
+      value: "30"
     - name: CASSANDRA__HOSTS
       valueFrom:
         configMapKeyRef:
