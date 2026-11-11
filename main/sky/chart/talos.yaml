@@ -840,6 +840,9 @@ sky-indexer:
     # 2019-06 has no auctions in R2 (no receipt, no scylla_at); starting there would block the delete walk.
     - name: ARCHIVE__OLDEST_MONTH
       value: "2019-07"
+    # Temporary: shows why the retention replica gate can not read SHOW SLAVE STATUS (logged at Debug only). Remove once fixed.
+    - name: Logging__LogLevel__Coflnet.Sky.Indexer.Archive.AuctionRetentionWorker
+      value: "Debug"
     - name: ARCHIVE__START_DELAY_SECONDS
       value: "600"
     # One index writer on the primary. Two (2026-10-30) gave only ~15-19 % more index rows/h
