@@ -160,6 +160,8 @@ sky-bfcs:
     # No local Redis here: the flip mesh has exactly two instances, on talos-linode
     # and talos-cloudfanatic, both reached over their NodePort. All credentials come
     # from the sky-bfcs-redis-auth Secret (see scripts/rotate-bfcs-redis.sh).
+    # SkyBFCS publishes to FLIP_REDIS_OPTIONS plus every REDIS_FLIP_INSTANCES__N
+    # entry below, deduplicated by endpoint, so both brokers get every flip.
     - name: FLIP_REDIS_OPTIONS
       valueFrom:
         secretKeyRef:

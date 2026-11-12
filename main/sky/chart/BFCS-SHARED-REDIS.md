@@ -3,8 +3,10 @@
 Keep every existing broker and publisher running. The independent EU
 `sky-bfcs-redis-shared` broker is additive; its presence and EU subscriptions do
 not prove global consumer continuity. Linode, CloudFanatic, Datawagon and Contabo
-also serve BFCS WebSocket consumers. BFCS publishes to one `FLIP_REDIS_OPTIONS`
-endpoint and subscribes to every `REDIS_FLIP_INSTANCES` entry. It forwards received
+also serve BFCS WebSocket consumers. BFCS publishes to every broker of its publish set
+(`FLIP_PUBLISH_INSTANCES` when set, else `FLIP_REDIS_OPTIONS` plus every
+`REDIS_FLIP_INSTANCES` entry; EU pins the explicit list so the shared broker is
+not published to) and subscribes to every `REDIS_FLIP_INSTANCES` entry. It forwards received
 messages to WebSocket clients, not into its own publication broker.
 
 The global publication transition is held. The helper's legacy `consume` and

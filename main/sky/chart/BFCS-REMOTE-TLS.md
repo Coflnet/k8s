@@ -79,10 +79,12 @@ Before rebooting a node, the Talos workflow checks that the peer's frontend is
 Ready, and after the reboot it waits for local recovery (budget 900 s) before
 moving on to the peer.
 
-They are only partial mirrors. Dual consumers (EU sky-bfcs and
-sky-mod-commands, cloudfanatic, linode, datawagon) subscribe to both brokers, but
-publishers are single-homed: EU sky-bfcs publishes only to cloudfanatic and
-Contabo only to linode (`talos-contabo.yaml` `FLIP_REDIS_OPTIONS` = key
-`linode`), and the us-spot clusters subscribe to one instance
-(`us-spot-cluster.yaml` `redis-edge/linode_us_connection`). Their flips are lost
-while that broker reboots.
+Dual consumers (EU sky-bfcs and sky-mod-commands, cloudfanatic, linode,
+datawagon) subscribe to both brokers. SkyBFCS is dual-homed for publishing too:
+it publishes every flip to `FLIP_REDIS_OPTIONS` plus every
+`REDIS_FLIP_INSTANCES__N` entry (deduplicated by endpoint), or to the explicit
+`FLIP_PUBLISH_INSTANCES__N` list when set (EU sets it to linode and cloudfanatic).
+Each broker has its own multiplexer that retries until reachable, so a rebooting
+broker only misses its own copy. The us-spot clusters still subscribe to one
+instance (`us-spot-cluster.yaml` `redis-edge/linode_us_connection`); their
+consumers lose flips while that broker reboots until a second entry is added.

@@ -22,8 +22,9 @@ sky-bfcs:
       value: http://jaeger-collector-eu-cluster.observability:4317
     - name: SNIPER_BASE_URL
       value: http://sky-sniper-eu-cluster:8000
-    # Contabo hosts no Redis member. Publish every locally produced flip to the
-    # existing Talos Linode Redis endpoint from sky-bfcs-redis-auth.
+    # Contabo hosts no Redis member. SkyBFCS publishes every locally produced flip
+    # to this key plus every REDIS_FLIP_INSTANCES__N entry below (linode and
+    # cloudfanatic from sky-bfcs-redis-auth), deduplicated by endpoint.
     - name: FLIP_REDIS_OPTIONS
       valueFrom:
         secretKeyRef:

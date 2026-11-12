@@ -196,8 +196,8 @@ sky-bfcs:
       value: http://sky-sniper-eu-cluster:8000
     # All Redis credentials come from the sky-bfcs-redis-auth Secret, created out of
     # band from the secrets cluster (see scripts/rotate-bfcs-redis.sh).
-    # Publishes into the local instance: SkyBFCS builds one multiplexer from
-    # FLIP_REDIS_OPTIONS (Startup.cs).
+    # SkyBFCS publishes to this key plus every REDIS_FLIP_INSTANCES__N entry below,
+    # deduplicated by endpoint (FlipPublishSet), so both mesh brokers get every flip.
     - name: FLIP_REDIS_OPTIONS
       valueFrom:
         secretKeyRef:
