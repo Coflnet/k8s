@@ -16,6 +16,10 @@ spec:
     metadata:
       labels:
         app: redis
+        {{- with index ($upgrade.routes | default dict) "redis" }}
+        {{- /* The Service selects the route; a restarted Pod must keep it. */}}
+        redis-route: {{ . | quote }}
+        {{- end }}
     spec:
       {{- if $tls }}
       securityContext:
