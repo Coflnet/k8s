@@ -36,12 +36,14 @@ kind: Service
 metadata:
   name: {{ . }}-tls
   {{- if and (eq . "redis") (($.Values.valkeyTlsFrontend | default dict).enabled) }}
-  # Talos maintenance evicts the frontends after Valkey moves, then proves them beside it.
+  # Talos maintenance evicts the frontends after Valkey moves, then proves them beside it
+  # within 120 s of Valkey's eviction (the redis-tls outage budget).
   labels:
     maintenance.coflnet.com/drain-policy: follows
   annotations:
     maintenance.coflnet.com/follows: {{ . }}
     maintenance.coflnet.com/follows-via: pod-affinity
+    maintenance.coflnet.com/max-downtime-seconds: "120"
   {{- else }}
   labels:
     maintenance.coflnet.com/drain-policy: block

@@ -61,7 +61,8 @@ class ValkeyFrontendRender(unittest.TestCase):
         policy = 'maintenance.coflnet.com/drain-policy'
         self.assertEqual(declared('redis-tls-local'), ({policy: 'follows'}, {'maintenance.coflnet.com/follows': 'redis'}))
         self.assertEqual(declared('redis-tls'), ({policy: 'follows'}, {'maintenance.coflnet.com/follows': 'redis',
-                                                                      'maintenance.coflnet.com/follows-via': 'pod-affinity'}))
+                                                                      'maintenance.coflnet.com/follows-via': 'pod-affinity',
+                                                                      'maintenance.coflnet.com/max-downtime-seconds': '120'}))
         self.assertEqual(declared('leaderboard'), ({'app': 'leaderboard', policy: 'handoff'},
                                                    {'maintenance.coflnet.com/max-downtime-seconds': '0'}))
         self.assertEqual(declared('redis'), (None, None))
