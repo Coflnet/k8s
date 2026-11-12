@@ -4,7 +4,8 @@ metadata:
   name: {{ .Chart.Name }}
   labels:
     app: {{ .Chart.Name }}
-    maintenance.coflnet.com/drain-policy: block
+    # Request-driven over Scylla; RollingUpdate already overlaps two replicas.
+    maintenance.coflnet.com/drain-policy: handoff
   annotations:
     maintenance.coflnet.com/max-downtime-seconds: "0"
 spec:

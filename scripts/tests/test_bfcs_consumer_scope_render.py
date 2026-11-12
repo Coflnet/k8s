@@ -31,6 +31,25 @@ class BfcsConsumerScope(unittest.TestCase):
         self.assertEqual([e for e in env if e['name'] == 'FLIP_REDIS_OPTIONS'], [{'name': 'FLIP_REDIS_OPTIONS',
             'valueFrom': {'secretKeyRef': {'name': 'sky-bfcs-redis-auth', 'key': 'connection'}}}])
 
+    def test_eu_shared_broker_declares_a_tls_proven_disposable_restart(self):
+        objects = render('eu')
+        service = objects['Service', 'sky-bfcs-redis-shared-tls']
+        self.assertEqual(service['metadata']['labels'], {'maintenance.coflnet.com/drain-policy': 'restart'})
+        self.assertEqual(service['metadata']['annotations'], {'maintenance.coflnet.com/max-downtime-seconds': '120',
+                                                              'maintenance.coflnet.com/restart-proof': 'tls'})
+        spec = objects['Deployment', 'sky-bfcs-redis-shared']['spec']
+        self.assertEqual((spec['replicas'], spec['strategy']), (1, {'type': 'Recreate'}))
+        pod = spec['template']['spec']
+        self.assertIn({'name': 'data', 'emptyDir': {}}, pod['volumes'])
+        self.assertFalse(any('persistentVolumeClaim' in v for v in pod['volumes']))
+        self.assertNotIn('affinity', pod)
+        labels = spec['template']['metadata']['labels']
+        selecting = [name for (kind, name), o in objects.items() if kind == 'Service'
+                     and o['spec'].get('selector') and o['spec']['selector'].items() <= labels.items()]
+        self.assertEqual(selecting, ['sky-bfcs-redis-shared-tls'])
+        for cluster in ('linode', 'cloudfanatic', 'datawagon', 'contabo'):
+            self.assertNotIn(('Service', 'sky-bfcs-redis-shared-tls'), render(cluster))
+
     def test_all_remote_consumers_keep_their_existing_topology(self):
         for cluster in ('linode', 'cloudfanatic', 'datawagon', 'contabo'):
             with self.subTest(cluster=cluster):

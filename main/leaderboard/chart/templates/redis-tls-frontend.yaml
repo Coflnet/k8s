@@ -97,8 +97,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redis-tls-local
-  labels: {maintenance.coflnet.com/drain-policy: block}
-  annotations: {maintenance.coflnet.com/max-downtime-seconds: "0"}
+  labels: {maintenance.coflnet.com/drain-policy: follows}
+  annotations: {maintenance.coflnet.com/follows: redis}
 spec:
   internalTrafficPolicy: Local
   selector:
@@ -114,6 +114,9 @@ metadata:
   name: redis-tls-frontend
 spec:
   minAvailable: 1
+  # A frontend left beside a moved Valkey is NotReady and serves nothing; let a
+  # drain evict it so its replacement schedules beside the new Valkey Pod.
+  unhealthyPodEvictionPolicy: AlwaysAllow
   selector:
     matchLabels: {app: redis-tls-frontend}
 ---

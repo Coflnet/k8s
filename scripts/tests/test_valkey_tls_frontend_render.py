@@ -54,6 +54,23 @@ class ValkeyFrontendRender(unittest.TestCase):
         unrouted = render({}, 'values.yaml')
         self.assertEqual(unrouted['Deployment', 'redis']['spec']['template']['metadata']['labels'], {'app': 'redis'})
 
+    def test_talos_maintenance_declarations(self):
+        def declared(name):
+            meta = self.active['Service', name]['metadata']
+            return meta.get('labels'), meta.get('annotations')
+        policy = 'maintenance.coflnet.com/drain-policy'
+        self.assertEqual(declared('redis-tls-local'), ({policy: 'follows'}, {'maintenance.coflnet.com/follows': 'redis'}))
+        self.assertEqual(declared('redis-tls'), ({policy: 'follows'}, {'maintenance.coflnet.com/follows': 'redis',
+                                                                      'maintenance.coflnet.com/follows-via': 'pod-affinity'}))
+        self.assertEqual(declared('leaderboard'), ({'app': 'leaderboard', policy: 'handoff'},
+                                                   {'maintenance.coflnet.com/max-downtime-seconds': '0'}))
+        self.assertEqual(declared('redis'), (None, None))
+        budget = self.active['PodDisruptionBudget', 'redis-tls-frontend']['spec']
+        self.assertEqual((budget['minAvailable'], budget['unhealthyPodEvictionPolicy']), (1, 'AlwaysAllow'))
+        unfronted = render({'global': {'redisOptionalTls': {'enabled': True, 'listenersEnabled': True,
+            'services': ['redis'], 'issuerName': 'i', 'trustBundleConfigMap': 'c', 'clusterIdentity': 'x'}}}, 'values.yaml')
+        self.assertEqual(unfronted['Service', 'redis-tls']['metadata']['labels'], {policy: 'block'})
+
     def test_plaintext_is_local_and_original_pod_is_the_only_affinity_target(self):
         service = self.active['Service', 'redis-tls-local']['spec']
         self.assertEqual(service['internalTrafficPolicy'], 'Local')

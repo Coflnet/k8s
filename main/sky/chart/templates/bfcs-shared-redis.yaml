@@ -81,8 +81,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ $name }}-tls
-  labels: {maintenance.coflnet.com/drain-policy: block}
-  annotations: {maintenance.coflnet.com/max-downtime-seconds: "0"}
+  # Empty broker state is disposable: Talos maintenance evicts it once and proves
+  # a TLS handshake on the replacement within the budget.
+  labels: {maintenance.coflnet.com/drain-policy: restart}
+  annotations: {maintenance.coflnet.com/max-downtime-seconds: "120", maintenance.coflnet.com/restart-proof: tls}
 spec:
   selector: {app: {{ $name }}}
   ports:
