@@ -3,9 +3,9 @@
 > **2026-11-12: handoff abandoned.** The user approved treating this Valkey's
 > state as disposable for node maintenance: Talos upgrades move `sky/redis` like
 > any disposable Redis (empty replacement) instead of handing its data off. The
-> parked handoff below is therefore abandoned. Its receipt pinned the old Valkey
-> Pod UID, and templating `redis-route` restarted Valkey, so that receipt is void
-> and must not be resumed. Any future persistent handoff needs a fresh, reviewed
+> parked handoff below is therefore abandoned. Its receipt pins the current Valkey
+> Pod UID; templating `redis-route` (924f23e50) restarts Valkey once it deploys,
+> which voids that receipt, so it must not be resumed. Any future persistent handoff needs a fresh, reviewed
 > receipt for the then-current source Pod and PVC; the procedure below is kept
 > only as the reference for such a new handoff.
 
