@@ -1,5 +1,14 @@
 # Preserve leaderboard Valkey while adding optional TLS
 
+> **2026-11-12: handoff abandoned.** The user approved treating this Valkey's
+> state as disposable for node maintenance: Talos upgrades move `sky/redis` like
+> any disposable Redis (empty replacement) instead of handing its data off. The
+> parked handoff below is therefore abandoned. Its receipt pinned the old Valkey
+> Pod UID, and templating `redis-route` restarted Valkey, so that receipt is void
+> and must not be resumed. Any future persistent handoff needs a fresh, reviewed
+> receipt for the then-current source Pod and PVC; the procedure below is kept
+> only as the reference for such a new handoff.
+
 The existing `sky/redis` Pod has no writable data volume or certificate mount.
 Runtime `CONFIG SET tls-*` is supported, but supplying files inside that old
 container would be temporary; persisting mounts/startup args through GitOps
