@@ -8,7 +8,7 @@ metadata:
   name: {{ .Chart.Name }}-profit
   labels:
     app: {{ .Chart.Name }}-profit
-    maintenance.coflnet.com/drain-policy: block
+    maintenance.coflnet.com/drain-policy: handoff
   annotations:
     maintenance.coflnet.com/max-downtime-seconds: "0"
 spec:

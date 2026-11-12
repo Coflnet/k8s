@@ -69,3 +69,20 @@ connects; a Ready Pod alone does not prove the complete mesh is subscribed.
 Removing the new frontend/Service disables only the new TLS path. Keep the Issuer,
 trust and leaf until no new TLS clients remain. The old Redis Pod, plaintext
 Service, broker data and global consumer routes remain the rollback anchor.
+
+## Maintenance
+
+The two broker clusters (talos-cloudfanatic and talos-linode) are upgraded one
+at a time. Their frontend Services carry the `mirror` drain policy with a 900 s
+budget and name the peer through `bfcsRemoteTlsFrontend.mirrorPeerCluster`.
+Before rebooting a node, the Talos workflow checks that the peer's frontend is
+Ready, and after the reboot it waits for local recovery (budget 900 s) before
+moving on to the peer.
+
+They are only partial mirrors. Dual consumers (EU sky-bfcs and
+sky-mod-commands, cloudfanatic, linode, datawagon) subscribe to both brokers, but
+publishers are single-homed: EU sky-bfcs publishes only to cloudfanatic and
+Contabo only to linode (`talos-contabo.yaml` `FLIP_REDIS_OPTIONS` = key
+`linode`), and the us-spot clusters subscribe to one instance
+(`us-spot-cluster.yaml` `redis-edge/linode_us_connection`). Their flips are lost
+while that broker reboots.

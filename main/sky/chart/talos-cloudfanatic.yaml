@@ -248,6 +248,7 @@ necwebsite:
 bfcsRemoteTlsFrontend:
   enabled: true
   cluster: talos-cloudfanatic
+  mirrorPeerCluster: talos-linode
   remoteIP: 23.158.232.23
   issuer: bfcs-redis-frontend-cloudfanatic
   # Exact existing BFCS mesh consumer node allowlist; additions require review.

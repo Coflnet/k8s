@@ -36,9 +36,9 @@ kind: Service
 metadata:
   name: {{ . }}-tls
   labels:
-    maintenance.coflnet.com/drain-policy: block
+    maintenance.coflnet.com/drain-policy: follows
   annotations:
-    maintenance.coflnet.com/max-downtime-seconds: "0"
+    maintenance.coflnet.com/follows: {{ . | quote }}
 spec:
   selector:
     app: {{ . }}

@@ -1,6 +1,8 @@
 {{- $frontend := .Values.bfcsRemoteTlsFrontend | default dict }}
 {{- if $frontend.enabled }}
 {{- $name := "sky-bfcs-redis-frontend" }}
+{{- $mirrorPeer := required "bfcsRemoteTlsFrontend.mirrorPeerCluster is required" $frontend.mirrorPeerCluster }}
+{{- if eq $mirrorPeer $frontend.cluster }}{{ fail "bfcsRemoteTlsFrontend.mirrorPeerCluster must name the other cluster, not the local one" }}{{ end }}
 {{- if not $frontend.allowedSourceCIDRs }}{{ fail "BFCS remote TLS requires reviewed consumer source CIDRs" }}{{ end }}
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -104,8 +106,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sky-bfcs-redis-frontend-local
-  labels: {maintenance.coflnet.com/drain-policy: block}
-  annotations: {maintenance.coflnet.com/max-downtime-seconds: "0"}
+  labels: {maintenance.coflnet.com/drain-policy: mirror}
+  annotations:
+    maintenance.coflnet.com/max-downtime-seconds: "900"
+    maintenance.coflnet.com/mirror-peer: {{ $mirrorPeer }}/{{ .Release.Namespace }}/sky-bfcs-redis-frontend-local
+    maintenance.coflnet.com/mirror-subscribers: "snipes,beat"
 spec:
   internalTrafficPolicy: Local
   selector:
@@ -116,8 +121,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sky-bfcs-redis-frontend-tls
-  labels: {maintenance.coflnet.com/drain-policy: block}
-  annotations: {maintenance.coflnet.com/max-downtime-seconds: "0"}
+  labels: {maintenance.coflnet.com/drain-policy: mirror}
+  annotations:
+    maintenance.coflnet.com/max-downtime-seconds: "900"
+    maintenance.coflnet.com/mirror-peer: {{ $mirrorPeer }}/{{ .Release.Namespace }}/sky-bfcs-redis-frontend-tls
 spec:
   type: NodePort
   externalTrafficPolicy: Local
