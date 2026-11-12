@@ -203,6 +203,19 @@ sky-bfcs:
         secretKeyRef:
           name: sky-bfcs-redis-auth
           key: connection
+    # Explicit publish set: the two mesh brokers only. Without it the publish set falls
+    # back to FLIP_REDIS_OPTIONS plus REDIS_FLIP_INSTANCES__N, which an overlay can change.
+    # Keep the indices contiguous from 0 - they bind as a string[].
+    - name: FLIP_PUBLISH_INSTANCES__0
+      valueFrom:
+        secretKeyRef:
+          name: sky-bfcs-redis-auth
+          key: linode
+    - name: FLIP_PUBLISH_INSTANCES__1
+      valueFrom:
+        secretKeyRef:
+          name: sky-bfcs-redis-auth
+          key: cloudfanatic
     # Consumes from every instance in the mesh: SkyBFCS embeds SkyModCommands, whose
     # ModBackgroundService.SubscribeToRedisSnipes subscribes to each entry here.
     # Keep the indices contiguous from 0 - they bind as a string[].

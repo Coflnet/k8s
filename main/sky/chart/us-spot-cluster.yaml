@@ -67,6 +67,12 @@ sky-bfcs:
         secretKeyRef:
           name: flip-redis
           key: options
+    # Pinned to the current publish target so the explicit-list fallback never changes it.
+    - name: FLIP_PUBLISH_INSTANCES__0
+      valueFrom:
+        secretKeyRef:
+          name: flip-redis
+          key: options
     - name: REDIS_FLIP_INSTANCES__0
       valueFrom:
         secretKeyRef:
