@@ -150,9 +150,12 @@ spec:
                   kubectl get endpointslices -n "$NS" \
                     -o jsonpath='{range .items[*]}{.metadata.labels.kubernetes\.io/service-name}{"\t"}{range .endpoints[*]}{.conditions.ready}{","}{end}{"\n"}{end}' 2>/dev/null \
                     | awk -F"$TAB" '$2 ~ /true/ {print $1}' | sort -u > "$READY"
-                  # Ready addresses and named target ports stay paired per slice.
-                  SLICE_TARGETS="$(kubectl get endpointslices -n "$NS" \
-                    -o jsonpath='{range .items[*]}{.metadata.labels.kubernetes\.io/service-name}{"\t"}{range .ports[*]}{.name}{"="}{.port}{","}{end}{"\t"}{range .endpoints[?(@.conditions.ready==true)]}{.addresses[0]}{" "}{end}{"\n"}{end}' 2>/dev/null)"
+                  # Ready addresses and named target ports stay paired per slice; empty slices are valid.
+                  if ! SLICE_TARGETS="$(kubectl get endpointslices -n "$NS" \
+                    -o go-template='{{`{{range .items}}{{index .metadata.labels "kubernetes.io/service-name"}}{{"\t"}}{{range .ports}}{{.name}}={{.port}},{{end}}{{"\t"}}{{range .endpoints}}{{if .conditions.ready}}{{index .addresses 0}} {{end}}{{end}}{{"\n"}}{{end}}`}}')"; then
+                    echo "ERROR: could not list EndpointSlice targets" >&2
+                    exit 1
+                  fi
                   # One call: name<TAB>type<TAB>clusterIP<TAB>firstPort for every service.
                   kubectl get svc -n "$NS" \
                     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.type}{"\t"}{.spec.clusterIP}{"\t"}{.spec.ports[0].port}{"\t"}{.spec.ports[0].name}{"\n"}{end}' 2>/dev/null \
