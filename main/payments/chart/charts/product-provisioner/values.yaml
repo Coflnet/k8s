@@ -754,7 +754,21 @@ payments:
       "cost": 10000,
       "ProviderSlug": "custom",
       "type": 36
-      },]}
+      }],
+      "products": [
+      {
+      "slug": "flipper-grant",
+      "title": "Flipper (manual grant)",
+      "description": "Admin grant of one day flipper access, buy with count = days",
+      "cost": 50,
+      "ownershipSeconds": 86400,
+      "type": "SERVICE"
+      }],
+      "groups": {
+      "flipper": [
+      "flipper-grant"
+      ]
+      }}
 
   - name: dash-payments
     envVars:
