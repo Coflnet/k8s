@@ -111,8 +111,9 @@ spec:
             # Using exec instead of tcpSocket to avoid noise in te logs
             exec:
               command:
-                - pgrep
-                - haproxy
+                - sh
+                - -c
+                - grep -qs haproxy /proc/[0-9]*/comm
             initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.startupProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
@@ -126,8 +127,9 @@ spec:
             # Using exec instead of tcpSocket to avoid noise in te logs
             exec:
               command:
-                - pgrep
-                - haproxy
+                - sh
+                - -c
+                - grep -qs haproxy /proc/[0-9]*/comm
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
@@ -141,8 +143,9 @@ spec:
             # Using exec instead of tcpSocket to avoid noise in te logs
             exec:
               command:
-                - pgrep
-                - haproxy
+                - sh
+                - -c
+                - grep -qs haproxy /proc/[0-9]*/comm
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
@@ -157,7 +160,7 @@ spec:
           {{- end }}
           volumeMounts:
             - name: haproxy-conf
-              mountPath: /bitnami/haproxy/conf
+              mountPath: /usr/local/etc/haproxy
           {{- if .Values.extraVolumeMounts }}
           {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumeMounts "context" $) | nindent 12 }}
           {{- end }}
