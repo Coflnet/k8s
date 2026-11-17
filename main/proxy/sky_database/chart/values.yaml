@@ -120,9 +120,11 @@ service:
 ##
 image:
   registry: docker.io
-  repository: bitnami/haproxy
-  tag: latest
-  digest: sha256:b6257bd824e471f5b3c9dc7ba2745f42a7841a8bff783d103ed44ca1689a3f31
+  repository: library/haproxy
+  ## Official image, pinned as tag@digest in `tag` so the rendered reference keeps both
+  ## (`digest` would drop the tag).
+  tag: 3.4.7@sha256:f6d2ee87b47192d9cc8c22e88fef405122ff339859644883edc2a7d1827f87b3
+  digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -211,7 +213,7 @@ resources:
 ##
 podSecurityContext:
   enabled: true
-  fsGroup: 1001
+  fsGroup: 99
   fsGroupChangePolicy: Always
   seccompProfile:
     type: RuntimeDefault
@@ -223,8 +225,8 @@ podSecurityContext:
 ##
 containerSecurityContext:
   enabled: true
-  runAsUser: 1001
-  runAsGroup: 1001
+  runAsUser: 99
+  runAsGroup: 99
   runAsNonRoot: true
   allowPrivilegeEscalation: false
   privileged: false
