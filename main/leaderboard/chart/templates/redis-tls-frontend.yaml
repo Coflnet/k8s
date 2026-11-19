@@ -49,7 +49,7 @@ spec:
             topologyKey: kubernetes.io/hostname
       containers:
       - name: frontend
-        image: docker.io/nginxinc/nginx-unprivileged:1.29-alpine@sha256:0c79d56aee561a1d81c63f00eee5fb5fe29279560cdc55e91425133104c7fbe6
+        image: docker.io/nginx/nginx-unprivileged:1.30.7-alpine@sha256:0c53a1f2890c3526bfd201440f0fd3970e5b78f80630f58284aad0d34b5ec7bd
         command: [/bin/sh, -ec]
         args:
         - |
