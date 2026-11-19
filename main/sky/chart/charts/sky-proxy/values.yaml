@@ -2,7 +2,7 @@ enabled: true
 nodeSelector: {}
 image:
   repository: muehlhansfl/skyproxy
-  tag: 05832d8b1493f2ede65b59039fd7d44c8fce58fb@sha256:f7982b8d4635d95afb82b58ccf2148e7450a92a30bc4cb6cc9ffc3d15c5c1e5c
+  tag: eb28931a3ae51e8feebe528ecc1376083418091c@sha256:421498105e912c7d21a2922207a3d63aa1095e109666001982574eb8ddcd7223
   pullPolicy: IfNotPresent
 
 ports:
