@@ -15,8 +15,17 @@ spec:
             severity: critical
             project: skyblock
           annotations:
-            summary: "A purchase confirmation could not be delivered"
-            description: "At least one purchase confirmation exhausted all delivery retries and requires operator review."
+            summary: "A purchase confirmation could not be delivered ({{`{{`}} $labels.reason {{`}}`}})"
+            description: "At least one purchase confirmation was parked (reason: {{`{{`}} $labels.reason {{`}}`}}) and requires operator review. List them with GET /api/purchase-confirmations/parked (bearer PURCHASE_CONFIRMATIONS:READ_TOKEN); after fixing the cause, retry one with POST /api/purchase-confirmations/{reference}/requeue. Permanent reasons (agreement_mismatch, terms_mismatch, withdrawal_mismatch, smtp_rejected_recipient) park on the first attempt; transient ones only after 48 hours of retrying."
+        - alert: PurchaseConfirmationDeliveryFailing
+          expr: sum by (reason) (increase(sky_eventbroker_purchase_confirmation_attempt_failed_total[30m])) > 20
+          for: 15m
+          labels:
+            severity: warning
+            project: skyblock
+          annotations:
+            summary: "Purchase confirmation delivery attempts keep failing ({{`{{`}} $labels.reason {{`}}`}})"
+            description: "More than 20 purchase confirmation delivery attempts failed with reason {{`{{`}} $labels.reason {{`}}`}} in 30 minutes. Transient failures (e.g. SMTP down) are retried for 48 hours before anything is parked, so this is the early warning. Failing rows are listed with their LastError in the sky_event PurchaseConfirmationDeliveries table (prefix [reason])."
         - alert: PurchaseConfirmationRecipientMissing
           expr: increase(sky_eventbroker_purchase_confirmation_no_email[15m]) > 0
           labels:
