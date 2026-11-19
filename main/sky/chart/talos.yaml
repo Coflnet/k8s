@@ -611,10 +611,14 @@ sky-bazaar:
     # the website's month/full charts. DRY_RUN only reads and counts
     # (sky_bazaar_daily_rebuild_*); set it to "false" for the real run, which
     # inserts the corrected row before deleting the old one, per day.
+    # 2026-11-20: dry run clean for 25 products / 14k days (0 failures, 0 R2 read
+    # errors, ~1 old row per rewritten day) -> real run. Resumable via Redis
+    # bazaar_daily_rebuild:v1:{product}; set ENABLED to "false" once
+    # products_done reaches the product count (~1.9k, ~2.6 days).
     - name: HISTORY_REBUILD__ENABLED
       value: "true"
     - name: HISTORY_REBUILD__DRY_RUN
-      value: "true"
+      value: "false"
   livenessProbe:
     initialDelaySeconds: 180
 
