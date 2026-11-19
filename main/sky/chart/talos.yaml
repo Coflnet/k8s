@@ -588,12 +588,18 @@ sky-bazaar:
       value: "1800"
     - name: HISTORY_ARCHIVE__RETENTION_HOT_DAYS
       value: "30"
+    # Verified 2026-10-24: first clean v2 sweep done (sweep_complete marker set,
+    # 42k blocks written and read back, 0 verify failures), R2 reads serve
+    # /data windows identical to the legacy rows incl. order books. Trim the
+    # hot table in batches of 300 product-buckets per sweep (eligible: buckets
+    # that ended more than 61 days ago). 2026-11-19: full copy of the bucket on
+    # /storage/backup/skybazaar-cold (71,794 objects, every MD5 = ETag).
     - name: HISTORY_ARCHIVE__DELETE_ARCHIVED
-      value: "false"
+      value: "true"
     - name: HISTORY_ARCHIVE__DELETE_MARGIN_DAYS
       value: "31"
     - name: HISTORY_ARCHIVE__MAX_DELETES_PER_SWEEP
-      value: "0"
+      value: "300"
     # 3 products in flight: ~3x sweep throughput with little extra Scylla read
     # pressure; eu-worker1 has ~8 cores spare. Raise to 4 only if p99 stays flat.
     - name: HISTORY_ARCHIVE__PARALLEL_PRODUCTS
