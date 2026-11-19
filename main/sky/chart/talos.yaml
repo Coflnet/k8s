@@ -606,6 +606,15 @@ sky-bazaar:
       value: "3"
     - name: HISTORY_ARCHIVE__DROP_LEGACY_TABLE
       value: "false"
+    # One-off rebuild of QuickStatusDaly from the 5-minute tiers (hot, R2, legacy):
+    # daily rows since 2021-07 had min = 0 and a single-sample price, which emptied
+    # the website's month/full charts. DRY_RUN only reads and counts
+    # (sky_bazaar_daily_rebuild_*); set it to "false" for the real run, which
+    # inserts the corrected row before deleting the old one, per day.
+    - name: HISTORY_REBUILD__ENABLED
+      value: "true"
+    - name: HISTORY_REBUILD__DRY_RUN
+      value: "true"
   livenessProbe:
     initialDelaySeconds: 180
 
