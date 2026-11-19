@@ -301,6 +301,14 @@ payments:
         value: "502893"
       - name: lemonsqueezy__SUBSCRIPTION_VARIANTS
         value: '{"l_premium":502893,"l_prem_plus":1277645,"l_premium-slots-4":2118396,"l_prem_plus-slots-4":1278931}'
+      # Direct Stripe/PayPal subscriptions (EU, UK, US) and Stripe Managed Payments (elsewhere), see
+      # Payments docs/direct-subscriptions.md. Read once at startup; Lemon Squeezy stays the fallback.
+      - name: SUBSCRIPTIONS__STRIPE_DIRECT_ENABLED
+        value: "true"
+      - name: SUBSCRIPTIONS__STRIPE_MANAGED_ENABLED
+        value: "true"
+      - name: SUBSCRIPTIONS__PAYPAL_ENABLED
+        value: "true"
 
     volumes:
       - name: redpanda
