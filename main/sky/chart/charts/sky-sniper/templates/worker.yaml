@@ -63,6 +63,8 @@ spec:
         ports:
            {{ toYaml .Values.ports | nindent 10 }}
         env:
+          - name: AI_FINDER__ENABLED
+            value: {{ .Values.aiFinderEnabled | quote }}
           {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
           {{- range $name, $value := .Values.pki.env }}
           - name: {{ $name }}

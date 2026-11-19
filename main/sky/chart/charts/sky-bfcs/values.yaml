@@ -1,4 +1,6 @@
 enabled: true
+# Switches the AI flip finder of this service on or off (AI_FINDER__ENABLED)
+aiFinderEnabled: false
 defaultEnvVarsEnabled: true
 replicaCount: 1
 openbaoOptional: true
