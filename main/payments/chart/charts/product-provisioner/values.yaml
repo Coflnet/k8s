@@ -388,10 +388,10 @@ payments:
       },
       {
       "slug": "l_bazaarpro",
-      "title": "1 month Bazaar Pro",
-      "description": "4 weeks of Bazaar Pro renewing itself",
+      "title": "4 weeks Bazaar Pro incl. SkyCofl Premium",
+      "description": "4 weeks of Bazaar Pro including SkyCofl Premium renewing itself",
       "cost": 2100,
-      "price": 12.99,
+      "price": 13.99,
       "currencyCode": "eur",
       "ProviderSlug": "lemonsqueezy",
       "ownershipSeconds": 2430000,
@@ -399,10 +399,10 @@ payments:
       },
       {
       "slug": "l_bazaarpro-year",
-      "title": "1 year Bazaar Pro",
-      "description": "Full year of Bazaar Pro renewing itself",
+      "title": "1 year Bazaar Pro incl. SkyCofl Premium",
+      "description": "Full year of Bazaar Pro including SkyCofl Premium renewing itself",
       "cost": 21000,
-      "price": 69.99,
+      "price": 99.69,
       "currencyCode": "eur",
       "ProviderSlug": "lemonsqueezy",
       "ownershipSeconds": 31536000,
@@ -410,10 +410,10 @@ payments:
       },
       {
       "slug": "l_bazaarpro-quarter",
-      "title": "3 months Bazaar Pro",
-      "description": "3 months of Bazaar Pro renewing itself",
+      "title": "3 months Bazaar Pro incl. SkyCofl Premium",
+      "description": "3 months of Bazaar Pro including SkyCofl Premium renewing itself",
       "cost": 6300,
-      "price": 38.97,
+      "price": 41.97,
       "currencyCode": "eur",
       "ProviderSlug": "lemonsqueezy",
       "ownershipSeconds": 7776000,
@@ -666,7 +666,10 @@ payments:
       "l_prem_plus-year",
       "premium_plus-week",
       "premium_plus-weeks",
-      "premium_plus-months"
+      "premium_plus-months",
+      "l_bazaarpro",
+      "l_bazaarpro-year",
+      "l_bazaarpro-quarter"
       ],
       "starter_premium": [
       "premium",
@@ -687,7 +690,10 @@ payments:
       "l_starter_premium-quarter",
       "premium_plus-week",
       "premium_plus-weeks",
-      "premium_plus-months"
+      "premium_plus-months",
+      "l_bazaarpro",
+      "l_bazaarpro-year",
+      "l_bazaarpro-quarter"
       ],
       "premium_plus": [
       "premium_plus-day",
