@@ -23,6 +23,7 @@ spec:
       annotations:
         {{ toYaml .Values.global.podAnnotations | nindent 8 }}
     spec:
+      automountServiceAccountToken: false
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       securityContext:
