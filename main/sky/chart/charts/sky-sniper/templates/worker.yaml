@@ -42,7 +42,10 @@ spec:
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
+          whenUnsatisfiable: {{ .Values.worker.spreadWhenUnsatisfiable | default "ScheduleAnyway" }}
+          {{- with .Values.worker.spreadNodeTaintsPolicy }}
+          nodeTaintsPolicy: {{ . }}
+          {{- end }}
           labelSelector:
             matchLabels:
               app: "{{ .Chart.Name }}-worker"

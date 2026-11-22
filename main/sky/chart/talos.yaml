@@ -715,6 +715,16 @@ sky-chat:
 
 sky-commands:
   enabled: true
+  # Two replicas on different nodes; a rollout keeps both serving until its new pod is ready.
+  replicaCount: 2
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+      nodeTaintsPolicy: Honor
+      labelSelector:
+        matchLabels:
+          app: sky-commands
   serviceMonitor:
     enabled: true
   envVars: []
@@ -723,6 +733,8 @@ sky-commands:
   readinessProbe:
     initialDelaySeconds: 90
   canary:
+    maxSurge: 1
+    maxUnavailable: 0
     trafficRouting: ~
 
 sky-controller:
@@ -1162,7 +1174,10 @@ sky-sniper:
       limits:
         memory: 8Gi
   worker:
-    replicaCount: 3
+    # Each worker holds a full copy of the price data; the two must not share a node.
+    replicaCount: 2
+    spreadWhenUnsatisfiable: DoNotSchedule
+    spreadNodeTaintsPolicy: Honor
   envVars:
     - name: DBConnection
       valueFrom:
