@@ -22,6 +22,10 @@ spec:
       {{- if $.Values.global.openbaoAuthPath }}
       automountServiceAccountToken: false
       {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       imagePullSecrets:
       {{ toYaml .Values.global.imagePullSecrets | nindent 8 }}
       securityContext:
