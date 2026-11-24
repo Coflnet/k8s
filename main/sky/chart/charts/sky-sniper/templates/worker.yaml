@@ -68,6 +68,8 @@ spec:
         env:
           - name: AI_FINDER__ENABLED
             value: {{ .Values.aiFinderEnabled | quote }}
+          - name: AI_FINDER__TAGS
+            value: {{ .Values.aiFinderTags | default "" | quote }}
           {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
           {{- range $name, $value := .Values.pki.env }}
           - name: {{ $name }}

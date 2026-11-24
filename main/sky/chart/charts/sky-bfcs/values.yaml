@@ -1,6 +1,8 @@
 enabled: true
 # Switches the AI flip finder of this service on or off (AI_FINDER__ENABLED)
-aiFinderEnabled: false
+aiFinderEnabled: true
+# Item tags the AI finder values and publishes, comma separated; empty means every tag (AI_FINDER__TAGS)
+aiFinderTags: "HYPERION,TERMINATOR"
 defaultEnvVarsEnabled: true
 replicaCount: 1
 openbaoOptional: true
