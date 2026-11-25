@@ -7,6 +7,14 @@ aiFinderTags: "HYPERION,TERMINATOR"
 aiFinderGemSlots: true
 # Fits the trees on the residual of the level model, so they follow fast price moves; read by the trainer (AI_FINDER__TREES_ON_LEVEL)
 aiFinderTreesOnLevel: true
+# Rare modifier premiums are measured against plain sales of the same days (AI_FINDER__RARE_PLAIN_DRIFT)
+aiFinderRarePlainDrift: true
+# One value per rune, higher levels scaled like fusing (AI_FINDER__RARE_LINK_RUNES)
+aiFinderRareLinkRunes: true
+# Shrinks rare premiums by how much sellers disagree, so one seller is never trusted (AI_FINDER__RARE_SHRINK: Fixed or Empirical)
+aiFinderRareShrink: "Empirical"
+# Caps a rare modifier's premium at its current cost plus an allowance; nothing is valued before the first cost snapshot (AI_FINDER__RARE_COST_CAP)
+aiFinderRareCostCap: true
 replicaCount: 3
 
 strategy: RollingUpdate

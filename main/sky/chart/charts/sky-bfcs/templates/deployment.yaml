@@ -66,6 +66,14 @@ spec:
             value: {{ .Values.aiFinderGemSlots | default false | quote }}
           - name: AI_FINDER__TREES_ON_LEVEL
             value: {{ .Values.aiFinderTreesOnLevel | default false | quote }}
+          - name: AI_FINDER__RARE_PLAIN_DRIFT
+            value: {{ .Values.aiFinderRarePlainDrift | default false | quote }}
+          - name: AI_FINDER__RARE_LINK_RUNES
+            value: {{ .Values.aiFinderRareLinkRunes | default false | quote }}
+          - name: AI_FINDER__RARE_SHRINK
+            value: {{ .Values.aiFinderRareShrink | default "Fixed" | quote }}
+          - name: AI_FINDER__RARE_COST_CAP
+            value: {{ .Values.aiFinderRareCostCap | default false | quote }}
           {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
           {{- range $name, $value := .Values.pki.env }}
           - name: {{ $name }}
