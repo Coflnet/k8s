@@ -3,6 +3,10 @@ enabled: true
 aiFinderEnabled: true
 # Item tags the AI finder values and publishes, comma separated; empty means every tag (AI_FINDER__TAGS)
 aiFinderTags: "HYPERION,TERMINATOR"
+# Values gems by slot and quality instead of per gem type; must match on every instance, or stored models are not found (AI_FINDER__GEM_SLOTS)
+aiFinderGemSlots: true
+# Fits the trees on the residual of the level model, so they follow fast price moves; read by the trainer (AI_FINDER__TREES_ON_LEVEL)
+aiFinderTreesOnLevel: true
 defaultEnvVarsEnabled: true
 replicaCount: 1
 openbaoOptional: true

@@ -60,6 +60,10 @@ spec:
             value: {{ .Values.aiFinderEnabled | quote }}
           - name: AI_FINDER__TAGS
             value: {{ .Values.aiFinderTags | default "" | quote }}
+          - name: AI_FINDER__GEM_SLOTS
+            value: {{ .Values.aiFinderGemSlots | default false | quote }}
+          - name: AI_FINDER__TREES_ON_LEVEL
+            value: {{ .Values.aiFinderTreesOnLevel | default false | quote }}
           {{- if and .Values.pki.enabled .Values.pki.applicationEnabled }}
           {{- range $name, $value := .Values.pki.env }}
           - name: {{ $name }}
