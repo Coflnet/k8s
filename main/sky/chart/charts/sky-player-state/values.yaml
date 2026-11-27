@@ -17,7 +17,7 @@ pki:
 
 image:
   repository: muehlhansfl/skyplayerstate
-  tag: 962eda4c480576e29db0aef674dfafc5028d178a@sha256:ea7af905d5a2f0bcadf2c5095b256c2d2081a84e532f9ee72e36476477029cc3
+  tag: b4cd99808f0c644c37c8ad4fbc0616c059886ffc@sha256:1c98a944ef20be49798196bb6fff3f079a1c621a62d42f27ea82009fdc97f015
   pullPolicy: IfNotPresent
 
 ports:
